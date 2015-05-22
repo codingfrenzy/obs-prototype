@@ -1,3 +1,24 @@
+//**************************************************************************************************//
+/* Observability Project
+ * Copyright 2015 Master of Software Engineering team: Laila Alhmound, Ying (Joel) Gao, Caglayan Gem, Rajat Kapoor, Prasanth Nair, Varun Saravagi
+ * Copyright 2015 Institute for Software Research | School of Computer Science | Carnegie Mellon University
+ * Copyright 2015 Software Engineering Institute
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+//**************************************************************************************************//
+
 package com.observability.experiments;
 
 import java.io.BufferedReader;
@@ -6,8 +27,23 @@ import java.util.Scanner;
 import java.util.Vector;
 
 
+/**
+ * ProcessManager is an experiment to start/stop collectd process on Ubuntu.
+ * This program needs to be started with sudo.
+ * @author Ying (Joel) Gao
+ * 
+ * History: 
+ * 1. Created					May 21 2015
+ * 2. Modified					May 22 2015
+ *
+ */
 public class ProcessManager
 {
+	/**
+	 * Kill process by the process name
+	 * 
+	 * @param process name of the process
+	 */
 	public static void killProcess(String process) {
 	    try {
 	        Vector<String> commands = new Vector<String>();
@@ -29,6 +65,10 @@ public class ProcessManager
 	    }
 	}
 	
+	/**
+	 * Start the process by name, this class file should be in the same folder as the target program
+	 * @param process name of the process
+	 */
 	public static void startProcess(String process) {
 		try {
 			Runtime.getRuntime().exec("sudo " + process);
@@ -39,8 +79,6 @@ public class ProcessManager
 	
 	public static void main ( String args[] ) throws Exception {
 		
-		// First time, start the collectD daemon
-		// 
 		Scanner keyboard = new Scanner(System.in);
 		
 		while (true){
