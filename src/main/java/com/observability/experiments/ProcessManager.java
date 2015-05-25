@@ -55,11 +55,16 @@ public class ProcessManager
 	        if (pr.exitValue() != 0)
 	        	return;
 	        BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-	        for (String pid : outReader.readLine().trim().split(" ")) {
-	            //log.info("Killing pid: "+pid);
-	            Runtime.getRuntime().exec("sudo kill " + pid).waitFor();
-	            System.out.println("Killing pid: " + pid);
+	        String pros = outReader.readLine();
+	        if(pros != null && pros.length() > 0) {
+		        String [] strs = pros.trim().split(" ");
+		        for (String pid : strs) {
+		            //log.info("Killing pid: "+pid);
+		            Runtime.getRuntime().exec("sudo kill " + pid).waitFor();
+		            System.out.println("Killing pid: " + pid);
+		        }
 	        }
+	        outReader.close();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -92,6 +97,8 @@ public class ProcessManager
 				break;
 			case 2:
 				startProcess("collectd");
+				break;
+			default:
 				break;
 			}
 			System.out.println("");
