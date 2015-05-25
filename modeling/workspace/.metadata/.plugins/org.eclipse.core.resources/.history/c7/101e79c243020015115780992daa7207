@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/observability-emf/src" modelPluginID="observability-emf"
+    modelName="Observability_emf" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>observability_emf.ecore</foreignModel>
+  <genPackages prefix="Observability_emf" disposableProviderFactory="true" ecorePackage="observability_emf.ecore#/">
+    <genClasses ecoreClass="observability_emf.ecore#//Model">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Model/frequency"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/clusters"/>
+    </genClasses>
+    <genClasses ecoreClass="observability_emf.ecore#//DatabaseCluster">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/dbType"/>
+    </genClasses>
+    <genClasses ecoreClass="observability_emf.ecore#//NodeMachine">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/IP"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/Port"/>
+    </genClasses>
+    <genClasses ecoreClass="observability_emf.ecore#//DbType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/probeLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/collectionFrequency"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
