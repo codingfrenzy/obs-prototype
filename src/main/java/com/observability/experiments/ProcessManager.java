@@ -54,7 +54,7 @@ public class ProcessManager
 	        pr.waitFor();
 	        if (pr.exitValue() != 0)
 	        	return;
-	        BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+	        BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream(),"UTF-8"));
 	        String pros = outReader.readLine();
 	        if(pros != null && pros.length() > 0) {
 		        String [] strs = pros.trim().split(" ");
@@ -84,7 +84,7 @@ public class ProcessManager
 	
 	public static void main ( String args[] ) throws Exception {
 		
-		Scanner keyboard = new Scanner(System.in);
+		Scanner keyboard = new Scanner(System.in,"UTF-8");
 		
 		while (true){
 			System.out.println("Enter an integer, 1 - stop collectd, 2 - start collectd, 0 - exit");
