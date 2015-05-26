@@ -84,7 +84,7 @@ public class ProcessManager
 	
 	public static void main ( String args[] ) throws Exception {
 		
-		Scanner keyboard = new Scanner(System.in,"UTF-8");
+		Scanner keyboard = new Scanner(System.in);
 		
 		while (true){
 			System.out.println("Enter an integer, 1 - stop collectd, 2 - start collectd, 0 - exit");
