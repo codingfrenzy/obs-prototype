@@ -8,7 +8,7 @@ public class HelloWorld {
    
     public String foundType() {
 
-    	   return this.foundType();
+    	    this.foundType();
 
     	}
 
