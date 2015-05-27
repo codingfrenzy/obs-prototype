@@ -1,10 +1,10 @@
 #!/bin/bash
 startme() {
-    /opt/collectd/sbin/collectd &
+    sudo /opt/collectd/sbin/collectd
 }
 
 stopme() {
-    pkill -f "collectd" 
+    sudo pkill -f "collectd" 
     
 }
 
