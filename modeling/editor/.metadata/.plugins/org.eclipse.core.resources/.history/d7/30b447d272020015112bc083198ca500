@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_emf="http://www.example.org/observability_emf" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xmi:id="_agGsUAJyEeWQEI3nV80Eng" version="8.1.1">
-  <models xmi:type="observability_emf:Model" href="my.observability_emf#/"/>
-</viewpoint:DAnalysis>
