@@ -82,6 +82,10 @@ public class ProcessManager
 	    }
 	}
 	
+	/**
+	 * Main function
+	 * @param args[] arguments
+	 */
 	public static void main ( String args[] ) throws Exception {
 		
 		Scanner keyboard = new Scanner(System.in,"UTF-8");
