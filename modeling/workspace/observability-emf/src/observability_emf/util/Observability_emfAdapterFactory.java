@@ -2,6 +2,14 @@
  */
 package observability_emf.util;
 
+import observability_emf.BaseMetric;
+import observability_emf.DatabaseCluster;
+import observability_emf.DbType;
+import observability_emf.DerivedMetric;
+import observability_emf.Metric;
+import observability_emf.Model;
+import observability_emf.NodeMachine;
+import observability_emf.Observability_emfPackage;
 import observability_emf.*;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -94,6 +102,10 @@ public class Observability_emfAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseBaseMetric(BaseMetric object) {
 				return createBaseMetricAdapter();
+			}
+			@Override
+			public Adapter caseSystem(observability_emf.System object) {
+				return createSystemAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -210,6 +222,20 @@ public class Observability_emfAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBaseMetricAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link observability_emf.System <em>System</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see observability_emf.System
+	 * @generated
+	 */
+	public Adapter createSystemAdapter() {
 		return null;
 	}
 

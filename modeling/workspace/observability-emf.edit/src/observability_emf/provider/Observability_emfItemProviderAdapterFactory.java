@@ -210,6 +210,29 @@ public class Observability_emfItemProviderAdapterFactory extends Observability_e
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link observability_emf.System} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected SystemItemProvider systemItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link observability_emf.System}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createSystemAdapter() {
+		if (systemItemProvider == null) {
+			systemItemProvider = new SystemItemProvider(this);
+		}
+
+		return systemItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -314,6 +337,7 @@ public class Observability_emfItemProviderAdapterFactory extends Observability_e
 		if (nodeMachineItemProvider != null) nodeMachineItemProvider.dispose();
 		if (derivedMetricItemProvider != null) derivedMetricItemProvider.dispose();
 		if (baseMetricItemProvider != null) baseMetricItemProvider.dispose();
+		if (systemItemProvider != null) systemItemProvider.dispose();
 	}
 
 }

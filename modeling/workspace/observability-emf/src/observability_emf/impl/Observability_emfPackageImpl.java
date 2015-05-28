@@ -76,6 +76,13 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	private EClass baseMetricEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass systemEClass = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -321,6 +328,24 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getSystem() {
+		return systemEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getSystem_HasModel() {
+		return (EReference)systemEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Observability_emfFactory getObservability_emfFactory() {
 		return (Observability_emfFactory)getEFactoryInstance();
 	}
@@ -370,6 +395,9 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		derivedMetricEClass = createEClass(DERIVED_METRIC);
 
 		baseMetricEClass = createEClass(BASE_METRIC);
+
+		systemEClass = createEClass(SYSTEM);
+		createEReference(systemEClass, SYSTEM__HAS_MODEL);
 	}
 
 	/**
@@ -430,6 +458,9 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEClass(derivedMetricEClass, DerivedMetric.class, "DerivedMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(baseMetricEClass, BaseMetric.class, "BaseMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(systemEClass, observability_emf.System.class, "System", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSystem_HasModel(), this.getModel(), null, "hasModel", null, 1, 1, observability_emf.System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

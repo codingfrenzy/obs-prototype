@@ -31,4 +31,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DerivedMetric" eSuperTypes="#//Metric"/>
   <eClassifiers xsi:type="ecore:EClass" name="BaseMetric" eSuperTypes="#//Metric"/>
+  <eClassifiers xsi:type="ecore:EClass" name="System">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hasModel" lowerBound="1"
+        eType="#//Model" containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

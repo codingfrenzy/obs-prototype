@@ -2,6 +2,14 @@
  */
 package observability_emf.impl;
 
+import observability_emf.BaseMetric;
+import observability_emf.DatabaseCluster;
+import observability_emf.DbType;
+import observability_emf.DerivedMetric;
+import observability_emf.Model;
+import observability_emf.NodeMachine;
+import observability_emf.Observability_emfFactory;
+import observability_emf.Observability_emfPackage;
 import observability_emf.*;
 
 import org.eclipse.emf.ecore.EClass;
@@ -62,6 +70,7 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 			case Observability_emfPackage.NODE_MACHINE: return createNodeMachine();
 			case Observability_emfPackage.DERIVED_METRIC: return createDerivedMetric();
 			case Observability_emfPackage.BASE_METRIC: return createBaseMetric();
+			case Observability_emfPackage.SYSTEM: return createSystem();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -125,6 +134,16 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 	public BaseMetric createBaseMetric() {
 		BaseMetricImpl baseMetric = new BaseMetricImpl();
 		return baseMetric;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public observability_emf.System createSystem() {
+		SystemImpl system = new SystemImpl();
+		return system;
 	}
 
 	/**

@@ -425,6 +425,44 @@ public interface Observability_emfPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link observability_emf.impl.SystemImpl <em>System</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see observability_emf.impl.SystemImpl
+	 * @see observability_emf.impl.Observability_emfPackageImpl#getSystem()
+	 * @generated
+	 */
+	int SYSTEM = 7;
+
+	/**
+	 * The feature id for the '<em><b>Has Model</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SYSTEM__HAS_MODEL = 0;
+
+	/**
+	 * The number of structural features of the '<em>System</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SYSTEM_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>System</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SYSTEM_OPERATION_COUNT = 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link observability_emf.Model <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -638,6 +676,27 @@ public interface Observability_emfPackage extends EPackage {
 	EClass getBaseMetric();
 
 	/**
+	 * Returns the meta object for class '{@link observability_emf.System <em>System</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>System</em>'.
+	 * @see observability_emf.System
+	 * @generated
+	 */
+	EClass getSystem();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link observability_emf.System#getHasModel <em>Has Model</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Has Model</em>'.
+	 * @see observability_emf.System#getHasModel()
+	 * @see #getSystem()
+	 * @generated
+	 */
+	EReference getSystem_HasModel();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -833,6 +892,24 @@ public interface Observability_emfPackage extends EPackage {
 		 * @generated
 		 */
 		EClass BASE_METRIC = eINSTANCE.getBaseMetric();
+
+		/**
+		 * The meta object literal for the '{@link observability_emf.impl.SystemImpl <em>System</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see observability_emf.impl.SystemImpl
+		 * @see observability_emf.impl.Observability_emfPackageImpl#getSystem()
+		 * @generated
+		 */
+		EClass SYSTEM = eINSTANCE.getSystem();
+
+		/**
+		 * The meta object literal for the '<em><b>Has Model</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SYSTEM__HAS_MODEL = eINSTANCE.getSystem_HasModel();
 
 	}
 
