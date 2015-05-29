@@ -92,7 +92,7 @@ public class DumpCollectDWriteHttp extends Thread {
          System.out.println( "The Client "+
          connectedClient.getInetAddress() + ":" + connectedClient.getPort() + " is connected");
      
-         inFromClient = new BufferedReader(new InputStreamReader (connectedClient.getInputStream()));          
+         inFromClient = new BufferedReader(new InputStreamReader (connectedClient.getInputStream(), "UTF-8"));          
          outToClient = new DataOutputStream(connectedClient.getOutputStream());
  
          currentLine = inFromClient.readLine();
