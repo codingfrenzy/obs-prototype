@@ -132,7 +132,7 @@ public class DumpCollectDWriteHttp extends Thread {
 	         outToClient.close();
 	         connectedClient.close();
        }catch (Exception e) {
-	       e.printStackTrace()
+	       e.printStackTrace();
 	   }
    }
 
