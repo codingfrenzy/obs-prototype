@@ -4,12 +4,35 @@
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsDiag" titleExpression="'SUM'" initialisation="true" domainClass="observability_emf.System" enablePopupBars="true">
       <metamodel href="file:/home/vsaravag/git/obs-prototype/modeling/workspace/observability-emf/model/observability_emf.ecore#/"/>
       <defaultLayer name="Default" label="System diagram">
+        <nodeMappings name="baseMetric" domainClass="observability_emf.BaseMetric">
+          <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="metricToCluster" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']" targetFinderExpression="collectedMetrics">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
         <containerMappings name="model" semanticCandidatesExpression="feature:hasModel" domainClass="observability_emf.Model" reusedContainerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']">
-          <subContainerMappings name="dbCluster" domainClass="observability_emf.DatabaseCluster">
-            <style xsi:type="style:ShapeContainerStyleDescription" labelExpression="">
+          <subContainerMappings name="dbCluster" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+            <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_emf.NodeMachine">
+              <style xsi:type="style:SquareDescription" labelExpression="machine" resizeKind="NSEW">
+                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+              </style>
+            </subNodeMappings>
+            <style xsi:type="style:FlatContainerStyleDescription" labelExpression="cluster">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
             </style>
           </subContainerMappings>
           <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="Model">
@@ -35,6 +58,26 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:containerModel">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.Model" referenceName="hasModel" variableName="modelInstance"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+            <variable name="machineContainer"/>
+            <viewVariable name="machineContainerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineContainer">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']">
+            <variable name="baseMetricContainer"/>
+            <viewVariable name="baseMetricContainerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbClusterContainer">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.BaseMetric" referenceName="[collectedMetrics/]" variableName="baseMetricInstance">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['metric'+baseMetricContainer.collectedMetrics->size()/]"/>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
