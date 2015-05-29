@@ -4,14 +4,16 @@
     nsPrefix="observability_emf">
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="frequency" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clusters" upperBound="-1"
-        eType="#//DatabaseCluster" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clusters" lowerBound="1"
+        upperBound="-1" eType="#//DatabaseCluster" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DatabaseCluster">
     <eStructuralFeatures xsi:type="ecore:EReference" name="machines" upperBound="-1"
         eType="#//NodeMachine" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dbType" lowerBound="1"
         eType="#//DbType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="collectedMetrics" upperBound="-1"
+        eType="#//Metric"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DbType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -21,8 +23,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="NodeMachine">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="IP" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Port" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="collectedMetrics" upperBound="-1"
-        eType="#//Metric"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metric" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>

@@ -2,8 +2,6 @@
  */
 package observability_emf;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -16,7 +14,6 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link observability_emf.NodeMachine#getIP <em>IP</em>}</li>
  *   <li>{@link observability_emf.NodeMachine#getPort <em>Port</em>}</li>
- *   <li>{@link observability_emf.NodeMachine#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,21 +73,5 @@ public interface NodeMachine extends EObject {
 	 * @generated
 	 */
 	void setPort(int value);
-
-	/**
-	 * Returns the value of the '<em><b>Collected Metrics</b></em>' reference list.
-	 * The list contents are of type {@link observability_emf.Metric}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Collected Metrics</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Collected Metrics</em>' reference list.
-	 * @see observability_emf.Observability_emfPackage#getNodeMachine_CollectedMetrics()
-	 * @model
-	 * @generated
-	 */
-	EList<Metric> getCollectedMetrics();
 
 } // NodeMachine

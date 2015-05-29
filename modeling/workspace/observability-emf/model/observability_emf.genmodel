@@ -13,6 +13,7 @@
     <genClasses ecoreClass="observability_emf.ecore#//DatabaseCluster">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/machines"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/dbType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/collectedMetrics"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//DbType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/name"/>
@@ -22,7 +23,6 @@
     <genClasses ecoreClass="observability_emf.ecore#//NodeMachine">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/IP"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/Port"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//NodeMachine/collectedMetrics"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//Metric">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/unit"/>

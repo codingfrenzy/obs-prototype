@@ -10,11 +10,8 @@ import observability_emf.Metric;
 import observability_emf.Model;
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfPackage;
-import observability_emf.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
 
 /**

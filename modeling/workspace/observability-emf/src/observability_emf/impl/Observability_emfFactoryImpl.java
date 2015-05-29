@@ -10,14 +10,10 @@ import observability_emf.Model;
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfFactory;
 import observability_emf.Observability_emfPackage;
-import observability_emf.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**

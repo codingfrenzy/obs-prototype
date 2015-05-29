@@ -62,7 +62,6 @@ public class NodeMachineItemProvider
 
 			addIPPropertyDescriptor(object);
 			addPortPropertyDescriptor(object);
-			addCollectedMetricsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -107,28 +106,6 @@ public class NodeMachineItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Collected Metrics feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addCollectedMetricsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_NodeMachine_collectedMetrics_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_NodeMachine_collectedMetrics_feature", "_UI_NodeMachine_type"),
-				 Observability_emfPackage.Literals.NODE_MACHINE__COLLECTED_METRICS,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}

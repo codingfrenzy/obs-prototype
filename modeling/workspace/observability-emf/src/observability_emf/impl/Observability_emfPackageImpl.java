@@ -202,6 +202,15 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getDatabaseCluster_CollectedMetrics() {
+		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDbType() {
 		return dbTypeEClass;
 	}
@@ -258,15 +267,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 */
 	public EAttribute getNodeMachine_Port() {
 		return (EAttribute)nodeMachineEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getNodeMachine_CollectedMetrics() {
-		return (EReference)nodeMachineEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -376,6 +376,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		databaseClusterEClass = createEClass(DATABASE_CLUSTER);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__MACHINES);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__DB_TYPE);
+		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_METRICS);
 
 		dbTypeEClass = createEClass(DB_TYPE);
 		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
@@ -385,7 +386,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		nodeMachineEClass = createEClass(NODE_MACHINE);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__IP);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__PORT);
-		createEReference(nodeMachineEClass, NODE_MACHINE__COLLECTED_METRICS);
 
 		metricEClass = createEClass(METRIC);
 		createEAttribute(metricEClass, METRIC__UNIT);
@@ -439,6 +439,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEClass(databaseClusterEClass, DatabaseCluster.class, "DatabaseCluster", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDatabaseCluster_Machines(), this.getNodeMachine(), null, "machines", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_DbType(), this.getDbType(), null, "dbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDatabaseCluster_CollectedMetrics(), this.getMetric(), null, "collectedMetrics", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dbTypeEClass, DbType.class, "DbType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDbType_Name(), ecorePackage.getEString(), "name", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -448,7 +449,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEClass(nodeMachineEClass, NodeMachine.class, "NodeMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNodeMachine_IP(), ecorePackage.getEString(), "IP", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNodeMachine_Port(), ecorePackage.getEInt(), "Port", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNodeMachine_CollectedMetrics(), this.getMetric(), null, "collectedMetrics", null, 0, -1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metricEClass, Metric.class, "Metric", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMetric_Unit(), ecorePackage.getEInt(), "unit", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -2,22 +2,12 @@
  */
 package observability_emf.impl;
 
-import java.util.Collection;
-
-import observability_emf.Metric;
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +18,6 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  * <ul>
  *   <li>{@link observability_emf.impl.NodeMachineImpl#getIP <em>IP</em>}</li>
  *   <li>{@link observability_emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
- *   <li>{@link observability_emf.impl.NodeMachineImpl#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
  * </p>
  *
@@ -74,16 +63,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * @ordered
 	 */
 	protected int port = PORT_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getCollectedMetrics() <em>Collected Metrics</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCollectedMetrics()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Metric> collectedMetrics;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,18 +130,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Metric> getCollectedMetrics() {
-		if (collectedMetrics == null) {
-			collectedMetrics = new EObjectResolvingEList<Metric>(Metric.class, this, Observability_emfPackage.NODE_MACHINE__COLLECTED_METRICS);
-		}
-		return collectedMetrics;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -170,8 +137,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return getIP();
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				return getPort();
-			case Observability_emfPackage.NODE_MACHINE__COLLECTED_METRICS:
-				return getCollectedMetrics();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -191,10 +156,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				setPort((Integer)newValue);
 				return;
-			case Observability_emfPackage.NODE_MACHINE__COLLECTED_METRICS:
-				getCollectedMetrics().clear();
-				getCollectedMetrics().addAll((Collection<? extends Metric>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -213,9 +174,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				setPort(PORT_EDEFAULT);
 				return;
-			case Observability_emfPackage.NODE_MACHINE__COLLECTED_METRICS:
-				getCollectedMetrics().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -232,8 +190,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return IP_EDEFAULT == null ? ip != null : !IP_EDEFAULT.equals(ip);
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				return port != PORT_EDEFAULT;
-			case Observability_emfPackage.NODE_MACHINE__COLLECTED_METRICS:
-				return collectedMetrics != null && !collectedMetrics.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

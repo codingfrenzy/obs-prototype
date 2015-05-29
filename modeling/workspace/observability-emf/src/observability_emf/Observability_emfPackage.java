@@ -131,13 +131,22 @@ public interface Observability_emfPackage extends EPackage {
 	int DATABASE_CLUSTER__DB_TYPE = 1;
 
 	/**
+	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATABASE_CLUSTER__COLLECTED_METRICS = 2;
+
+	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER_FEATURE_COUNT = 2;
+	int DATABASE_CLUSTER_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Database Cluster</em>' class.
@@ -232,22 +241,13 @@ public interface Observability_emfPackage extends EPackage {
 	int NODE_MACHINE__PORT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NODE_MACHINE__COLLECTED_METRICS = 2;
-
-	/**
 	 * The number of structural features of the '<em>Node Machine</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_MACHINE_FEATURE_COUNT = 3;
+	int NODE_MACHINE_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Node Machine</em>' class.
@@ -527,6 +527,17 @@ public interface Observability_emfPackage extends EPackage {
 	EReference getDatabaseCluster_DbType();
 
 	/**
+	 * Returns the meta object for the reference list '{@link observability_emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Collected Metrics</em>'.
+	 * @see observability_emf.DatabaseCluster#getCollectedMetrics()
+	 * @see #getDatabaseCluster()
+	 * @generated
+	 */
+	EReference getDatabaseCluster_CollectedMetrics();
+
+	/**
 	 * Returns the meta object for class '{@link observability_emf.DbType <em>Db Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -600,17 +611,6 @@ public interface Observability_emfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getNodeMachine_Port();
-
-	/**
-	 * Returns the meta object for the reference list '{@link observability_emf.NodeMachine#getCollectedMetrics <em>Collected Metrics</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Collected Metrics</em>'.
-	 * @see observability_emf.NodeMachine#getCollectedMetrics()
-	 * @see #getNodeMachine()
-	 * @generated
-	 */
-	EReference getNodeMachine_CollectedMetrics();
 
 	/**
 	 * Returns the meta object for class '{@link observability_emf.Metric <em>Metric</em>}'.
@@ -772,6 +772,14 @@ public interface Observability_emfPackage extends EPackage {
 		EReference DATABASE_CLUSTER__DB_TYPE = eINSTANCE.getDatabaseCluster_DbType();
 
 		/**
+		 * The meta object literal for the '<em><b>Collected Metrics</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DATABASE_CLUSTER__COLLECTED_METRICS = eINSTANCE.getDatabaseCluster_CollectedMetrics();
+
+		/**
 		 * The meta object literal for the '{@link observability_emf.impl.DbTypeImpl <em>Db Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -830,14 +838,6 @@ public interface Observability_emfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NODE_MACHINE__PORT = eINSTANCE.getNodeMachine_Port();
-
-		/**
-		 * The meta object literal for the '<em><b>Collected Metrics</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference NODE_MACHINE__COLLECTED_METRICS = eINSTANCE.getNodeMachine_CollectedMetrics();
 
 		/**
 		 * The meta object literal for the '{@link observability_emf.impl.MetricImpl <em>Metric</em>}' class.
