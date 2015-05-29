@@ -2,9 +2,11 @@
 <observability_emf:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_emf="http://www.example.org/observability_emf">
   <hasModel>
     <clusters/>
-    <clusters/>
-    <clusters/>
-    <clusters/>
-    <clusters/>
+    <clusters>
+      <machines/>
+    </clusters>
+    <clusters>
+      <machines/>
+    </clusters>
   </hasModel>
 </observability_emf:System>
