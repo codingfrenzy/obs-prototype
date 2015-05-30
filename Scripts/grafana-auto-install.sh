@@ -21,8 +21,6 @@ sudo a2dissite 000-default
 sudo cp /usr/share/graphite-web/apache2-graphite.conf /etc/apache2/sites-available
 sudo a2ensite apache2-graphite
 
-# use sudo service carbon-cache start to start graphite
-
 # GRAFANA installation:
 
 cd
