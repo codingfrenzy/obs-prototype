@@ -20,7 +20,7 @@
 //**************************************************************************************************//
 
 
-package com.observability.monitoring;
+package com.observability.monitoring.daemon;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -19,7 +19,7 @@
  */
 //**************************************************************************************************//
 
-package com.observability.monitoring;
+package com.observability.monitoring.daemon;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
