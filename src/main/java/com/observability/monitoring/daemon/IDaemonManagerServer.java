@@ -52,7 +52,7 @@ public interface IDaemonManagerServer extends Remote {
 	 * configuration file as a new section.
 	 * 
 	 */
-	public boolean changeConfiguration(String section, String config) throws RemoteException;
+	public boolean changeConfiguration(String header, String footer, String config) throws RemoteException;
 	
 	/**
 	 * Stop configuration modification process.

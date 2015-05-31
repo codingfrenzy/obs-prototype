@@ -142,16 +142,16 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * configuration file as a new section.
 	 * 
 	 */
-	public boolean changeConfiguration(String section, String config)
+	public boolean changeConfiguration(String header, String footer, String config)
 			throws RemoteException {
 		
 		if(confString == null)// String not available
 			return false;
 		// 1. locate the section
-		String header = "<Plugin \"" + section + "\">";
-		String footer = "</Plugin>";
-		// 2. modify the section
+		//String header = "<Plugin \"" + section + "\">";
+		//String footer = "</Plugin>";
 		int start = confString.indexOf(header);
+		// 2. modify the section
 		if(start == -1){//not in string
 			// adding new configuration
 			// append to end of the string
@@ -160,12 +160,13 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			confString += "\n";
 		} else {//found in string
 			// modify old configuration
-			int end = confString.indexOf(footer, start + 7);
+			// get the footer position
+			int end = confString.indexOf(footer, start);
 			if(end == -1){//error, corrupted conf file
 				confString = null;
 				return false;
 			}
-			String oldsec = confString.substring(start, end + 9);
+			String oldsec = confString.substring(start, end + footer.length());
 			confString = confString.replace(oldsec, config);
 		}
 		
