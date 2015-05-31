@@ -119,7 +119,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 
 	/**
 	 * Start configuration modification process.
-	 * 
+	 * @return true/false client gets true to continue
 	 */
 	public boolean startConfigurationModification() throws RemoteException {
 		// open the configuration file
@@ -139,8 +139,16 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 
 	/**
 	 * Change configuration of a section. If the section does not exist, it will be appended to the end of 
-	 * configuration file as a new section.
+	 * configuration file as a new section. For example:
+	 * <LoadPlugin perl>
+	 * 		Interval 60
+	 * </LoadPlugin>
+	 * This function can be called multiple times to change multiple sections.
 	 * 
+	 * @param header start of the section. E.g.  <LoadPlugin perl>
+	 * @param footer end of the section. E.g. </LoadPlugin>
+	 * @param config the whole section including everything.
+	 * @return true/false
 	 */
 	public boolean changeConfiguration(String header, String footer, String config)
 			throws RemoteException {
@@ -175,7 +183,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 
 	/**
 	 * Stop configuration modification process.
-	 * 
+	 * @return true/false client gets true to confirm the success of changing configuration
 	 */
 	public boolean stopConfigurationModification() throws RemoteException {
 		try{
