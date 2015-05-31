@@ -23,11 +23,12 @@
 package com.observability.monitoring;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -56,14 +57,15 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	private static final long serialVersionUID = 510701247259432164L;
 	
 	/**
-	 * I/O file to operate on collectd configuration file
+	 * Current string of the whole configuration file 
 	 */
-	private File confFile = null;
+	private String confString = null;
 	
 	/**
-	 * Buffer writer for configuration file
+	 * Path to the configuration file 
 	 */
-	private BufferedWriter confFileWriter = null;
+	String configPath = "collectd.conf";
+	
 	/**
 	 * Default constructor
 	 * 
@@ -124,13 +126,12 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		// the configuration file is required to be saved in the same directory of this program
 		
         try {
-            //create a temporary file
-        	confFile = new File("collectd.conf");
-
-        	confFileWriter = new BufferedWriter(new FileWriter(confFile));
+        	Path path = Paths.get(configPath);
+        	confString = new String(Files.readAllBytes(path), StandardCharsets.US_ASCII);
 
         } catch (Exception e) {
             e.printStackTrace();
+            confString = null;
             return false;
         }
 		return true;
@@ -143,11 +144,32 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 */
 	public boolean changeConfiguration(String section, String config)
 			throws RemoteException {
+		
+		if(confString == null)// String not available
+			return false;
 		// 1. locate the section
 		String header = "<Plugin \"" + section + "\">";
 		String footer = "</Plugin>";
 		// 2. modify the section
-		return false;
+		int start = confString.indexOf(header);
+		if(start == -1){//not in string
+			// adding new configuration
+			// append to end of the string
+			confString += "\n";
+			confString += config;
+			confString += "\n";
+		} else {//found in string
+			// modify old configuration
+			int end = confString.indexOf(footer, start + 7);
+			if(end == -1){//error, corrupted conf file
+				confString = null;
+				return false;
+			}
+			String oldsec = confString.substring(start, end + 9);
+			confString = confString.replace(oldsec, config);
+		}
+		
+		return true;
 	}
 
 	/**
@@ -157,8 +179,10 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public boolean stopConfigurationModification() throws RemoteException {
 		try{
 			// 1. save to conf file
-			confFileWriter.flush();
-			confFileWriter.close();
+			if(confString != null && confString.length() > 0){
+				Path path = Paths.get(configPath);
+				Files.write(path, confString.getBytes(StandardCharsets.US_ASCII));
+			}
 			
 			// 2. stop collect process
 			killProcess("collectd");
@@ -167,9 +191,10 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			
 		} catch(Exception e) {
             e.printStackTrace();
+            return false;
 		}
 		
-		return false;
+		return true;
 	}
 
 	/**
