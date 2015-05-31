@@ -23,6 +23,9 @@
 package com.observability.monitoring;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -51,7 +54,16 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * Auto generated serial version id
 	 */
 	private static final long serialVersionUID = 510701247259432164L;
-
+	
+	/**
+	 * I/O file to operate on collectd configuration file
+	 */
+	private File confFile = null;
+	
+	/**
+	 * Buffer writer for configuration file
+	 */
+	private BufferedWriter confFileWriter = null;
 	/**
 	 * Default constructor
 	 * 
@@ -108,8 +120,20 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * 
 	 */
 	public boolean startConfigurationModification() throws RemoteException {
-		// open the conf file
-		return false;
+		// open the configuration file
+		// the configuration file is required to be saved in the same directory of this program
+		
+        try {
+            //create a temporary file
+        	confFile = new File("collectd.conf");
+
+        	confFileWriter = new BufferedWriter(new FileWriter(confFile));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+		return true;
 	}
 
 	/**
@@ -120,6 +144,8 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public boolean changeConfiguration(String section, String config)
 			throws RemoteException {
 		// 1. locate the section
+		String header = "<Plugin \"" + section + "\">";
+		String footer = "</Plugin>";
 		// 2. modify the section
 		return false;
 	}
@@ -129,9 +155,20 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * 
 	 */
 	public boolean stopConfigurationModification() throws RemoteException {
-		// 1. save to conf file
-		// 2. stop collect process
-		// 3. start collect process
+		try{
+			// 1. save to conf file
+			confFileWriter.flush();
+			confFileWriter.close();
+			
+			// 2. stop collect process
+			killProcess("collectd");
+			// 3. start collect process
+			startProcess("collectd");
+			
+		} catch(Exception e) {
+            e.printStackTrace();
+		}
+		
 		return false;
 	}
 
