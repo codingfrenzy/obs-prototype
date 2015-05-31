@@ -77,6 +77,7 @@ public interface DbType extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Collection Frequency</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Collection Frequency</em>' attribute isn't clear,
@@ -86,7 +87,7 @@ public interface DbType extends EObject {
 	 * @return the value of the '<em>Collection Frequency</em>' attribute.
 	 * @see #setCollectionFrequency(int)
 	 * @see observability_emf.Observability_emfPackage#getDbType_CollectionFrequency()
-	 * @model
+	 * @model default="0"
 	 * @generated
 	 */
 	int getCollectionFrequency();

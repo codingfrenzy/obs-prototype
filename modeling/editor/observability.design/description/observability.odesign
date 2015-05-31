@@ -1,41 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="observability" version="8.1.0">
   <ownedViewpoints name="obsView">
-    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsDiag" titleExpression="'SUM'" initialisation="true" domainClass="observability_emf.System" enablePopupBars="true">
-      <metamodel href="file:/home/vsaravag/git/obs-prototype/modeling/workspace/observability-emf/model/observability_emf.ecore#/"/>
-      <defaultLayer name="Default" label="System diagram">
-        <containerMappings name="model" semanticCandidatesExpression="feature:hasModel" semanticElements="feature:" domainClass="observability_emf.Model" reusedContainerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']">
-          <subContainerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
-            <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_emf.NodeMachine">
-              <style xsi:type="style:SquareDescription" labelExpression="machine" resizeKind="NSEW">
-                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
-              </style>
-            </subNodeMappings>
-            <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:collectedMetrics" domainClass="observability_emf.BaseMetric">
-              <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
-                <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-                <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-                <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
-              </style>
-            </subNodeMappings>
-            <style xsi:type="style:FlatContainerStyleDescription" labelExpression="cluster">
-              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-              <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
-              <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
-            </style>
-          </subContainerMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelExpression="Model">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsDiag" titleExpression="'SUM'" initialisation="true" domainClass="observability_emf.Model" enablePopupBars="true">
+      <defaultLayer name="Default" label="Model diagram">
+        <nodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
+          <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+          </style>
+        </nodeMappings>
+        <nodeMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
+          <style xsi:type="style:SquareDescription" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="clusterToMetric" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="clusterToDbType" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+          <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_emf.NodeMachine">
+            <style xsi:type="style:SquareDescription" labelExpression="machine" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" labelExpression="cluster">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
           </style>
         </containerMappings>
         <toolSections>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']">
             <variable name="dbClusterContainer"/>
             <viewVariable name="dbClusterContainerView"/>
             <initialOperation>
@@ -44,16 +58,7 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="modelContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']">
-            <variable name="containerModel"/>
-            <viewVariable name="containerViewModel"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:containerModel">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.Model" referenceName="hasModel" variableName="modelInstance"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
             <variable name="machineContainer"/>
             <viewVariable name="machineContainerView"/>
             <initialOperation>
@@ -62,15 +67,44 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='model']/@subContainerMappings[name='dbCluster']/@subNodeMappings[name='baseMetric']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']">
             <variable name="baseMetricContainer"/>
             <viewVariable name="baseMetricContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:baseMetricContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.BaseMetric" referenceName="collectedMetrics" variableName="baseMetricInstance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['metric'+baseMetricContainer.collectedMetrics->size()/]"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.BaseMetric" referenceName="availableMetrics" variableName="baseMetricInstance">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="'metric'"/>
                 </subModelOperations>
               </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="clusterToMetricEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool:CreateEdgeView" mapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']" containerViewExpression="var:sourceView" sourceExpression="var:source" targetExpression="var:target"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="dbTypeNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']">
+            <variable name="dbTypeContainer"/>
+            <viewVariable name="dbTypeContainerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="clusterToDbTypeEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

@@ -45,13 +45,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass dbTypeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass nodeMachineEClass = null;
 
 	/**
@@ -80,7 +73,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass systemEClass = null;
+	private EClass dbTypeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -175,6 +168,24 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getModel_AvailableMetrics() {
+		return (EReference)modelEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getModel_AvailableDbTypes() {
+		return (EReference)modelEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getDatabaseCluster() {
 		return databaseClusterEClass;
 	}
@@ -193,7 +204,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDatabaseCluster_DbType() {
+	public EReference getDatabaseCluster_CollectedBaseMetric() {
 		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -202,44 +213,8 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getDatabaseCluster_CollectedMetrics() {
+	public EReference getDatabaseCluster_AssociatedDbType() {
 		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getDbType() {
-		return dbTypeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDbType_Name() {
-		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDbType_ProbeLocation() {
-		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDbType_CollectionFrequency() {
-		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -328,8 +303,8 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getSystem() {
-		return systemEClass;
+	public EReference getBaseMetric_DatabaseCluster() {
+		return (EReference)baseMetricEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -337,8 +312,35 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getSystem_HasModel() {
-		return (EReference)systemEClass.getEStructuralFeatures().get(0);
+	public EClass getDbType() {
+		return dbTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDbType_Name() {
+		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDbType_ProbeLocation() {
+		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDbType_CollectionFrequency() {
+		return (EAttribute)dbTypeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -372,16 +374,13 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__FREQUENCY);
 		createEReference(modelEClass, MODEL__CLUSTERS);
+		createEReference(modelEClass, MODEL__AVAILABLE_METRICS);
+		createEReference(modelEClass, MODEL__AVAILABLE_DB_TYPES);
 
 		databaseClusterEClass = createEClass(DATABASE_CLUSTER);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__MACHINES);
-		createEReference(databaseClusterEClass, DATABASE_CLUSTER__DB_TYPE);
-		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_METRICS);
-
-		dbTypeEClass = createEClass(DB_TYPE);
-		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
-		createEAttribute(dbTypeEClass, DB_TYPE__PROBE_LOCATION);
-		createEAttribute(dbTypeEClass, DB_TYPE__COLLECTION_FREQUENCY);
+		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_BASE_METRIC);
+		createEReference(databaseClusterEClass, DATABASE_CLUSTER__ASSOCIATED_DB_TYPE);
 
 		nodeMachineEClass = createEClass(NODE_MACHINE);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__IP);
@@ -395,9 +394,12 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		derivedMetricEClass = createEClass(DERIVED_METRIC);
 
 		baseMetricEClass = createEClass(BASE_METRIC);
+		createEReference(baseMetricEClass, BASE_METRIC__DATABASE_CLUSTER);
 
-		systemEClass = createEClass(SYSTEM);
-		createEReference(systemEClass, SYSTEM__HAS_MODEL);
+		dbTypeEClass = createEClass(DB_TYPE);
+		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
+		createEAttribute(dbTypeEClass, DB_TYPE__PROBE_LOCATION);
+		createEAttribute(dbTypeEClass, DB_TYPE__COLLECTION_FREQUENCY);
 	}
 
 	/**
@@ -434,17 +436,14 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		// Initialize classes, features, and operations; add parameters
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Frequency(), ecorePackage.getEInt(), "frequency", null, 0, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModel_Clusters(), this.getDatabaseCluster(), null, "clusters", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModel_Clusters(), this.getDatabaseCluster(), null, "clusters", null, 1, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModel_AvailableMetrics(), this.getMetric(), null, "availableMetrics", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModel_AvailableDbTypes(), this.getDbType(), null, "availableDbTypes", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(databaseClusterEClass, DatabaseCluster.class, "DatabaseCluster", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDatabaseCluster_Machines(), this.getNodeMachine(), null, "machines", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDatabaseCluster_DbType(), this.getDbType(), null, "dbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDatabaseCluster_CollectedMetrics(), this.getMetric(), null, "collectedMetrics", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(dbTypeEClass, DbType.class, "DbType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDbType_Name(), ecorePackage.getEString(), "name", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDbType_ProbeLocation(), ecorePackage.getEString(), "probeLocation", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDbType_CollectionFrequency(), ecorePackage.getEInt(), "collectionFrequency", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDatabaseCluster_CollectedBaseMetric(), this.getBaseMetric(), this.getBaseMetric_DatabaseCluster(), "collectedBaseMetric", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDatabaseCluster_AssociatedDbType(), this.getDbType(), null, "associatedDbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(nodeMachineEClass, NodeMachine.class, "NodeMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNodeMachine_IP(), ecorePackage.getEString(), "IP", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -458,9 +457,12 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEClass(derivedMetricEClass, DerivedMetric.class, "DerivedMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(baseMetricEClass, BaseMetric.class, "BaseMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getBaseMetric_DatabaseCluster(), this.getDatabaseCluster(), this.getDatabaseCluster_CollectedBaseMetric(), "databaseCluster", null, 0, -1, BaseMetric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(systemEClass, observability_emf.System.class, "System", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSystem_HasModel(), this.getModel(), null, "hasModel", null, 1, 1, observability_emf.System.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(dbTypeEClass, DbType.class, "DbType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDbType_Name(), ecorePackage.getEString(), "name", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDbType_ProbeLocation(), ecorePackage.getEString(), "probeLocation", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDbType_CollectionFrequency(), ecorePackage.getEInt(), "collectionFrequency", "0", 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

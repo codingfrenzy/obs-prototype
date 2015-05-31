@@ -2,18 +2,14 @@
  */
 package observability_emf.impl;
 
-import observability_emf.BaseMetric;
-import observability_emf.DatabaseCluster;
-import observability_emf.DbType;
-import observability_emf.DerivedMetric;
-import observability_emf.Model;
-import observability_emf.NodeMachine;
-import observability_emf.Observability_emfFactory;
-import observability_emf.Observability_emfPackage;
+import observability_emf.*;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -62,11 +58,10 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 		switch (eClass.getClassifierID()) {
 			case Observability_emfPackage.MODEL: return createModel();
 			case Observability_emfPackage.DATABASE_CLUSTER: return createDatabaseCluster();
-			case Observability_emfPackage.DB_TYPE: return createDbType();
 			case Observability_emfPackage.NODE_MACHINE: return createNodeMachine();
 			case Observability_emfPackage.DERIVED_METRIC: return createDerivedMetric();
 			case Observability_emfPackage.BASE_METRIC: return createBaseMetric();
-			case Observability_emfPackage.SYSTEM: return createSystem();
+			case Observability_emfPackage.DB_TYPE: return createDbType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -90,16 +85,6 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 	public DatabaseCluster createDatabaseCluster() {
 		DatabaseClusterImpl databaseCluster = new DatabaseClusterImpl();
 		return databaseCluster;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DbType createDbType() {
-		DbTypeImpl dbType = new DbTypeImpl();
-		return dbType;
 	}
 
 	/**
@@ -137,9 +122,9 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public observability_emf.System createSystem() {
-		SystemImpl system = new SystemImpl();
-		return system;
+	public DbType createDbType() {
+		DbTypeImpl dbType = new DbTypeImpl();
+		return dbType;
 	}
 
 	/**

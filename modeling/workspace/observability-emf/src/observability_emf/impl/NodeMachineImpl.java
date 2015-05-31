@@ -4,8 +4,11 @@ package observability_emf.impl;
 
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfPackage;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -146,7 +149,6 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {

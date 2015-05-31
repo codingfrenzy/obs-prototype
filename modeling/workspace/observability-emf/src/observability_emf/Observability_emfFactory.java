@@ -40,15 +40,6 @@ public interface Observability_emfFactory extends EFactory {
 	DatabaseCluster createDatabaseCluster();
 
 	/**
-	 * Returns a new object of class '<em>Db Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Db Type</em>'.
-	 * @generated
-	 */
-	DbType createDbType();
-
-	/**
 	 * Returns a new object of class '<em>Node Machine</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -76,13 +67,13 @@ public interface Observability_emfFactory extends EFactory {
 	BaseMetric createBaseMetric();
 
 	/**
-	 * Returns a new object of class '<em>System</em>'.
+	 * Returns a new object of class '<em>Db Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>System</em>'.
+	 * @return a new object of class '<em>Db Type</em>'.
 	 * @generated
 	 */
-	System createSystem();
+	DbType createDbType();
 
 	/**
 	 * Returns the package supported by this factory.

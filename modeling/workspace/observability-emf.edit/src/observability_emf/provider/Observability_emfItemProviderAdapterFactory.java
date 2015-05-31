@@ -118,29 +118,6 @@ public class Observability_emfItemProviderAdapterFactory extends Observability_e
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link observability_emf.DbType} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected DbTypeItemProvider dbTypeItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link observability_emf.DbType}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createDbTypeAdapter() {
-		if (dbTypeItemProvider == null) {
-			dbTypeItemProvider = new DbTypeItemProvider(this);
-		}
-
-		return dbTypeItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link observability_emf.NodeMachine} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -210,26 +187,26 @@ public class Observability_emfItemProviderAdapterFactory extends Observability_e
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link observability_emf.System} instances.
+	 * This keeps track of the one adapter used for all {@link observability_emf.DbType} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected SystemItemProvider systemItemProvider;
+	protected DbTypeItemProvider dbTypeItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link observability_emf.System}.
+	 * This creates an adapter for a {@link observability_emf.DbType}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createSystemAdapter() {
-		if (systemItemProvider == null) {
-			systemItemProvider = new SystemItemProvider(this);
+	public Adapter createDbTypeAdapter() {
+		if (dbTypeItemProvider == null) {
+			dbTypeItemProvider = new DbTypeItemProvider(this);
 		}
 
-		return systemItemProvider;
+		return dbTypeItemProvider;
 	}
 
 	/**
@@ -333,11 +310,10 @@ public class Observability_emfItemProviderAdapterFactory extends Observability_e
 	public void dispose() {
 		if (modelItemProvider != null) modelItemProvider.dispose();
 		if (databaseClusterItemProvider != null) databaseClusterItemProvider.dispose();
-		if (dbTypeItemProvider != null) dbTypeItemProvider.dispose();
 		if (nodeMachineItemProvider != null) nodeMachineItemProvider.dispose();
 		if (derivedMetricItemProvider != null) derivedMetricItemProvider.dispose();
 		if (baseMetricItemProvider != null) baseMetricItemProvider.dispose();
-		if (systemItemProvider != null) systemItemProvider.dispose();
+		if (dbTypeItemProvider != null) dbTypeItemProvider.dispose();
 	}
 
 }

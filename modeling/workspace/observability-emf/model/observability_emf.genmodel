@@ -9,16 +9,13 @@
     <genClasses ecoreClass="observability_emf.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Model/frequency"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/clusters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/availableMetrics"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/availableDbTypes"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//DatabaseCluster">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/machines"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/dbType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/collectedMetrics"/>
-    </genClasses>
-    <genClasses ecoreClass="observability_emf.ecore#//DbType">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/probeLocation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/collectionFrequency"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/collectedBaseMetric"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/associatedDbType"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//NodeMachine">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/IP"/>
@@ -30,9 +27,13 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/description"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//DerivedMetric"/>
-    <genClasses ecoreClass="observability_emf.ecore#//BaseMetric"/>
-    <genClasses ecoreClass="observability_emf.ecore#//System">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//System/hasModel"/>
+    <genClasses ecoreClass="observability_emf.ecore#//BaseMetric">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//BaseMetric/databaseCluster"/>
+    </genClasses>
+    <genClasses ecoreClass="observability_emf.ecore#//DbType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/probeLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/collectionFrequency"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

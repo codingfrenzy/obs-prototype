@@ -7,10 +7,12 @@ import java.util.Collection;
 import java.util.List;
 
 import observability_emf.BaseMetric;
+import observability_emf.Observability_emfPackage;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 /**
@@ -41,8 +43,31 @@ public class BaseMetricItemProvider extends MetricItemProvider {
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addDatabaseClusterPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Database Cluster feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDatabaseClusterPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BaseMetric_databaseCluster_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BaseMetric_databaseCluster_feature", "_UI_BaseMetric_type"),
+				 Observability_emfPackage.Literals.BASE_METRIC__DATABASE_CLUSTER,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
 	}
 
 	/**

@@ -103,6 +103,8 @@ public class ModelItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(Observability_emfPackage.Literals.MODEL__CLUSTERS);
+			childrenFeatures.add(Observability_emfPackage.Literals.MODEL__AVAILABLE_METRICS);
+			childrenFeatures.add(Observability_emfPackage.Literals.MODEL__AVAILABLE_DB_TYPES);
 		}
 		return childrenFeatures;
 	}
@@ -160,6 +162,8 @@ public class ModelItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case Observability_emfPackage.MODEL__CLUSTERS:
+			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
+			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -181,6 +185,21 @@ public class ModelItemProvider
 			(createChildParameter
 				(Observability_emfPackage.Literals.MODEL__CLUSTERS,
 				 Observability_emfFactory.eINSTANCE.createDatabaseCluster()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_emfPackage.Literals.MODEL__AVAILABLE_METRICS,
+				 Observability_emfFactory.eINSTANCE.createDerivedMetric()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_emfPackage.Literals.MODEL__AVAILABLE_METRICS,
+				 Observability_emfFactory.eINSTANCE.createBaseMetric()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_emfPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
+				 Observability_emfFactory.eINSTANCE.createDbType()));
 	}
 
 	/**

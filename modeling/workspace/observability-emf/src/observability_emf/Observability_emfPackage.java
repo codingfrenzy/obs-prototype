@@ -85,13 +85,31 @@ public interface Observability_emfPackage extends EPackage {
 	int MODEL__CLUSTERS = 1;
 
 	/**
+	 * The feature id for the '<em><b>Available Metrics</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__AVAILABLE_METRICS = 2;
+
+	/**
+	 * The feature id for the '<em><b>Available Db Types</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__AVAILABLE_DB_TYPES = 3;
+
+	/**
 	 * The number of structural features of the '<em>Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_FEATURE_COUNT = 2;
+	int MODEL_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -122,22 +140,22 @@ public interface Observability_emfPackage extends EPackage {
 	int DATABASE_CLUSTER__MACHINES = 0;
 
 	/**
-	 * The feature id for the '<em><b>Db Type</b></em>' containment reference.
+	 * The feature id for the '<em><b>Collected Base Metric</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__DB_TYPE = 1;
+	int DATABASE_CLUSTER__COLLECTED_BASE_METRIC = 1;
 
 	/**
-	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
+	 * The feature id for the '<em><b>Associated Db Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__COLLECTED_METRICS = 2;
+	int DATABASE_CLUSTER__ASSOCIATED_DB_TYPE = 2;
 
 	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
@@ -158,61 +176,6 @@ public interface Observability_emfPackage extends EPackage {
 	int DATABASE_CLUSTER_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link observability_emf.impl.DbTypeImpl <em>Db Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see observability_emf.impl.DbTypeImpl
-	 * @see observability_emf.impl.Observability_emfPackageImpl#getDbType()
-	 * @generated
-	 */
-	int DB_TYPE = 2;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Probe Location</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE__PROBE_LOCATION = 1;
-
-	/**
-	 * The feature id for the '<em><b>Collection Frequency</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE__COLLECTION_FREQUENCY = 2;
-
-	/**
-	 * The number of structural features of the '<em>Db Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE_FEATURE_COUNT = 3;
-
-	/**
-	 * The number of operations of the '<em>Db Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link observability_emf.impl.NodeMachineImpl <em>Node Machine</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -220,7 +183,7 @@ public interface Observability_emfPackage extends EPackage {
 	 * @see observability_emf.impl.Observability_emfPackageImpl#getNodeMachine()
 	 * @generated
 	 */
-	int NODE_MACHINE = 3;
+	int NODE_MACHINE = 2;
 
 	/**
 	 * The feature id for the '<em><b>IP</b></em>' attribute.
@@ -266,7 +229,7 @@ public interface Observability_emfPackage extends EPackage {
 	 * @see observability_emf.impl.Observability_emfPackageImpl#getMetric()
 	 * @generated
 	 */
-	int METRIC = 4;
+	int METRIC = 3;
 
 	/**
 	 * The feature id for the '<em><b>Unit</b></em>' attribute.
@@ -321,7 +284,7 @@ public interface Observability_emfPackage extends EPackage {
 	 * @see observability_emf.impl.Observability_emfPackageImpl#getDerivedMetric()
 	 * @generated
 	 */
-	int DERIVED_METRIC = 5;
+	int DERIVED_METRIC = 4;
 
 	/**
 	 * The feature id for the '<em><b>Unit</b></em>' attribute.
@@ -376,7 +339,7 @@ public interface Observability_emfPackage extends EPackage {
 	 * @see observability_emf.impl.Observability_emfPackageImpl#getBaseMetric()
 	 * @generated
 	 */
-	int BASE_METRIC = 6;
+	int BASE_METRIC = 5;
 
 	/**
 	 * The feature id for the '<em><b>Unit</b></em>' attribute.
@@ -406,13 +369,22 @@ public interface Observability_emfPackage extends EPackage {
 	int BASE_METRIC__DESCRIPTION = METRIC__DESCRIPTION;
 
 	/**
+	 * The feature id for the '<em><b>Database Cluster</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BASE_METRIC__DATABASE_CLUSTER = METRIC_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Base Metric</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 0;
+	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Base Metric</em>' class.
@@ -423,43 +395,60 @@ public interface Observability_emfPackage extends EPackage {
 	 */
 	int BASE_METRIC_OPERATION_COUNT = METRIC_OPERATION_COUNT + 0;
 
-
 	/**
-	 * The meta object id for the '{@link observability_emf.impl.SystemImpl <em>System</em>}' class.
+	 * The meta object id for the '{@link observability_emf.impl.DbTypeImpl <em>Db Type</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see observability_emf.impl.SystemImpl
-	 * @see observability_emf.impl.Observability_emfPackageImpl#getSystem()
+	 * @see observability_emf.impl.DbTypeImpl
+	 * @see observability_emf.impl.Observability_emfPackageImpl#getDbType()
 	 * @generated
 	 */
-	int SYSTEM = 7;
+	int DB_TYPE = 6;
 
 	/**
-	 * The feature id for the '<em><b>Has Model</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SYSTEM__HAS_MODEL = 0;
-
-	/**
-	 * The number of structural features of the '<em>System</em>' class.
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SYSTEM_FEATURE_COUNT = 1;
+	int DB_TYPE__NAME = 0;
 
 	/**
-	 * The number of operations of the '<em>System</em>' class.
+	 * The feature id for the '<em><b>Probe Location</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SYSTEM_OPERATION_COUNT = 0;
+	int DB_TYPE__PROBE_LOCATION = 1;
+
+	/**
+	 * The feature id for the '<em><b>Collection Frequency</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DB_TYPE__COLLECTION_FREQUENCY = 2;
+
+	/**
+	 * The number of structural features of the '<em>Db Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DB_TYPE_FEATURE_COUNT = 3;
+
+	/**
+	 * The number of operations of the '<em>Db Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DB_TYPE_OPERATION_COUNT = 0;
 
 
 	/**
@@ -495,6 +484,28 @@ public interface Observability_emfPackage extends EPackage {
 	EReference getModel_Clusters();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link observability_emf.Model#getAvailableMetrics <em>Available Metrics</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Available Metrics</em>'.
+	 * @see observability_emf.Model#getAvailableMetrics()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EReference getModel_AvailableMetrics();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link observability_emf.Model#getAvailableDbTypes <em>Available Db Types</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Available Db Types</em>'.
+	 * @see observability_emf.Model#getAvailableDbTypes()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EReference getModel_AvailableDbTypes();
+
+	/**
 	 * Returns the meta object for class '{@link observability_emf.DatabaseCluster <em>Database Cluster</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -516,69 +527,26 @@ public interface Observability_emfPackage extends EPackage {
 	EReference getDatabaseCluster_Machines();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link observability_emf.DatabaseCluster#getDbType <em>Db Type</em>}'.
+	 * Returns the meta object for the reference list '{@link observability_emf.DatabaseCluster#getCollectedBaseMetric <em>Collected Base Metric</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Db Type</em>'.
-	 * @see observability_emf.DatabaseCluster#getDbType()
+	 * @return the meta object for the reference list '<em>Collected Base Metric</em>'.
+	 * @see observability_emf.DatabaseCluster#getCollectedBaseMetric()
 	 * @see #getDatabaseCluster()
 	 * @generated
 	 */
-	EReference getDatabaseCluster_DbType();
+	EReference getDatabaseCluster_CollectedBaseMetric();
 
 	/**
-	 * Returns the meta object for the reference list '{@link observability_emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}'.
+	 * Returns the meta object for the reference '{@link observability_emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Collected Metrics</em>'.
-	 * @see observability_emf.DatabaseCluster#getCollectedMetrics()
+	 * @return the meta object for the reference '<em>Associated Db Type</em>'.
+	 * @see observability_emf.DatabaseCluster#getAssociatedDbType()
 	 * @see #getDatabaseCluster()
 	 * @generated
 	 */
-	EReference getDatabaseCluster_CollectedMetrics();
-
-	/**
-	 * Returns the meta object for class '{@link observability_emf.DbType <em>Db Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Db Type</em>'.
-	 * @see observability_emf.DbType
-	 * @generated
-	 */
-	EClass getDbType();
-
-	/**
-	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see observability_emf.DbType#getName()
-	 * @see #getDbType()
-	 * @generated
-	 */
-	EAttribute getDbType_Name();
-
-	/**
-	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getProbeLocation <em>Probe Location</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Probe Location</em>'.
-	 * @see observability_emf.DbType#getProbeLocation()
-	 * @see #getDbType()
-	 * @generated
-	 */
-	EAttribute getDbType_ProbeLocation();
-
-	/**
-	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getCollectionFrequency <em>Collection Frequency</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Collection Frequency</em>'.
-	 * @see observability_emf.DbType#getCollectionFrequency()
-	 * @see #getDbType()
-	 * @generated
-	 */
-	EAttribute getDbType_CollectionFrequency();
+	EReference getDatabaseCluster_AssociatedDbType();
 
 	/**
 	 * Returns the meta object for class '{@link observability_emf.NodeMachine <em>Node Machine</em>}'.
@@ -676,25 +644,58 @@ public interface Observability_emfPackage extends EPackage {
 	EClass getBaseMetric();
 
 	/**
-	 * Returns the meta object for class '{@link observability_emf.System <em>System</em>}'.
+	 * Returns the meta object for the reference list '{@link observability_emf.BaseMetric#getDatabaseCluster <em>Database Cluster</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>System</em>'.
-	 * @see observability_emf.System
+	 * @return the meta object for the reference list '<em>Database Cluster</em>'.
+	 * @see observability_emf.BaseMetric#getDatabaseCluster()
+	 * @see #getBaseMetric()
 	 * @generated
 	 */
-	EClass getSystem();
+	EReference getBaseMetric_DatabaseCluster();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link observability_emf.System#getHasModel <em>Has Model</em>}'.
+	 * Returns the meta object for class '{@link observability_emf.DbType <em>Db Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Has Model</em>'.
-	 * @see observability_emf.System#getHasModel()
-	 * @see #getSystem()
+	 * @return the meta object for class '<em>Db Type</em>'.
+	 * @see observability_emf.DbType
 	 * @generated
 	 */
-	EReference getSystem_HasModel();
+	EClass getDbType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see observability_emf.DbType#getName()
+	 * @see #getDbType()
+	 * @generated
+	 */
+	EAttribute getDbType_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getProbeLocation <em>Probe Location</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Probe Location</em>'.
+	 * @see observability_emf.DbType#getProbeLocation()
+	 * @see #getDbType()
+	 * @generated
+	 */
+	EAttribute getDbType_ProbeLocation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link observability_emf.DbType#getCollectionFrequency <em>Collection Frequency</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Collection Frequency</em>'.
+	 * @see observability_emf.DbType#getCollectionFrequency()
+	 * @see #getDbType()
+	 * @generated
+	 */
+	EAttribute getDbType_CollectionFrequency();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -746,6 +747,22 @@ public interface Observability_emfPackage extends EPackage {
 		EReference MODEL__CLUSTERS = eINSTANCE.getModel_Clusters();
 
 		/**
+		 * The meta object literal for the '<em><b>Available Metrics</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODEL__AVAILABLE_METRICS = eINSTANCE.getModel_AvailableMetrics();
+
+		/**
+		 * The meta object literal for the '<em><b>Available Db Types</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODEL__AVAILABLE_DB_TYPES = eINSTANCE.getModel_AvailableDbTypes();
+
+		/**
 		 * The meta object literal for the '{@link observability_emf.impl.DatabaseClusterImpl <em>Database Cluster</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -764,54 +781,20 @@ public interface Observability_emfPackage extends EPackage {
 		EReference DATABASE_CLUSTER__MACHINES = eINSTANCE.getDatabaseCluster_Machines();
 
 		/**
-		 * The meta object literal for the '<em><b>Db Type</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Collected Base Metric</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DATABASE_CLUSTER__DB_TYPE = eINSTANCE.getDatabaseCluster_DbType();
+		EReference DATABASE_CLUSTER__COLLECTED_BASE_METRIC = eINSTANCE.getDatabaseCluster_CollectedBaseMetric();
 
 		/**
-		 * The meta object literal for the '<em><b>Collected Metrics</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Associated Db Type</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DATABASE_CLUSTER__COLLECTED_METRICS = eINSTANCE.getDatabaseCluster_CollectedMetrics();
-
-		/**
-		 * The meta object literal for the '{@link observability_emf.impl.DbTypeImpl <em>Db Type</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see observability_emf.impl.DbTypeImpl
-		 * @see observability_emf.impl.Observability_emfPackageImpl#getDbType()
-		 * @generated
-		 */
-		EClass DB_TYPE = eINSTANCE.getDbType();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DB_TYPE__NAME = eINSTANCE.getDbType_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Probe Location</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DB_TYPE__PROBE_LOCATION = eINSTANCE.getDbType_ProbeLocation();
-
-		/**
-		 * The meta object literal for the '<em><b>Collection Frequency</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DB_TYPE__COLLECTION_FREQUENCY = eINSTANCE.getDbType_CollectionFrequency();
+		EReference DATABASE_CLUSTER__ASSOCIATED_DB_TYPE = eINSTANCE.getDatabaseCluster_AssociatedDbType();
 
 		/**
 		 * The meta object literal for the '{@link observability_emf.impl.NodeMachineImpl <em>Node Machine</em>}' class.
@@ -894,22 +877,46 @@ public interface Observability_emfPackage extends EPackage {
 		EClass BASE_METRIC = eINSTANCE.getBaseMetric();
 
 		/**
-		 * The meta object literal for the '{@link observability_emf.impl.SystemImpl <em>System</em>}' class.
+		 * The meta object literal for the '<em><b>Database Cluster</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see observability_emf.impl.SystemImpl
-		 * @see observability_emf.impl.Observability_emfPackageImpl#getSystem()
 		 * @generated
 		 */
-		EClass SYSTEM = eINSTANCE.getSystem();
+		EReference BASE_METRIC__DATABASE_CLUSTER = eINSTANCE.getBaseMetric_DatabaseCluster();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Model</b></em>' containment reference feature.
+		 * The meta object literal for the '{@link observability_emf.impl.DbTypeImpl <em>Db Type</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see observability_emf.impl.DbTypeImpl
+		 * @see observability_emf.impl.Observability_emfPackageImpl#getDbType()
+		 * @generated
+		 */
+		EClass DB_TYPE = eINSTANCE.getDbType();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference SYSTEM__HAS_MODEL = eINSTANCE.getSystem_HasModel();
+		EAttribute DB_TYPE__NAME = eINSTANCE.getDbType_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Probe Location</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DB_TYPE__PROBE_LOCATION = eINSTANCE.getDbType_ProbeLocation();
+
+		/**
+		 * The meta object literal for the '<em><b>Collection Frequency</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DB_TYPE__COLLECTION_FREQUENCY = eINSTANCE.getDbType_CollectionFrequency();
 
 	}
 

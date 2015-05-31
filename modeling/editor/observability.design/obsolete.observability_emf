@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<observability_emf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_emf="http://www.example.org/observability_emf"/>
+<observability_emf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_emf="http://www.example.org/observability_emf">
+  <clusters collectedBaseMetric="//@availableMetrics.0">
+    <machines/>
+    <machines/>
+  </clusters>
+  <clusters collectedBaseMetric="//@availableMetrics.0" associatedDbType="//@availableDbTypes.0">
+    <machines/>
+  </clusters>
+  <availableMetrics xsi:type="observability_emf:BaseMetric" name="'metric'" databaseCluster="//@clusters.0 //@clusters.1"/>
+  <availableMetrics xsi:type="observability_emf:BaseMetric" name="'metric'"/>
+  <availableMetrics xsi:type="observability_emf:BaseMetric" name="'metric'"/>
+  <availableMetrics xsi:type="observability_emf:BaseMetric" name="'metric'"/>
+  <availableDbTypes/>
+  <availableDbTypes/>
+  <availableDbTypes/>
+</observability_emf:Model>

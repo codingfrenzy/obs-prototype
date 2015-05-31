@@ -4,9 +4,9 @@ package observability_emf.impl;
 
 import java.util.Collection;
 
+import observability_emf.BaseMetric;
 import observability_emf.DatabaseCluster;
 import observability_emf.DbType;
-import observability_emf.Metric;
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfPackage;
 
@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -33,8 +33,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getMachines <em>Machines</em>}</li>
- *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getDbType <em>Db Type</em>}</li>
- *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getCollectedMetrics <em>Collected Metrics</em>}</li>
+ *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
+ *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -52,24 +52,24 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	protected EList<NodeMachine> machines;
 
 	/**
-	 * The cached value of the '{@link #getDbType() <em>Db Type</em>}' containment reference.
+	 * The cached value of the '{@link #getCollectedBaseMetric() <em>Collected Base Metric</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getDbType()
+	 * @see #getCollectedBaseMetric()
 	 * @generated
 	 * @ordered
 	 */
-	protected DbType dbType;
+	protected EList<BaseMetric> collectedBaseMetric;
 
 	/**
-	 * The cached value of the '{@link #getCollectedMetrics() <em>Collected Metrics</em>}' reference list.
+	 * The cached value of the '{@link #getAssociatedDbType() <em>Associated Db Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCollectedMetrics()
+	 * @see #getAssociatedDbType()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Metric> collectedMetrics;
+	protected DbType associatedDbType;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -107,8 +107,11 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DbType getDbType() {
-		return dbType;
+	public EList<BaseMetric> getCollectedBaseMetric() {
+		if (collectedBaseMetric == null) {
+			collectedBaseMetric = new EObjectWithInverseResolvingEList.ManyInverse<BaseMetric>(BaseMetric.class, this, Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC, Observability_emfPackage.BASE_METRIC__DATABASE_CLUSTER);
+		}
+		return collectedBaseMetric;
 	}
 
 	/**
@@ -116,14 +119,16 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDbType(DbType newDbType, NotificationChain msgs) {
-		DbType oldDbType = dbType;
-		dbType = newDbType;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE, oldDbType, newDbType);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+	public DbType getAssociatedDbType() {
+		if (associatedDbType != null && associatedDbType.eIsProxy()) {
+			InternalEObject oldAssociatedDbType = (InternalEObject)associatedDbType;
+			associatedDbType = (DbType)eResolveProxy(oldAssociatedDbType);
+			if (associatedDbType != oldAssociatedDbType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE, oldAssociatedDbType, associatedDbType));
+			}
 		}
-		return msgs;
+		return associatedDbType;
 	}
 
 	/**
@@ -131,18 +136,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setDbType(DbType newDbType) {
-		if (newDbType != dbType) {
-			NotificationChain msgs = null;
-			if (dbType != null)
-				msgs = ((InternalEObject)dbType).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE, null, msgs);
-			if (newDbType != null)
-				msgs = ((InternalEObject)newDbType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE, null, msgs);
-			msgs = basicSetDbType(newDbType, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE, newDbType, newDbType));
+	public DbType basicGetAssociatedDbType() {
+		return associatedDbType;
 	}
 
 	/**
@@ -150,11 +145,26 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Metric> getCollectedMetrics() {
-		if (collectedMetrics == null) {
-			collectedMetrics = new EObjectResolvingEList<Metric>(Metric.class, this, Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_METRICS);
+	public void setAssociatedDbType(DbType newAssociatedDbType) {
+		DbType oldAssociatedDbType = associatedDbType;
+		associatedDbType = newAssociatedDbType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE, oldAssociatedDbType, associatedDbType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCollectedBaseMetric()).basicAdd(otherEnd, msgs);
 		}
-		return collectedMetrics;
+		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -167,8 +177,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
 				return ((InternalEList<?>)getMachines()).basicRemove(otherEnd, msgs);
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
-				return basicSetDbType(null, msgs);
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				return ((InternalEList<?>)getCollectedBaseMetric()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -183,10 +193,11 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
 				return getMachines();
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
-				return getDbType();
-			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
-				return getCollectedMetrics();
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				return getCollectedBaseMetric();
+			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
+				if (resolve) return getAssociatedDbType();
+				return basicGetAssociatedDbType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -204,12 +215,12 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				getMachines().clear();
 				getMachines().addAll((Collection<? extends NodeMachine>)newValue);
 				return;
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
-				setDbType((DbType)newValue);
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				getCollectedBaseMetric().clear();
+				getCollectedBaseMetric().addAll((Collection<? extends BaseMetric>)newValue);
 				return;
-			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
-				getCollectedMetrics().clear();
-				getCollectedMetrics().addAll((Collection<? extends Metric>)newValue);
+			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
+				setAssociatedDbType((DbType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -226,11 +237,11 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
 				getMachines().clear();
 				return;
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
-				setDbType((DbType)null);
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				getCollectedBaseMetric().clear();
 				return;
-			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
-				getCollectedMetrics().clear();
+			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
+				setAssociatedDbType((DbType)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -246,10 +257,10 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
 				return machines != null && !machines.isEmpty();
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
-				return dbType != null;
-			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
-				return collectedMetrics != null && !collectedMetrics.isEmpty();
+			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
+				return collectedBaseMetric != null && !collectedBaseMetric.isEmpty();
+			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
+				return associatedDbType != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -62,25 +62,48 @@ public class DatabaseClusterItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addCollectedMetricsPropertyDescriptor(object);
+			addCollectedBaseMetricPropertyDescriptor(object);
+			addAssociatedDbTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Collected Metrics feature.
+	 * This adds a property descriptor for the Collected Base Metric feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addCollectedMetricsPropertyDescriptor(Object object) {
+	protected void addCollectedBaseMetricPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_collectedMetrics_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedMetrics_feature", "_UI_DatabaseCluster_type"),
-				 Observability_emfPackage.Literals.DATABASE_CLUSTER__COLLECTED_METRICS,
+				 getString("_UI_DatabaseCluster_collectedBaseMetric_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedBaseMetric_feature", "_UI_DatabaseCluster_type"),
+				 Observability_emfPackage.Literals.DATABASE_CLUSTER__COLLECTED_BASE_METRIC,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Associated Db Type feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addAssociatedDbTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DatabaseCluster_associatedDbType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_associatedDbType_feature", "_UI_DatabaseCluster_type"),
+				 Observability_emfPackage.Literals.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE,
 				 true,
 				 false,
 				 true,
@@ -102,7 +125,6 @@ public class DatabaseClusterItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(Observability_emfPackage.Literals.DATABASE_CLUSTER__MACHINES);
-			childrenFeatures.add(Observability_emfPackage.Literals.DATABASE_CLUSTER__DB_TYPE);
 		}
 		return childrenFeatures;
 	}
@@ -156,7 +178,6 @@ public class DatabaseClusterItemProvider
 
 		switch (notification.getFeatureID(DatabaseCluster.class)) {
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
-			case Observability_emfPackage.DATABASE_CLUSTER__DB_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -178,11 +199,6 @@ public class DatabaseClusterItemProvider
 			(createChildParameter
 				(Observability_emfPackage.Literals.DATABASE_CLUSTER__MACHINES,
 				 Observability_emfFactory.eINSTANCE.createNodeMachine()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(Observability_emfPackage.Literals.DATABASE_CLUSTER__DB_TYPE,
-				 Observability_emfFactory.eINSTANCE.createDbType()));
 	}
 
 	/**

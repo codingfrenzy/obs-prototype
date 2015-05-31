@@ -2,16 +2,11 @@
  */
 package observability_emf.util;
 
-import observability_emf.BaseMetric;
-import observability_emf.DatabaseCluster;
-import observability_emf.DbType;
-import observability_emf.DerivedMetric;
-import observability_emf.Metric;
-import observability_emf.Model;
-import observability_emf.NodeMachine;
-import observability_emf.Observability_emfPackage;
+import observability_emf.*;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.util.Switch;
 
 /**
@@ -83,12 +78,6 @@ public class Observability_emfSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Observability_emfPackage.DB_TYPE: {
-				DbType dbType = (DbType)theEObject;
-				T result = caseDbType(dbType);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case Observability_emfPackage.NODE_MACHINE: {
 				NodeMachine nodeMachine = (NodeMachine)theEObject;
 				T result = caseNodeMachine(nodeMachine);
@@ -115,9 +104,9 @@ public class Observability_emfSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Observability_emfPackage.SYSTEM: {
-				observability_emf.System system = (observability_emf.System)theEObject;
-				T result = caseSystem(system);
+			case Observability_emfPackage.DB_TYPE: {
+				DbType dbType = (DbType)theEObject;
+				T result = caseDbType(dbType);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -152,21 +141,6 @@ public class Observability_emfSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseDatabaseCluster(DatabaseCluster object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Db Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Db Type</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseDbType(DbType object) {
 		return null;
 	}
 
@@ -231,17 +205,17 @@ public class Observability_emfSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>System</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Db Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>System</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Db Type</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSystem(observability_emf.System object) {
+	public T caseDbType(DbType object) {
 		return null;
 	}
 
