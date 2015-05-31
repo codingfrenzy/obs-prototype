@@ -43,20 +43,33 @@ public interface IDaemonManagerServer extends Remote {
 
 	/**
 	 * Start configuration modification process.
-	 * 
+	 * @return true/false client gets true to continue
+	 * @throws RemoteException connection error
 	 */
 	public boolean startConfigurationModification() throws RemoteException;
 	
 	/**
 	 * Change configuration of a section. If the section does not exist, it will be appended to the end of 
-	 * configuration file as a new section.
+	 * configuration file as a new section. For example:
+	 * <p>
+	 * &lt;LoadPlugin perl&gt;
+	 * 		Interval 60
+	 * &lt;/LoadPlugin&gt;
+	 * <p>
+	 * This function can be called multiple times to change multiple sections.
 	 * 
+	 * @param header start of the section. E.g.  &lt;LoadPlugin perl&gt;
+	 * @param footer end of the section. E.g. &lt;/LoadPlugin&gt;
+	 * @param config the whole section including everything.
+	 * @return true/false
+	 * @throws RemoteException connection error
 	 */
 	public boolean changeConfiguration(String header, String footer, String config) throws RemoteException;
 	
 	/**
 	 * Stop configuration modification process.
-	 * 
+	 * @return true/false client gets true to confirm the success of changing configuration
+	 * @throws RemoteException connection error
 	 */
 	public boolean stopConfigurationModification() throws RemoteException;
 }

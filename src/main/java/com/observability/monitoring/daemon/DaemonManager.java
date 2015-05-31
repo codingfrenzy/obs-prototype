@@ -36,17 +36,17 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
 /**
- * DaemonManager is a manager process that has the following functionalities:
- * 1. Start/stop collectd process on Ubuntu
- * 2. Communicate with metric engine to get configuration parameters
- * 3. Save configuration parameters to collectd conf file
+ * DaemonManager is a manager process that has the following functionalities:<br>
+ * 1. Start/stop collectd process on Ubuntu<br>
+ * 2. Communicate with metric engine to get configuration parameters<br>
+ * 3. Save configuration parameters to collectd conf file<p>
  * This program needs to be started with sudo.
  * @author Ying (Joel) Gao
- * 
- * History: 
- * 1. Created					May 29 2015
- * 2. Modified					May 30 2015
- *
+ * <p>
+ * History:<br>
+ * 1. Created					May 29 2015<br>
+ * 2. Modified					May 30 2015<br>
+ * 3. Modified					May 31 2015
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -120,6 +120,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Start configuration modification process.
 	 * @return true/false client gets true to continue
+	 * @throws RemoteException connection error
 	 */
 	public boolean startConfigurationModification() throws RemoteException {
 		// open the configuration file
@@ -140,15 +141,18 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Change configuration of a section. If the section does not exist, it will be appended to the end of 
 	 * configuration file as a new section. For example:
-	 * <LoadPlugin perl>
-	 * 		Interval 60
-	 * </LoadPlugin>
+	 * <p>
+	 * &lt;LoadPlugin perl&gt;<br>
+	 * 		Interval 60<br>
+	 * &lt;/LoadPlugin&gt;<br>
+	 * <p>
 	 * This function can be called multiple times to change multiple sections.
 	 * 
-	 * @param header start of the section. E.g.  <LoadPlugin perl>
-	 * @param footer end of the section. E.g. </LoadPlugin>
+	 * @param header start of the section. E.g.  &lt;LoadPlugin perl&gt;
+	 * @param footer end of the section. E.g. &lt;/LoadPlugin&gt;
 	 * @param config the whole section including everything.
 	 * @return true/false
+	 * @throws RemoteException connection error
 	 */
 	public boolean changeConfiguration(String header, String footer, String config)
 			throws RemoteException {
@@ -184,6 +188,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Stop configuration modification process.
 	 * @return true/false client gets true to confirm the success of changing configuration
+	 * @throws RemoteException connection error
 	 */
 	public boolean stopConfigurationModification() throws RemoteException {
 		try{
