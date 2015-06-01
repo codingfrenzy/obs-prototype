@@ -34,7 +34,7 @@
               <styles xmi:type="notation:FilteringStyle" xmi:id="_73Qy8gfQEeWMBMxcXkG-eQ"/>
             </children>
             <styles xmi:type="notation:ShapeStyle" xmi:id="_73NIkQfQEeWMBMxcXkG-eQ" fontName="Ubuntu" fontHeight="8"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_73NIkgfQEeWMBMxcXkG-eQ" x="288" y="77" width="183"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_73NIkgfQEeWMBMxcXkG-eQ" x="240" y="24" width="183"/>
           </children>
           <children xmi:type="notation:Node" xmi:id="_8OC7QAfQEeWMBMxcXkG-eQ" type="2002" element="_8N-CwAfQEeWMBMxcXkG-eQ">
             <children xmi:type="notation:Node" xmi:id="_8ODiUAfQEeWMBMxcXkG-eQ" type="5006"/>
@@ -146,7 +146,7 @@
             </children>
             <styles xmi:type="notation:ConnectorStyle" xmi:id="_bVKSUQfTEeWfGasmMWOwZQ"/>
             <styles xmi:type="notation:FontStyle" xmi:id="_bVKSUgfTEeWfGasmMWOwZQ" fontName="Ubuntu" fontHeight="8"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_bVKSUwfTEeWfGasmMWOwZQ" points="[91, 7, -170, -13]$[246, 20, -15, 0]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_bVKSUwfTEeWfGasmMWOwZQ" points="[91, 21, -218, -52]$[294, 71, -15, -2]"/>
             <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bVhesAfTEeWfGasmMWOwZQ" id="(0.4972677595628415,0.5)"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bVhesQfTEeWfGasmMWOwZQ" id="(0.5,0.5)"/>
           </edges>
@@ -182,9 +182,25 @@
             <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_fGlqoAfVEeWfGasmMWOwZQ" id="(0.5,0.5)"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_fGlqoQfVEeWfGasmMWOwZQ" id="(0.4918032786885246,0.4918032786885246)"/>
           </edges>
+          <edges xmi:type="notation:Edge" xmi:id="_bQ6u4Af8EeW7Sf_HjW4xcg" type="4001" element="_bQqQMAf8EeW7Sf_HjW4xcg" source="_73NIkAfQEeWMBMxcXkG-eQ" target="_xm-HgAfTEeWfGasmMWOwZQ">
+            <children xmi:type="notation:Node" xmi:id="_bRBckAf8EeW7Sf_HjW4xcg" type="6001">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bRBckQf8EeW7Sf_HjW4xcg" y="-10"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_bRCDoAf8EeW7Sf_HjW4xcg" type="6002">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bRCDoQf8EeW7Sf_HjW4xcg" y="10"/>
+            </children>
+            <children xmi:type="notation:Node" xmi:id="_bRCqsAf8EeW7Sf_HjW4xcg" type="6003">
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bRCqsQf8EeW7Sf_HjW4xcg" y="10"/>
+            </children>
+            <styles xmi:type="notation:ConnectorStyle" xmi:id="_bQ6u4Qf8EeW7Sf_HjW4xcg"/>
+            <styles xmi:type="notation:FontStyle" xmi:id="_bQ6u4gf8EeW7Sf_HjW4xcg" fontName="Ubuntu" fontHeight="8"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_bQ6u4wf8EeW7Sf_HjW4xcg" points="[-90, 27, 114, -26]$[-173, 53, 31, 0]"/>
+            <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bRG8IAf8EeW7Sf_HjW4xcg" id="(0.4972677595628415,0.5)"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_bRG8IQf8EeW7Sf_HjW4xcg" id="(0.4918032786885246,0.4918032786885246)"/>
+          </edges>
         </data>
       </ownedAnnotationEntries>
-      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_73BiYAfQEeWMBMxcXkG-eQ" name="cluster" outgoingEdges="_bUztAAfTEeWfGasmMWOwZQ">
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_73BiYAfQEeWMBMxcXkG-eQ" name="cluster" outgoingEdges="_bUztAAfTEeWfGasmMWOwZQ _bQqQMAf8EeW7Sf_HjW4xcg">
         <target xmi:type="observability_emf:DatabaseCluster" href="obsolete.observability_emf#//@clusters.0"/>
         <semanticElements xmi:type="observability_emf:DatabaseCluster" href="obsolete.observability_emf#//@clusters.0"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -313,7 +329,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:EdgeMapping" href="description/observability.odesign#//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_xmzIYAfTEeWfGasmMWOwZQ" incomingEdges="_fGfkAAfVEeWfGasmMWOwZQ" width="3" height="3" resizeKind="NSEW">
+      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_xmzIYAfTEeWfGasmMWOwZQ" incomingEdges="_fGfkAAfVEeWfGasmMWOwZQ _bQqQMAf8EeW7Sf_HjW4xcg" width="3" height="3" resizeKind="NSEW">
         <target xmi:type="observability_emf:DbType" href="obsolete.observability_emf#//@availableDbTypes.0"/>
         <semanticElements xmi:type="observability_emf:DbType" href="obsolete.observability_emf#//@availableDbTypes.0"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -356,6 +372,17 @@
           <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_fGfkAgfVEeWfGasmMWOwZQ" red="136" green="136" blue="136"/>
           <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_fGfkAwfVEeWfGasmMWOwZQ">
             <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_fGfkBAfVEeWfGasmMWOwZQ"/>
+          </centerLabelStyle>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:EdgeMapping" href="description/observability.odesign#//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DEdge" xmi:id="_bQqQMAf8EeW7Sf_HjW4xcg" sourceNode="_73BiYAfQEeWMBMxcXkG-eQ" targetNode="_xmzIYAfTEeWfGasmMWOwZQ">
+        <target xmi:type="observability_emf:DatabaseCluster" href="obsolete.observability_emf#//@clusters.0"/>
+        <ownedStyle xmi:type="diagram:EdgeStyle" xmi:id="_bQq3QAf8EeW7Sf_HjW4xcg" size="2">
+          <description xmi:type="style:EdgeStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']/@style"/>
+          <strokeColor xmi:type="viewpoint:RGBValues" xmi:id="_bQq3QQf8EeW7Sf_HjW4xcg" red="136" green="136" blue="136"/>
+          <centerLabelStyle xmi:type="diagram:CenterLabelStyle" xmi:id="_bQq3Qgf8EeW7Sf_HjW4xcg">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_bQq3Qwf8EeW7Sf_HjW4xcg"/>
           </centerLabelStyle>
         </ownedStyle>
         <actualMapping xmi:type="description_1:EdgeMapping" href="description/observability.odesign#//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']"/>
