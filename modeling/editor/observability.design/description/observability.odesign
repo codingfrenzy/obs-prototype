@@ -61,6 +61,17 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbTypeNode" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']">
+            <variable name="dbTypeContainer"/>
+            <viewVariable name="dbTypeContainerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['DbType'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
             <variable name="machineContainer"/>
             <viewVariable name="machineContainerView"/>
@@ -121,18 +132,16 @@
             <containerView name="containerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
-                <subModelOperations xsi:type="tool_1:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
                 <subModelOperations xsi:type="tool_1:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbTypeNode" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']">
-            <variable name="dbTypeContainer"/>
-            <viewVariable name="dbTypeContainerView"/>
+          <ownedTools xsi:type="tool_1:PaneBasedSelectionWizardDescription">
+            <element name="element"/>
+            <containerView name="containerView"/>
+            <container name="container"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes"/>
-              </firstModelOperations>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

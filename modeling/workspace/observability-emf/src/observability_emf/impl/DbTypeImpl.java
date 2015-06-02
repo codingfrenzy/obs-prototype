@@ -2,17 +2,15 @@
  */
 package observability_emf.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import observability_emf.DbType;
-import observability_emf.Metric;
-import observability_emf.Observability_emfPackage;
+
+import observability_emf.*;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -84,7 +82,7 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 0;
+	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 30;
 
 	/**
 	 * The cached value of the '{@link #getCollectionFrequency() <em>Collection Frequency</em>}' attribute.
@@ -108,12 +106,27 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Creates an instance of the DbType class.
+	 * The method also adds all the available metrics for the DbType.
 	 * <!-- end-user-doc -->
-	 * @generated
+	 *
 	 */
 	protected DbTypeImpl() {
 		super();
+		ArrayList<Metric> metrics = new ArrayList<>();
+		//read all the metrics, create their instance and add it to the relation		
+		BaseMetricImpl baseMetric = new BaseMetricImpl();
+		baseMetric.setName("Metric 1");
+		metrics.add(baseMetric);
+		
+		baseMetric = new BaseMetricImpl();
+		baseMetric.setName("Metric 2");
+		metrics.add(baseMetric);
+		
+		eSet(Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS, metrics);
+		
 	}
+	
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -182,6 +195,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 */
 	public void setCollectionFrequency(int newCollectionFrequency) {
+		if(newCollectionFrequency < 30)
+			throw new IllegalArgumentException("Collection frequency cannot be less than 30");
 		int oldCollectionFrequency = collectionFrequency;
 		collectionFrequency = newCollectionFrequency;
 		if (eNotificationRequired())

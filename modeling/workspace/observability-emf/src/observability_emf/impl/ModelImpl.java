@@ -3,10 +3,12 @@
 package observability_emf.impl;
 
 import java.util.Collection;
+
 import observability_emf.DatabaseCluster;
 import observability_emf.DbType;
 import observability_emf.Model;
 import observability_emf.Observability_emfPackage;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -16,6 +18,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,12 +39,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	/**
 	 * The default value of the '{@link #getFrequency() <em>Frequency</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * The default frequency of the model is 30 seconds. 
 	 * <!-- end-user-doc -->
 	 * @see #getFrequency()
-	 * @generated
+	 *
 	 * @ordered
 	 */
-	protected static final int FREQUENCY_EDEFAULT = 0;
+	protected static final int FREQUENCY_EDEFAULT = 30;
 
 	/**
 	 * The cached value of the '{@link #getFrequency() <em>Frequency</em>}' attribute.
@@ -103,10 +107,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Set the collection frequency of the model. 
+	 * Frequency cannot be less than 30.
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void setFrequency(int newFrequency) {
+		if(newFrequency < 30)
+			throw new IllegalArgumentException("Frequency should be greater than 30 seconds");
 		int oldFrequency = frequency;
 		frequency = newFrequency;
 		if (eNotificationRequired())

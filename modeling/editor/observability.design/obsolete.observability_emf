@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <observability_emf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_emf="http://www.example.org/observability_emf">
-  <clusters collectedBaseMetric="//@availableDbTypes.0/@availableMetrics.0 //@availableDbTypes.0/@availableMetrics.1" associatedDbType="//@availableDbTypes.0" name="cluster1">
+  <clusters name="cluster1">
     <machines name="machine1"/>
     <machines name="machine2"/>
   </clusters>
-  <availableDbTypes name="Cassandra">
-    <availableMetrics xsi:type="observability_emf:BaseMetric" name="metric1" databaseCluster="//@clusters.0"/>
-    <availableMetrics xsi:type="observability_emf:BaseMetric" name="metric2" databaseCluster="//@clusters.0"/>
-    <availableMetrics xsi:type="observability_emf:BaseMetric" name="metric3"/>
+  <availableDbTypes name="DbType">
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
   </availableDbTypes>
 </observability_emf:Model>
