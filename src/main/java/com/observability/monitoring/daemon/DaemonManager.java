@@ -46,7 +46,8 @@ import java.util.Vector;
  * History:<br>
  * 1. Created					May 29 2015<br>
  * 2. Modified					May 30 2015<br>
- * 3. Modified					May 31 2015
+ * 3. Modified					May 31 2015<br>
+ * 4. Modified					Jun 02 2015
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -139,47 +140,47 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	}
 
 	/**
-	 * Change configuration of a section. If the section does not exist, it will be appended to the end of 
-	 * configuration file as a new section. For example:
+	 * Change configuration of a section. There are two kinds of configurations:<br>
+	 * 1. Single line that outside any sections;<br>
+	 * 2. Sections (inside &lt; and &gt;);<p>
+	 * For example:
 	 * <p>
 	 * &lt;LoadPlugin perl&gt;<br>
 	 * 		Interval 60<br>
 	 * &lt;/LoadPlugin&gt;<br>
 	 * <p>
+	 * If the oldconfig is null, newconfig will be appended to the end of 
+	 * configuration file as a new section. 
+	 * <p>
 	 * This function can be called multiple times to change multiple sections.
 	 * 
-	 * @param header start of the section. E.g.  &lt;LoadPlugin perl&gt;
-	 * @param footer end of the section. E.g. &lt;/LoadPlugin&gt;
-	 * @param config the whole section including everything.
+	 * @param oldconfig the old configuration value, for a section, it includes everything.
+	 * @param newconfig the new configuration value, for a section, it includes everything.
 	 * @return true/false
 	 * @throws RemoteException connection error
 	 */
-	public boolean changeConfiguration(String header, String footer, String config)
-			throws RemoteException {
+	public boolean changeConfiguration(String oldconfig, String newconfig) throws RemoteException {
 		
-		if(confString == null)// String not available
+		if(confString == null || newconfig == null)// String not available
 			return false;
 		// 1. locate the section
 		//String header = "<Plugin \"" + section + "\">";
 		//String footer = "</Plugin>";
-		int start = confString.indexOf(header);
-		// 2. modify the section
-		if(start == -1){//not in string
+		boolean oldconfigexist = false;
+		if(oldconfig != null){
+			int start = confString.indexOf(oldconfig);
+			if(start != -1){//exists
+				confString = confString.replace(oldconfig, newconfig);
+				oldconfigexist = true;
+			}
+		}
+		
+		if(!oldconfigexist){//does not exist
 			// adding new configuration
 			// append to end of the string
 			confString += "\n";
-			confString += config;
+			confString += newconfig;
 			confString += "\n";
-		} else {//found in string
-			// modify old configuration
-			// get the footer position
-			int end = confString.indexOf(footer, start);
-			if(end == -1){//error, corrupted conf file
-				confString = null;
-				return false;
-			}
-			String oldsec = confString.substring(start, end + footer.length());
-			confString = confString.replace(oldsec, config);
 		}
 		
 		return true;
@@ -213,7 +214,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 
 	/**
 	 * Main function
-	 * @param args[] arguments - arg1: binding IP, arg2: binding port
+	 * @param args arguments - arg1: binding IP, arg2: binding port
 	 */
 	public static void main(String[] args) {
 		// Get IP & port from arguments

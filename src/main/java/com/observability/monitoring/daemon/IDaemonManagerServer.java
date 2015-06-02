@@ -36,7 +36,7 @@ import java.rmi.RemoteException;
  * History: 
  * 1. Created					May 29 2015
  * 2. Modified					May 30 2015
- *
+ * 3. Modified 					Jun 02 2015
  */
 
 public interface IDaemonManagerServer extends Remote {
@@ -49,22 +49,26 @@ public interface IDaemonManagerServer extends Remote {
 	public boolean startConfigurationModification() throws RemoteException;
 	
 	/**
-	 * Change configuration of a section. If the section does not exist, it will be appended to the end of 
-	 * configuration file as a new section. For example:
+	 * Change configuration of a section. There are two kinds of configurations:<br>
+	 * 1. Single line that outside any sections;<br>
+	 * 2. Sections (inside &lt; and &gt;);<p>
+	 * For example:
 	 * <p>
-	 * &lt;LoadPlugin perl&gt;
-	 * 		Interval 60
-	 * &lt;/LoadPlugin&gt;
+	 * &lt;LoadPlugin perl&gt;<br>
+	 * 		Interval 60<br>
+	 * &lt;/LoadPlugin&gt;<br>
+	 * <p>
+	 * If the oldconfig is null, newconfig will be appended to the end of 
+	 * configuration file as a new section. 
 	 * <p>
 	 * This function can be called multiple times to change multiple sections.
 	 * 
-	 * @param header start of the section. E.g.  &lt;LoadPlugin perl&gt;
-	 * @param footer end of the section. E.g. &lt;/LoadPlugin&gt;
-	 * @param config the whole section including everything.
+	 * @param oldconfig the old configuration value, for a section, it includes everything.
+	 * @param newconfig the new configuration value, for a section, it includes everything.
 	 * @return true/false
 	 * @throws RemoteException connection error
 	 */
-	public boolean changeConfiguration(String header, String footer, String config) throws RemoteException;
+	public boolean changeConfiguration(String oldconfig, String newconfig) throws RemoteException;
 	
 	/**
 	 * Stop configuration modification process.
