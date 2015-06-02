@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import observability_emf.DbType;
+import observability_emf.Observability_emfFactory;
 import observability_emf.Observability_emfPackage;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -14,6 +15,7 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.ResourceLocator;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -134,6 +136,36 @@ public class DbTypeItemProvider
 	}
 
 	/**
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(Observability_emfPackage.Literals.DB_TYPE__AVAILABLE_METRICS);
+		}
+		return childrenFeatures;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
+	}
+
+	/**
 	 * This returns DbType.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -176,6 +208,9 @@ public class DbTypeItemProvider
 			case Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -190,6 +225,16 @@ public class DbTypeItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_emfPackage.Literals.DB_TYPE__AVAILABLE_METRICS,
+				 Observability_emfFactory.eINSTANCE.createDerivedMetric()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_emfPackage.Literals.DB_TYPE__AVAILABLE_METRICS,
+				 Observability_emfFactory.eINSTANCE.createBaseMetric()));
 	}
 
 	/**

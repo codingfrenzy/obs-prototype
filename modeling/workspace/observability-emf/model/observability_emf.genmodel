@@ -9,7 +9,6 @@
     <genClasses ecoreClass="observability_emf.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Model/frequency"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/clusters"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/availableMetrics"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//Model/availableDbTypes"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//DatabaseCluster">
@@ -36,6 +35,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/probeLocation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DbType/collectionFrequency"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DbType/availableMetrics"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -2,15 +2,22 @@
  */
 package observability_emf.impl;
 
+import java.util.Collection;
 import observability_emf.DbType;
+import observability_emf.Metric;
 import observability_emf.Observability_emfPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,6 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link observability_emf.impl.DbTypeImpl#getName <em>Name</em>}</li>
  *   <li>{@link observability_emf.impl.DbTypeImpl#getProbeLocation <em>Probe Location</em>}</li>
  *   <li>{@link observability_emf.impl.DbTypeImpl#getCollectionFrequency <em>Collection Frequency</em>}</li>
+ *   <li>{@link observability_emf.impl.DbTypeImpl#getAvailableMetrics <em>Available Metrics</em>}</li>
  * </ul>
  * </p>
  *
@@ -87,6 +95,16 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @ordered
 	 */
 	protected int collectionFrequency = COLLECTION_FREQUENCY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAvailableMetrics() <em>Available Metrics</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAvailableMetrics()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Metric> availableMetrics;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -175,6 +193,32 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Metric> getAvailableMetrics() {
+		if (availableMetrics == null) {
+			availableMetrics = new EObjectContainmentEList<Metric>(Metric.class, this, Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS);
+		}
+		return availableMetrics;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				return ((InternalEList<?>)getAvailableMetrics()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -184,6 +228,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				return getProbeLocation();
 			case Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				return getCollectionFrequency();
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				return getAvailableMetrics();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -193,6 +239,7 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -204,6 +251,10 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				return;
 			case Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				setCollectionFrequency((Integer)newValue);
+				return;
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				getAvailableMetrics().clear();
+				getAvailableMetrics().addAll((Collection<? extends Metric>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -226,6 +277,9 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 			case Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				setCollectionFrequency(COLLECTION_FREQUENCY_EDEFAULT);
 				return;
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				getAvailableMetrics().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -244,6 +298,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				return PROBE_LOCATION_EDEFAULT == null ? probeLocation != null : !PROBE_LOCATION_EDEFAULT.equals(probeLocation);
 			case Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				return collectionFrequency != COLLECTION_FREQUENCY_EDEFAULT;
+			case Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS:
+				return availableMetrics != null && !availableMetrics.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

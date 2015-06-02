@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link observability_emf.Model#getFrequency <em>Frequency</em>}</li>
  *   <li>{@link observability_emf.Model#getClusters <em>Clusters</em>}</li>
- *   <li>{@link observability_emf.Model#getAvailableMetrics <em>Available Metrics</em>}</li>
  *   <li>{@link observability_emf.Model#getAvailableDbTypes <em>Available Db Types</em>}</li>
  * </ul>
  * </p>
@@ -67,22 +66,6 @@ public interface Model extends EObject {
 	 * @generated
 	 */
 	EList<DatabaseCluster> getClusters();
-
-	/**
-	 * Returns the value of the '<em><b>Available Metrics</b></em>' containment reference list.
-	 * The list contents are of type {@link observability_emf.Metric}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Available Metrics</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Available Metrics</em>' containment reference list.
-	 * @see observability_emf.Observability_emfPackage#getModel_AvailableMetrics()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<Metric> getAvailableMetrics();
 
 	/**
 	 * Returns the value of the '<em><b>Available Db Types</b></em>' containment reference list.

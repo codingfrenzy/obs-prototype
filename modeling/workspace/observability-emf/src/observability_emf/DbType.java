@@ -2,6 +2,7 @@
  */
 package observability_emf;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link observability_emf.DbType#getName <em>Name</em>}</li>
  *   <li>{@link observability_emf.DbType#getProbeLocation <em>Probe Location</em>}</li>
  *   <li>{@link observability_emf.DbType#getCollectionFrequency <em>Collection Frequency</em>}</li>
+ *   <li>{@link observability_emf.DbType#getAvailableMetrics <em>Available Metrics</em>}</li>
  * </ul>
  * </p>
  *
@@ -101,5 +103,21 @@ public interface DbType extends EObject {
 	 * @generated
 	 */
 	void setCollectionFrequency(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Available Metrics</b></em>' containment reference list.
+	 * The list contents are of type {@link observability_emf.Metric}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Available Metrics</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Available Metrics</em>' containment reference list.
+	 * @see observability_emf.Observability_emfPackage#getDbType_AvailableMetrics()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Metric> getAvailableMetrics();
 
 } // DbType

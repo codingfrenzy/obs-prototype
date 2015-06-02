@@ -85,22 +85,13 @@ public interface Observability_emfPackage extends EPackage {
 	int MODEL__CLUSTERS = 1;
 
 	/**
-	 * The feature id for the '<em><b>Available Metrics</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MODEL__AVAILABLE_METRICS = 2;
-
-	/**
 	 * The feature id for the '<em><b>Available Db Types</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL__AVAILABLE_DB_TYPES = 3;
+	int MODEL__AVAILABLE_DB_TYPES = 2;
 
 	/**
 	 * The number of structural features of the '<em>Model</em>' class.
@@ -109,7 +100,7 @@ public interface Observability_emfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_FEATURE_COUNT = 4;
+	int MODEL_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -451,13 +442,22 @@ public interface Observability_emfPackage extends EPackage {
 	int DB_TYPE__COLLECTION_FREQUENCY = 2;
 
 	/**
+	 * The feature id for the '<em><b>Available Metrics</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DB_TYPE__AVAILABLE_METRICS = 3;
+
+	/**
 	 * The number of structural features of the '<em>Db Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE_FEATURE_COUNT = 3;
+	int DB_TYPE_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Db Type</em>' class.
@@ -500,17 +500,6 @@ public interface Observability_emfPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getModel_Clusters();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link observability_emf.Model#getAvailableMetrics <em>Available Metrics</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Available Metrics</em>'.
-	 * @see observability_emf.Model#getAvailableMetrics()
-	 * @see #getModel()
-	 * @generated
-	 */
-	EReference getModel_AvailableMetrics();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link observability_emf.Model#getAvailableDbTypes <em>Available Db Types</em>}'.
@@ -738,6 +727,17 @@ public interface Observability_emfPackage extends EPackage {
 	EAttribute getDbType_CollectionFrequency();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link observability_emf.DbType#getAvailableMetrics <em>Available Metrics</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Available Metrics</em>'.
+	 * @see observability_emf.DbType#getAvailableMetrics()
+	 * @see #getDbType()
+	 * @generated
+	 */
+	EReference getDbType_AvailableMetrics();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -785,14 +785,6 @@ public interface Observability_emfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference MODEL__CLUSTERS = eINSTANCE.getModel_Clusters();
-
-		/**
-		 * The meta object literal for the '<em><b>Available Metrics</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference MODEL__AVAILABLE_METRICS = eINSTANCE.getModel_AvailableMetrics();
 
 		/**
 		 * The meta object literal for the '<em><b>Available Db Types</b></em>' containment reference list feature.
@@ -973,6 +965,14 @@ public interface Observability_emfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DB_TYPE__COLLECTION_FREQUENCY = eINSTANCE.getDbType_CollectionFrequency();
+
+		/**
+		 * The meta object literal for the '<em><b>Available Metrics</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DB_TYPE__AVAILABLE_METRICS = eINSTANCE.getDbType_AvailableMetrics();
 
 	}
 
