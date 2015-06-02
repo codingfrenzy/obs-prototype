@@ -16,10 +16,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/machines"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/collectedBaseMetric"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability_emf.ecore#//DatabaseCluster/associatedDbType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//DatabaseCluster/name"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//NodeMachine">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/IP"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/Port"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/name"/>
     </genClasses>
     <genClasses ecoreClass="observability_emf.ecore#//Metric">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/unit"/>

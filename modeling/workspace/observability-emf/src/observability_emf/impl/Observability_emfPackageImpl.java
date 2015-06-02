@@ -222,6 +222,15 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getDatabaseCluster_Name() {
+		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNodeMachine() {
 		return nodeMachineEClass;
 	}
@@ -242,6 +251,15 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 */
 	public EAttribute getNodeMachine_Port() {
 		return (EAttribute)nodeMachineEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getNodeMachine_Name() {
+		return (EAttribute)nodeMachineEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -381,10 +399,12 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__MACHINES);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_BASE_METRIC);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__ASSOCIATED_DB_TYPE);
+		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NAME);
 
 		nodeMachineEClass = createEClass(NODE_MACHINE);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__IP);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__PORT);
+		createEAttribute(nodeMachineEClass, NODE_MACHINE__NAME);
 
 		metricEClass = createEClass(METRIC);
 		createEAttribute(metricEClass, METRIC__UNIT);
@@ -444,10 +464,12 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEReference(getDatabaseCluster_Machines(), this.getNodeMachine(), null, "machines", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_CollectedBaseMetric(), this.getBaseMetric(), this.getBaseMetric_DatabaseCluster(), "collectedBaseMetric", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_AssociatedDbType(), this.getDbType(), null, "associatedDbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDatabaseCluster_Name(), ecorePackage.getEString(), "name", null, 0, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(nodeMachineEClass, NodeMachine.class, "NodeMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNodeMachine_IP(), ecorePackage.getEString(), "IP", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNodeMachine_Port(), ecorePackage.getEInt(), "Port", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeMachine_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metricEClass, Metric.class, "Metric", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMetric_Unit(), ecorePackage.getEInt(), "unit", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

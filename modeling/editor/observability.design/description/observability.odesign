@@ -35,13 +35,13 @@
         </edgeMappings>
         <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
           <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_emf.NodeMachine">
-            <style xsi:type="style:SquareDescription" labelExpression="machine" resizeKind="NSEW">
+            <style xsi:type="style:SquareDescription" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
             </style>
           </subNodeMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" labelExpression="cluster">
+          <style xsi:type="style:FlatContainerStyleDescription">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -49,12 +49,14 @@
           </style>
         </containerMappings>
         <toolSections>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createDbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']">
             <variable name="dbClusterContainer"/>
             <viewVariable name="dbClusterContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbClusterContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DatabaseCluster" referenceName="clusters"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DatabaseCluster" referenceName="clusters">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['cluster' + dbClusterContainer.clusters->size()/]"/>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -63,7 +65,9 @@
             <viewVariable name="machineContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance"/>
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[machineContainer.eContainingFeature().toString()/]"/>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -73,7 +77,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:baseMetricContainer">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.BaseMetric" referenceName="availableMetrics" variableName="baseMetricInstance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="'metric'"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['metric' + baseMetricContainer.availableMetrics->size()/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -104,8 +108,8 @@
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[source.eContainer()/]">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="associatedDbType"/>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

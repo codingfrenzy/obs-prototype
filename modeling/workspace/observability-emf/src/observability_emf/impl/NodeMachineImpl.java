@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link observability_emf.impl.NodeMachineImpl#getIP <em>IP</em>}</li>
  *   <li>{@link observability_emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
+ *   <li>{@link observability_emf.impl.NodeMachineImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -66,6 +67,26 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * @ordered
 	 */
 	protected int port = PORT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -133,6 +154,27 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.NODE_MACHINE__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -140,6 +182,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return getIP();
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				return getPort();
+			case Observability_emfPackage.NODE_MACHINE__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -157,6 +201,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return;
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				setPort((Integer)newValue);
+				return;
+			case Observability_emfPackage.NODE_MACHINE__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -176,6 +223,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				setPort(PORT_EDEFAULT);
 				return;
+			case Observability_emfPackage.NODE_MACHINE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -192,6 +242,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return IP_EDEFAULT == null ? ip != null : !IP_EDEFAULT.equals(ip);
 			case Observability_emfPackage.NODE_MACHINE__PORT:
 				return port != PORT_EDEFAULT;
+			case Observability_emfPackage.NODE_MACHINE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -210,6 +262,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 		result.append(ip);
 		result.append(", Port: ");
 		result.append(port);
+		result.append(", name: ");
+		result.append(name);
 		result.append(')');
 		return result.toString();
 	}

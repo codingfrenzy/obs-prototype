@@ -3,6 +3,7 @@
 package observability_emf.impl;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import observability_emf.BaseMetric;
 import observability_emf.DatabaseCluster;
@@ -12,15 +13,11 @@ import observability_emf.Observability_emfPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -35,6 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getMachines <em>Machines</em>}</li>
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
+ *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -70,6 +68,26 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected DbType associatedDbType;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -157,6 +175,27 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -198,6 +237,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				if (resolve) return getAssociatedDbType();
 				return basicGetAssociatedDbType();
+			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -220,7 +261,13 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				getCollectedBaseMetric().addAll((Collection<? extends BaseMetric>)newValue);
 				return;
 			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
-				setAssociatedDbType((DbType)newValue);
+				HashSet<Object> value = (HashSet<Object>)newValue;
+				Object[] objects = value.toArray();
+				Object obj = objects[0];
+				setAssociatedDbType((DbType)obj);
+				return;
+			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -243,6 +290,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				setAssociatedDbType((DbType)null);
 				return;
+			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -261,8 +311,26 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return collectedBaseMetric != null && !collectedBaseMetric.isEmpty();
 			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				return associatedDbType != null;
+			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
 	}
 
 } //DatabaseClusterImpl

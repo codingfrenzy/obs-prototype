@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -64,6 +65,7 @@ public class DatabaseClusterItemProvider
 
 			addCollectedBaseMetricPropertyDescriptor(object);
 			addAssociatedDbTypePropertyDescriptor(object);
+			addNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -108,6 +110,28 @@ public class DatabaseClusterItemProvider
 				 false,
 				 true,
 				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DatabaseCluster_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_name_feature", "_UI_DatabaseCluster_type"),
+				 Observability_emfPackage.Literals.DATABASE_CLUSTER__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -161,7 +185,10 @@ public class DatabaseClusterItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_DatabaseCluster_type");
+		String label = ((DatabaseCluster)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_DatabaseCluster_type") :
+			getString("_UI_DatabaseCluster_type") + " " + label;
 	}
 	
 
@@ -177,6 +204,9 @@ public class DatabaseClusterItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(DatabaseCluster.class)) {
+			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
