@@ -17,17 +17,17 @@
             <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
           </style>
         </nodeMappings>
-        <edgeMappings name="clusterToMetric" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
-          <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+        <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric" reconnections="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='clusterMetricReconnection']">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <edgeMappings name="clusterToDbType" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
+        <edgeMappings name="clusterToDbType" deletionDescription="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='dbTypeEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
           <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
@@ -89,7 +89,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool:CreateEdgeView" mapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']" containerViewExpression="var:sourceView" sourceExpression="var:source" targetExpression="var:target"/>
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -112,6 +112,40 @@
                 <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="metricEdgeDeletion">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool_1:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="dbTypeEdgeDeletion">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool_1:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+                <subModelOperations xsi:type="tool_1:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ReconnectEdgeDescription" name="clusterMetricReconnection">
+            <source name="source"/>
+            <target name="target"/>
+            <sourceView name="sourceView"/>
+            <targetView name="targetView"/>
+            <element name="element"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+            <edgeView name="edgeView"/>
           </ownedTools>
         </toolSections>
       </defaultLayer>

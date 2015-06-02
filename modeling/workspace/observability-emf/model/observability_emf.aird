@@ -391,7 +391,7 @@
           <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_1DMNVAiwEeWzK6WMQyC3bg" red="255" green="252" blue="216"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_0IoCgAiwEeWzK6WMQyC3bg" name="name : EString" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@61850c11{platform:/resource/observability-emf/model/observability_emf.ecore#//DatabaseCluster/newAttribute}' must be set&#xA;ERROR : The typed element must have a type">
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_0IoCgAiwEeWzK6WMQyC3bg" name="name : EString" tooltipText="">
           <target xmi:type="ecore:EAttribute" href="observability_emf.ecore#//DatabaseCluster/name"/>
           <semanticElements xmi:type="ecore:EAttribute" href="observability_emf.ecore#//DatabaseCluster/name"/>
           <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_1DTiEAiwEeWzK6WMQyC3bg" labelAlignment="LEFT">
@@ -453,7 +453,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
         </ownedElements>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_1_oncAiwEeWzK6WMQyC3bg" name="name : EString" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@26b48eb0{platform:/resource/observability-emf/model/observability_emf.ecore#//NodeMachine/newAttribute}' must be set&#xA;ERROR : The typed element must have a type">
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_1_oncAiwEeWzK6WMQyC3bg" name="name : EString" tooltipText="">
           <target xmi:type="ecore:EAttribute" href="observability_emf.ecore#//NodeMachine/name"/>
           <semanticElements xmi:type="ecore:EAttribute" href="observability_emf.ecore#//NodeMachine/name"/>
           <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_2m-7UAiwEeWzK6WMQyC3bg" labelAlignment="LEFT">
