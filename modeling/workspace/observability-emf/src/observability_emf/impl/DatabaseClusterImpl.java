@@ -245,8 +245,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
+	 * <!-- end-user-doc --> 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

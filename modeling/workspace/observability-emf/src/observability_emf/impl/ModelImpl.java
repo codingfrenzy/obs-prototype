@@ -6,23 +6,19 @@ import java.util.Collection;
 
 import observability_emf.DatabaseCluster;
 import observability_emf.DbType;
-import observability_emf.Metric;
 import observability_emf.Model;
 import observability_emf.Observability_emfPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,7 +29,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link observability_emf.impl.ModelImpl#getFrequency <em>Frequency</em>}</li>
  *   <li>{@link observability_emf.impl.ModelImpl#getClusters <em>Clusters</em>}</li>
- *   <li>{@link observability_emf.impl.ModelImpl#getAvailableMetrics <em>Available Metrics</em>}</li>
  *   <li>{@link observability_emf.impl.ModelImpl#getAvailableDbTypes <em>Available Db Types</em>}</li>
  * </ul>
  * </p>
@@ -44,12 +39,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	/**
 	 * The default value of the '{@link #getFrequency() <em>Frequency</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * The default frequency of the model is 30 seconds. 
 	 * <!-- end-user-doc -->
 	 * @see #getFrequency()
-	 * @generated
+	 *
 	 * @ordered
 	 */
-	protected static final int FREQUENCY_EDEFAULT = 0;
+	protected static final int FREQUENCY_EDEFAULT = 30;
 
 	/**
 	 * The cached value of the '{@link #getFrequency() <em>Frequency</em>}' attribute.
@@ -70,16 +66,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 * @ordered
 	 */
 	protected EList<DatabaseCluster> clusters;
-
-	/**
-	 * The cached value of the '{@link #getAvailableMetrics() <em>Available Metrics</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAvailableMetrics()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Metric> availableMetrics;
 
 	/**
 	 * The cached value of the '{@link #getAvailableDbTypes() <em>Available Db Types</em>}' containment reference list.
@@ -121,10 +107,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Set the collection frequency of the model. 
+	 * Frequency cannot be less than 30.
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public void setFrequency(int newFrequency) {
+		if(newFrequency < 30)
+			throw new IllegalArgumentException("Frequency should be greater than 30 seconds");
 		int oldFrequency = frequency;
 		frequency = newFrequency;
 		if (eNotificationRequired())
@@ -141,18 +130,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			clusters = new EObjectContainmentEList<DatabaseCluster>(DatabaseCluster.class, this, Observability_emfPackage.MODEL__CLUSTERS);
 		}
 		return clusters;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<Metric> getAvailableMetrics() {
-		if (availableMetrics == null) {
-			availableMetrics = new EObjectContainmentEList<Metric>(Metric.class, this, Observability_emfPackage.MODEL__AVAILABLE_METRICS);
-		}
-		return availableMetrics;
 	}
 
 	/**
@@ -177,8 +154,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 		switch (featureID) {
 			case Observability_emfPackage.MODEL__CLUSTERS:
 				return ((InternalEList<?>)getClusters()).basicRemove(otherEnd, msgs);
-			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
-				return ((InternalEList<?>)getAvailableMetrics()).basicRemove(otherEnd, msgs);
 			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				return ((InternalEList<?>)getAvailableDbTypes()).basicRemove(otherEnd, msgs);
 		}
@@ -197,8 +172,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return getFrequency();
 			case Observability_emfPackage.MODEL__CLUSTERS:
 				return getClusters();
-			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
-				return getAvailableMetrics();
 			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				return getAvailableDbTypes();
 		}
@@ -220,10 +193,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case Observability_emfPackage.MODEL__CLUSTERS:
 				getClusters().clear();
 				getClusters().addAll((Collection<? extends DatabaseCluster>)newValue);
-				return;
-			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
-				getAvailableMetrics().clear();
-				getAvailableMetrics().addAll((Collection<? extends Metric>)newValue);
 				return;
 			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				getAvailableDbTypes().clear();
@@ -247,9 +216,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case Observability_emfPackage.MODEL__CLUSTERS:
 				getClusters().clear();
 				return;
-			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
-				getAvailableMetrics().clear();
-				return;
 			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				getAvailableDbTypes().clear();
 				return;
@@ -269,8 +235,6 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return frequency != FREQUENCY_EDEFAULT;
 			case Observability_emfPackage.MODEL__CLUSTERS:
 				return clusters != null && !clusters.isEmpty();
-			case Observability_emfPackage.MODEL__AVAILABLE_METRICS:
-				return availableMetrics != null && !availableMetrics.isEmpty();
 			case Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES:
 				return availableDbTypes != null && !availableDbTypes.isEmpty();
 		}

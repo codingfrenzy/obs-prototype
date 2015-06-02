@@ -168,17 +168,8 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getModel_AvailableMetrics() {
-		return (EReference)modelEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getModel_AvailableDbTypes() {
-		return (EReference)modelEClass.getEStructuralFeatures().get(3);
+		return (EReference)modelEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -366,6 +357,15 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getDbType_AvailableMetrics() {
+		return (EReference)dbTypeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Observability_emfFactory getObservability_emfFactory() {
 		return (Observability_emfFactory)getEFactoryInstance();
 	}
@@ -392,7 +392,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__FREQUENCY);
 		createEReference(modelEClass, MODEL__CLUSTERS);
-		createEReference(modelEClass, MODEL__AVAILABLE_METRICS);
 		createEReference(modelEClass, MODEL__AVAILABLE_DB_TYPES);
 
 		databaseClusterEClass = createEClass(DATABASE_CLUSTER);
@@ -420,6 +419,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
 		createEAttribute(dbTypeEClass, DB_TYPE__PROBE_LOCATION);
 		createEAttribute(dbTypeEClass, DB_TYPE__COLLECTION_FREQUENCY);
+		createEReference(dbTypeEClass, DB_TYPE__AVAILABLE_METRICS);
 	}
 
 	/**
@@ -457,7 +457,6 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Frequency(), ecorePackage.getEInt(), "frequency", null, 0, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getModel_Clusters(), this.getDatabaseCluster(), null, "clusters", null, 1, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getModel_AvailableMetrics(), this.getMetric(), null, "availableMetrics", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getModel_AvailableDbTypes(), this.getDbType(), null, "availableDbTypes", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(databaseClusterEClass, DatabaseCluster.class, "DatabaseCluster", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -485,6 +484,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEAttribute(getDbType_Name(), ecorePackage.getEString(), "name", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDbType_ProbeLocation(), ecorePackage.getEString(), "probeLocation", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDbType_CollectionFrequency(), ecorePackage.getEInt(), "collectionFrequency", "0", 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDbType_AvailableMetrics(), this.getMetric(), null, "availableMetrics", null, 0, -1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

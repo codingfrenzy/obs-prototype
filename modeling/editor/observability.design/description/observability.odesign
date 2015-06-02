@@ -3,31 +3,17 @@
   <ownedViewpoints name="obsView">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsDiag" titleExpression="'SUM'" initialisation="true" domainClass="observability_emf.Model" enablePopupBars="true">
       <defaultLayer name="Default" label="Model diagram">
-        <nodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
-          <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
-            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
-          </style>
-        </nodeMappings>
-        <nodeMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
-          <style xsi:type="style:SquareDescription" resizeKind="NSEW">
-            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
-            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
-          </style>
-        </nodeMappings>
-        <edgeMappings name="clusterToMetric" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
-          <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+        <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <edgeMappings name="clusterToDbType" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
+        <edgeMappings name="clusterToDbType" deletionDescription="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='dbTypeEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
           <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
@@ -39,6 +25,21 @@
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
+          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
+            <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
             </style>
           </subNodeMappings>
           <style xsi:type="style:FlatContainerStyleDescription">
@@ -60,18 +61,29 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbTypeNode" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']">
+            <variable name="dbTypeContainer"/>
+            <viewVariable name="dbTypeContainerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['DbType'/]"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
             <variable name="machineContainer"/>
             <viewVariable name="machineContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineContainer">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[machineContainer.eContainingFeature().toString()/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['machine' + machineContainer.machines->size()/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='baseMetric']">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']">
             <variable name="baseMetricContainer"/>
             <viewVariable name="baseMetricContainerView"/>
             <initialOperation>
@@ -89,16 +101,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool:CreateEdgeView" mapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']" containerViewExpression="var:sourceView" sourceExpression="var:source" targetExpression="var:target"/>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="dbTypeNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@nodeMappings[name='dbType']">
-            <variable name="dbTypeContainer"/>
-            <viewVariable name="dbTypeContainerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes"/>
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
@@ -111,6 +114,34 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
                 <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
               </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="metricEdgeDeletion">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool_1:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="dbTypeEdgeDeletion">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool_1:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool_1:PaneBasedSelectionWizardDescription">
+            <element name="element"/>
+            <containerView name="containerView"/>
+            <container name="container"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

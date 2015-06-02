@@ -12,5 +12,5 @@ sudo echo "export CASSANDRA_HOME=`pwd`" >> $HOME/.bashrc
 sudo echo "export PATH=$PATH:$CASSANDRA_HOME/bin" >> $HOME/.bashrc
 . $HOME/.bashrc
 cd
-echo "cassandra &" > start_cassandra.sh
+echo "$CASSANDRA_HOME/bin/cassandra &" > start_cassandra.sh
 echo "sudo pkill -f java" > stop_cassandra.sh
