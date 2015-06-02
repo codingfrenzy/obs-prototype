@@ -187,6 +187,20 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	}
 
 	/**
+	 * Replace the whole configuration file content with string config.
+	 * @param config the string for new configuration as a whole
+	 * @return true/false
+	 * @throws RemoteException connection error
+	 */
+	public boolean replaceWholeConfiguration(String config) throws RemoteException {
+		if(confString == null || config == null || config.isEmpty())
+			return false;
+		
+		confString = config;
+		return true;
+	}
+	
+	/**
 	 * Stop configuration modification process.
 	 * @return true/false client gets true to confirm the success of changing configuration
 	 * @throws RemoteException connection error

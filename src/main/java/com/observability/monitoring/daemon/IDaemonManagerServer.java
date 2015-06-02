@@ -71,6 +71,14 @@ public interface IDaemonManagerServer extends Remote {
 	public boolean changeConfiguration(String oldconfig, String newconfig) throws RemoteException;
 	
 	/**
+	 * Replace the whole configuration file content with string config.
+	 * @param config the string for new configuration as a whole
+	 * @return true/false
+	 * @throws RemoteException connection error
+	 */
+	public boolean replaceWholeConfiguration(String config) throws RemoteException;
+	
+	/**
 	 * Stop configuration modification process.
 	 * @return true/false client gets true to confirm the success of changing configuration
 	 * @throws RemoteException connection error
