@@ -52,7 +52,7 @@ from_time = int( options._from )
 until_time = int( options.until )
 
 # added by Rajat to check that the interval is valid
-if((from_time+1) % 30!=0 and (until_time-1)%30 !=0):
+if((from_time+1) % 30!=0 or (until_time-1)%30 !=0):
   sys.exit(1)
 
 try:
