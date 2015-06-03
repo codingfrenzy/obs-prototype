@@ -158,13 +158,22 @@ public interface Observability_emfPackage extends EPackage {
 	int DATABASE_CLUSTER__NAME = 3;
 
 	/**
+	 * The feature id for the '<em><b>No Of Machines</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATABASE_CLUSTER__NO_OF_MACHINES = 4;
+
+	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER_FEATURE_COUNT = 4;
+	int DATABASE_CLUSTER_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Database Cluster</em>' class.
@@ -567,6 +576,17 @@ public interface Observability_emfPackage extends EPackage {
 	EAttribute getDatabaseCluster_Name();
 
 	/**
+	 * Returns the meta object for the attribute '{@link observability_emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>No Of Machines</em>'.
+	 * @see observability_emf.DatabaseCluster#getNoOfMachines()
+	 * @see #getDatabaseCluster()
+	 * @generated
+	 */
+	EAttribute getDatabaseCluster_NoOfMachines();
+
+	/**
 	 * Returns the meta object for class '{@link observability_emf.NodeMachine <em>Node Machine</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -835,6 +855,14 @@ public interface Observability_emfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DATABASE_CLUSTER__NAME = eINSTANCE.getDatabaseCluster_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>No Of Machines</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DATABASE_CLUSTER__NO_OF_MACHINES = eINSTANCE.getDatabaseCluster_NoOfMachines();
 
 		/**
 		 * The meta object literal for the '{@link observability_emf.impl.NodeMachineImpl <em>Node Machine</em>}' class.

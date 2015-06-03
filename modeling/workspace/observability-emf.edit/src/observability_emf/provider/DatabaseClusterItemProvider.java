@@ -66,6 +66,7 @@ public class DatabaseClusterItemProvider
 			addCollectedBaseMetricPropertyDescriptor(object);
 			addAssociatedDbTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
+			addNoOfMachinesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -132,6 +133,28 @@ public class DatabaseClusterItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the No Of Machines feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNoOfMachinesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DatabaseCluster_noOfMachines_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_noOfMachines_feature", "_UI_DatabaseCluster_type"),
+				 Observability_emfPackage.Literals.DATABASE_CLUSTER__NO_OF_MACHINES,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -205,6 +228,7 @@ public class DatabaseClusterItemProvider
 
 		switch (notification.getFeatureID(DatabaseCluster.class)) {
 			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
+			case Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:

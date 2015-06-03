@@ -222,6 +222,15 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getDatabaseCluster_NoOfMachines() {
+		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNodeMachine() {
 		return nodeMachineEClass;
 	}
@@ -399,6 +408,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_BASE_METRIC);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__ASSOCIATED_DB_TYPE);
 		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NAME);
+		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NO_OF_MACHINES);
 
 		nodeMachineEClass = createEClass(NODE_MACHINE);
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__IP);
@@ -464,6 +474,7 @@ public class Observability_emfPackageImpl extends EPackageImpl implements Observ
 		initEReference(getDatabaseCluster_CollectedBaseMetric(), this.getBaseMetric(), this.getBaseMetric_DatabaseCluster(), "collectedBaseMetric", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_AssociatedDbType(), this.getDbType(), null, "associatedDbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDatabaseCluster_Name(), ecorePackage.getEString(), "name", null, 0, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDatabaseCluster_NoOfMachines(), ecorePackage.getEInt(), "noOfMachines", null, 0, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(nodeMachineEClass, NodeMachine.class, "NodeMachine", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNodeMachine_IP(), ecorePackage.getEString(), "IP", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

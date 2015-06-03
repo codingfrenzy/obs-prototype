@@ -19,9 +19,9 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_emf.DatabaseCluster" reusedNodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']" childrenPresentation="List">
           <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_emf.NodeMachine">
-            <style xsi:type="style:SquareDescription" resizeKind="NSEW">
+            <style xsi:type="style:SquareDescription" labelAlignment="LEFT" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
@@ -36,7 +36,7 @@
         </containerMappings>
         <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
           <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
-            <style xsi:type="style:EllipseNodeDescription" labelPosition="node" resizeKind="NSEW">
+            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="3" verticalDiameterComputationExpression="3">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
@@ -79,6 +79,9 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineContainer">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance">
                   <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['machine' + machineContainer.machines->size()/]"/>
+                  <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer()/]">
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="noOfMachines" valueExpression="[noOfMachines + 1/]"/>
+                  </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -134,14 +137,6 @@
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
                 <subModelOperations xsi:type="tool_1:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
               </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool_1:PaneBasedSelectionWizardDescription">
-            <element name="element"/>
-            <containerView name="containerView"/>
-            <container name="container"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]"/>
             </initialOperation>
           </ownedTools>
         </toolSections>

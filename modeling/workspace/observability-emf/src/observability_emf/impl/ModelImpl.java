@@ -2,13 +2,12 @@
  */
 package observability_emf.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
 import observability_emf.DatabaseCluster;
 import observability_emf.DbType;
 import observability_emf.Model;
 import observability_emf.Observability_emfPackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -18,7 +17,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.omg.CORBA.DynAnyPackage.InvalidValue;
 
 /**
  * <!-- begin-user-doc -->
@@ -79,11 +77,26 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Create an instance of the Model. Get all the Database types defined in the model
+	 * and create their instances.
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	protected ModelImpl() {
 		super();
+		
+		ArrayList<DbType> dbTypes = new ArrayList<>();
+		// Create instance of DbType
+		DbTypeImpl dbType = new DbTypeImpl();
+		dbType.setName("Cassandra");
+		// Add the instance to the collection
+		dbTypes.add(dbType);
+		
+		dbType = new DbTypeImpl();
+		dbType.setName("PostGres");
+		dbTypes.add(dbType);
+		
+		// Add the collection of DbTypes to the model
+		eSet(Observability_emfPackage.MODEL__AVAILABLE_DB_TYPES, dbTypes);
 	}
 
 	/**
