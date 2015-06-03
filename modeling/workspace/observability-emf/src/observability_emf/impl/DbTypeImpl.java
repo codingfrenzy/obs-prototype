@@ -121,18 +121,18 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		if(getAvailableMetrics().size() > 0)
 			return;
 		
-		ArrayList<Metric> metrics = new ArrayList<>();
-		
-		//read all the metrics, create their instance and add it to the relation		
-		BaseMetricImpl baseMetric = new BaseMetricImpl();
-		baseMetric.setName("Metric 1");
-		metrics.add(baseMetric);
-		
-		baseMetric = new BaseMetricImpl();
-		baseMetric.setName("Metric 2");
-		metrics.add(baseMetric);
-		
-		eSet(Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS, metrics);
+//		ArrayList<Metric> metrics = new ArrayList<>();
+//		
+//		//read all the metrics, create their instance and add it to the relation		
+//		BaseMetricImpl baseMetric = new BaseMetricImpl();
+//		baseMetric.setName("Metric 1");
+//		metrics.add(baseMetric);
+//		
+//		baseMetric = new BaseMetricImpl();
+//		baseMetric.setName("Metric 2");
+//		metrics.add(baseMetric);
+//		
+//		eSet(Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS, metrics);
 		
 	}
 	
