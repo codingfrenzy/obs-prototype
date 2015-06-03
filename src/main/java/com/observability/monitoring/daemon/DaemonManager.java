@@ -96,8 +96,17 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		        String [] strs = pros.trim().split(" ");
 		        for (String pid : strs) {
 		            //log.info("Killing pid: "+pid);
-		            Runtime.getRuntime().exec("sudo kill " + pid).waitFor();
+		            Process kill = Runtime.getRuntime().exec("sudo kill " + pid);
+		            kill.waitFor();
 		            System.out.println("Killing pid: " + pid);
+
+		            BufferedReader br = new BufferedReader(new InputStreamReader(kill.getInputStream(),"UTF-8"));
+		            String killOutputLine = "";
+		            while ((killOutputLine = br.readLine()) != null) {
+			            System.out.println(killOutputLine);
+
+		            }
+		            br.close();
 		        }
 	        }
 	        outReader.close();
