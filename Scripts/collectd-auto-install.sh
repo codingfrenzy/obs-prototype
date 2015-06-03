@@ -4,13 +4,16 @@ tar -xvf collectd-5.5.0.tar.gz
 sudo apt-get update
 sudo apt-get install build-essential
 sudo apt-get install openjdk-7-jdk
+sudo apt-get install liboping0
+sudo apt-get install oping
+sudo apt-get install liboping-dev
 sudo aptitude install libcurl4-openssl-dev
 sudo echo "export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64" >> $HOME/.bashrc
 . $HOME/.bashrc
 cd
 sudo rm collectd-5.5.0.tar.gz
 cd collectd-5.5.0/
-sudo ./configure --enable-redis --enable-postgresql --with-libcredis=/usr/include --with-java=$JAVA_HOME --enable-write_http
+sudo ./configure --enable-redis --enable-postgresql --with-libcredis=/usr/include --with-java=$JAVA_HOME --enable-write_http --enable-ping
 sudo make install
 sudo chmod 777 -R /opt/collectd/
 sudo chmod o-w -R /opt/collectd/
