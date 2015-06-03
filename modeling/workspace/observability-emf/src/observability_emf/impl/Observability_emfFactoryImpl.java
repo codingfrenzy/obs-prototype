@@ -74,6 +74,7 @@ public class Observability_emfFactoryImpl extends EFactoryImpl implements Observ
 	 */
 	public Model createModel() {
 		ModelImpl model = new ModelImpl();
+		
 		return model;
 	}
 

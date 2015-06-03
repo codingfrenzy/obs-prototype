@@ -84,7 +84,13 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	protected ModelImpl() {
 		super();
 		
+		// Check if the instances already exist.
+		EList<DbType> availableDb = getAvailableDbTypes();
+		if(availableDb.size() > 0){
+			return;
+		}
 		ArrayList<DbType> dbTypes = new ArrayList<>();
+		
 		// Create instance of DbType
 		DbTypeImpl dbType = new DbTypeImpl();
 		dbType.setName("Cassandra");

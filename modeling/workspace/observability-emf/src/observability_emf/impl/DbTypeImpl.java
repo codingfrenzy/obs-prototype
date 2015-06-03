@@ -2,11 +2,14 @@
  */
 package observability_emf.impl;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import observability_emf.DbType;
 import observability_emf.Metric;
 import observability_emf.Observability_emfPackage;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -82,7 +85,7 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 0;
+	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 30;
 
 	/**
 	 * The cached value of the '{@link #getCollectionFrequency() <em>Collection Frequency</em>}' attribute.
@@ -113,7 +116,13 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 */
 	protected DbTypeImpl() {
 		super();
+		
+		// Do not create metric instances if already exist.
+		if(getAvailableMetrics().size() > 0)
+			return;
+		
 		ArrayList<Metric> metrics = new ArrayList<>();
+		
 		//read all the metrics, create their instance and add it to the relation		
 		BaseMetricImpl baseMetric = new BaseMetricImpl();
 		baseMetric.setName("Metric 1");
@@ -195,7 +204,13 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 */
 	public void setCollectionFrequency(int newCollectionFrequency) {
+		if(newCollectionFrequency < 0)
+			throw new InvalidParameterException("Collection frequency cannot be less than 0");
+		if(newCollectionFrequency == 0)
+			throw new InvalidParameterException("Collection frequency cannot be 0");
+		
 		int oldCollectionFrequency = collectionFrequency;
+		
 		collectionFrequency = newCollectionFrequency;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DB_TYPE__COLLECTION_FREQUENCY, oldCollectionFrequency, collectionFrequency));

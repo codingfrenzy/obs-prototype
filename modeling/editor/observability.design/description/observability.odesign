@@ -34,8 +34,8 @@
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
           </style>
         </containerMappings>
-        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
-          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
+        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" createElements="false" domainClass="observability_emf.DbType">
+          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" createElements="false" domainClass="observability_emf.Metric">
             <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="3" verticalDiameterComputationExpression="3">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -61,17 +61,6 @@
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="dbTypeNode" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']">
-            <variable name="dbTypeContainer"/>
-            <viewVariable name="dbTypeContainerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbTypeContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['DbType'/]"/>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
           <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
             <variable name="machineContainer"/>
             <viewVariable name="machineContainerView"/>
@@ -82,17 +71,6 @@
                   <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer()/]">
                     <subModelOperations xsi:type="tool_1:SetValue" featureName="noOfMachines" valueExpression="[noOfMachines + 1/]"/>
                   </subModelOperations>
-                </subModelOperations>
-              </firstModelOperations>
-            </initialOperation>
-          </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="baseMetricNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']">
-            <variable name="baseMetricContainer"/>
-            <viewVariable name="baseMetricContainerView"/>
-            <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:baseMetricContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.BaseMetric" referenceName="availableMetrics" variableName="baseMetricInstance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['metric' + baseMetricContainer.availableMetrics->size()/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>

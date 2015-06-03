@@ -2,9 +2,12 @@
  */
 package observability_emf.impl;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+
+import javax.naming.directory.InvalidAttributeValueException;
 
 import observability_emf.BaseMetric;
 import observability_emf.DatabaseCluster;
@@ -228,20 +231,49 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 */
 	public void setNoOfMachines(int newNoOfMachines) {
+		
+		if(newNoOfMachines < 0){
+			String err = "Number of machines cannot be less than 0";
+			throw new InvalidParameterException(err);
+		}
+		
 		int oldNoOfMachines = noOfMachines;
-		noOfMachines = newNoOfMachines;
+		
+		// NoOfMachines cannot be decreased via parameter change.
+		if(oldNoOfMachines > newNoOfMachines){
+			String err = "Please delete the machine instances from the model diagram in order to decrease"
+					+ " the number of machines.";
+			throw new IllegalArgumentException(err);
+		}
+		
+		// return if there is no change in value
+		if(oldNoOfMachines == newNoOfMachines)
+			return;
 		
 		NodeMachineImpl machine;
-		ArrayList<NodeMachineImpl> machines = new ArrayList<>();
 		
-		for(int i=1;i<=noOfMachines;i++){
-			machine = new NodeMachineImpl();
-			String name = "machine" + Integer.toString(i);
-			machine.setName(name);
-			machines.add(machine);
-		}
-		eSet(Observability_emfPackage.DATABASE_CLUSTER__MACHINES, machines);
+		// Get all the existing machines in the cluster
+		EList<NodeMachine> existingMachines = getMachines();
 		
+		// Get the number of machines to create
+		int size = existingMachines.size();
+		int requiredMachines = newNoOfMachines - size; 
+		
+		// Create the required number of machines and add to cluster
+		if(requiredMachines > 0){
+			for(int i=size+1;i<=newNoOfMachines;i++){
+				machine = new NodeMachineImpl();
+				String name = "machine" + Integer.toString(i);
+				machine.setName(name);
+				existingMachines.add(machine);
+			}
+		eSet(Observability_emfPackage.DATABASE_CLUSTER__MACHINES, existingMachines);
+		}		
+		
+		// set the number of machines at class level
+		noOfMachines = newNoOfMachines;
+		
+		// notify all the registered listeners
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
 	}
