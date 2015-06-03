@@ -2,6 +2,7 @@
  */
 package observability_emf.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
  *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getName <em>Name</em>}</li>
+ *   <li>{@link observability_emf.impl.DatabaseClusterImpl#getNoOfMachines <em>No Of Machines</em>}</li>
  * </ul>
  * </p>
  *
@@ -88,6 +90,26 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getNoOfMachines() <em>No Of Machines</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNoOfMachines()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int NO_OF_MACHINES_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getNoOfMachines() <em>No Of Machines</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNoOfMachines()
+	 * @generated
+	 * @ordered
+	 */
+	protected int noOfMachines = NO_OF_MACHINES_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -196,6 +218,39 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getNoOfMachines() {
+		return noOfMachines;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * Set the number of machines in the cluster and create that many machines in the cluster
+	 * <!-- end-user-doc -->
+	 */
+	public void setNoOfMachines(int newNoOfMachines) {
+		int oldNoOfMachines = noOfMachines;
+		noOfMachines = newNoOfMachines;
+		
+		NodeMachineImpl machine;
+		ArrayList<NodeMachineImpl> machines = new ArrayList<>();
+		
+		for(int i=1;i<=noOfMachines;i++){
+			machine = new NodeMachineImpl();
+			String name = "machine" + Integer.toString(i);
+			machine.setName(name);
+			machines.add(machine);
+		}
+		eSet(Observability_emfPackage.DATABASE_CLUSTER__MACHINES, machines);
+		
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -239,34 +294,61 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return basicGetAssociatedDbType();
 			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
 				return getName();
+			case Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
+				return getNoOfMachines();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * This method sets the attributes and relations in the Cluster.
+	 * @param featureId
+	 * 			takes the id of the feature which needs to be added.
+	 * @param newValue
+	 * 			value which needs to be set in the feature
 	 * <!-- end-user-doc --> 
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			// set the machines in the cluster
 			case Observability_emfPackage.DATABASE_CLUSTER__MACHINES:
+				
 				getMachines().clear();
-				getMachines().addAll((Collection<? extends NodeMachine>)newValue);
+				Collection<? extends NodeMachine> machines = 
+						(Collection<? extends NodeMachine>)newValue;
+				getMachines().addAll(machines);
+				
+				// set the no of machines 
+				if(getNoOfMachines()!=machines.size())
+					setNoOfMachines(machines.size());
 				return;
+				
 			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
 				getCollectedBaseMetric().clear();
 				getCollectedBaseMetric().addAll((Collection<? extends BaseMetric>)newValue);
 				return;
+			
 			case Observability_emfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
+				// non-generated code
+				
+				// Since the associatedDbType relation is 1..1, only a DbType object can be added in the cluster.
+				// The input is a HashSet, get the only entry in the HashSet and set that as DbType
 				HashSet<Object> value = (HashSet<Object>)newValue;
 				Object[] objects = value.toArray();
 				Object obj = objects[0];
+				
 				setAssociatedDbType((DbType)obj);
 				return;
+			
 			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
 				setName((String)newValue);
+				return;
+				
+			case Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
+				setNoOfMachines((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -292,6 +374,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
+				setNoOfMachines(NO_OF_MACHINES_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -312,6 +397,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return associatedDbType != null;
 			case Observability_emfPackage.DATABASE_CLUSTER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Observability_emfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
+				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -328,6 +415,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", noOfMachines: ");
+		result.append(noOfMachines);
 		result.append(')');
 		return result.toString();
 	}

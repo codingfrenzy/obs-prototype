@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link observability_emf.DatabaseCluster#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
  *   <li>{@link observability_emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}</li>
  *   <li>{@link observability_emf.DatabaseCluster#getName <em>Name</em>}</li>
+ *   <li>{@link observability_emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}</li>
  * </ul>
  * </p>
  *
@@ -111,5 +112,31 @@ public interface DatabaseCluster extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Returns the value of the '<em><b>No Of Machines</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>No Of Machines</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>No Of Machines</em>' attribute.
+	 * @see #setNoOfMachines(int)
+	 * @see observability_emf.Observability_emfPackage#getDatabaseCluster_NoOfMachines()
+	 * @model
+	 * @generated
+	 */
+	int getNoOfMachines();
+
+	/**
+	 * Sets the value of the '{@link observability_emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Of Machines</em>' attribute.
+	 * @see #getNoOfMachines()
+	 * @generated
+	 */
+	void setNoOfMachines(int value);
 
 } // DatabaseCluster

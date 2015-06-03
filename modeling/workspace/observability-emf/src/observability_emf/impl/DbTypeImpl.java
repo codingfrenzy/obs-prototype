@@ -4,9 +4,9 @@ package observability_emf.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import observability_emf.*;
-
+import observability_emf.DbType;
+import observability_emf.Metric;
+import observability_emf.Observability_emfPackage;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -82,7 +82,7 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 30;
+	protected static final int COLLECTION_FREQUENCY_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getCollectionFrequency() <em>Collection Frequency</em>}' attribute.
@@ -195,8 +195,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @generated
 	 */
 	public void setCollectionFrequency(int newCollectionFrequency) {
-		if(newCollectionFrequency < 30)
-			throw new IllegalArgumentException("Collection frequency cannot be less than 30");
 		int oldCollectionFrequency = collectionFrequency;
 		collectionFrequency = newCollectionFrequency;
 		if (eNotificationRequired())
