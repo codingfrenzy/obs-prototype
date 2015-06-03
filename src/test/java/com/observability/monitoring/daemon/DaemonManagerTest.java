@@ -29,6 +29,7 @@ import java.rmi.RemoteException;
 import java.util.Vector;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -47,18 +48,15 @@ import org.junit.Test;
  */
 public class DaemonManagerTest {
 
-	private DaemonManager dm = null;
-	/**
-	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#DaemonManager()}.
-	 */
-	@Test
-	public void testDaemonManager() {
+	private static DaemonManager dm = null;
+	
+	@BeforeClass
+    public static void setUp() {	
 		try {
 			dm = new DaemonManager();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		Assert.assertNotNull(dm);
 	}
 
 	/**
@@ -155,7 +153,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#startConfigurationModification()}.
 	 */
-	@Test
+	//@Test
 	public void testStartConfigurationModification() {
 		try {
 			boolean ret = dm.startConfigurationModification();
@@ -169,7 +167,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#changeConfiguration(java.lang.String, java.lang.String)}.
 	 */
-	@Test
+	//@Test
 	public void testChangeConfiguration() {
 		try{
 			// change interval from 30 to 20
@@ -203,7 +201,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#replaceWholeConfiguration(java.lang.String)}.
 	 */
-	@Test
+	//@Test
 	public void testReplaceWholeConfiguration() {
 		try {
 			String s1 = 
@@ -227,7 +225,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#stopConfigurationModification()}.
 	 */
-	@Test
+	//@Test
 	public void testStopConfigurationModification() {
 		try {
 			boolean ret = dm.stopConfigurationModification();
@@ -237,6 +235,20 @@ public class DaemonManagerTest {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#startConfigurationModification()}.
+	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#changeConfiguration(java.lang.String, java.lang.String)}.
+	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#replaceWholeConfiguration(java.lang.String)}.
+	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#stopConfigurationModification()}.
+	 */
+	@Test
+	public void testConfigurationModification() {
+		testStartConfigurationModification();
+		testChangeConfiguration();
+		testStopConfigurationModification();
+		testReplaceWholeConfiguration();
+	}
 
 	public static void main(String[] args) {
 		
@@ -244,7 +256,8 @@ public class DaemonManagerTest {
 		DaemonManagerTest dmt = new DaemonManagerTest();
 		// 1. test constructor
 		System.out.println("1. Test constructor");
-		dmt.testDaemonManager();
+		//dmt.testDaemonManager();
+		setUp();
 		System.out.println("1. Done");
 		
 		// 2. test kill collectd
@@ -265,13 +278,13 @@ public class DaemonManagerTest {
 		dmt.testStartConfigurationModification();
 		System.out.println("4.2. Modify");
 		dmt.testChangeConfiguration();
-		System.out.println("4.3. Stop");
-		dmt.testStopConfigurationModification();
 		///*
-		System.out.println("4.4. Replace all");
+		System.out.println("4.3. Replace all");
 		dmt.testReplaceWholeConfiguration();
-		System.out.println("4. Done");
 		//*/
+		System.out.println("4.4. Stop");
+		dmt.testStopConfigurationModification();
+		System.out.println("4. Done");
 
 		// end all tests
 		System.out.println("Finished testing: com.observability.monitoring.daemon.DaemonManagerTest");
