@@ -34,8 +34,8 @@
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
           </style>
         </containerMappings>
-        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" createElements="false" domainClass="observability_emf.DbType">
-          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" createElements="false" domainClass="observability_emf.Metric">
+        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
+          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
             <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="3" verticalDiameterComputationExpression="3">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
