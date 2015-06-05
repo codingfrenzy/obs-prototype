@@ -23,7 +23,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/Port"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//NodeMachine/name"/>
     </genClasses>
-    <genClasses ecoreClass="observability_emf.ecore#//Metric">
+    <genClasses image="false" ecoreClass="observability_emf.ecore#//Metric">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/unit"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability_emf.ecore#//Metric/description"/>

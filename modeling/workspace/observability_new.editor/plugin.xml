@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated observability_new -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="observability_new.presentation.Observability_newModelWizardID"
+            name="%_UI_Observability_newModelWizard_label"
+            class="observability_new.presentation.Observability_newModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Observability_newModelFile.gif">
+         <description>%_UI_Observability_newModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated observability_new -->
+      <editor
+            id="observability_new.presentation.Observability_newEditorID"
+            name="%_UI_Observability_newEditor_label"
+            icon="icons/full/obj16/Observability_newModelFile.gif"
+            extensions="observability_new"
+            class="observability_new.presentation.Observability_newEditor"
+            contributorClass="observability_new.presentation.Observability_newActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

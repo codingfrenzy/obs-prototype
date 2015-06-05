@@ -3,18 +3,13 @@
 package observability_emf.impl;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-
-import javax.naming.directory.InvalidAttributeValueException;
-
 import observability_emf.BaseMetric;
 import observability_emf.DatabaseCluster;
 import observability_emf.DbType;
 import observability_emf.NodeMachine;
 import observability_emf.Observability_emfPackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -238,6 +233,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		}
 		
 		int oldNoOfMachines = noOfMachines;
+
+		// set the number of machines at class level
+		noOfMachines = newNoOfMachines;
 		
 		// NoOfMachines cannot be decreased via parameter change.
 		if(oldNoOfMachines > newNoOfMachines){
@@ -252,26 +250,30 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		
 		NodeMachineImpl machine;
 		
+//		EList<NodeMachine> newMachines = new EObjectContainmentEList<NodeMachine>(NodeMachine.class, 
+//				this, Observability_emfPackage.DATABASE_CLUSTER__MACHINES);
+		
 		// Get all the existing machines in the cluster
 		EList<NodeMachine> existingMachines = getMachines();
-		
+		//newMachines.addAll(existingMachines);
+
 		// Get the number of machines to create
 		int size = existingMachines.size();
 		int requiredMachines = newNoOfMachines - size; 
 		
 		// Create the required number of machines and add to cluster
 		if(requiredMachines > 0){
+			//ArrayList<NodeMachine> temp = new ArrayList<>();
 			for(int i=size+1;i<=newNoOfMachines;i++){
 				machine = new NodeMachineImpl();
 				String name = "machine" + Integer.toString(i);
 				machine.setName(name);
 				existingMachines.add(machine);
 			}
-		eSet(Observability_emfPackage.DATABASE_CLUSTER__MACHINES, existingMachines);
+			//newMachines.addAll(temp);
+			//eSet(Observability_emfPackage.DATABASE_CLUSTER__MACHINES, existingMachines);
 		}		
 		
-		// set the number of machines at class level
-		noOfMachines = newNoOfMachines;
 		
 		// notify all the registered listeners
 		if (eNotificationRequired())
@@ -354,9 +356,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				getMachines().addAll(machines);
 				
 				// set the no of machines 
-				if(getNoOfMachines()!=machines.size())
-					setNoOfMachines(machines.size());
-				return;
+//				if(getNoOfMachines()!=machines.size())
+//					setNoOfMachines(machines.size());
+//				return;
 				
 			case Observability_emfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
 				getCollectedBaseMetric().clear();
