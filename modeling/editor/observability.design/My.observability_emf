@@ -20,4 +20,20 @@
     <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
     <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
   </availableDbTypes>
+  <availableDbTypes name="Cassandra">
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+  </availableDbTypes>
+  <availableDbTypes name="PostGres">
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 1"/>
+    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Metric 2"/>
+  </availableDbTypes>
 </observability_emf:Model>
