@@ -37,7 +37,7 @@ import org.junit.Test;
  * Unit test for com.observability.monitoring.daemon.DaemonManager.
  * <p>
  * In bin folder, run the following command to start testing<br>
- * sudo java -cp .:sr/share/java/junit4.jar com.observability.monitoring.daemon.DaemonManagerTest
+ * sudo java -cp .:/usr/share/java/junit4.jar com.observability.monitoring.daemon.DaemonManagerTest
  * <p>
  * To test saving to conf file, make sure there is a collect.conf file in the same folder.
  * <p>
