@@ -51,10 +51,6 @@ path = args[0]
 from_time = int( options._from )
 until_time = int( options.until )
 
-# added by Rajat to check that the interval is valid
-if((from_time+1) % 30!=0 or (until_time-1)%30 !=0):
-  sys.exit(1)
-
 try:
   (timeInfo, values) = whisper.fetch(path, from_time, until_time)
 except whisper.WhisperException, exc:
@@ -86,5 +82,6 @@ for value in values:
     valuestr = "None"
   else:
     valuestr = "%f" % value
-  print "%s\t%s" % (timestr,valuestr)
+  if( t >= from_time and t <= until_time ):
+    print "%s\t%s" % (timestr,valuestr)
   t += step
