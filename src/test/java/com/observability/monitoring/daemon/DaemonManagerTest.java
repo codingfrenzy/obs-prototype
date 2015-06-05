@@ -30,6 +30,7 @@ import java.util.Vector;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -62,7 +63,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#killProcess(java.lang.String)}.
 	 */
-	@Test
+	@Ignore @Test
 	public void testKillProcess() {
 		System.out.println("Start testing for killing collectd");
 		String processmame = "collectdmon"; 
