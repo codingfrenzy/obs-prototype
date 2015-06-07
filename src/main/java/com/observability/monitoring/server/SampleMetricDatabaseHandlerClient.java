@@ -9,7 +9,7 @@ import java.rmi.Naming;
  * 3. run RMI server:
  *    java com.observability.monitoring.server.MetricDatabaseHandler localhost 8100
  * 4. run this client by: 
- * 	  java com.observability.monitoring.server.SampleMetricDatabaseHandlerClient localhost 8100 1433292139 1433292291 collectd/observabilityCassandra1/memory/memory-used 
+ * 	  java com.observability.monitoring.server.SampleMetricDatabaseHandlerClient localhost 8100 1433641326.507 1433641416.508 collectd/observabilityCassandra1/memory/memory-used 
  */
 
 public class SampleMetricDatabaseHandlerClient {
@@ -27,7 +27,7 @@ public class SampleMetricDatabaseHandlerClient {
 		try{
 			// below are the only two lines you need to use in your program to use methods of MetricDatabaseHandler
 			IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+args[0]+":"+args[1]+"/MetricDatabaseHandler");
-			System.out.println(imdhs.getMetricsBtwEpochRange(Long.parseLong(args[2]),Long.parseLong(args[3]),args[4]));
+			System.out.println(imdhs.getMetricsBtwEpochRange(args[2],args[3],args[4]));
 		} catch(Exception e){
 			e.printStackTrace();
 		}
