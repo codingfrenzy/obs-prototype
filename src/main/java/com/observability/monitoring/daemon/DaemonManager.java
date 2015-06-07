@@ -47,7 +47,8 @@ import java.util.Vector;
  * 1. Created					May 29 2015<br>
  * 2. Modified					May 30 2015<br>
  * 3. Modified					May 31 2015<br>
- * 4. Modified					Jun 02 2015
+ * 4. Modified					Jun 02 2015<br>
+ * 5. Modified					Jun 07 2015<br>
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -76,30 +77,41 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	}
 
 	/**
-	 * Kill process by the process name
+	 * Kill process by the process name.<br>
+	 * This method runs the following commands as external process.<br>
+	 * pidof: get pid of collectd process;<br>
+	 * sudo kill: kill the process with sudo privilege;<br>
+	 * If there are multiple collectd processes, all of them will be killed.<br>
 	 * 
 	 * @param process name of the process
 	 */
 	public static void killProcess(String process) {
 	    try {
+	    	// build the pid command
 	        Vector<String> commands = new Vector<String>();
 	        commands.add("pidof");
 	        commands.add(process);
 	        ProcessBuilder pb = new ProcessBuilder(commands);
+	        // run the command
 	        Process pr = pb.start();
+	        // wait for return
 	        pr.waitFor();
-	        if (pr.exitValue() != 0)
+	        if (pr.exitValue() != 0){//error return value
+	        	System.out.println("DaemonManager - error - getting pid of collectd failed.");
 	        	return;
+	        }
+	        // get the pid value
 	        BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream(),"UTF-8"));
 	        String pros = outReader.readLine();
 	        if(pros != null && pros.length() > 0) {
 		        String [] strs = pros.trim().split(" ");
+		        // loop through to kill all of them
 		        for (String pid : strs) {
-		            //log.info("Killing pid: "+pid);
+		            // kill the pid
 		            Process kill = Runtime.getRuntime().exec("sudo kill " + pid);
 		            kill.waitFor();
 		            System.out.println("Killing pid: " + pid);
-
+		            // get the output and print
 		            BufferedReader br = new BufferedReader(new InputStreamReader(kill.getInputStream(),"UTF-8"));
 		            String killOutputLine = "";
 		            while ((killOutputLine = br.readLine()) != null) {
@@ -116,11 +128,12 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	}
 	
 	/**
-	 * Start the process by name, this class file should be in the same folder as the target program
+	 * Start the process by name, this class file should be in the same folder as the target program.
 	 * @param process name of the process
 	 */
 	public static void startProcess(String process) {
 		try {
+			// start process with sudo (required by collectd)
 			Runtime.getRuntime().exec("sudo " + process);
 		} catch (Exception e) {
 	        e.printStackTrace();
@@ -204,7 +217,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public boolean replaceWholeConfiguration(String config) throws RemoteException {
 		if(confString == null || config == null || config.isEmpty())
 			return false;
-		
+		// replace the whole configuration string
 		confString = config;
 		return true;
 	}
@@ -267,6 +280,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			System.exit(1);
 		}
 		try {
+			// bind service
 			Naming.rebind(String.format("//%s:%s/DaemonManager", rmiIP, rmiPort), server);
 		} catch (RemoteException e) {
 			System.out.println(e);
