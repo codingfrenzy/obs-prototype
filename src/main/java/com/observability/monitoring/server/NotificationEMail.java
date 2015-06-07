@@ -86,12 +86,12 @@ public class NotificationEMail {
 	        message.setFrom(new InternetAddress(SMTP_EMAIL_ACCOUNT));
 
 	        // Set To: header field of the header.
-	        String rcpts = "";
+	        StringBuffer buf = new StringBuffer();
 	        for(int i = 0 ; i < recipients.size() ; i++) {
 	        	String to = recipients.get(i);
 	        	if(to != null && !to.isEmpty()) {
-	        		rcpts += "\n";
-	        		rcpts += to;
+	        		buf.append("\n");
+	        		buf.append(to);
 	        		// add to recipient
 	        		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 	        	}
@@ -106,7 +106,7 @@ public class NotificationEMail {
 	        } else {//plain text
 	        	message.setText(msgcontent);
 	        }
-
+	        String rcpts = buf.toString();
 	        if(rcpts.isEmpty()) {
 	        	System.out.println("Sent email error: Empty recipient.");
 	        	return false;
