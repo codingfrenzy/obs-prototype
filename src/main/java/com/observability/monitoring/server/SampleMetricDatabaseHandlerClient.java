@@ -19,7 +19,7 @@ public class SampleMetricDatabaseHandlerClient {
 			System.out.println("Incorrect number of params!");
 			System.out.println("args[0] is the ip addr of RMI server");
 			System.out.println("args[1] is the port no. of RMI server");
-			System.out.println("args[2] is the fromEpoch value (exclusive)");
+			System.out.println("args[2] is the fromEpoch value (inclusive)");
 			System.out.println("args[3] is the toEpoch value (inclusive)");
 			System.out.println("args[4] is the metricPath e.g. collectd/observabilityCassandra1/memory/memory-used");
 			System.exit(1);
