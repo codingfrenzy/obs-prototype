@@ -4,9 +4,13 @@ package observability_emf.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import observability_emf.BaseMetric;
 import observability_emf.DbType;
 import observability_emf.Metric;
+import observability_emf.Observability_emfFactory;
 import observability_emf.Observability_emfPackage;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -121,12 +125,14 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		ArrayList<Metric> metrics = new ArrayList<>();
 		
 		//read all the metrics, create their instance and add it to the relation		
-		BaseMetricImpl baseMetric = new BaseMetricImpl();
+		BaseMetricImpl baseMetric = (BaseMetricImpl)Observability_emfFactory.eINSTANCE.createBaseMetric();
 		baseMetric.setName("Metric 1");
 		metrics.add(baseMetric);
+		//getAvailableMetrics().add(baseMetric);
 		
-		baseMetric = new BaseMetricImpl();
+		baseMetric = (BaseMetricImpl)Observability_emfFactory.eINSTANCE.createBaseMetric();
 		baseMetric.setName("Metric 2");
+		//getAvailableMetrics().add(baseMetric);
 		metrics.add(baseMetric);
 		
 		eSet(Observability_emfPackage.DB_TYPE__AVAILABLE_METRICS, metrics);

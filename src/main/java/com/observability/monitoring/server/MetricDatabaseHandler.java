@@ -41,6 +41,7 @@ import java.util.ArrayList;
  * 
  * History: 
  * 1. Created					Jun 03 2015
+ * 2. Modified					Jun 06 2015
  */
 
 public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetricDatabaseHandlerServer{
@@ -61,17 +62,23 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	 * Path where whisper data is stored (must end with '/')
 	 */
 	private static String whisperPath = "/var/lib/graphite/whisper/";
+	/*
+	 * The lowest frequency in seconds of metric collection
+	 */
+	private int lowestInterval = 30;
 	
 	/**
 	 * for details about this method refer IMetricDatabaseHandler
 	 */
-	public String getMetricValueAtEpoch(long epoch, String metricPath)
+	public String getMetricValueAtEpoch(String epoch, String metricPath)
 			throws RemoteException {
-		if(epoch < 0 || metricPath == null || "".equals(metricPath))
+		if(epoch == null || "".equals(epoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
 			return null;
 		StringBuilder command = new StringBuilder();
-		long from = epoch-1;
-		long to = epoch+1;
+		long actualEpoch = (long)Double.parseDouble(epoch);
+		actualEpoch = actualEpoch - (actualEpoch % lowestInterval);
+		long from = actualEpoch-1;
+		long to = actualEpoch+1;
 		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+from+" --until="+to);
 		Process p;
 		BufferedReader outReader = null;
@@ -85,7 +92,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		    String output = outReader.readLine();
 		    if(output!=null && !"".equals(output) && output.contains("\t")){
 		    	String[] value = output.split("\t");
-		    	returnStr =  value[1];
+		    	returnStr =  actualEpoch+"\t"+value[1];
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,12 +111,16 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	/**
 	 * for details about this method refer IMetricDatabaseHandler
 	 */
-	public ArrayList<String> getMetricsBtwEpochRange(long fromEpoch,
-			long toEpoch, String metricPath) throws RemoteException {
-		if(fromEpoch < 0 || toEpoch < 0 || metricPath == null || "".equals(metricPath))
+	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch,
+			String toEpoch, String metricPath) throws RemoteException {
+		if(fromEpoch == null || "".equals(fromEpoch.trim()) || toEpoch == null || "".equals(toEpoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
 			return null;
 		StringBuilder command = new StringBuilder();
-		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+fromEpoch+" --until="+toEpoch);
+		long fromEpochLong = (long)Double.parseDouble(fromEpoch);
+		fromEpochLong = fromEpochLong - (fromEpochLong % lowestInterval);
+		long toEpochLong = (long)Double.parseDouble(toEpoch);
+		toEpochLong = toEpochLong - (toEpochLong % lowestInterval);
+		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+(fromEpochLong-1)+" --until="+(toEpochLong+1));
 		Process p;
 		BufferedReader outReader = null;
 		ArrayList<String> outputList = new ArrayList<String>();
@@ -142,15 +153,18 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	/**
 	 * for details about this method refer IMetricDatabaseHandler
 	 */
-	public boolean updateMetrics(long[] epoch, String[] values,
+	public boolean updateMetrics(String[] epoch, String[] values,
 			String metricPath) throws RemoteException {
-		if(epoch == null || values == null || metricPath == null || "".equals(metricPath) || epoch.length != values.length)
+		if(epoch == null || values == null || metricPath == null || "".equals(metricPath.trim()) || epoch.length != values.length)
 			return false;
 		Process p;
 		StringBuilder command = new StringBuilder();
 		command.append("whisper-update.py "+whisperPath+metricPath+".wsp ");
+		long currentEpoch;
 		for(int i=0;i<epoch.length;i++){
-			command.append(epoch[i]+":"+values[i]);
+			currentEpoch = (long)Double.parseDouble(epoch[i]);
+			currentEpoch = currentEpoch - (currentEpoch % lowestInterval);
+			command.append(currentEpoch+":"+values[i]);
 			if(i!=epoch.length-1)
 				command.append(" ");
 		}

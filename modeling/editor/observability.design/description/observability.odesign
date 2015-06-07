@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="observability" version="8.1.0">
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" name="observability" version="8.1.0">
   <ownedViewpoints name="obsView">
     <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsDiag" titleExpression="'SUM'" initialisation="true" domainClass="observability_emf.Model" enablePopupBars="true">
+      <diagramInitialisation>
+        <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="[currentModel.ownedViewpoints.ownedRepresentations.eContents(Model)/]">
+          <subModelOperations xsi:type="tool:CreateInstance" typeName="observability_emf.DbType" referenceName="availableDbTypes"/>
+        </firstModelOperations>
+      </diagramInitialisation>
       <defaultLayer name="Default" label="Model diagram">
         <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
           <style lineStyle="dash" sizeComputationExpression="2">
@@ -34,8 +39,8 @@
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_gray']"/>
           </style>
         </containerMappings>
-        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" createElements="false" domainClass="observability_emf.DbType">
-          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" createElements="false" domainClass="observability_emf.Metric">
+        <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_emf.DbType">
+          <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_emf.Metric">
             <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="3" verticalDiameterComputationExpression="3">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -50,70 +55,70 @@
           </style>
         </containerMappings>
         <toolSections>
-          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createDbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']">
+          <ownedTools xsi:type="tool_1:ContainerCreationDescription" name="createDbClusterContainer" containerMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']">
             <variable name="dbClusterContainer"/>
             <viewVariable name="dbClusterContainerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:dbClusterContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.DatabaseCluster" referenceName="clusters">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['cluster' + dbClusterContainer.clusters->size()/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:dbClusterContainer">
+                <subModelOperations xsi:type="tool:CreateInstance" typeName="observability_emf.DatabaseCluster" referenceName="clusters">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="['cluster' + dbClusterContainer.clusters->size()/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
+          <ownedTools xsi:type="tool_1:NodeCreationDescription" name="machineNode" nodeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@containerMappings[name='dbCluster']/@subNodeMappings[name='nodeMachine']">
             <variable name="machineContainer"/>
             <viewVariable name="machineContainerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineContainer">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['machine' + machineContainer.machines->size()/]"/>
-                  <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[self.eContainer()/]">
-                    <subModelOperations xsi:type="tool_1:SetValue" featureName="noOfMachines" valueExpression="[noOfMachines + 1/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:machineContainer">
+                <subModelOperations xsi:type="tool:CreateInstance" typeName="observability_emf.NodeMachine" referenceName="machines" variableName="machineInstance">
+                  <subModelOperations xsi:type="tool:SetValue" featureName="name" valueExpression="['machine' + machineContainer.machines->size()/]"/>
+                  <subModelOperations xsi:type="tool:ChangeContext" browseExpression="[self.eContainer()/]">
+                    <subModelOperations xsi:type="tool:SetValue" featureName="noOfMachines" valueExpression="[noOfMachines + 1/]"/>
                   </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="clusterToMetricEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']">
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="clusterToMetricEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToMetric']">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:EdgeCreationDescription" name="clusterToDbTypeEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']">
+          <ownedTools xsi:type="tool_1:EdgeCreationDescription" name="clusterToDbTypeEdge" edgeMappings="//@ownedViewpoints[name='obsView']/@ownedRepresentations[name='obsDiag']/@defaultLayer/@edgeMappings[name='clusterToDbType']">
             <sourceVariable name="source"/>
             <targetVariable name="target"/>
             <sourceViewVariable name="sourceView"/>
             <targetViewVariable name="targetView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="var:source">
+                <subModelOperations xsi:type="tool:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:DeleteElementDescription" name="metricEdgeDeletion">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="metricEdgeDeletion">
             <element name="element"/>
             <elementView name="elementView"/>
             <containerView name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
-                <subModelOperations xsi:type="tool_1:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool:Unset" featureName="collectedBaseMetric" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
-          <ownedTools xsi:type="tool:DeleteElementDescription" name="dbTypeEdgeDeletion">
+          <ownedTools xsi:type="tool_1:DeleteElementDescription" name="dbTypeEdgeDeletion">
             <element name="element"/>
             <elementView name="elementView"/>
             <containerView name="containerView"/>
             <initialOperation>
-              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="[element/]">
-                <subModelOperations xsi:type="tool_1:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
+              <firstModelOperations xsi:type="tool:ChangeContext" browseExpression="[element/]">
+                <subModelOperations xsi:type="tool:Unset" featureName="associatedDbType" elementExpression="[elementView.oclAsType(DEdge).targetNode.oclAsType(DNode).target/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

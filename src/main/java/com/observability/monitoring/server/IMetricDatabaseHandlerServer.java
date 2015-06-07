@@ -35,6 +35,7 @@ import java.util.ArrayList;
  * 
  * History: 
  * 1. Created					Jun 03 2015
+ * 2. Modified					Jun 06 2015
  */
 
 public interface IMetricDatabaseHandlerServer extends Remote{
@@ -43,7 +44,7 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 * getMetricValueAtEpoch fetches a single value of a metric from whisper
 	 * 
 	 * @param epoch is the epoch value or the UNIX timestamp at which the
-	 * metric is to be fetched; Note: epoch should be a multiple of 30
+	 * metric is to be fetched
 	 * 
 	 * @param metricPath is the path of the metric such as :
 	 * collectd/observabilityCassandra1/memory/memory-used
@@ -52,17 +53,17 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 * /var/lib/graphite/whisper/collectd/collectd/observabilityCassandra1/memory/memory-used.wsp
 	 * 
 	 * @return null if the epoch or metricPath are empty, or no result is obtained
-	 *         metric value in whisper DB if it is present
-	 * Example: getMetricValueAtEpoch(1433292120,"collectd/observabilityCassandra1/memory/memory-used")
+	 *         epoch and metric value in whisper DB (separated by tab) if it is present
+	 * Example: getMetricValueAtEpoch("1433641326.507","collectd/observabilityCassandra1/memory/memory-used")
 	 */
 	
-	public String getMetricValueAtEpoch(long epoch, String metricPath) throws RemoteException;
+	public String getMetricValueAtEpoch(String epoch, String metricPath) throws RemoteException;
 	
 	/**
 	 * getMetricsBtwEpochRange fetches a range of epoch values and their
 	 * corresponding metric values in an arrayList which are between 
 	 * fromEpoch and toEpoch
-	 * @param fromEpoch is the starting epoch value (exclusive)
+	 * @param fromEpoch is the starting epoch value (inclusive)
 	 * @param toEpoch is the ending epoch value (inclusive)
 	 * @param metricPath is the path of the metric such as :
 	 * collectd/observabilityCassandra1/memory/memory-used
@@ -71,10 +72,10 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 *         an arraylist containing epoch values and their corresponding
 	 *         metric values separated by a tab if at least one value is
 	 *         found
-	 * Example: getMetricsBtwEpochRange(1433292139,1433292291,"collectd/observabilityCassandra1/memory/memory-used")
+	 * Example: getMetricsBtwEpochRange("1433641326.507", "1433641416.508", "collectd/observabilityCassandra1/memory/memory-used")
 	 */
 	
-	public ArrayList<String> getMetricsBtwEpochRange(long fromEpoch, long toEpoch, String metricPath) throws RemoteException;
+	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch, String toEpoch, String metricPath) throws RemoteException;
 	
 	/**
 	 * updateMetrics takes an array of epoch values and an array of metric 
@@ -87,12 +88,9 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 * @return true if the values were successfully updated
 	 * 		   false if the values were not updated due to an error or the
 	 * 		   arguments given were invalid
-	 * Example: updateMetrics(new long[]{1433292180,1433292210},new String[]{"242106369.000000", "242126849.000000"},"collectd/observabilityCassandra1/memory/memory-used")
-	 * Note: make sure that the epoch values provided are a multiple of 30
-	 * 		 otherwise the function says that the values were updated but they
-	 * 		 are actually not
+	 * Example: updateMetrics(new String[]{"1433641326.507", "1433641416.508"},new String[]{"242106369.000000", "242126849.000000"},"collectd/observabilityCassandra1/memory/memory-used")
 	 */
 	
-	public boolean updateMetrics(long[] epoch, String[] values, String metricPath) throws RemoteException;
+	public boolean updateMetrics(String[] epoch, String[] values, String metricPath) throws RemoteException;
 	
 }
