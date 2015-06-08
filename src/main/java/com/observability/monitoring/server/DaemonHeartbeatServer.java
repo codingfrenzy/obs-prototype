@@ -190,11 +190,11 @@ public class DaemonHeartbeatServer extends Thread {
 	 */
 	private void listenForDaemons() {
 		long startEpoch = System.currentTimeMillis() / 1000;
-		long prev = System.currentTimeMillis() / 1000;
 		while (true) {
 			try {
 				Socket server = serverSocket.accept();
-				String connectedDaemonIP = server.getRemoteSocketAddress().toString();
+				// String connectedDaemonIP =
+				// server.getRemoteSocketAddress().toString();
 				DataInputStream in = new DataInputStream(server.getInputStream());
 				String messageFromDaemon = in.readUTF();
 				server.close();
@@ -219,7 +219,8 @@ public class DaemonHeartbeatServer extends Thread {
 
 	/**
 	 * Starts the thread.<br>
-	 * After every samplingRate, verifies the daemon list and then listens again.
+	 * After every samplingRate, verifies the daemon list and then listens
+	 * again.
 	 */
 	public void run() {
 		while (true) {
