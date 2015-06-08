@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+  <extension point="org.eclipse.sirius.componentization">
+    <component class="observability_new.design.Activator"
+               id="observability_new.design"
+	       name="observability_new">
+    </component>
+  </extension>
+</plugin>

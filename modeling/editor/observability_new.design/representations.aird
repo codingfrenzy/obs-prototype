@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:observability_new="http://www.example.org/observability_new" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description" xmi:id="_WFKF4A31EeWQ-MkXiEC-KA" selectedViews="_n9Z50A31EeWQ-MkXiEC-KA" version="8.1.1">
+  <models xmi:type="observability_new:Model" href="My.observability_new#/"/>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_n9Z50A31EeWQ-MkXiEC-KA" initialized="true">
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_xP4x0A31EeWQ-MkXiEC-KA" name="new obsNewDiag">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_xP71IA31EeWQ-MkXiEC-KA" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_xP71IQ31EeWQ-MkXiEC-KA" type="Sirius" element="_xP4x0A31EeWQ-MkXiEC-KA" measurementUnit="Pixel">
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_xP71Ig31EeWQ-MkXiEC-KA"/>
+        </data>
+      </ownedAnnotationEntries>
+      <description xmi:type="description_1:DiagramDescription" href="description/observability_new.odesign#//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_xP4x0Q31EeWQ-MkXiEC-KA"/>
+      <target xmi:type="observability_new:Model" href="My.observability_new#/"/>
+    </ownedRepresentations>
+    <viewpoint xmi:type="description:Viewpoint" href="description/observability_new.odesign#//@ownedViewpoints[name='obsNewView']"/>
+  </ownedViews>
+</viewpoint:DAnalysis>
