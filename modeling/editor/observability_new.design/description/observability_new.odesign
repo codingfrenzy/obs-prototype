@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="observability_new" version="8.1.0">
   <ownedViewpoints name="obsNewView">
-    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsNewDiag" initialisation="true" domainClass="observability_new.Model" enablePopupBars="true">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsNewDiag" domainClass="observability_new.Model" enablePopupBars="true">
       <defaultLayer name="Model diagram">
         <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
           <style lineStyle="dash" sizeComputationExpression="2">
@@ -21,7 +21,7 @@
         </edgeMappings>
         <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_new.DatabaseCluster">
           <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_new.NodeMachine">
-            <style xsi:type="style:SquareDescription" tooltipExpression="feature:name" resizeKind="NSEW">
+            <style xsi:type="style:SquareDescription" tooltipExpression="service:getName" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
@@ -36,7 +36,7 @@
         </containerMappings>
         <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_new.DbType">
           <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_new.BaseMetric">
-            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW">
+            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" labelPosition="node" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_chocolate']"/>
@@ -67,7 +67,7 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineNode">
                 <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_new.NodeMachine" referenceName="machines">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="['machine' + machineNode.machines->size()/]"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[self.getName()/]"/>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
@@ -117,5 +117,6 @@
         </toolSections>
       </defaultLayer>
     </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="observability_new.design.TestService"/>
   </ownedViewpoints>
 </description:Group>

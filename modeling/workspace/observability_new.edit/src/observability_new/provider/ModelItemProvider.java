@@ -6,17 +6,16 @@ package observability_new.provider;
 import java.util.Collection;
 import java.util.List;
 
+import observability_new.DbType;
 import observability_new.Model;
 import observability_new.Observability_newFactory;
 import observability_new.Observability_newPackage;
+import observability_new.impl.Observability_newFactoryImpl;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -178,16 +177,25 @@ public class ModelItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
+		
+		
 		newChildDescriptors.add
 			(createChildParameter
 				(Observability_newPackage.Literals.MODEL__CLUSTERS,
 				 Observability_newFactory.eINSTANCE.createDatabaseCluster()));
-
+		
+		Model model = (Model)object;
+		//Observability_newFactory factory = Observability_newFactoryImpl.init();
+		DbType db = Observability_newFactory.eINSTANCE.createDbType();
+		db.setName("Cassandra");
+		//model = Observability_newFactory.eINSTANCE.createModel();
+		model.getAvailableDbTypes().add(db);
+		
 		newChildDescriptors.add
 			(createChildParameter
 				(Observability_newPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
-				 Observability_newFactory.eINSTANCE.createDbType()));
+				 db));//Observability_newFactory.eINSTANCE.createDbType()));
+		
 	}
 
 	/**

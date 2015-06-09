@@ -538,7 +538,7 @@ public class Observability_newPackageImpl extends EPackageImpl implements Observ
 		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NAME);
 		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NO_OF_MACHINES);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS);
-
+		
 		dbTypeEClass = createEClass(DB_TYPE);
 		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
 		createEAttribute(dbTypeEClass, DB_TYPE__PROBE_LOCATION);

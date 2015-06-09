@@ -7,19 +7,16 @@ import java.util.Collection;
 import observability_new.DatabaseCluster;
 import observability_new.DbType;
 import observability_new.Model;
+import observability_new.Observability_newFactory;
 import observability_new.Observability_newPackage;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -86,6 +83,17 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 */
 	protected ModelImpl() {
 		super();
+		
+//		DbType db = Observability_newFactory.eINSTANCE.createDbType();
+//		db.setName("Cassandra");
+//		
+//		getAvailableDbTypes().add(db);
+//		
+//		db = Observability_newFactory.eINSTANCE.createDbType();
+//		db.setName("Mongo");
+//		
+//		getAvailableDbTypes().add(db);
+		
 	}
 
 	/**

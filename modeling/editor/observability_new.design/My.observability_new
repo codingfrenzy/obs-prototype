@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_new="http://www.example.org/observability_new">
-  <clusters name="cluster1">
-    <machines name="machine1"/>
-    <machines name="machine2"/>
-  </clusters>
-  <clusters name="cluster2"/>
-</observability_new:Model>
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_new="http://www.example.org/observability_new"/>
