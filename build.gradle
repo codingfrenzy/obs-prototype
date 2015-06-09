@@ -31,3 +31,25 @@ uploadArchives {
        }
     }
 }
+
+/* We need to exclude the modeling sources 
+"modeling/workspace/observability_new/src" from findBugs scan
+not able to do it for now.
+
+sourceSets {
+  excludeModeling {
+    java {
+      srcDir 'src/main/java'
+      srcDir 'src/test/java'
+    }
+  }
+}
+
+findbugs {
+    sourceSets = [sourceSets.excludeModeling]
+    
+}
+*/
+
+
+
