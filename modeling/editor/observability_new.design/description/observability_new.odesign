@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="observability_new" version="8.1.0">
   <ownedViewpoints name="obsNewView">
-    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsNewDiag" domainClass="observability_new.Model" enablePopupBars="true">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="obsNewDiag" initialisation="true" domainClass="observability_new.Model" enablePopupBars="true">
       <defaultLayer name="Model diagram">
         <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='obsNewView']/@ownedRepresentations[name='obsNewDiag']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']" targetFinderExpression="feature:collectedBaseMetric">
           <style lineStyle="dash" sizeComputationExpression="2">
@@ -66,8 +66,10 @@
             <viewVariable name="machineContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineNode">
-                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_new.NodeMachine" referenceName="machines">
-                  <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[self.getName()/]"/>
+                <subModelOperations xsi:type="tool_1:For" expression="service:getList">
+                  <subModelOperations xsi:type="tool_1:CreateInstance" typeName="observability_new.NodeMachine" referenceName="machines">
+                    <subModelOperations xsi:type="tool_1:SetValue" featureName="name" valueExpression="[self.getName()/]"/>
+                  </subModelOperations>
                 </subModelOperations>
               </firstModelOperations>
             </initialOperation>
