@@ -28,6 +28,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -183,42 +184,27 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	
 	/**
 	 * Main function
-	 * @param args arguments - arg1: binding IP, arg2: binding port
+	 * @param args arguments - arg1: binding port
 	 */
-	public static void main(String[] args) {
-		// Get IP & port from arguments
-		if(args.length  != 2){
-			System.out.println("MetricDatabaseHandler - error - should be started with two parameters: IP + port.");
-			return;
-		}
-
-		String rmiIP = args[0];
-		String rmiPort = args[1];
-
-		try {
-			int port = Integer.parseInt(rmiPort);
-			//create the RMI registry if it doesn't exist.
-			LocateRegistry.createRegistry(port);
-		}
-		catch(RemoteException e) {
-			System.out.println("MetricDatabaseHandler - error - Failed to create the RMI registry " + e);
-		}
-
-		MetricDatabaseHandler server = null;
-		try{
-			server = new MetricDatabaseHandler(); 
-		}
-		catch(RemoteException e) {
-			System.out.println("MetricDatabaseHandler - error - Failed to create server " + e);
+	public static void main(String[] args){
+		System.setProperty("java.net.preferIPv4Stack","true");
+		if(args.length!=1){
+			System.out.println("Invalid arguments: Please provide port no. as an argument");
 			System.exit(1);
 		}
 		try {
-			Naming.rebind(String.format("//%s:%s/MetricDatabaseHandler", rmiIP, rmiPort), server);
-			System.out.println("MetricDatabaseHandler started");
-		} catch (RemoteException e) {
-			System.out.println(e);
-		} catch (MalformedURLException e) {
-			System.out.println(e);
+			int portno = Integer.parseInt(args[0]);
+			String name = "MetricDatabaseHandler";
+			IMetricDatabaseHandlerServer engine = new MetricDatabaseHandler();
+			UnicastRemoteObject.unexportObject(engine, true);
+			IMetricDatabaseHandlerServer stub =
+					(IMetricDatabaseHandlerServer) UnicastRemoteObject.exportObject(engine, 0);
+			Registry registry = LocateRegistry.createRegistry(portno);
+			registry.rebind(name, stub);
+			System.out.println("MetricDatabaseHandler bound");
+		} catch (Exception e) {
+			System.err.println("MetricDatabaseHandler exception:");
+			e.printStackTrace();
 		}
 	}
 
