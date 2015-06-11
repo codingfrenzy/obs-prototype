@@ -1,10 +1,10 @@
 <Plugin "java">
 
-    JVMARG "-Djava.class.path=/opt/collectd/java-dep”
+    JVMARG "-Djava.class.path=/opt/collectd/java-depï¿½
     LoadPlugin "org.collectd.java.GenericJMX"
 <Plugin "GenericJMX">
 
-    <MBean "metrics"> @Collect
+    <MBean "metrics"> @Metric
         ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load"
         <Value>
           Type "gauge"
@@ -17,7 +17,7 @@
           Attribute "Count"
         </Value>
     </MBean>
-   <MBean "lang"> @Collect
+   <MBean "lang"> @Metric
         ObjectName "java.lang:type=Memory"
         <Value>
           Type "memory"
@@ -28,11 +28,11 @@
         </Value>
     </MBean>
 
-    <Connection>
+    <Connection> @Machine
       Host "10.10.10.10" @Machine 
       ServiceURL "" @Machine
-      Collect "metrics" @Metric 
-	Collect "lang" @Metric
+      Collect "metrics" @Collect 
+	  Collect "lang" @Collect
     </Connection>
   </Plugin>
 </Plugin>

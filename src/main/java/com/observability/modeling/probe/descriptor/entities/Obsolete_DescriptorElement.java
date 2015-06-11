@@ -47,13 +47,13 @@ import java.util.List;
  * @author Caglayan "Gem" Gemici
  *
  */
-public  class DescriptorElement {
+public  class Obsolete_DescriptorElement {
 	
 	
 	/**
 	 * If an element has children they are stored here.
 	 */
-	private List<DescriptorElement> children;
+	private List<Obsolete_DescriptorElement> children;
 	
 	/**
 	 * The key value attributes that every element can have
@@ -62,10 +62,10 @@ public  class DescriptorElement {
 	private String value;
 
 	
-	public List<DescriptorElement> getChildren() {
+	public List<Obsolete_DescriptorElement> getChildren() {
 		return children;
 	}
-	public void setChildren(List<DescriptorElement> children) {
+	public void setChildren(List<Obsolete_DescriptorElement> children) {
 		this.children = children;
 	}
 	public String getKey() {

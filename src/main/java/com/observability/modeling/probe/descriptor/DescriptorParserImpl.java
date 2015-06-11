@@ -21,6 +21,7 @@
 package com.observability.modeling.probe.descriptor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -30,8 +31,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.Stack;
 
-import com.observability.modeling.probe.descriptor.entities.PluginDefinition;
+import com.observability.modeling.probe.descriptor.entities.Collect;
+import com.observability.modeling.probe.descriptor.entities.DbType;
+import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.Machine;
+import com.observability.modeling.probe.descriptor.entities.Metric;
+
 
 /**
  * {@inheritDoc}
@@ -80,7 +88,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<PluginDefinition> parseDescriptors() {
+	public List<DbType> parseDescriptors() {
 
 		// Filter the files with correct extension
 		File dir = descriptorDirectory.toFile();
@@ -90,13 +98,18 @@ public class DescriptorParserImpl implements DescriptorParser {
 			}
 		});
 
-		List<PluginDefinition> plugins = new ArrayList<PluginDefinition>();
+		List<DbType> plugins = new ArrayList<DbType>();
 
 		// For each file generate a PluginDefinition
 		if (files != null) {
 			try {
 				for (File file : files) {
-
+					String dbName = file.getName().toLowerCase().split("\\.")[0];
+					DbType dbType = new DbType(dbName);
+					
+					parseFile(file, dbType);
+					
+					
 					String content = readFile(file.getPath(),
 							StandardCharsets.US_ASCII);
 					plugins.add(parsePlugin(content));
@@ -106,16 +119,160 @@ public class DescriptorParserImpl implements DescriptorParser {
 				ex.printStackTrace();
 				throw new RuntimeException();
 			}
-		}
+		}					
+		
 		return plugins;
 
+	}
+
+	
+	/**
+	 * This method parses the input file descriptor.<br>
+	 * The file should be in the defined template.
+	 * @param file the file to be parsed
+	 * @param dbType the parsed contents of the file as an instance
+	 * 	of {@link DbType} class.
+	 */
+	public void parseFile(File file, DbType dbType) {
+		
+		ElementTag element;
+		Stack<ElementTag> elementStack = new Stack<ElementTag>();
+		String currentAnnotation = null;
+		
+		try {
+			Scanner scanner = new Scanner(file);
+			while(scanner.hasNextLine()){
+				
+				String line = scanner.nextLine().trim();
+				
+				// the line has an annotation
+				if(ParserUtility.isAnnotated(line)){
+					
+					
+					// get the annotation string
+					String annotation = ParserUtility.getAnnotation(line);
+					
+					
+					// if it is a collect annotation, add it to DbType and continue to the next line
+					if(annotation.equals(COLLECT)){
+						// It is assumed that a collect annotation cannot be an element tag and would
+						// exist as a key-value pair only.
+						
+						// get the name and value of the annotation
+						String[] keyDetails = ParserUtility.getKeyValueDetails(line);
+						// create an empty element to store the key-value
+						element = new ElementTag(null, null);
+						element.addKeyValue(keyDetails[0], keyDetails[1]);
+						
+						// add the collect annotation to the DbType
+						addElementToDb(COLLECT, element, dbType);
+						continue;
+					}
+					else {
+						// if it is an annotation other than COLLECT,
+						// check if it is the same one as the current going on.
+						// At a time, only one annotation can be active
+						if(currentAnnotation == null || currentAnnotation.equals(annotation)){
+							currentAnnotation = annotation;
+						}
+						else {
+							throw new RuntimeException();
+						}
+					}
+					
+					// The annotation is decided. Create the element 
+					
+					// The line is an element start
+					if (ParserUtility.isElementStart(line)){
+					
+						String[] elementDetails = ParserUtility.getElementDetails(line);
+						element = new ElementTag(elementDetails[0], elementDetails[1]);
+						elementStack.push(element);
+						
+					}
+					else {
+						// the line is a key-value pair
+						String[] keyValueDetails = ParserUtility.getKeyValueDetails(line);
+						String keyName = keyValueDetails[0];
+						String keyValue = keyValueDetails[1];
+						
+						if(!elementStack.isEmpty()){
+							// add the key-value to the opened element
+							elementStack.peek().addKeyValue(keyName, keyValue);
+						}
+						else {
+							// create an empty element tag
+							element = new ElementTag(null, null);
+							element.addKeyValue(keyName, keyValue);
+							addElementToDb(currentAnnotation, element, dbType);
+							currentAnnotation = null;
+						}	
+					}
+				} // end if annotation
+				
+				// the line has an end tag
+				else if(ParserUtility.isElementEnd(line)){					
+					// Pop the top element from the stack and add it to the element at its bottom.
+					if(!elementStack.isEmpty()){
+						String elementName = ParserUtility.getElementDetails(line)[0];
+						element = elementStack.pop();
+						if(!element.getName().equals(elementName)){
+							// Element being ended is different than the one on stack.
+							// Push the element back to stack and continue
+							elementStack.push(element);
+							continue;
+						}
+						else if(!elementStack.isEmpty()){
+							// the element being ended is same as one on stack
+							// add the element to the element below it
+							elementStack.peek().addElement(element);	
+						}
+						else {
+							// the stack is empty. Add the element to the DbType parameter as per 
+							// the current annotation 
+							addElementToDb(currentAnnotation, element, dbType);
+							currentAnnotation = null;
+						}
+						
+					} // end if (!elementStack.isEmpty())
+				} // end else if(ParserUtility)
+				
+			} // end while
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	/**
+	 * This method adds the given element to the DbType instance.<br>
+	 * The element is added as per the annotation which is currently active
+	 * @param currentAnnotation the annotation being currently processed
+	 * @param element the element to be added
+	 * @param dbType instance of the DB to which the element is to be added
+	 */
+	private void addElementToDb(String currentAnnotation, ElementTag element,
+			DbType dbType) {
+		
+		if(currentAnnotation.equals(MACHINE_SCOPE)){
+			dbType.getMachineParams().addElement(element);
+		}
+		else if(currentAnnotation.equals(METRIC_SCOPE)){
+			dbType.getMetricParams().addElement(element);
+		}
+		else if(currentAnnotation.equals(COLLECT)){
+			dbType.getCollectParams().addElement(element);
+		}
+		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public PluginDefinition parsePlugin(String descriptorContent) {
-		return new PluginDefinition();
+	public DbType parsePlugin(String descriptorContent) {
+		return new DbType(descriptorContent);
 	}
 
 	/**

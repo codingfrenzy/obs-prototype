@@ -1,5 +1,5 @@
 <Plugin postgresql>
-    <Query magic> @Collect
+    <Query magic> @Metric
       Statement "SELECT magic FROM wizard WHERE host = $1;"
       Param hostname
       <Result>
@@ -8,7 +8,7 @@
         ValuesFrom magic
       </Result>
     </Query>
-    <Query rt36_tickets> @Collect
+    <Query rt36_tickets> @Metric
       Statement "SELECT COUNT(type) AS count, type \
                         FROM (SELECT CASE \
                                      WHEN resolved = 'epoch' THEN 'open' \
@@ -35,7 +35,7 @@
       Password ""@Machine
       SSLMode ""@Machine
       KRBSrvName ""@Machine
-      Query magic @Metric
+      Query magic @Collect
     </Database>
     
   </Plugin>

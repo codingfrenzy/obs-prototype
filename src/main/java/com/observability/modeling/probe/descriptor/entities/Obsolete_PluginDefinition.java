@@ -30,20 +30,20 @@ import java.util.List;
  * to be created for each plugin descriptor present. This info will be taken
  * from the intermediate entities this class generates :
  * 
- * @see DescriptorElement
- * @see PluginDefinition Intermediate entities are used to ensure decoupling
+ * @see Obsolete_DescriptorElement
+ * @see Obsolete_PluginDefinition Intermediate entities are used to ensure decoupling
  *      with EMF generated entities.
  * @author Caglayan "Gem" Gemici
  *
  */
-public class PluginDefinition {
+public class Obsolete_PluginDefinition {
 	
 	/**
 	 * The type of this plugin. These are based on 
 	 * bindings collectd provides
 	 * @see  
 	 */
-	private PluginType pluginType;
+	private Obsolete_PluginType pluginType;
 	
 	/**
 	 * These lists will hold the elements that are parsed 
@@ -54,61 +54,61 @@ public class PluginDefinition {
 	 * @see DescriptorParserImpl#METRIC_SCOPE
 	 * @see DescriptorParserImpl#COLLECT
 	 */
-	private List<DescriptorElement> machineScopeElements;
-	private List<DescriptorElement> dbTypeScopeElements;
-	private List<DescriptorElement> metricScopeElements;
-	private List<DescriptorElement> collectElements;
+	private List<Obsolete_DescriptorElement> machineScopeElements;
+	private List<Obsolete_DescriptorElement> dbTypeScopeElements;
+	private List<Obsolete_DescriptorElement> metricScopeElements;
+	private List<Obsolete_DescriptorElement> collectElements;
 	
 	
 	/**
 	 * Default constructor
 	 */
-	public PluginDefinition() {
+	public Obsolete_PluginDefinition() {
 		super();
-		machineScopeElements = new ArrayList<DescriptorElement>();
-		dbTypeScopeElements = new ArrayList<DescriptorElement>();
-		metricScopeElements = new ArrayList<DescriptorElement>();
-		collectElements = new ArrayList<DescriptorElement>();
+		machineScopeElements = new ArrayList<Obsolete_DescriptorElement>();
+		dbTypeScopeElements = new ArrayList<Obsolete_DescriptorElement>();
+		metricScopeElements = new ArrayList<Obsolete_DescriptorElement>();
+		collectElements = new ArrayList<Obsolete_DescriptorElement>();
 		
 	}
 
-	public PluginType getPluginType() {
+	public Obsolete_PluginType getPluginType() {
 		return pluginType;
 	}
 
-	public void setPluginType(PluginType pluginType) {
+	public void setPluginType(Obsolete_PluginType pluginType) {
 		this.pluginType = pluginType;
 	}
 
-	public List<DescriptorElement> getMachineScopeElements() {
+	public List<Obsolete_DescriptorElement> getMachineScopeElements() {
 		return machineScopeElements;
 	}
 
-	public void setMachineScopeElements(List<DescriptorElement> machineScopeElements) {
+	public void setMachineScopeElements(List<Obsolete_DescriptorElement> machineScopeElements) {
 		this.machineScopeElements = machineScopeElements;
 	}
 
-	public List<DescriptorElement> getDbTypeScopeElements() {
+	public List<Obsolete_DescriptorElement> getDbTypeScopeElements() {
 		return dbTypeScopeElements;
 	}
 
-	public void setDbTypeScopeElements(List<DescriptorElement> dbTypeScopeElements) {
+	public void setDbTypeScopeElements(List<Obsolete_DescriptorElement> dbTypeScopeElements) {
 		this.dbTypeScopeElements = dbTypeScopeElements;
 	}
 
-	public List<DescriptorElement> getMetricScopeElements() {
+	public List<Obsolete_DescriptorElement> getMetricScopeElements() {
 		return metricScopeElements;
 	}
 
-	public void setMetricScopeElements(List<DescriptorElement> metricScopeElements) {
+	public void setMetricScopeElements(List<Obsolete_DescriptorElement> metricScopeElements) {
 		this.metricScopeElements = metricScopeElements;
 	}
 
-	public List<DescriptorElement> getCollectElements() {
+	public List<Obsolete_DescriptorElement> getCollectElements() {
 		return collectElements;
 	}
 
-	public void setCollectElements(List<DescriptorElement> collectElements) {
+	public void setCollectElements(List<Obsolete_DescriptorElement> collectElements) {
 		this.collectElements = collectElements;
 	}
 
