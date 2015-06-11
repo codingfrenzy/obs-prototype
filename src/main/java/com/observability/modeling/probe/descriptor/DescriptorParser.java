@@ -22,7 +22,10 @@ package com.observability.modeling.probe.descriptor;
 
 import java.util.List;
 
-import com.observability.modeling.probe.descriptor.entities.PluginDefinition;
+import com.observability.modeling.probe.descriptor.entities.Collect;
+import com.observability.modeling.probe.descriptor.entities.DbType;
+import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.Obsolete_PluginDefinition;
 
 /**
  * Parses the descriptors in a given directory and converts them to a manageable
@@ -31,10 +34,11 @@ import com.observability.modeling.probe.descriptor.entities.PluginDefinition;
  * to be created for each plugin descriptor present. This info will be taken
  * from the intermediate entities this class generates :
  * 
- * @see DescriptorElement
- * @see PluginDefinition Intermediate entities are used to ensure decoupling
+ * @see {@link DbType}
+ * @see {@link Parameter}, @see {@link ElementTag} Intermediate entities are used to ensure decoupling
  *      with EMF generated entities.
- * @author Caglayan "Gem" Gemici
+ *      
+ * @author Caglayan "Gem" Gemici, Varun Saravagi
  *
  */
 public interface DescriptorParser {
@@ -44,7 +48,7 @@ public interface DescriptorParser {
 	 * 
 	 * @return list of plugin definitions found.
 	 */
-	public List<PluginDefinition> parseDescriptors();
+	public List<DbType> parseDescriptors();
 
 	/**
 	 * Parses the content of the descriptor file (essentially de-serialize)
@@ -54,6 +58,6 @@ public interface DescriptorParser {
 	 * @return root plugin entity that holds all the information about the
 	 *         content in a hierarchical format.
 	 */
-	public PluginDefinition parsePlugin(String descriptorContent);
+	public DbType parsePlugin(String descriptorContent);
 
 }

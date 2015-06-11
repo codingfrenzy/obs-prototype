@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.URL;
-
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -17,6 +15,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.observability.modeling.probe.descriptor.entities.DbType;
 
 /**
  * @author cem
@@ -56,13 +56,57 @@ public class DescriptorParserTest {
 	 * Test method for {@link com.observability.modeling.probe.descriptor.DescriptorParserImpl#parseDescriptors()}.
 	 */
 	@Test
-	public void testParseDescriptors() {
+	public void testBasic1ParseDescriptors() {
 		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
-		URL path = classLoader.getResource("cassandra.descriptor");
-		DescriptorParser parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
-		parser.parseDescriptors();
+		URL path = classLoader.getResource("basicTest1.descriptor");
+		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
 		
-		
+		DbType dbType = new DbType("basic");
+		parser.parseFile(new File(path.getFile()), dbType);
+		System.out.println(dbType.toString());	
 	}
 
+	@Test
+	public void testBasic2ParseDescriptors() {
+		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
+		URL path = classLoader.getResource("basicTest2.descriptor");
+		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
+		
+		DbType dbType = new DbType("basic");
+		parser.parseFile(new File(path.getFile()), dbType);
+		System.out.println(dbType.toString());	
+	}
+	
+	@Test
+	public void testCassandraParseDescriptors() {
+		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
+		URL path = classLoader.getResource("cassandra.descriptor");
+		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
+		
+		DbType dbType = new DbType("cassandra");
+		parser.parseFile(new File(path.getFile()), dbType);
+		System.out.println(dbType.toString());	
+	}
+	
+	@Test
+	public void testPostgresParseDescriptors() {
+		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
+		URL path = classLoader.getResource("postgres.descriptor");
+		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
+		
+		DbType dbType = new DbType("postgres");
+		parser.parseFile(new File(path.getFile()), dbType);
+		System.out.println(dbType.toString());	
+	}
+	
+	@Test
+	public void testMongoParseDescriptors() {
+		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
+		URL path = classLoader.getResource("mongodb.descriptor");
+		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
+		
+		DbType dbType = new DbType("mongo");
+		parser.parseFile(new File(path.getFile()), dbType);
+		System.out.println(dbType.toString());	
+	}
 }
