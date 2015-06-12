@@ -23,28 +23,28 @@ package com.observability.modeling.probe.descriptor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
-import com.observability.modeling.probe.descriptor.entities.Collect;
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
-import com.observability.modeling.probe.descriptor.entities.Machine;
-import com.observability.modeling.probe.descriptor.entities.Metric;
 
 
 /**
  * {@inheritDoc}
  */
 
+/**
+ * This class implements the functionality to parse the 
+ * probe descriptor files.
+ * 
+ * @author vsaravag (Varun Saravagi)
+ * 
+ *
+ */
 public class DescriptorParserImpl implements DescriptorParser {
 
 	/**
@@ -53,11 +53,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * */
 
 	private static final String DESCRIPTOR_EXTENSION = "descriptor";
-	private static final String PLUGIN_START = "<plugin>";
-	private static final String PLUGIN_END = "</plugin>";
-	private static final String TAG_START = "<";
-	private static final String TAG_END = ">";
-	private static final String TAG_CLOSE_START = "</";
 
 	/**
 	 * Anotations that represent on which entity in the semantic model the
@@ -66,7 +61,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 */
 
 	private static final String MACHINE_SCOPE = "@Machine";
-	private static final String DB_TYPE_SCOPE = "@Cluster";
 	private static final String METRIC_SCOPE = "@Metric";
 	private static final String COLLECT = "@Collect";
 
@@ -104,22 +98,26 @@ public class DescriptorParserImpl implements DescriptorParser {
 		if (files != null) {
 			try {
 				for (File file : files) {
+					//get the file name and create a DbType instance with the name
 					String dbName = file.getName().toLowerCase().split("\\.")[0];
 					DbType dbType = new DbType(dbName);
 					
+					//parse the file and populate the dbType
 					parseFile(file, dbType);
-					
-					
-					String content = readFile(file.getPath(),
-							StandardCharsets.US_ASCII);
-					plugins.add(parsePlugin(content));
+					//add the parsed structure to the plugins list
+					plugins.add(dbType);
 
 				}
-			} catch (IOException ex) {
+			} catch (Exception ex) {
 				ex.printStackTrace();
 				throw new RuntimeException();
 			}
-		}					
+		}
+		// Test code to print out the DbTypes
+		for (DbType dbType : plugins) {
+			System.out.println(dbType.toString());
+			System.out.println();
+		}
 		
 		return plugins;
 
@@ -147,8 +145,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 				
 				// the line has an annotation
 				if(ParserUtility.isAnnotated(line)){
-					
-					
+								
 					// get the annotation string
 					String annotation = ParserUtility.getAnnotation(line);
 					
@@ -268,24 +265,4 @@ public class DescriptorParserImpl implements DescriptorParser {
 		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public DbType parsePlugin(String descriptorContent) {
-		return new DbType(descriptorContent);
-	}
-
-	/**
-	 * Utility file to convert the file contents into String
-	 * 
-	 * @param path
-	 * @param encoding
-	 * @return String representation of the file's content
-	 * @throws IOException
-	 */
-	public static String readFile(String path, Charset encoding)
-			throws IOException {
-		byte[] encoded = Files.readAllBytes(Paths.get(path));
-		return new String(encoded, encoding);
-	}
 }
