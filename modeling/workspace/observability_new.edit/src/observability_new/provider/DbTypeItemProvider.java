@@ -172,6 +172,7 @@ public class DbTypeItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(Observability_newPackage.Literals.DB_TYPE__AVAILABLE_METRICS);
+			childrenFeatures.add(Observability_newPackage.Literals.DB_TYPE__HAS_PARENT_ELEMENT);
 		}
 		return childrenFeatures;
 	}
@@ -233,6 +234,7 @@ public class DbTypeItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case Observability_newPackage.DB_TYPE__AVAILABLE_METRICS:
+			case Observability_newPackage.DB_TYPE__HAS_PARENT_ELEMENT:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -259,6 +261,11 @@ public class DbTypeItemProvider
 			(createChildParameter
 				(Observability_newPackage.Literals.DB_TYPE__AVAILABLE_METRICS,
 				 Observability_newFactory.eINSTANCE.createDerivedMetric()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(Observability_newPackage.Literals.DB_TYPE__HAS_PARENT_ELEMENT,
+				 Observability_newFactory.eINSTANCE.createElement()));
 	}
 
 	/**

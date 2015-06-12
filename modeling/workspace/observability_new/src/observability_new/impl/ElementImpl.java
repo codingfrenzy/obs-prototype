@@ -9,15 +9,18 @@ import observability_new.KeyValue;
 import observability_new.Observability_newPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,7 +40,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class ElementImpl extends MinimalEObjectImpl.Container implements Element {
 	/**
-	 * The cached value of the '{@link #getHasElements() <em>Has Elements</em>}' reference list.
+	 * The cached value of the '{@link #getHasElements() <em>Has Elements</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getHasElements()
@@ -47,7 +50,7 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	protected EList<Element> hasElements;
 
 	/**
-	 * The cached value of the '{@link #getHasKeyValues() <em>Has Key Values</em>}' reference list.
+	 * The cached value of the '{@link #getHasKeyValues() <em>Has Key Values</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getHasKeyValues()
@@ -122,7 +125,7 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	 */
 	public EList<Element> getHasElements() {
 		if (hasElements == null) {
-			hasElements = new EObjectResolvingEList<Element>(Element.class, this, Observability_newPackage.ELEMENT__HAS_ELEMENTS);
+			hasElements = new EObjectContainmentEList<Element>(Element.class, this, Observability_newPackage.ELEMENT__HAS_ELEMENTS);
 		}
 		return hasElements;
 	}
@@ -134,7 +137,7 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	 */
 	public EList<KeyValue> getHasKeyValues() {
 		if (hasKeyValues == null) {
-			hasKeyValues = new EObjectResolvingEList<KeyValue>(KeyValue.class, this, Observability_newPackage.ELEMENT__HAS_KEY_VALUES);
+			hasKeyValues = new EObjectContainmentEList<KeyValue>(KeyValue.class, this, Observability_newPackage.ELEMENT__HAS_KEY_VALUES);
 		}
 		return hasKeyValues;
 	}
@@ -179,6 +182,22 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 		value = newValue;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Observability_newPackage.ELEMENT__VALUE, oldValue, value));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Observability_newPackage.ELEMENT__HAS_ELEMENTS:
+				return ((InternalEList<?>)getHasElements()).basicRemove(otherEnd, msgs);
+			case Observability_newPackage.ELEMENT__HAS_KEY_VALUES:
+				return ((InternalEList<?>)getHasKeyValues()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**

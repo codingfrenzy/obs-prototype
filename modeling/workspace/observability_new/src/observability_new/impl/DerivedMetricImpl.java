@@ -7,6 +7,7 @@ import observability_new.Element;
 import observability_new.Observability_newPackage;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -28,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DerivedMetricImpl extends MetricImpl implements DerivedMetric {
 	/**
-	 * The cached value of the '{@link #getHasParentElement() <em>Has Parent Element</em>}' reference.
+	 * The cached value of the '{@link #getHasParentElement() <em>Has Parent Element</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getHasParentElement()
@@ -62,14 +63,6 @@ public class DerivedMetricImpl extends MetricImpl implements DerivedMetric {
 	 * @generated
 	 */
 	public Element getHasParentElement() {
-		if (hasParentElement != null && hasParentElement.eIsProxy()) {
-			InternalEObject oldHasParentElement = (InternalEObject)hasParentElement;
-			hasParentElement = (Element)eResolveProxy(oldHasParentElement);
-			if (hasParentElement != oldHasParentElement) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, oldHasParentElement, hasParentElement));
-			}
-		}
 		return hasParentElement;
 	}
 
@@ -78,8 +71,14 @@ public class DerivedMetricImpl extends MetricImpl implements DerivedMetric {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Element basicGetHasParentElement() {
-		return hasParentElement;
+	public NotificationChain basicSetHasParentElement(Element newHasParentElement, NotificationChain msgs) {
+		Element oldHasParentElement = hasParentElement;
+		hasParentElement = newHasParentElement;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, oldHasParentElement, newHasParentElement);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
 	}
 
 	/**
@@ -88,10 +87,31 @@ public class DerivedMetricImpl extends MetricImpl implements DerivedMetric {
 	 * @generated
 	 */
 	public void setHasParentElement(Element newHasParentElement) {
-		Element oldHasParentElement = hasParentElement;
-		hasParentElement = newHasParentElement;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, oldHasParentElement, hasParentElement));
+		if (newHasParentElement != hasParentElement) {
+			NotificationChain msgs = null;
+			if (hasParentElement != null)
+				msgs = ((InternalEObject)hasParentElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, null, msgs);
+			if (newHasParentElement != null)
+				msgs = ((InternalEObject)newHasParentElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, null, msgs);
+			msgs = basicSetHasParentElement(newHasParentElement, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT, newHasParentElement, newHasParentElement));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT:
+				return basicSetHasParentElement(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
@@ -103,8 +123,7 @@ public class DerivedMetricImpl extends MetricImpl implements DerivedMetric {
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case Observability_newPackage.DERIVED_METRIC__HAS_PARENT_ELEMENT:
-				if (resolve) return getHasParentElement();
-				return basicGetHasParentElement();
+				return getHasParentElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

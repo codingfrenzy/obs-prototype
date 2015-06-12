@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
+  <clusters collectedBaseMetric="//@availableDbTypes.0/@availableMetrics.0" name="cluster1">
+    <machines>
+      <hasParentElement name="">
+        <hasElements/>
+        <hasKeyValues/>
+      </hasParentElement>
+    </machines>
+  </clusters>
+  <clusters name="cluster2">
+    <machines/>
+    <machines/>
+    <machines/>
+  </clusters>
+  <clusters name="cluster3"/>
+  <availableDbTypes name="Riak">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="Test" databaseCluster="//@clusters.0"/>
+    <hasParentElement name="my name">
+      <hasElements name="" value="">
+        <hasElements name="inside name" value="values"/>
+        <hasKeyValues key="Observability" value="nbvnbv"/>
+        <hasKeyValues/>
+      </hasElements>
+    </hasParentElement>
+  </availableDbTypes>
+  <availableDbTypes name="Cassandra"/>
+  <availableDbTypes name="Cassandra"/>
+  <availableDbTypes name="Mongo"/>
+</observability_new:Model>

@@ -185,7 +185,7 @@ public interface Observability_newPackage extends EPackage {
 	int DB_TYPE__AVAILABLE_METRICS = 3;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' reference.
+	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -222,7 +222,7 @@ public interface Observability_newPackage extends EPackage {
 	int ELEMENT = 2;
 
 	/**
-	 * The feature id for the '<em><b>Has Elements</b></em>' reference list.
+	 * The feature id for the '<em><b>Has Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -231,7 +231,7 @@ public interface Observability_newPackage extends EPackage {
 	int ELEMENT__HAS_ELEMENTS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Has Key Values</b></em>' reference list.
+	 * The feature id for the '<em><b>Has Key Values</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -359,7 +359,7 @@ public interface Observability_newPackage extends EPackage {
 	int NODE_MACHINE__NAME = 2;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' reference.
+	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -542,7 +542,7 @@ public interface Observability_newPackage extends EPackage {
 	int BASE_METRIC__DATABASE_CLUSTER = METRIC_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' reference.
+	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -606,7 +606,7 @@ public interface Observability_newPackage extends EPackage {
 	int DERIVED_METRIC__DESCRIPTION = METRIC__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' reference.
+	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -764,10 +764,10 @@ public interface Observability_newPackage extends EPackage {
 	EReference getDbType_AvailableMetrics();
 
 	/**
-	 * Returns the meta object for the reference '{@link observability_new.DbType#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference '{@link observability_new.DbType#getHasParentElement <em>Has Parent Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Has Parent Element</em>'.
+	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
 	 * @see observability_new.DbType#getHasParentElement()
 	 * @see #getDbType()
 	 * @generated
@@ -785,10 +785,10 @@ public interface Observability_newPackage extends EPackage {
 	EClass getElement();
 
 	/**
-	 * Returns the meta object for the reference list '{@link observability_new.Element#getHasElements <em>Has Elements</em>}'.
+	 * Returns the meta object for the containment reference list '{@link observability_new.Element#getHasElements <em>Has Elements</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Has Elements</em>'.
+	 * @return the meta object for the containment reference list '<em>Has Elements</em>'.
 	 * @see observability_new.Element#getHasElements()
 	 * @see #getElement()
 	 * @generated
@@ -796,10 +796,10 @@ public interface Observability_newPackage extends EPackage {
 	EReference getElement_HasElements();
 
 	/**
-	 * Returns the meta object for the reference list '{@link observability_new.Element#getHasKeyValues <em>Has Key Values</em>}'.
+	 * Returns the meta object for the containment reference list '{@link observability_new.Element#getHasKeyValues <em>Has Key Values</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Has Key Values</em>'.
+	 * @return the meta object for the containment reference list '<em>Has Key Values</em>'.
 	 * @see observability_new.Element#getHasKeyValues()
 	 * @see #getElement()
 	 * @generated
@@ -904,10 +904,10 @@ public interface Observability_newPackage extends EPackage {
 	EAttribute getNodeMachine_Name();
 
 	/**
-	 * Returns the meta object for the reference '{@link observability_new.NodeMachine#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference '{@link observability_new.NodeMachine#getHasParentElement <em>Has Parent Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Has Parent Element</em>'.
+	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
 	 * @see observability_new.NodeMachine#getHasParentElement()
 	 * @see #getNodeMachine()
 	 * @generated
@@ -979,10 +979,10 @@ public interface Observability_newPackage extends EPackage {
 	EReference getBaseMetric_DatabaseCluster();
 
 	/**
-	 * Returns the meta object for the reference '{@link observability_new.BaseMetric#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference '{@link observability_new.BaseMetric#getHasParentElement <em>Has Parent Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Has Parent Element</em>'.
+	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
 	 * @see observability_new.BaseMetric#getHasParentElement()
 	 * @see #getBaseMetric()
 	 * @generated
@@ -1000,10 +1000,10 @@ public interface Observability_newPackage extends EPackage {
 	EClass getDerivedMetric();
 
 	/**
-	 * Returns the meta object for the reference '{@link observability_new.DerivedMetric#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference '{@link observability_new.DerivedMetric#getHasParentElement <em>Has Parent Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Has Parent Element</em>'.
+	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
 	 * @see observability_new.DerivedMetric#getHasParentElement()
 	 * @see #getDerivedMetric()
 	 * @generated
@@ -1177,7 +1177,7 @@ public interface Observability_newPackage extends EPackage {
 		EReference DB_TYPE__AVAILABLE_METRICS = eINSTANCE.getDbType_AvailableMetrics();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1195,7 +1195,7 @@ public interface Observability_newPackage extends EPackage {
 		EClass ELEMENT = eINSTANCE.getElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Elements</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Has Elements</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1203,7 +1203,7 @@ public interface Observability_newPackage extends EPackage {
 		EReference ELEMENT__HAS_ELEMENTS = eINSTANCE.getElement_HasElements();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Key Values</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Has Key Values</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1287,7 +1287,7 @@ public interface Observability_newPackage extends EPackage {
 		EAttribute NODE_MACHINE__NAME = eINSTANCE.getNodeMachine_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1347,7 +1347,7 @@ public interface Observability_newPackage extends EPackage {
 		EReference BASE_METRIC__DATABASE_CLUSTER = eINSTANCE.getBaseMetric_DatabaseCluster();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1365,7 +1365,7 @@ public interface Observability_newPackage extends EPackage {
 		EClass DERIVED_METRIC = eINSTANCE.getDerivedMetric();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
