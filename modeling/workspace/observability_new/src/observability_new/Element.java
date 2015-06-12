@@ -27,33 +27,33 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Element extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Has Elements</b></em>' reference list.
+	 * Returns the value of the '<em><b>Has Elements</b></em>' containment reference list.
 	 * The list contents are of type {@link observability_new.Element}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Has Elements</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Has Elements</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Has Elements</em>' reference list.
+	 * @return the value of the '<em>Has Elements</em>' containment reference list.
 	 * @see observability_new.Observability_newPackage#getElement_HasElements()
-	 * @model
+	 * @model containment="true"
 	 * @generated
 	 */
 	EList<Element> getHasElements();
 
 	/**
-	 * Returns the value of the '<em><b>Has Key Values</b></em>' reference list.
+	 * Returns the value of the '<em><b>Has Key Values</b></em>' containment reference list.
 	 * The list contents are of type {@link observability_new.KeyValue}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Has Key Values</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Has Key Values</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Has Key Values</em>' reference list.
+	 * @return the value of the '<em>Has Key Values</em>' containment reference list.
 	 * @see observability_new.Observability_newPackage#getElement_HasKeyValues()
-	 * @model required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<KeyValue> getHasKeyValues();

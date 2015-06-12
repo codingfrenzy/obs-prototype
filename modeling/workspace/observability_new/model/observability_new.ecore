@@ -22,13 +22,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="availableMetrics" upperBound="-1"
         eType="#//Metric" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasParentElement" lowerBound="1"
-        eType="#//Element"/>
+        eType="#//Element" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasElements" upperBound="-1"
-        eType="#//Element"/>
+        eType="#//Element" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasKeyValues" lowerBound="1"
-        upperBound="-1" eType="#//KeyValue"/>
+        upperBound="-1" eType="#//KeyValue" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -42,7 +42,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="Port" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasParentElement" lowerBound="1"
-        eType="#//Element"/>
+        eType="#//Element" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Model">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="frequency" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -55,11 +55,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="databaseCluster" upperBound="-1"
         eType="#//DatabaseCluster" eOpposite="#//DatabaseCluster/collectedBaseMetric"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasParentElement" lowerBound="1"
-        eType="#//Element"/>
+        eType="#//Element" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DerivedMetric" eSuperTypes="#//Metric">
     <eStructuralFeatures xsi:type="ecore:EReference" name="hasParentElement" lowerBound="1"
-        eType="#//Element"/>
+        eType="#//Element" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metric" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
