@@ -296,7 +296,8 @@ public class DaemonHeartbeatMain implements Runnable {
                     verifyDaemonHeartbeat();
                     processNotRespondingCollectingDaemons();
                 }
-                Thread.sleep(samplingRate * 1000);
+                long sleepTime = (long) samplingRate * 1000;
+                Thread.sleep(sleepTime);
                 first = !first;
             } catch (InterruptedException e) {
                 e.printStackTrace();

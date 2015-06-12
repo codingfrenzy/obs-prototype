@@ -253,7 +253,8 @@ public class DaemonHeartbeatClient extends Thread {
             System.out.println(systemEpoch + " : " + metricLatestVerified);
 
             try {
-                Thread.sleep(samplingRate * 1000);
+                long sleepTime = (long) samplingRate * 1000;
+                Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
