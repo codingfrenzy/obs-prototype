@@ -63,7 +63,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	 * Path where whisper data is stored (must end with '/')
 	 */
 	private static String whisperPath = "/var/lib/graphite/whisper/";
-	/*
+	/**
 	 * The lowest frequency in seconds of metric collection
 	 */
 	private int lowestInterval = 30;
@@ -74,26 +74,29 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	public String getMetricValueAtEpoch(String epoch, String metricPath)
 			throws RemoteException {
 		if(epoch == null || "".equals(epoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
-			return null;
-		StringBuilder command = new StringBuilder();
-		long actualEpoch = (long)Double.parseDouble(epoch);
-		actualEpoch = actualEpoch - (actualEpoch % lowestInterval);
+			return null;	// for any invalid input, return null
+		StringBuilder command = new StringBuilder();	// used to build command string
+		long actualEpoch = (long)Double.parseDouble(epoch);	// convert epoch to long
+		actualEpoch = actualEpoch - (actualEpoch % lowestInterval);	// round down
+		// whisper-fetch utility needs a range of epoch so to get the result
+		// for a specific epoch find metric value b/w epoch-1 and epoch+1 
 		long from = actualEpoch-1;
 		long to = actualEpoch+1;
 		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+from+" --until="+to);
-		Process p;
-		BufferedReader outReader = null;
-		String returnStr = null;
+		Process p;			// initialize a process class
+		BufferedReader outReader = null;	// used to hold result from command executed
+		String returnStr = null;			// used to hold result from command executed
 		try {
-			p = Runtime.getRuntime().exec(command.toString());
-			p.waitFor();
-		    if (p.exitValue() != 0)
-		    	return null;
+			p = Runtime.getRuntime().exec(command.toString());	// run the UNIX command
+			p.waitFor();		// wait for it to finish execution
+		    if (p.exitValue() != 0)		// if there is an error
+		    	return null;			// return null
+		    // else fetch the result:
 		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
 		    String output = outReader.readLine();
 		    if(output!=null && !"".equals(output) && output.contains("\t")){
-		    	String[] value = output.split("\t");
-		    	returnStr =  actualEpoch+"\t"+value[1];
+		    	String[] value = output.split("\t");	// returned result contains two values
+		    	returnStr =  actualEpoch+"\t"+value[1];	// separated by a tab
 		    }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +104,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		} finally{
 			try {
 				if(outReader!=null)
-					outReader.close();
+					outReader.close();		// close the BufferedReader stream at the end
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -115,8 +118,10 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch,
 			String toEpoch, String metricPath) throws RemoteException {
 		if(fromEpoch == null || "".equals(fromEpoch.trim()) || toEpoch == null || "".equals(toEpoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
-			return null;
-		StringBuilder command = new StringBuilder();
+			return null;	// return null if an invalid input is given
+		StringBuilder command = new StringBuilder();	// used to store the command
+		// convert the from and to epoch values to long from String and
+		// round them down to the nearest 'lowestInterval'
 		long fromEpochLong = (long)Double.parseDouble(fromEpoch);
 		fromEpochLong = fromEpochLong - (fromEpochLong % lowestInterval);
 		long toEpochLong = (long)Double.parseDouble(toEpoch);
@@ -124,17 +129,18 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+(fromEpochLong-1)+" --until="+(toEpochLong+1));
 		Process p;
 		BufferedReader outReader = null;
+		// the result returned will be multi-line so use an arraylist to store it: 
 		ArrayList<String> outputList = new ArrayList<String>();
 		try {
-			p = Runtime.getRuntime().exec(command.toString());
-			p.waitFor();
-		    if (p.exitValue() != 0)
-		    	return null;
+			p = Runtime.getRuntime().exec(command.toString());	// execute the command
+			p.waitFor();		// wait for it to execute
+		    if (p.exitValue() != 0)		// if there is an error
+		    	return null;			// return null
 		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
 		    String output = null;
-		    while( (output = outReader.readLine())!=null ){
-		    if(!"".equals(output) && output.contains("\t")){
-		    	outputList.add(output);
+		    while( (output = outReader.readLine())!=null ){	// while the returned result contains more lines
+		    if(!"".equals(output) && output.contains("\t")){// check that the line is valid
+		    	outputList.add(output);						// add it to arraylist
 		     }
 		    }
 		} catch (Exception e) {
@@ -142,7 +148,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			return null;
 		} finally{
 			try {
-				if(outReader!=null)
+				if(outReader!=null)		// close the BufferedReader
 					outReader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -157,25 +163,25 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	public boolean updateMetrics(String[] epoch, String[] values,
 			String metricPath) throws RemoteException {
 		if(epoch == null || values == null || metricPath == null || "".equals(metricPath.trim()) || epoch.length != values.length)
-			return false;
+			return false;		// return false if the input provided is invalid
 		Process p;
-		StringBuilder command = new StringBuilder();
+		StringBuilder command = new StringBuilder();		// holds the command to execute
 		command.append("whisper-update.py "+whisperPath+metricPath+".wsp ");
-		long currentEpoch;
+		long currentEpoch;	// holds the currentEpoch when epoch[] is iterated
 		for(int i=0;i<epoch.length;i++){
-			currentEpoch = (long)Double.parseDouble(epoch[i]);
-			currentEpoch = currentEpoch - (currentEpoch % lowestInterval);
-			command.append(currentEpoch+":"+values[i]);
+			currentEpoch = (long)Double.parseDouble(epoch[i]);		// parse to long
+			currentEpoch = currentEpoch - (currentEpoch % lowestInterval);	// round down
+			command.append(currentEpoch+":"+values[i]);				// append to command string
 			if(i!=epoch.length-1)
-				command.append(" ");
+				command.append(" ");		// append a space if it is not the last element of array
 		}
 		try {
-			p = Runtime.getRuntime().exec(command.toString());
-			p.waitFor();
-		    if (p.exitValue() != 0)
-		    	return false;
+			p = Runtime.getRuntime().exec(command.toString());		// run the command
+			p.waitFor();					// wait for it to execute
+		    if (p.exitValue() != 0)			// if there is an error
+		    	return false;				// return false
 		    else
-		    	return true;		    
+		    	return true;		    	// else return true
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -187,20 +193,21 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	 * @param args arguments - arg1: binding port
 	 */
 	public static void main(String[] args){
-		System.setProperty("java.net.preferIPv4Stack","true");
-		if(args.length!=1){
+		System.setProperty("java.net.preferIPv4Stack","true");	// has to be specified so that RMI
+													// registry doesn't accept only IPv6 connections
+		if(args.length!=1){							// parse arguments
 			System.out.println("Invalid arguments: Please provide port no. as an argument");
 			System.exit(1);
 		}
 		try {
 			int portno = Integer.parseInt(args[0]);
-			String name = "MetricDatabaseHandler";
+			String name = "MetricDatabaseHandler";		// name of RMI service
 			IMetricDatabaseHandlerServer engine = new MetricDatabaseHandler();
-			UnicastRemoteObject.unexportObject(engine, true);
+			UnicastRemoteObject.unexportObject(engine, true);	// unexport a unicast object if it already exported
 			IMetricDatabaseHandlerServer stub =
-					(IMetricDatabaseHandlerServer) UnicastRemoteObject.exportObject(engine, 0);
-			Registry registry = LocateRegistry.createRegistry(portno);
-			registry.rebind(name, stub);
+					(IMetricDatabaseHandlerServer) UnicastRemoteObject.exportObject(engine, 0);	// export unicast object again 
+			Registry registry = LocateRegistry.createRegistry(portno);	// create registry at the specified port
+			registry.rebind(name, stub);								// re-bind service to this registry
 			System.out.println("MetricDatabaseHandler bound");
 		} catch (Exception e) {
 			System.err.println("MetricDatabaseHandler exception:");
