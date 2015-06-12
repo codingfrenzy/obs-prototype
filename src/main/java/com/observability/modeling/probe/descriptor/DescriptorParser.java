@@ -20,6 +20,7 @@
 //**************************************************************************************************//
 package com.observability.modeling.probe.descriptor;
 
+import java.io.File;
 import java.util.List;
 
 import com.observability.modeling.probe.descriptor.entities.Collect;
@@ -58,6 +59,6 @@ public interface DescriptorParser {
 	 * @return root plugin entity that holds all the information about the
 	 *         content in a hierarchical format.
 	 */
-	public DbType parsePlugin(String descriptorContent);
+	public void parseFile(File file, DbType dbType);
 
 }
