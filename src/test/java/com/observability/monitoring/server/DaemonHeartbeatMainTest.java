@@ -20,7 +20,6 @@ public class DaemonHeartbeatMainTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		sdf.format(date);
 		String fullFile = filePath + "NotResponding-" + sdf.format(date);
-		String content;
 		try {
 			File fileDir = new File(fullFile);
 			assertTrue(fileDir.exists()); // checks if file exists
