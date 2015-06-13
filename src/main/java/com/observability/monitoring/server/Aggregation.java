@@ -19,13 +19,15 @@
  */
 //**************************************************************************************************//
 
-package com.observability.aggregation;
+package com.observability.monitoring.server;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -114,13 +116,17 @@ public class Aggregation extends UnicastRemoteObject {
 		
 		// Get Nodes list
 		// TODO: after modeling team finalize the configuration file
-		List<String> nodeList = getNodeList();
-		
-		// TODO: this is a temporary (hard coded) solution for the previous method
-		String[] nodeListTemp = {"msesrv6h-vm.mse.cs.cmu.edu","observabilityCassandra1"};
+		// Commented to suppress findbugs error
+		//List<String> nodeList = getNodeList();
 		
 		// Save configurations in AggConfiguration object
 		AggConfigItems aggConfigurations = setConfigurations(interval, aggConfigurationsList);
+				
+		// TODO: this is a temporary (hard coded) solution for the previous method
+		//String[] nodeListTemp = {"msesrv6h-vm.mse.cs.cmu.edu", "observabilityCassandra1"};
+		String[] nodeListTemp = new String[2];
+		nodeListTemp[0] = "msesrv6h-vm.mse.cs.cmu.edu";
+		nodeListTemp[1] = "observabilityCassandra1";
 		
 		readData(faultTolTimeWindow,interval, nodeListTemp,aggConfigurations);
 	}
@@ -133,7 +139,8 @@ public class Aggregation extends UnicastRemoteObject {
 	 */
 	protected static String getIntervalConf() throws IOException{
 			
-		BufferedReader bufferReader = new BufferedReader(new FileReader("Test.txt"));
+		//BufferedReader bufferReader = new BufferedReader(new FileReader("Test.txt"));
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(new FileInputStream("Test.txt"), "UTF-8"));
 		String line = "";
 		String[] intervalConfigItem = new String[2]; 
 		do {
@@ -141,8 +148,11 @@ public class Aggregation extends UnicastRemoteObject {
 				line = bufferReader.readLine();
 				if(line != null && line.equalsIgnoreCase("<LoadPlugin aggregation>")) {
 					do {
-						line = bufferReader.readLine().trim();
-						if (line == null || line.isEmpty() || line.trim().equals("") || line.trim().equals("\n"))
+						line = bufferReader.readLine();
+						if (line == null)
+							break;
+						line = line.trim();
+						if (line.isEmpty() || line.trim().equals("") || line.trim().equals("\n"))
 							continue;
 						else if (line.startsWith("Interval")) {
 							String str[] = line.trim().split("\\s+");//[Interval, 30]
@@ -175,15 +185,19 @@ public class Aggregation extends UnicastRemoteObject {
 	protected static List<String[]> getAggConf() throws IOException {
 		String[] aggConfigItem = new String[2]; 
 		List<String[]> aggConfig = new ArrayList<String[]>();
-		BufferedReader bufferReader = new BufferedReader(new FileReader("Test.txt"));
+		//BufferedReader bufferReader = new BufferedReader(new FileReader("Test.txt"));
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(new FileInputStream("Test.txt"), "UTF-8"));
 		String line = "";	
 		do {
 			try {
 				line = bufferReader.readLine();
 				if(line != null && line.equals("<Aggregation>")){
 					do {
-						line = bufferReader.readLine().trim();
-						if (line == null || line.isEmpty() || line.trim().equals("") || line.trim().equals("\n"))
+						line = bufferReader.readLine();
+						if (line == null)
+							break;
+						line = line.trim();
+						if (line.isEmpty() || line.trim().equals("") || line.trim().equals("\n"))
 							continue;
 						else {		
 							String str[] = line.trim().split("\\s+");
@@ -237,6 +251,25 @@ public class Aggregation extends UnicastRemoteObject {
 		
 		for (int i =0; i < aggConfigurations.size(); i++){
 			str = aggConfigurations.get(i);
+			String itemName = str[0].toLowerCase(); 
+			if (itemName.indexOf("plugin") >= 0) {
+        		plugin = str[1].replaceAll("^\"|\"$", "");
+			} else if (itemName.indexOf("typeinstance") >= 0) {
+				typeInst = str[1].replaceAll("^\"|\"$", "");
+			} else if (itemName.indexOf("calculatenum") >= 0) {
+	        	calNum = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			} else if (itemName.indexOf("calculatesum") >= 0) {
+				calSum = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			} else if (itemName.indexOf("calculateaverage") >= 0) {
+				calAvg = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			} else if (itemName.indexOf("calculateminimum") >= 0) {
+				calMin = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			} else if (itemName.indexOf("calculatemaximum") >= 0) {
+				calMax = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			} else if (itemName.indexOf("calculatestddev") >= 0) {
+				calStd = Boolean.valueOf(str[1].replaceAll("^\"|\"$", ""));
+			}
+			/*
 			switch (str[0].toLowerCase()) {
             	case "plugin": 
             		plugin = str[1].replaceAll("^\"|\"$", "");
@@ -265,6 +298,7 @@ public class Aggregation extends UnicastRemoteObject {
             	default:
             		break;
 			}
+			*/
 		}
 		AggConfigItems aggConfigItems = new AggConfigItems (interval, plugin, typeInst, calNum, calSum, calAvg, 
 				calMin, calMax, calStd);
@@ -287,7 +321,7 @@ public class Aggregation extends UnicastRemoteObject {
 
 		String str = "collectd/";
 		String str2 = "/";
-		ArrayList<String> metricMeasurements = null;
+		ArrayList<String> metricMeasurements = new ArrayList<String>();
 		
         long currentTimeStamp = System.currentTimeMillis() / 1000L;
         long aggTimeStampStart = currentTimeStamp - faultTolTimeWindow - interval;
@@ -396,7 +430,7 @@ public class Aggregation extends UnicastRemoteObject {
 			
 			for (int i=0; i < metricMeasurements.size(); i++){	
 				
-				sd += (double) Math.pow(((Long.parseLong(metricMeasurements.get(i)) - measurementAvg) / metricMeasurements.size()), 2);
+				sd += (double) Math.pow((((double)Long.parseLong(metricMeasurements.get(i)) - measurementAvg) / metricMeasurements.size()), 2);
 			}
 			measurementStd = Math.sqrt(sd);
 			func = AggFunc.STD;

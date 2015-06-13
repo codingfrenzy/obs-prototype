@@ -1,4 +1,4 @@
-package com.observability.aggregation;
+package com.observability.monitoring.server;
 
 import java.io.Serializable;
 
