@@ -56,7 +56,7 @@ public class DaemonHeartbeatClient extends Thread {
     /**
      * Object of Socket class. Used for connecting
      */
-    Socket client;
+//    Socket client;
 
     /**
      * The metric used to check if measurements are being collected at the right
@@ -178,7 +178,7 @@ public class DaemonHeartbeatClient extends Thread {
      * Method to send a message to collectd server.<br>
      * Currently uses TCP. Should change to UDP.<br>
      *
-     * @param String message
+     * @param message
      */
     public void sendToCollectdServer(String message) {
         try {
@@ -221,7 +221,7 @@ public class DaemonHeartbeatClient extends Thread {
      * 1 = metric is old<br>
      * 2 = metric is ok and latest<br>
      *
-     * @param boolean is the latest metric verified?
+     * @param metricLatestVerified - is the latest metric verified?
      * @return String message
      */
     private String getMessage(boolean metricLatestVerified) {

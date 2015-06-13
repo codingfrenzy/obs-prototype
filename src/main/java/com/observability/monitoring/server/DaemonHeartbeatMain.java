@@ -186,7 +186,7 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void saveDaemonNotResponding(String ip) {
         if (!listOfNotRespondingDaemons.containsKey(ip)) {
-            Long systemEpoch = new Long(System.currentTimeMillis() / 1000);
+            Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotRespondingDaemons.put(ip, systemEpoch);
 //            System.out.println("Saving Daemon not responding: " + ip + "date" + systemEpoch.toString());
         }
@@ -209,7 +209,7 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void saveDaemonNotCollectingMetrics(String ip) {
         if (!listOfNotCollectingDaemons.containsKey(ip)) {
-            Long systemEpoch = new Long(System.currentTimeMillis() / 1000);
+            Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotCollectingDaemons.put(ip, systemEpoch);
 //            System.out.println("Daemon not collecting: " + ip + systemEpoch.toString());
         }
@@ -275,7 +275,7 @@ public class DaemonHeartbeatMain implements Runnable {
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
-            long systemEpoch = new Long(System.currentTimeMillis() / 1000);
+            long systemEpoch = System.currentTimeMillis() / 1000;
             if (systemEpoch - value.longValue() > getThreshold()) {
                 logDaemonNotCollecting(key, value.longValue());
                 entries.remove();
