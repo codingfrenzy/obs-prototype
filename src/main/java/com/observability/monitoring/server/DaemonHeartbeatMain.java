@@ -228,8 +228,8 @@ public class DaemonHeartbeatMain implements Runnable {
 
     private void writeToFile(String ip, long time, boolean responding) {
 
+        System.out.println("Writing to log");
         String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
-
         String fileName, content;
         if (responding) {
             fileName = "NotResponding";
