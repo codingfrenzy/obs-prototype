@@ -240,13 +240,17 @@ public class DaemonHeartbeatMain implements Runnable {
         }
 
         String line = "Daemon " + content + ": " + ip + " since " + date + " (" + time + ")";
-        PrintWriter writer = null;
+        String fullFile = filePath + fileName + "-" + getTodayDate();
         try {
-            writer = new PrintWriter(new FileOutputStream(new File(filePath + fileName + "-" + getTodayDate()), true));
-//            writer = new PrintWriter(filePath + fileName + "-" + getTodayDate(), "UTF-8");
-            writer.println(line);
-            writer.close();
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fullFile, true), "UTF-8");
+            BufferedWriter fbw = new BufferedWriter(writer);
+            fbw.write(line);
+            fbw.newLine();
+            fbw.close();
+
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
