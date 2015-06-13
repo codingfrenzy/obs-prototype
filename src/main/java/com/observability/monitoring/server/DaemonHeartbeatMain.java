@@ -82,14 +82,21 @@ public class DaemonHeartbeatMain implements Runnable {
      * Constructor<br>
      * Intiliazes the reference to the 2 Hashmap objects and the AtomicBoolean object that controls the toggle.
      *
-     * @param HashMap       list1
-     * @param HashMap       list2
-     * @param AtomicBoolean daemonHeartbeatCollectionToggle - This is used for switch between the hashmaps between threads.
+     * @param list1
+     * @param list2
+     * @param daemonHeartbeatCollectionToggle - This is used for switch between the hashmaps between threads.
      */
-    DaemonHeartbeatMain(HashMap<String, DaemonInfo> l1, HashMap<String, DaemonInfo> l2, AtomicBoolean daemonHeartbeatCollectionToggle) {
-        listOfDaemonHeartbeatReceived1 = l1;
-        listOfDaemonHeartbeatReceived2 = l2;
+    DaemonHeartbeatMain(HashMap<String, DaemonInfo> list1, HashMap<String, DaemonInfo> list2, AtomicBoolean daemonHeartbeatCollectionToggle) {
+        listOfDaemonHeartbeatReceived1 = list1;
+        listOfDaemonHeartbeatReceived2 = list2;
         this.daemonHeartbeatCollectionToggle = daemonHeartbeatCollectionToggle;
+        initListofConfiguredDaemons();
+    }
+
+    /**
+     * Default constructor. Should be used with caution as it severely limits functionality
+     */
+    DaemonHeartbeatMain() {
         initListofConfiguredDaemons();
     }
 
@@ -182,7 +189,7 @@ public class DaemonHeartbeatMain implements Runnable {
     /**
      * Saves the IP of the daemon that is not responding into the corresponding stack.
      *
-     * @param String ip - IP of the daemon that is not responding
+     * @param ip - IP of the daemon that is not responding
      */
     private void saveDaemonNotResponding(String ip) {
         if (!listOfNotRespondingDaemons.containsKey(ip)) {
@@ -205,7 +212,7 @@ public class DaemonHeartbeatMain implements Runnable {
     /**
      * Saves the IP of the daemon that is not collecting into the corresponding stack.
      *
-     * @param String ip - IP of the daemon that is not responding
+     * @param ip - IP of the daemon that is not responding
      */
     private void saveDaemonNotCollectingMetrics(String ip) {
         if (!listOfNotCollectingDaemons.containsKey(ip)) {
@@ -227,21 +234,36 @@ public class DaemonHeartbeatMain implements Runnable {
         return sdf.format(date);
     }
 
+    /**
+     * Get the absolute file path for the log file.
+     *
+     * @param responding boolean - Are you calling this method for daemons not-responding or not-collecting?
+     * @return
+     */
+    public String getFullFilePath(boolean responding) {
+        String fileName;
+        if (responding) {
+            fileName = "NotResponding";
+        } else {
+            fileName = "NotCollecting";
+        }
+        return filePath + fileName + "-" + getTodayDate();
+    }
+
+    /**
+     * Write the IP, time of the daemon to the corresponding log file.
+     *
+     * @param ip
+     * @param time
+     * @param responding boolean - Are you calling this method for daemons not-responding or not-collecting?
+     */
     private void writeToFile(String ip, long time, boolean responding) {
 
         String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
-        String fileName, content;
-        if (responding) {
-            fileName = "NotResponding";
-            content = "not responding";
-        } else {
-            fileName = "NotCollecting";
-            content = "not collecting";
-        }
-
-        String line = "Daemon " + content + ": " + ip + " since " + date + " (" + time + ")";
-        String fullFile = filePath + fileName + "-" + getTodayDate();
+        String line = "IP:" + ip + " since " + date + " (" + time + ")";
+        String fullFile = getFullFilePath(responding);
         System.out.println("Writing to log: " + line);
+
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fullFile, true), "UTF-8");
             BufferedWriter fbw = new BufferedWriter(writer);
