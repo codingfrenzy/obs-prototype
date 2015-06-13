@@ -21,9 +21,7 @@
 
 package com.observability.monitoring.server;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -83,6 +81,7 @@ public class DaemonHeartbeatMain implements Runnable {
     /**
      * Constructor<br>
      * Intiliazes the reference to the 2 Hashmap objects and the AtomicBoolean object that controls the toggle.
+     *
      * @param HashMap       list1
      * @param HashMap       list2
      * @param AtomicBoolean daemonHeartbeatCollectionToggle - This is used for switch between the hashmaps between threads.
@@ -243,12 +242,11 @@ public class DaemonHeartbeatMain implements Runnable {
         String line = "Daemon " + content + ": " + ip + " since " + date + " (" + time + ")";
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(filePath + fileName + "-" + getTodayDate(), "UTF-8");
+            writer = new PrintWriter(new FileOutputStream(new File(filePath + fileName + "-" + getTodayDate()), true));
+//            writer = new PrintWriter(filePath + fileName + "-" + getTodayDate(), "UTF-8");
             writer.println(line);
             writer.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -259,11 +257,11 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void processNotRespondingCollectingDaemons() {
         Iterator entries = listOfNotRespondingDaemons.entrySet().iterator();
+        long systemEpoch = System.currentTimeMillis() / 1000;
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
-            long systemEpoch = new Long(System.currentTimeMillis() / 1000);
             if (systemEpoch - value.longValue() > getThreshold()) {
                 logDaemonNotResponding(key, value.longValue());
                 entries.remove();
@@ -275,7 +273,6 @@ public class DaemonHeartbeatMain implements Runnable {
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
-            long systemEpoch = System.currentTimeMillis() / 1000;
             if (systemEpoch - value.longValue() > getThreshold()) {
                 logDaemonNotCollecting(key, value.longValue());
                 entries.remove();
