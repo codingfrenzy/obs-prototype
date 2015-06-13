@@ -126,13 +126,13 @@ public class DaemonHeartbeatMain implements Runnable {
         HashMap<String, DaemonInfo> tempHeartbeatReceived = null;
         if (daemonHeartbeatCollectionToggle.get()) {
             tempHeartbeatReceived = listOfDaemonHeartbeatReceived1;
-            System.out.println("Using VH1");
+//            System.out.println("Using VH1");
         } else {
             tempHeartbeatReceived = listOfDaemonHeartbeatReceived2;
-            System.out.println("Using VH2");
+//            System.out.println("Using VH2");
         }
 
-        System.out.println("Verifying daemons");
+//        System.out.println("Verifying daemons");
         for (String configuredIp : listOfConfiguredDaemons) {
 
             boolean foundFlag = false;
@@ -148,6 +148,7 @@ public class DaemonHeartbeatMain implements Runnable {
                 // Therefore, this means that if the key exists in the stack, we can assume that it missed only a part of the threshold so it is allowed.
                 if (listOfNotRespondingDaemons.containsKey(configuredIp)) {
                     listOfNotRespondingDaemons.remove(configuredIp);
+                    System.out.println(configuredIp);
                 }
                 if (listOfNotCollectingDaemons.containsKey(configuredIp)) {
                     listOfNotCollectingDaemons.remove(configuredIp);
@@ -187,7 +188,7 @@ public class DaemonHeartbeatMain implements Runnable {
         if (!listOfNotRespondingDaemons.containsKey(ip)) {
             Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotRespondingDaemons.put(ip, systemEpoch);
-//            System.out.println("Saving Daemon not responding: " + ip + "date" + systemEpoch.toString());
+            System.out.println("Saving Daemon not responding: " + ip + " date " + systemEpoch.toString());
         }
     }
 
@@ -228,7 +229,6 @@ public class DaemonHeartbeatMain implements Runnable {
 
     private void writeToFile(String ip, long time, boolean responding) {
 
-        System.out.println("Writing to log");
         String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
         String fileName, content;
         if (responding) {
@@ -241,6 +241,7 @@ public class DaemonHeartbeatMain implements Runnable {
 
         String line = "Daemon " + content + ": " + ip + " since " + date + " (" + time + ")";
         String fullFile = filePath + fileName + "-" + getTodayDate();
+        System.out.println("Writing to log: " + line);
         try {
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fullFile, true), "UTF-8");
             BufferedWriter fbw = new BufferedWriter(writer);
