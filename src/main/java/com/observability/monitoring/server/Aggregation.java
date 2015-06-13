@@ -239,7 +239,7 @@ public class Aggregation extends UnicastRemoteObject {
 	 * @return
 	 */
 	protected static AggConfigItems setConfigurations(int interval, List<String[]> aggConfigurations){
-		String [] str = new String[2]; 
+		String [] str = null;//new String[2]; 
 		String plugin = null;
 		String typeInst = null; /////TODO: if typeInst preceded with #, then calculate everything
 		Boolean calNum = false;
