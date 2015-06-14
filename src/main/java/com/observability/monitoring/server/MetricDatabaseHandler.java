@@ -24,8 +24,6 @@ package com.observability.monitoring.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -69,7 +67,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	private int lowestInterval = 30;
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public String getMetricValueAtEpoch(String epoch, String metricPath)
 			throws RemoteException {
@@ -113,7 +111,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	}
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch,
 			String toEpoch, String metricPath) throws RemoteException {
@@ -158,7 +156,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	}
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public boolean updateMetrics(String[] epoch, String[] values,
 			String metricPath) throws RemoteException {
