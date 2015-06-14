@@ -12,11 +12,19 @@ import observability_new.Observability_newPackage;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+<<<<<<< Updated upstream
 
+=======
+import org.eclipse.emf.common.notify.impl.NotificationImpl;
+>>>>>>> Stashed changes
 import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+<<<<<<< Updated upstream
 
+=======
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+>>>>>>> Stashed changes
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -183,11 +191,35 @@ public class ModelItemProvider
 			(createChildParameter
 				(Observability_newPackage.Literals.MODEL__CLUSTERS,
 				 Observability_newFactory.eINSTANCE.createDatabaseCluster()));
+<<<<<<< Updated upstream
 
 		newChildDescriptors.add
 			(createChildParameter
 				(Observability_newPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
 				 Observability_newFactory.eINSTANCE.createDbType()));
+=======
+		
+		Model model = (Model)object;
+		if(model.getAvailableDbTypes().size()==0){
+		//Observability_newFactory factory = Observability_newFactoryImpl.init();
+			DbType db = Observability_newFactory.eINSTANCE.createDbType();
+			db.setName("Cassandra");
+		//model = Observability_newFactory.eINSTANCE.createModel();
+			model.getAvailableDbTypes().add(db);
+			newChildDescriptors.add
+			(createChildParameter
+				(Observability_newPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
+				 db));
+		}
+		else {
+			newChildDescriptors.add
+			(createChildParameter
+				(Observability_newPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
+				 Observability_newFactory.eINSTANCE.createDbType()));
+		}
+//Observability_newFactory.eINSTANCE.createDbType()));
+		
+>>>>>>> Stashed changes
 	}
 
 	/**

@@ -11,5 +11,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: observability_emf.provider
 Require-Bundle: org.eclipse.core.runtime,
  observability-emf;visibility:=reexport,
- org.eclipse.emf.edit;visibility:=reexport
+ org.eclipse.emf.edit;visibility:=reexport,
+ observability-emf
 Bundle-ActivationPolicy: lazy
