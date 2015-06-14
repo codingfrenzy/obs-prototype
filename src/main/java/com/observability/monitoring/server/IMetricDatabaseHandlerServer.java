@@ -26,35 +26,35 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
- * IMetricDatabaseHandlerServer is RMI server interface of MetricDatabaseHandler which can be used to:
- * 1. fetch a single metric value from whisper database at a specific epoch value
- * 2. fetch multiple metric values between an epoch range
- * 3. set/update metric values for as many epoch values as the user wants for a metric 
- * 
+ * IMetricDatabaseHandlerServer is RMI server interface of MetricDatabaseHandler which can be used to:<br>
+ * 1. fetch a single metric value from whisper database at a specific epoch value<br>
+ * 2. fetch multiple metric values between an epoch range<br>
+ * 3. set/update metric values for as many epoch values as the user wants for a metric<br> 
+ * <p>
  * @author Rajat Kapoor
- * 
- * History: 
- * 1. Created					Jun 03 2015
- * 2. Modified					Jun 06 2015
+ * <p>
+ * History:<br> 
+ * 1. Created					Jun 03 2015<br>
+ * 2. Modified					Jun 06 2015<br>
  */
 
 public interface IMetricDatabaseHandlerServer extends Remote{
 	
 	/**
-	 * getMetricValueAtEpoch fetches a single value of a metric from whisper
+	 * getMetricValueAtEpoch fetches a single value of a metric from whisper<br>
 	 * 
 	 * @param epoch is the epoch value or the UNIX timestamp at which the
 	 * metric is to be fetched
 	 * 
-	 * @param metricPath is the path of the metric such as :
-	 * collectd/observabilityCassandra1/memory/memory-used
+	 * @param metricPath is the path of the metric such as :<br>
+	 * collectd/observabilityCassandra1/memory/memory-used<br>
 	 * This is the actual path of a .wsp file in which whisperPath is prefixed
-	 * so the actual path built by this method is :
-	 * /var/lib/graphite/whisper/collectd/collectd/observabilityCassandra1/memory/memory-used.wsp
+	 * so the actual path built by this method is :<br>
+	 * /var/lib/graphite/whisper/collectd/collectd/observabilityCassandra1/memory/memory-used.wsp<br>
 	 * 
-	 * @return null if the epoch or metricPath are empty, or no result is obtained
-	 *         epoch and metric value in whisper DB (separated by tab) if it is present
-	 * Example: getMetricValueAtEpoch("1433641326.507","collectd/observabilityCassandra1/memory/memory-used")
+	 * @return null if the epoch or metricPath are empty, or no result is obtained<br>
+	 *         epoch and metric value in whisper DB (separated by tab) if it is present<br>
+	 * Example: getMetricValueAtEpoch("1433641326.507","collectd/observabilityCassandra1/memory/memory-used")<br>
 	 */
 	
 	public String getMetricValueAtEpoch(String epoch, String metricPath) throws RemoteException;
@@ -65,14 +65,14 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 * fromEpoch and toEpoch
 	 * @param fromEpoch is the starting epoch value (inclusive)
 	 * @param toEpoch is the ending epoch value (inclusive)
-	 * @param metricPath is the path of the metric such as :
+	 * @param metricPath is the path of the metric such as :<br>
 	 * collectd/observabilityCassandra1/memory/memory-used
 	 * @return null if there are no values in between fromEpoch & toEpoch
-	 *         or if the arguments provided are invalid;
+	 *         or if the arguments provided are invalid;<br>
 	 *         an arraylist containing epoch values and their corresponding
 	 *         metric values separated by a tab if at least one value is
-	 *         found
-	 * Example: getMetricsBtwEpochRange("1433641326.507", "1433641416.508", "collectd/observabilityCassandra1/memory/memory-used")
+	 *         found<br>
+	 * Example: getMetricsBtwEpochRange("1433641326.507", "1433641416.508", "collectd/observabilityCassandra1/memory/memory-used")<br>
 	 */
 	
 	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch, String toEpoch, String metricPath) throws RemoteException;
@@ -83,12 +83,12 @@ public interface IMetricDatabaseHandlerServer extends Remote{
 	 * in the whisper database
 	 * @param epoch is an array of epoch values which are to be updated/set
 	 * @param values is an array of metric values which are to be updated/set
-	 * @param metricPath is the path of the metric such as :
-	 * collectd/observabilityCassandra1/memory/memory-used
-	 * @return true if the values were successfully updated
+	 * @param metricPath is the path of the metric such as :<br>
+	 * collectd/observabilityCassandra1/memory/memory-used<br>
+	 * @return true if the values were successfully updated<br>
 	 * 		   false if the values were not updated due to an error or the
-	 * 		   arguments given were invalid
-	 * Example: updateMetrics(new String[]{"1433641326.507", "1433641416.508"},new String[]{"242106369.000000", "242126849.000000"},"collectd/observabilityCassandra1/memory/memory-used")
+	 * 		   arguments given were invalid<br>
+	 * Example: updateMetrics(new String[]{"1433641326.507", "1433641416.508"},new String[]{"242106369.000000", "242126849.000000"},"collectd/observabilityCassandra1/memory/memory-used")<br>
 	 */
 	
 	public boolean updateMetrics(String[] epoch, String[] values, String metricPath) throws RemoteException;

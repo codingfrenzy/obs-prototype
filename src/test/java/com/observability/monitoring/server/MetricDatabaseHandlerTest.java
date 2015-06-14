@@ -31,13 +31,14 @@ import java.rmi.RemoteException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
+/**<p>
  * @author Rajat Kapoor
- * References: https://docs.oracle.com/javase/tutorial/rmi/implementing.html
- * How to run:
- * 1. Start MetricDatabaseHandler in server:
- * 		java com.observability.monitoring.server.MetricDatabaseHandler 8100
- * 2. Right-click on this file and run as Junit test
+ * <p>
+ * References: https://docs.oracle.com/javase/tutorial/rmi/implementing.html<br>
+ * How to run:<br>
+ * 1. Start MetricDatabaseHandler in server:<br>
+ * 		java com.observability.monitoring.server.MetricDatabaseHandler 8100<br>
+ * 2. Right-click on this file and run as Junit test<br>
  */
 public class MetricDatabaseHandlerTest {
 	// These variables should be set before running the JUnit:
