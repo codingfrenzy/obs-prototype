@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_new="http://www.example.org/observability_new">
   <clusters/>
+  <clusters/>
   <availableDbTypes name="Cassandra"/>
 </observability_new:Model>
