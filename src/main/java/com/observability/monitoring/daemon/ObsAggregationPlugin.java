@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Date;
 
 import org.collectd.api.Collectd;
+import org.collectd.api.CollectdNotificationInterface;
 import org.collectd.api.CollectdWriteInterface;
 import org.collectd.api.DataSet;
 import org.collectd.api.ValueList;
@@ -56,16 +57,21 @@ import java.util.logging.SimpleFormatter;
  * <p>
  * Build jar file: jar cvf obsaggregation.jar com/observability/monitoring/daemon/ObsAggregationPlugin.class
  * <p>
+ * NOTE: This is a testing plugin to be installed on collectd server.<br>
+ *       Detailed comments will be added in formal code.
+ * <p>
  * @author Ying (Joel) Gao
  * <p>
  * History:<br>
  * 1. Created					Jun 09 2015<br>
+ * 2. Modified					Jun 14 2015<br>
  */
 
 public class ObsAggregationPlugin implements CollectdConfigInterface,
 											 CollectdInitInterface,
 											 CollectdReadInterface,
 											 CollectdWriteInterface,
+											 CollectdNotificationInterface,
 											 CollectdShutdownInterface
 {
 	private HashMap<String, Number> valueMap = new HashMap<String, Number>();
@@ -77,9 +83,10 @@ public class ObsAggregationPlugin implements CollectdConfigInterface,
 	    Collectd.registerInit     ("ObsAggregationPlugin", this);
 	    Collectd.registerRead     ("ObsAggregationPlugin", this);
 	    Collectd.registerWrite    ("ObsAggregationPlugin", this);
+	    Collectd.registerNotification("ObsAggregationPlugin", this);
 	    Collectd.registerShutdown ("ObsAggregationPlugin", this);
 	    
-	    //initLogger();
+	    initLogger();
 	}
 
 	private void initLogger() {
@@ -169,10 +176,15 @@ public class ObsAggregationPlugin implements CollectdConfigInterface,
 		
 		valueMap.put(key, vals.get(sz - 1));
 		//for(int i = 0 ; i < sz ; i++) {
-		//	String log = "Key: " + key + "     Values: " + vl.toString(); 
-		//	LOGGER.info(log);
+			String log = "Key: " + key + "     Values: " + vl.toString(); 
+			LOGGER.info(log);
 		//}
 			vl.clearValues();
+		return 0;
+	}
+	
+	public int notification(Notification arg0) {
+		LOGGER.info(arg0.toString());
 		return 0;
 	}
 
@@ -186,14 +198,14 @@ public class ObsAggregationPlugin implements CollectdConfigInterface,
 		for (Number value : valueMap.values()) {
 			finald += value.doubleValue();
 		}
-		//double avg = finald / sz;
+		double avg = finald / sz;
 		
 		// submit the value - average
 		//submit("cpu", "system", new Double(avg));
 		// submit the value - sum
 		submit("cpu", "system", new Double(finald));
-		//String log = "Map size: " + sz + "     Sum: " + finald + "    Average: " + avg; 
-		//LOGGER.info(log);
+		String log = "Map size: " + sz + "     Sum: " + finald + "    Average: " + avg; 
+		LOGGER.info(log);
 		// clear the map
 		valueMap.clear();
 		return 0;
