@@ -2,7 +2,7 @@
 [**
  * The documentation of the module generate.
  */]
-[module generate('http://www.example.org/observability_emf', 'http://www.eclipse.org/emf/2002/Ecore')]
+[module generate('http://www.example.org/observability_new', 'http://www.eclipse.org/emf/2002/Ecore')]
 
 
 [**

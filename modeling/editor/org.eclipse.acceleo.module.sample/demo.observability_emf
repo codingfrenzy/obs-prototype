@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<observability_emf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_emf="http://www.example.org/observability_emf">
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
   <clusters collectedBaseMetric="//@availableDbTypes.0/@availableMetrics.0 //@availableDbTypes.0/@availableMetrics.1" associatedDbType="//@availableDbTypes.0" name="Test Cluster" noOfMachines="2">
     <machines IP="10.0.0.2" Port="3002" name="Machine 2"/>
     <machines IP="10.0.0.1" Port="3001" name="Machine 1"/>
   </clusters>
   <availableDbTypes name="Cassandra" collectionFrequency="25">
-    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Cpu" description="Cpu" databaseCluster="//@clusters.0"/>
-    <availableMetrics xsi:type="observability_emf:BaseMetric" name="Memory" description="Memory" databaseCluster="//@clusters.0"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="Cpu" description="Cpu" databaseCluster="//@clusters.0"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="Memory" description="Memory" databaseCluster="//@clusters.0"/>
   </availableDbTypes>
-</observability_emf:Model>
+</observability_new:Model>

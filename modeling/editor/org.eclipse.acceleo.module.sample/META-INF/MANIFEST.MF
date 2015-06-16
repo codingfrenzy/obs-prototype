@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.sample.Activator
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.core.runtime, 
- observability-emf, 
+ observability_new, 
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.ocl,
@@ -19,5 +19,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.acceleo.module.sample
+Export-Package: org.eclipse.acceleo.module.sample,
+ org.eclipse.acceleo.module.sample.files
 
