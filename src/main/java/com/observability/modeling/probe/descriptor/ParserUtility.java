@@ -81,8 +81,7 @@ public final class ParserUtility {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()){ //there would be only one match in a line
-			String[] insideTag = new String[2];
-			insideTag = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space
+			String[] insideTag = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space. This would only give 2 elements
 			int i = 0;
 			for (String s : insideTag) {
 				// i = 0 -> name of the element

@@ -100,13 +100,13 @@ public abstract class Parameter {
 	}
 	@Override
 	public String toString() {
-		String string = "";
-		string += "(" + name + ", " + value + ")\n";
+		StringBuffer buf = new StringBuffer();
+		buf.append("(" + name + ", " + value + ")\n");
 		
 		for (ElementTag element : elements) {
-			string += element.toString();
+			buf.append(element.toString());
 		}
-		return string;
+		return buf.toString();
 	}
 	
 	

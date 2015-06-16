@@ -29,12 +29,12 @@
     </Writer>
     
     <Database foo> @Machine
-      Host ""@Machine
-      Port ""@Machine
-      User ""@Machine
-      Password ""@Machine
-      SSLMode ""@Machine
-      KRBSrvName ""@Machine
+      Host @Machine
+      Port @Machine
+      User @Machine
+      Password @Machine
+      SSLMode @Machine
+      KRBSrvName @Machine
       Query magic @Collect
     </Database>
     

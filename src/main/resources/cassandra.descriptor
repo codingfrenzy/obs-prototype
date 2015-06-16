@@ -30,7 +30,7 @@
 
     <Connection> @Machine
       Host "10.10.10.10" @Machine 
-      ServiceURL "" @Machine
+      ServiceURL @Machine
       Collect "metrics" @Collect 
 	  Collect "lang" @Collect
     </Connection>

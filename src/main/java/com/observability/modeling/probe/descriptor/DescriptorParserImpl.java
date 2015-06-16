@@ -138,7 +138,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 		String currentAnnotation = null;
 		
 		try {
-			Scanner scanner = new Scanner(file);
+			Scanner scanner = new Scanner(file, "UTF-8");
 			while(scanner.hasNextLine()){
 				
 				String line = scanner.nextLine().trim();
