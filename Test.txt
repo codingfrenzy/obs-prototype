@@ -1,0 +1,47 @@
+    <Node "graphing">
+        Host "localhost"
+        Port "2003"
+        Protocol "tcp"
+        LogSendErrors true
+        Prefix "collectd."
+        StoreRates true
+        AlwaysAppendDS false
+        EscapeCharacter "_"
+    </Node>
+</Plugin>
+
+
+LoadPlugin aggregation
+<LoadPlugin aggregation>
+    Interval 30
+</LoadPlugin>
+
+
+
+#LoadPlugin ping
+#<Plugin "ping">
+#  Host "45.55.240.162"
+#  Host "128.2.204.246"
+#  Interval 30
+#  Timeout 5
+#</Plugin>
+
+<Aggregation>
+    #Host "localhost"
+    Plugin "cpu"
+    #PluginInstance "/[0]$/"
+    Type "cpu"
+    #TypeInstance "cpu-system"
+    #SetPlugin "cpu"
+    #SetPluginInstance "even-%{aggregation}"
+    #GroupBy "Host"
+    GroupBy "TypeInstance"
+    CalculateNum true
+    CalculateSum true
+
+    CalculateAverage true
+    CalculateMinimum true
+    CalculateMaximum false
+    CalculateStddev true
+  </Aggregation>
+test test
