@@ -122,6 +122,22 @@ public class Aggregation extends UnicastRemoteObject {
 		// Save configurations in AggConfiguration object
 		AggConfigItems aggConfigurations = setConfigurations(interval, aggConfigurationsList);
 				
+		///////////////// Debug Starts ///////////////////
+		
+		//Reading the size of the list
+		System.out.println("list size: " + aggConfigurationsList.size());
+		
+		//Getting the first item of the list, it should be [#Host, "localhost"]
+		String[] s = aggConfigurationsList.get(0);
+		System.out.println("#Host: " + s[1]); 	//it should return "localhost", however, it returns "true", 
+												//which is the value of the last item in the list
+		
+    	System.out.println("Plugin: " + aggConfigurations.getPlugin()); //This should return "cpu", but it returns
+    																	//null since it didn't assign any value in plugin
+
+		/////////////////////Debug Ends//////////////////////
+
+		
 		// TODO: this is a temporary (hard coded) solution for the previous method
 		//String[] nodeListTemp = {"msesrv6h-vm.mse.cs.cmu.edu", "observabilityCassandra1"};
 		String[] nodeListTemp = new String[2];
@@ -216,6 +232,15 @@ public class Aggregation extends UnicastRemoteObject {
 				}
 			} while (line != null);
 		bufferReader.close();
+		
+		//////////// Debug Starts ///////////////
+		String str [] =null;
+		for (int j =0; j < aggConfig.size(); j++){
+			str = aggConfig.get(j);
+			
+			System.out.println("Test Value " + j +": "+ str[1]);
+		}
+	////////////// Debug Ends //////////////////
 		return aggConfig;			
 	}
 		
@@ -336,7 +361,11 @@ public class Aggregation extends UnicastRemoteObject {
         IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+"45.55.197.112"+":"+"8100"+"/MetricDatabaseHandler");
         for (int i=0; i < nodeListTemp.length;i++) {
         	//String nodeWarpped= wrapDaemonsWithMetricFilesPath (nodeListTemp[i], aggConfig.getPlugin(), aggConfig.getTypeInst());
-        	System.out.println("node: " + aggConfig.getPlugin());
+        	
+        	/////////////// Debug Starts /////////////
+        	System.out.println("check if plugin value was assigned: " + aggConfig.getPlugin());
+        	/////////////// Debug Ends /////////////
+        	
         	nodeWarpped= str.concat(nodeListTemp[i]).concat(str2).concat(aggConfig.getPlugin()).concat(str2).concat(aggConfig.getTypeInst());
         	ArrayList<String> metrics = imdhs.getMetricsBtwEpochRange(timeStampStartStr,timeStampEndStr, nodeWarpped);
         	metricMeasurements.addAll(metrics);
@@ -344,7 +373,7 @@ public class Aggregation extends UnicastRemoteObject {
         }
         
         aggregate(metricMeasurements,timeStampEndStr, aggConfig.isCalNum(),aggConfig.isCalSum(),
-        		aggConfig.isCalAvg(), aggConfig.isCalMin(), aggConfig.isCalMax(), aggConfig.isCalStd());
+        		aggConfig.isCalAvg(), aggConfig.isCalMin(), aggConfig.isCalMax(), aggConfig.isCalStd(), aggConfig.getPlugin(), aggConfig.getTypeInst());
 	}
 	
 	
@@ -361,10 +390,13 @@ public class Aggregation extends UnicastRemoteObject {
 	}
 	
 	/**
+	 * @throws NotBoundException 
+	 * @throws RemoteException 
+	 * @throws MalformedURLException 
 	 * 
 	 */
 	public static void aggregate(ArrayList<String> metricMeasurements, String timeStampEndStr, boolean isCalNum,
-			boolean isCalSum, boolean isCalAvg, boolean isCalMin, boolean isCalMax, boolean isCalStd){ 
+			boolean isCalSum, boolean isCalAvg, boolean isCalMin, boolean isCalMax, boolean isCalStd, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{ 
 		long measurementSum = 0;
 		AggFunc func;
 		int counter = 0;
@@ -388,7 +420,7 @@ public class Aggregation extends UnicastRemoteObject {
 				measurementSum+=Long.parseLong(metricMeasurements.get(i));
 			}
 			func = AggFunc.SUM;
-			saveData(timeStampEndStr, String.valueOf(measurementSum), func);
+			saveData(timeStampEndStr, String.valueOf(measurementSum), func, metric, metricType);
 		}
  
 		if (isCalAvg == true){
@@ -400,7 +432,7 @@ public class Aggregation extends UnicastRemoteObject {
 			}
 			measurementAvg = measurementSum / counter; 
 			func = AggFunc.AVG;
-			saveData(timeStampEndStr, String.valueOf(measurementAvg), func);
+			saveData(timeStampEndStr, String.valueOf(measurementAvg), func,  metric, metricType);
 		}
 		
 		if (isCalMin == true){
@@ -409,7 +441,7 @@ public class Aggregation extends UnicastRemoteObject {
 				measurementMax = min > num ? min : num;
 			}
 			func = AggFunc.MIN;
-			saveData(timeStampEndStr, String.valueOf(measurementMin), func);
+			saveData(timeStampEndStr, String.valueOf(measurementMin), func,  metric, metricType);
 		}
 		
 		if (isCalMax == true){
@@ -418,7 +450,7 @@ public class Aggregation extends UnicastRemoteObject {
 				measurementMax = max > num ? max : num;
 			}
 			func = AggFunc.MAX;
-			saveData(timeStampEndStr, String.valueOf(measurementMax), func);
+			saveData(timeStampEndStr, String.valueOf(measurementMax), func,  metric, metricType);
 		}
 		
 		if (isCalStd == true){
@@ -434,24 +466,25 @@ public class Aggregation extends UnicastRemoteObject {
 			}
 			measurementStd = Math.sqrt(sd);
 			func = AggFunc.STD;
-			saveData(timeStampEndStr, String.valueOf(measurementStd), func);
+			saveData(timeStampEndStr, String.valueOf(measurementStd), func,  metric, metricType);
 		}
 	}
 	
 	/**
 	 * updateMetrics(String[] epoch, String[] values, String metricPath)
 	 * @return
+	 * @throws NotBoundException 
+	 * @throws RemoteException 
+	 * @throws MalformedURLException 
 	 */
-	public static void saveData( String timeStampEndStr, String aggregatedMeasurement, AggFunc math){
+	public static void saveData( String timeStampEndStr, String aggregatedMeasurement, AggFunc func, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{
 		//collectd/global/aggregation-cpu-sum/cpu-idle-2015-06-10
 		//MetricDatabaseHandler.updateMetrics(String[] epoch, String[] values, String metricPath)
 		//needs to be updated to accept one record at a time
 		
-		//if directory "global" doesn't exist, create it
-		
-		//if directory "aggregation-metric-math" doesn't exist, create it
-		
-		//if directory "metric-typeInst-yyyy-mm-dd" doesn't exist, create it
+
+        IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+"45.55.197.112"+":"+"8100"+"/MetricDatabaseHandler");
+
 		
 		//else, append the timeStampEndStr and aggregatedMeasurement, and break to the next line
 		
