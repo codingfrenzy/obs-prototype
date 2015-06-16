@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_new="http://www.example.org/observability_new">
-  <clusters/>
-  <clusters/>
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:observability_new="http://www.example.org/observability_new" frequency="30">
+  <clusters name="cluster1">
+    <machines IP="0.0.0.0" name="machine1"/>
+  </clusters>
+  <clusters name="cluster2">
+    <machines IP="1.1.1.1" name="machine2"/>
+  </clusters>
   <availableDbTypes name="Cassandra"/>
 </observability_new:Model>
