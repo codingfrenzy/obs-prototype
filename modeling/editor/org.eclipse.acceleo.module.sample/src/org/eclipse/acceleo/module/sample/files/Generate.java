@@ -340,9 +340,6 @@ public class Generate extends AbstractAcceleoGenerator {
     @Override
     public void registerPackages(ResourceSet resourceSet) {
         super.registerPackages(resourceSet);
-        if (!isInWorkspace(observability_emf.Observability_emfPackage.class)) {
-            resourceSet.getPackageRegistry().put(observability_emf.Observability_emfPackage.eINSTANCE.getNsURI(), observability_emf.Observability_emfPackage.eINSTANCE);
-        }
         if (!isInWorkspace(org.eclipse.emf.ecore.EcorePackage.class)) {
             resourceSet.getPackageRegistry().put(org.eclipse.emf.ecore.EcorePackage.eINSTANCE.getNsURI(), org.eclipse.emf.ecore.EcorePackage.eINSTANCE);
         }
