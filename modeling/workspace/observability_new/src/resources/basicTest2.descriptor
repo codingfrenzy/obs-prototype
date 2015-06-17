@@ -1,0 +1,17 @@
+ <MBean "lang"> @Metric
+        ObjectName "java.lang:type=Memory"
+        <Value>
+          Type "memory"
+          InstancePrefix "heap_mem"
+          Table true
+          Attribute "HeapMemoryUsage"
+		  Metrics colection typ
+        </Value>
+    </MBean>
+
+    <Connection> @Machine
+      Host "10.10.10.10" @Machine 
+      ServiceURL "" @Machine
+      Collect "metrics" @Collect 
+	  Collect "lang" @Collect
+    </Connection>
