@@ -1,69 +1,55 @@
+//**************************************************************************************************//
+/* Observability Project
+ * Copyright 2015 Master of Software Engineering team: Laila Alhmound, Ying (Joel) Gao, Caglayan (Gem) Gemici, Rajat Kapoor, Prasanth Nair, Varun Saravagi
+ * Copyright 2015 Institute for Software Research | School of Computer Science | Carnegie Mellon University
+ * Copyright 2015 Software Engineering Institute
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+//**************************************************************************************************//
 package observability_new.design;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
+import observability_new.extension.CustomServices;
 
-import observability_new.DbType;
-import observability_new.Model;
-import observability_new.Observability_newFactory;
-import observability_new.Observability_newPackage;
-
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-
+/**
+ * This is a service that can be called from odesign file. All it does is to
+ * forward it to the actual service
+ * 
+ * @author gemici 
+ * 
+ * TODO For now we cannot refer to the service defined in the
+ *         level 1 (first obeo editor). Ideally we should not need this service
+ *         and directly call the service on the first level
+ */
 public class LevelTwoService {
-	
-	public LevelTwoService(){
-		
+
+	public LevelTwoService() {
 		System.out.print("Level 2 Service ready!");
-		//createModel();
-		
 	}
-	private void createModel() {
-		// Initialize the model
-	    Observability_newPackage.eINSTANCE.eClass();
-	    
-	    Observability_newFactory factory = Observability_newFactory.eINSTANCE;
 
-	    // Register the XMI resource factory for the .0bservability_new extension
+	/**
+	 * This is called when a new machine is dragged and dropped
+	 * onto a dbCluster
+	 * @param obj this is expected to be the DatabaseCluster in 
+	 *  	which to create the new machine
+	 * @return true when machine is created,false otherwise
+	 */
+	public boolean createMachine(EObject obj) {
+		return CustomServices.initializeMachine(obj);
 
-	    Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-	    Map<String, Object> m = reg.getExtensionToFactoryMap();
-	    m.put("observability_new", new XMIResourceFactoryImpl());
-
-	    // Obtain a new resource set
-	    ResourceSet resSet = new ResourceSetImpl();
-
-	    // Get the resource
-	    Resource resource = resSet.getResource(URI
-	        .createURI("platform:/resource/observability_new.design/My.observability_new"), true);
-	    // Get the first model element and cast it to the right type, in my
-	    // example everything is hierarchical included in this first node
-	    Model model = (Model) resource.getContents().get(0);
-	    
-	    DbType cassandraDb = factory.createDbType();
-	    cassandraDb.setName("Cass");
-	    model.getAvailableDbTypes().add(cassandraDb);
-	    try {
-			resource.save(Collections.EMPTY_MAP);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
 	}
-	public boolean getName(EObject obj){
-		return observability_new.extension.CustomServices.initializeMachine(obj);
-		
-	}
-	
-	
-	
 
 }
