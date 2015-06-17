@@ -522,8 +522,8 @@ public class Aggregation extends UnicastRemoteObject {
     	IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+"45.55.197.112"+":"+"8100"+"/MetricDatabaseHandler");
     	boolean isSaved = imdhs.updateMetrics(timeStampEndStrArray, aggregatedMeasurementArray, metricPath);
 		//TODO add to log file
-    	System.out.println("Aggregation result: "+ isSaved); //Debug
-
+    	System.out.println("Aggregation result: "+ isSaved); //Debug: remove later
+    	
 	}
 	
 	/**
