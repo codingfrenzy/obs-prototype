@@ -28,7 +28,9 @@ public class DaemonHeartbeatMainTest {
 			String str;
 			while ((str = in.readLine()) != null) {
 //				System.out.println(str);
-				assertTrue(str.contains("Daemon not responding: 128.2.204.246 since "));
+				assertTrue(
+						str.contains("Daemon not responding: 128.2.204.246 since ") || str.contains("Daemon not responding: 123.2.204.246 since ")
+				);
 				break;
 			}
 			in.close();
