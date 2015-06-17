@@ -10,6 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.observability.modeling.probe.descriptor,
  com.observability.modeling.probe.descriptor.entities,
  observability_new,
+ observability_new.extension,
  observability_new.impl,
  observability_new.util
 Require-Bundle: org.eclipse.core.runtime,
