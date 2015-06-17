@@ -1,3 +1,0 @@
-test2!`:wq
-Bug fixed
-OBS-618 fixed

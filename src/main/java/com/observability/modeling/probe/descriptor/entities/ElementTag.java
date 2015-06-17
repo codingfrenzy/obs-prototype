@@ -128,24 +128,24 @@ public class ElementTag {
 	}
 	
 	private String toString(int level){
-		String string = "";
+		StringBuffer buf = new StringBuffer();
 		//add as many arrows as the level
 		for(int i=0; i< level; i++)
-			string += "->";
+			buf.append("->");
 		
-		string += "Element (" + name + ", " + value + ")\n";
+		buf.append("Element (" + name + ", " + value + ")\n");
 		
 		//Print all the key-value pairs
 		for(KeyValue keyValue : keyValues){
-			string += keyValue.toString(level+1);
+			buf.append(keyValue.toString(level+1));
 		}
 		
 		//recursively get all the elements
 		for (ElementTag element : elements) {
-			string += element.toString(level+1);
+			buf.append(element.toString(level+1));
 		}
 					
-		return string;
+		return buf.toString();
 	}
 	
 	/**
@@ -202,12 +202,12 @@ public class ElementTag {
 		}
 		
 		private String toString(int level){
-			String string = "";
+			StringBuffer buf = new StringBuffer();
 			//add as many arrows as the level
 			for(int i=0; i< level; i++)
-				string += "->";
-			string += "KeyValue (" + name + ", " + value + ")\n";
-			return string;
+				buf.append("->");
+			buf.append("KeyValue (" + name + ", " + value + ")\n");
+			return buf.toString();
 			
 		}
 	}

@@ -2,14 +2,16 @@
  */
 package observability_new.impl;
 
+import java.util.ArrayList;
+
+
 import observability_new.*;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -126,6 +128,25 @@ public class Observability_newFactoryImpl extends EFactoryImpl implements Observ
 	 */
 	public Model createModel() {
 		ModelImpl model = new ModelImpl();
+		// Check if the instances already exist.
+//		EList<DbType> availableDb = model.getAvailableDbTypes();
+//		if(availableDb.size() > 0){
+//			return model;
+//		}
+//		ArrayList<DbType> dbTypes = new ArrayList<>();
+//		
+//		// Create instance of DbType
+//		DbTypeImpl dbType = (DbTypeImpl)Observability_newFactory.eINSTANCE.createDbType();
+//		//DbTypeImpl db =( new DbTypeImpl();
+//		dbType.setName("Horyuken");
+//		// Add the instance to the collection
+//		dbTypes.add(dbType);
+//		
+//						
+//		//model.getAvailableDbTypes().add(dbType);
+//		
+//		// Add the collection of DbTypes to the model
+//		model.eSet(Observability_newPackage.MODEL__AVAILABLE_DB_TYPES, dbTypes);
 		return model;
 	}
 

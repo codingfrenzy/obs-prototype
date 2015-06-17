@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
-  <clusters collectedBaseMetric="//@availableDbTypes.0/@availableMetrics.0" name="cluster1">
+  <clusters associatedDbType="//@availableDbTypes.2" name="cluster1">
     <machines>
-      <hasParentElement name="">
-        <hasElements/>
-        <hasKeyValues/>
+      <hasParentElement name="root">
+        <hasElements name="Connection">
+          <hasKeyValues key="Host" value="&quot;10.10.10.10&quot;"/>
+          <hasKeyValues key="ServiceURL" value=""/>
+        </hasElements>
       </hasParentElement>
     </machines>
   </clusters>
-  <clusters name="cluster2">
-    <machines/>
-    <machines/>
-    <machines/>
-  </clusters>
-  <clusters name="cluster3"/>
-  <availableDbTypes name="Riak">
-    <availableMetrics xsi:type="observability_new:BaseMetric" name="Test" databaseCluster="//@clusters.0"/>
-    <hasParentElement name="my name">
-      <hasElements name="" value="">
-        <hasElements name="inside name" value="values"/>
-        <hasKeyValues key="Observability" value="nbvnbv"/>
-        <hasKeyValues/>
-      </hasElements>
-    </hasParentElement>
+  <availableDbTypes name="basictest1">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="&quot;metrics&quot;"/>
   </availableDbTypes>
-  <availableDbTypes name="Cassandra"/>
-  <availableDbTypes name="Cassandra"/>
-  <availableDbTypes name="Mongo"/>
+  <availableDbTypes name="basictest2">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="&quot;lang&quot;"/>
+  </availableDbTypes>
+  <availableDbTypes name="cassandra">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="&quot;metrics&quot;"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="&quot;lang&quot;"/>
+  </availableDbTypes>
+  <availableDbTypes name="mongodb"/>
+  <availableDbTypes name="postgres">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="magic"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="rt36_tickets"/>
+  </availableDbTypes>
 </observability_new:Model>

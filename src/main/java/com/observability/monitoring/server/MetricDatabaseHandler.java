@@ -24,8 +24,6 @@ package com.observability.monitoring.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -33,16 +31,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
- * MetricDatabaseHandlerServer is a manager process which can be used to:
- * 1. fetch a single metric value from whisper database at a specific epoch value
- * 2. fetch multiple metric values between an epoch range
- * 3. set/update metric values for as many epoch values as the user wants for a metric 
- * 
+ * MetricDatabaseHandlerServer is a manager process which can be used to:<br>
+ * 1. fetch a single metric value from whisper database at a specific epoch value<br>
+ * 2. fetch multiple metric values between an epoch range<br>
+ * 3. set/update metric values for as many epoch values as the user wants for a metric<br> 
+ * <p>
  * @author Rajat Kapoor
- * 
- * History: 
- * 1. Created					Jun 03 2015
- * 2. Modified					Jun 06 2015
+ * <p>
+ * History:<br> 
+ * 1. Created					Jun 03 2015<br>
+ * 2. Modified					Jun 06 2015<br>
  */
 
 public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetricDatabaseHandlerServer{
@@ -69,7 +67,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	private int lowestInterval = 30;
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public String getMetricValueAtEpoch(String epoch, String metricPath)
 			throws RemoteException {
@@ -113,7 +111,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	}
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public ArrayList<String> getMetricsBtwEpochRange(String fromEpoch,
 			String toEpoch, String metricPath) throws RemoteException {
@@ -158,7 +156,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	}
 	
 	/**
-	 * for details about this method refer IMetricDatabaseHandler
+	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
 	public boolean updateMetrics(String[] epoch, String[] values,
 			String metricPath) throws RemoteException {
