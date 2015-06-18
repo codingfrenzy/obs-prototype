@@ -1,0 +1,22 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module.
+ */]
+[module descriptors('http://www.example.org/observability_new', 'http://www.eclipse.org/acceleo/mtl/3.0')/]
+
+
+[**
+ * The documentation of the query
+ */]
+[query public getAllFiles(anOclAny: OclAny) : OclVoid
+	= invoke('org.eclipse.acceleo.module.sample.services.DescriptorFiles', 'getAllFiles()', Sequence{})
+/]
+
+[**
+ * The documentation of the query
+ * @param arg0
+ */]
+[query public hasFile(arg0 : String) : Boolean
+	= invoke('org.eclipse.acceleo.module.sample.services.DescriptorFiles', 'hasFile(java.lang.String)', Sequence{arg0})
+/]
+
