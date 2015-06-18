@@ -98,6 +98,14 @@ public class DaemonHeartbeatClient extends Thread {
         currentDaemonIP = "45.55.240.162";
     }
 
+    /**
+     * Default constructor. Also initializes the server IP and port and the IP of the current machine.
+     */
+    DaemonHeartbeatClient(){
+        initCollectdServerIP();
+        initCollectdServerPort();
+        initCurrentDaemonIP();
+    }
     /*
      * Method to get the current date. Used for metric collection CSV file
      * name.<br>
@@ -216,6 +224,13 @@ public class DaemonHeartbeatClient extends Thread {
     }
 
     /**
+     * Update the interval upon change of collectd configuration
+     */
+    public void updateInterval(){
+        System.out.println("Daemon Heartbeat interval updated to " + samplingRate);
+    }
+
+    /**
      * Method to verify the measurement and send the message.<br>
      * Needs optimization.
      */
@@ -240,18 +255,6 @@ public class DaemonHeartbeatClient extends Thread {
             }
         }
     }
-
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-        DaemonHeartbeatClient t = new DaemonHeartbeatClient();
-        t.initCollectdServerIP();
-        t.initCollectdServerPort();
-        t.initCurrentDaemonIP();
-        t.start();
-
-    }
-
 }
 
 // http://stackoverflow.com/questions/3541676/java-thread-every-x-seconds

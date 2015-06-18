@@ -67,13 +67,19 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * Path to the configuration file 
 	 */
 	String configPath = "collectd.conf";
-	
+
+	/**
+	 * DaemonHeartbeatClient object
+	 */
+	DaemonHeartbeatClient dhc = null;
 	/**
 	 * Default constructor
 	 * 
 	 */
 	protected DaemonManager() throws RemoteException {
 		super();
+		dhc = new DaemonHeartbeatClient();
+		dhc.start();
 	}
 
 	/**
@@ -131,10 +137,11 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * Start the process by name, this class file should be in the same folder as the target program.
 	 * @param process name of the process
 	 */
-	public static void startProcess(String process) {
+	public static void startProcess(String process, DaemonHeartbeatClient dhc) {
 		try {
 			// start process with sudo (required by collectd)
 			Runtime.getRuntime().exec("sudo " + process);
+			dhc.updateInterval();
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -238,7 +245,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			// 2. stop collect process
 			killProcess("collectd");
 			// 3. start collect process
-			startProcess("collectd");
+			startProcess("collectd", dhc);
 			
 		} catch(Exception e) {
             e.printStackTrace();
