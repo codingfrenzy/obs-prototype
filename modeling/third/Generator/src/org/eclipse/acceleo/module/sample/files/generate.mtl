@@ -1,0 +1,93 @@
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module generate.
+ */]
+[module generate('http://www.example.org/observability_new')]
+
+[**
+ * The documentation of the template generateElement.
+ * @param aModel
+ * 
+ */]
+[template public generateElement(machine : NodeMachine)]
+
+[comment @main/]
+[let cluster : DatabaseCluster = machine.eContainer()]
+
+[let dbType : DbType = cluster.associatedDbType]
+	
+[/let]
+	
+[/let]
+
+[file ( machine.IP + 'collectd.conf' , false, 'UTF-8')]
+[let var : Model = machine.eContainer().eContainer()]
+Interval [var.frequency/]
+[/let]
+	
+LoadPlugin "logfile"
+
+<Plugin
+ "logfile">
+  LogLevel "info"
+  File "/home/owls/collectd/log/collectd.log"
+  Timestamp true
+  PrintSeverity true
+</Plugin>
+
+LoadPlugin "csv"
+
+<Plugin "csv">  
+  DataDir "/home/owls/collectd/csv"
+  StoreRates true
+</Plugin>
+
+LoadPlugin cpu
+LoadPlugin interface
+LoadPlugin load
+LoadPlugin memory
+LoadPlugin java
+LoadPlugin network
+
+
+<Plugin "network">
+  Server "[machine.IP/]"
+</Plugin>
+
+<Plugin "java">
+
+    JVMARG "-Djava.class.path=/opt/collectd/java-dep/generic-jmx.jar:/opt/colle$
+    LoadPlugin "org.collectd.java.GenericJMX"
+<Plugin "GenericJMX">
+
+    <MBean "metrics">
+        ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load"
+        <Value>
+          Type "gauge"
+          InstancePrefix "data_load"
+          Attribute "Count"
+        </Value>
+    </MBean>
+   <MBean "lang">
+        ObjectName "java.lang:type=Memory"
+        <Value>
+          Type "memory"
+          InstancePrefix "heap_mem"
+          Table true
+          Attribute "HeapMemoryUsage"
+        </Value>
+    </MBean>
+
+    <Connection>
+      Host "[machine.name/]"
+      ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:7199/jmxrmi"
+      [let cluster : DatabaseCluster = machine.eContainer()]
+		[for (m : BaseMetric | cluster.collectedBaseMetric) ]
+		Collect "[m.name/]"		
+		[/for]	  	
+	  [/let]	  
+    </Connection>
+  </Plugin>
+</Plugin>
+[/file]
+[/template]
