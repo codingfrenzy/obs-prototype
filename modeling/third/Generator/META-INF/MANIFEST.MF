@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Acceleo Sample Module Runtime Plug-in
-Bundle-SymbolicName: org.eclipse.acceleo.module.sample
+Bundle-SymbolicName: Generator
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.acceleo.module.sample.Activator
 Bundle-Vendor: Eclipse Modeling Project

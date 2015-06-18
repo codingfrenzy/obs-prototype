@@ -125,11 +125,11 @@ public class Aggregation extends UnicastRemoteObject {
 		///////////////// Debug Starts ///////////////////
 		
 		//Reading the size of the list
-		System.out.println("list size: " + aggConfigurationsList.size());
+		System.out.println("list size: " + aggConfigurationsList.size()); //Debug
 		
 		//Getting the first item of the list, it should be [#Host, "localhost"]
 		String[] s = aggConfigurationsList.get(0);
-    	System.out.println("Plugin: " + aggConfigurations.getPlugin()); //This should return "cpu", but it returns
+    	System.out.println("Plugin: " + aggConfigurations.getPlugin()); //DebugThis should return "cpu", but it returns
     																	//null since it didn't assign any value in plugin
 
 		/////////////////////Debug Ends//////////////////////
@@ -174,7 +174,7 @@ public class Aggregation extends UnicastRemoteObject {
 								if(str.length > 1) {
 									intervalConfigItem [0]= str[0]; 
 									intervalConfigItem [1]= str[1];
-									System.out.println(intervalConfigItem [0]+","+ intervalConfigItem[1]);
+									System.out.println(intervalConfigItem [0]+","+ intervalConfigItem[1]); //Debug
 								}
 							}
 					} while(!line.equalsIgnoreCase("</LoadPlugin>"));
@@ -220,7 +220,7 @@ public class Aggregation extends UnicastRemoteObject {
 								aggConfigItem [0]= str[0]; 
 								aggConfigItem [1]= str[1];
 								aggConfig.add(aggConfigItem);
-								System.out.println(aggConfigItem [0]+","+ aggConfigItem[1]);
+								System.out.println(aggConfigItem [0]+","+ aggConfigItem[1]); //debug
 								}
 							}
 						} while(!line.equals("</Aggregation>")) ;
@@ -237,7 +237,7 @@ public class Aggregation extends UnicastRemoteObject {
 		for (int j =0; j < aggConfig.size(); j++){
 			str = aggConfig.get(j);
 			
-			System.out.println("Test Value " + j +": "+ str[1]);
+			System.out.println("Test Value " + j +": "+ str[1]); //debug
 		}
 	////////////// Debug Ends //////////////////
 		return aggConfig;			
@@ -276,7 +276,7 @@ public class Aggregation extends UnicastRemoteObject {
 		for (int i =0; i < aggConfigurations.size(); i++){
 			str = aggConfigurations.get(i);
 			String itemName = str[0].toLowerCase(); 
-			//TODO: change index of to matches(str)
+			//TODO: change indexOf to matches(str)
 			if (itemName.indexOf("plugin") >= 0) {
 				if (itemName.matches("plugin"))
 					plugin = str[1].replaceAll("^\"|\"$", "");
@@ -351,7 +351,7 @@ public class Aggregation extends UnicastRemoteObject {
 		ArrayList<String> metricMeasurements = new ArrayList<String>();
 		
         long currentTimeStamp = System.currentTimeMillis() / 1000L;
-        long aggTimeStampStart = currentTimeStamp - faultTolTimeWindow - interval;
+        long aggTimeStampStart = currentTimeStamp - faultTolTimeWindow - interval ;
         long aggTimeStampEnd = currentTimeStamp - faultTolTimeWindow;
 		
         String timeStampStartStr = Long.toString(aggTimeStampStart);
@@ -371,12 +371,19 @@ public class Aggregation extends UnicastRemoteObject {
             	nodeWarpped= str.concat(nodeListTemp[i]).concat(str2).concat(aggConfig.getPlugin()).concat(str2).concat(aggConfig.getTypeInst());
         	}
         		
-        	ArrayList<String> metrics = imdhs.getMetricsBtwEpochRange(timeStampStartStr,timeStampEndStr, nodeWarpped);
+        	ArrayList<String> metricsArrayTemp = imdhs.getMetricsBtwEpochRange(timeStampStartStr,timeStampEndStr, nodeWarpped);
         	
+        	String metrics = metricsArrayTemp.get(0);
+
+        	String delimiter = "\t";
+        	String[] metricsArray = metrics.split(delimiter); 
+            
         	////////////Debug/////////
         	System.out.println("-------------Debug: Metric-----------------");
-        	System.out.println(metrics);
-        	metricMeasurements.addAll(metrics);
+        	System.out.println(metricsArray[1]);
+        	/////////////////////
+        	
+        	metricMeasurements.add(metricsArray[1]);
         	nodeWarpped ="";
         }
         ////////////Debug/////////
@@ -411,14 +418,17 @@ public class Aggregation extends UnicastRemoteObject {
 		long measurementSum = 0;
 		AggFunc func;
 		int counter = 0;
-		long measurementAvg = 0;
-		long num = 0;
-		long min = Long.MIN_VALUE;
-        long max = Long.MAX_VALUE;
-        long measurementMin = 0;
-        long measurementMax = 0;
+		double measurementAvg = 0;
+		double num = 0;
+		double min = Long.MIN_VALUE;
+		double max = Long.MAX_VALUE;
+		double measurementMin = 0;
+		double measurementMax = 0;
         double sd = 0;
         double measurementStd = 0;
+        
+        
+        System.out.println("Time: "+ timeStampEndStr); //Debug
         
 		if (isCalNum == true){
 			for (int i=0; i < metricMeasurements.size(); i++){
@@ -428,9 +438,15 @@ public class Aggregation extends UnicastRemoteObject {
 		
 		if (isCalSum == true){
 			for (int i=0; i < metricMeasurements.size(); i++){
-				measurementSum+=Long.parseLong(metricMeasurements.get(i));
+				System.out.println(metricMeasurements.get(i)); //Debug
+				String str = metricMeasurements.get(i);
+				if (str.equals("None"))
+					measurementSum+= 0 ;
+				else
+					measurementSum+=Double.parseDouble(metricMeasurements.get(i));
 			}
 			func = AggFunc.SUM;
+			System.out.println(measurementSum);		//Debug
 			saveData(timeStampEndStr, String.valueOf(measurementSum), func, metric, metricType);
 		}
  
@@ -488,24 +504,32 @@ public class Aggregation extends UnicastRemoteObject {
 	 * @throws RemoteException 
 	 * @throws MalformedURLException 
 	 */
-	public static void saveData( String timeStampEndStr, String aggregatedMeasurement, AggFunc func, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{
-		
-		String [] timeStampEndStrArray = null;
+	public static void saveData(String timeStampEndStr, String aggregatedMeasurement, AggFunc func, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{
+
+		String [] timeStampEndStrArray = new String [1];
 		timeStampEndStrArray[0] = timeStampEndStr;
 		
-		String [] aggregatedMeasurementArray = null;
+		String [] aggregatedMeasurementArray = new String [1];
 		aggregatedMeasurementArray[0] = aggregatedMeasurement;
 		
 		//"collectd/global/aggregation-cpu-sum/cpu-idle.wsp
 		String str = "collectd/global/aggregation";
 		String str2 = "/";
 		String str3 = "-";
-    	String metricPath= str.concat(str3).concat(metric).concat(String.valueOf(func)).concat(str3).concat(metricType);
-    	System.out.println("Metric Path: "+ metricPath);
+    	String metricPath= str.concat(str3).concat(metric).concat(str3).concat(String.valueOf(func).toLowerCase()).concat(str2).concat(metricType);
+    	System.out.println("Metric Path: "+ metricPath); //Debug
     	
     	IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+"45.55.197.112"+":"+"8100"+"/MetricDatabaseHandler");
     	boolean isSaved = imdhs.updateMetrics(timeStampEndStrArray, aggregatedMeasurementArray, metricPath);
-		
+		//TODO add to log file
+    	System.out.println("Time Stamp: "+ timeStampEndStrArray[0]); //Debug: remove later
+    	System.out.println("Metric: "+ aggregatedMeasurementArray[0]); //Debug: remove later
+    	System.out.println("Metric path: "+ metricPath); //Debug: remove later
+
+    	System.out.println("Aggregation result: "+ isSaved); //Debug: remove later
+    	System.out.println("******************************"); //Debug: remove later
+
+    	
 	}
 	
 	/**
@@ -515,42 +539,8 @@ public class Aggregation extends UnicastRemoteObject {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException, NotBoundException {
+		while (true) {
 		readConfigurationFile();
-		/*
-		// Get IP & port from arguments
-		if(args.length  != 2){
-			System.out.println("Aggregation - error - should be started with two parameters: IP + port.");
-			return;
 		}
-
-		String rmiIP = args[0];
-		String rmiPort = args[1];
-
-		try {
-			int port = Integer.parseInt(rmiPort);
-			//create the RMI registry if it doesn't exist.
-			LocateRegistry.createRegistry(port);
-		}
-		catch(RemoteException e) {
-			System.out.println("Aggregation - error - Failed to create the RMI registry " + e);
-		}
-
-		Aggregation server = null;
-		try{
-			server = new Aggregation(); 
-		}
-		catch(RemoteException e) {
-			System.out.println("Aggregation - error - Failed to create server " + e);
-			System.exit(1);
-		}
-		try {
-			Naming.rebind(String.format("//%s:%s/Aggregation", rmiIP, rmiPort), server);
-			System.out.println("Aggregation started");
-		} catch (RemoteException e) {
-			System.out.println(e);
-		} catch (MalformedURLException e) {
-			System.out.println(e);
-		}	
-		*/		
 	}
 }
