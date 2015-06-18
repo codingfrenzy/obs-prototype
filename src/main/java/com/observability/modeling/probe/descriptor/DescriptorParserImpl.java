@@ -41,7 +41,7 @@ import com.observability.modeling.probe.descriptor.entities.ElementTag;
  * This class implements the functionality to parse the 
  * probe descriptor files.
  * 
- * @author vsaravag (Varun Saravagi)
+ * @author vsaravag (Varun Saravagi) , gemici
  * 
  *
  */
