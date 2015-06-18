@@ -85,6 +85,7 @@ public class DaemonHeartbeatListener implements Runnable {
 //                System.out.println(messageFromDaemon);
 
                 saveDaemonInfo(messageFromDaemon);
+                datagramSocket.close();
 
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");

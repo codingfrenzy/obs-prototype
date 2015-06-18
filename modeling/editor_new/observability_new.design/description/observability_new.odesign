@@ -66,7 +66,7 @@
             <viewVariable name="machineContainerView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:machineNode">
-                <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.getName()/]"/>
+                <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.createMachine()/]"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

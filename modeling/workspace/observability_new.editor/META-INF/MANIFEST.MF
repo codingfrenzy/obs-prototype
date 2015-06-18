@@ -8,8 +8,7 @@ Bundle-Activator: observability_new.presentation.Observability_newEditorPlugin$I
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: observability_new.extension,
- observability_new.presentation
+Export-Package: observability_new.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  observability_new.edit;visibility:=reexport,

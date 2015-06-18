@@ -159,9 +159,6 @@ public class DaemonHeartbeatClient extends Thread {
         // Close the input stream
         br1.close();
 
-        // System.out.println(metricNameAbsolutePath);
-        // System.out.println(temp);
-
         temp = temp.substring(0, temp.indexOf('.'));
 
         systemEpoch = System.currentTimeMillis() / 1000;
@@ -185,28 +182,11 @@ public class DaemonHeartbeatClient extends Thread {
 
             byte[] buffer = message.getBytes("UTF-8");
             InetAddress address = InetAddress.getByName(collectdServerIP);
-//            InetAddress receiverAddress = InetAddress.getLocalHost();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, collectdServerPort);
 
             DatagramSocket datagramSocket = new DatagramSocket();
-//            System.out.println("Buffer size " + buffer.length);
             datagramSocket.send(packet);
-
-            /*
-            Socket client = new Socket(collectdServerIP, collectdServerPort);
-            // client.getLocalPort(); // local port
-            // client.getLocalSocketAddress(); // local IP & port
-            // client.getRemoteSocketAddress(); // collectd server IP & port
-
-            OutputStream outToServer = client.getOutputStream();
-            DataOutputStream out = new DataOutputStream(outToServer);
-
-            out.writeUTF(message);
-            // InputStream inFromServer = client.getInputStream();
-            // DataInputStream in = new DataInputStream(inFromServer);
-
-            client.close();
-            */
+            datagramSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();

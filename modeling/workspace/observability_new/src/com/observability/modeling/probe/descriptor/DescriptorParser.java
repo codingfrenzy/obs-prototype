@@ -25,7 +25,6 @@ import java.util.List;
 
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
-//import com.observability.modeling.probe.descriptor.entities.Obsolete_PluginDefinition;
 
 /**
  * Parses the descriptors in a given directory and converts them to a manageable
