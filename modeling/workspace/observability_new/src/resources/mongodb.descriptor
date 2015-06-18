@@ -3,10 +3,10 @@
 
     Import "mongodb"
     <Module mongodb>@Machine
-		Port "3333"
-        Host "127.0.0.1"
-		User "testuser"
-        Password "password"
-        Database "test"
+		Port @Machine
+        Host @Machine
+		User @Machine
+        Password @Machine
+        Database @Machine
     </Module>
 </Plugin>
