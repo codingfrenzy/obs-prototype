@@ -418,12 +418,12 @@ public class Aggregation extends UnicastRemoteObject {
 		long measurementSum = 0;
 		AggFunc func;
 		int counter = 0;
-		long measurementAvg = 0;
-		long num = 0;
-		long min = Long.MIN_VALUE;
-        long max = Long.MAX_VALUE;
-        long measurementMin = 0;
-        long measurementMax = 0;
+		double measurementAvg = 0;
+		double num = 0;
+		double min = Long.MIN_VALUE;
+		double max = Long.MAX_VALUE;
+		double measurementMin = 0;
+		double measurementMax = 0;
         double sd = 0;
         double measurementStd = 0;
         
@@ -443,7 +443,7 @@ public class Aggregation extends UnicastRemoteObject {
 				if (str.equals("None"))
 					measurementSum+= 0 ;
 				else
-					measurementSum+=Long.parseLong(metricMeasurements.get(i));
+					measurementSum+=Double.parseDouble(metricMeasurements.get(i));
 			}
 			func = AggFunc.SUM;
 			System.out.println(measurementSum);		//Debug
@@ -504,7 +504,7 @@ public class Aggregation extends UnicastRemoteObject {
 	 * @throws RemoteException 
 	 * @throws MalformedURLException 
 	 */
-	public static void saveData( String timeStampEndStr, String aggregatedMeasurement, AggFunc func, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{
+	public static void saveData(String timeStampEndStr, String aggregatedMeasurement, AggFunc func, String metric, String metricType) throws MalformedURLException, RemoteException, NotBoundException{
 
 		String [] timeStampEndStrArray = new String [1];
 		timeStampEndStrArray[0] = timeStampEndStr;
@@ -522,7 +522,13 @@ public class Aggregation extends UnicastRemoteObject {
     	IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer)Naming.lookup("rmi://"+"45.55.197.112"+":"+"8100"+"/MetricDatabaseHandler");
     	boolean isSaved = imdhs.updateMetrics(timeStampEndStrArray, aggregatedMeasurementArray, metricPath);
 		//TODO add to log file
+    	System.out.println("Time Stamp: "+ timeStampEndStrArray[0]); //Debug: remove later
+    	System.out.println("Metric: "+ aggregatedMeasurementArray[0]); //Debug: remove later
+    	System.out.println("Metric path: "+ metricPath); //Debug: remove later
+
     	System.out.println("Aggregation result: "+ isSaved); //Debug: remove later
+    	System.out.println("******************************"); //Debug: remove later
+
     	
 	}
 	
@@ -533,7 +539,8 @@ public class Aggregation extends UnicastRemoteObject {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException, NotBoundException {
+		while (true) {
 		readConfigurationFile();
-			
+		}
 	}
 }
