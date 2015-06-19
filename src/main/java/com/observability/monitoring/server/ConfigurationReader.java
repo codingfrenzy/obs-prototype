@@ -30,23 +30,22 @@ public class ConfigurationReader {
     String filePath = "/home/owls/collectd.conf";
 
 
-    public String getValue(String keyName){
+    public static String getValue(String keyName){
         return "";
     }
 
-    public String getWholeTag(String tagName){
+    public static String getWholeTag(String tagName){
         return "";
     }
 
-    public long lastModified(){
+    public static long lastModified(){
         File file = new File(filePath);
         long lastModified = file.lastModified() / 1000;
         return lastModified;
     }
 
     public static void main(String[] args) {
-        ConfigurationReader cr = new ConfigurationReader();
-        System.out.println(cr.lastModified());
+        System.out.println(ConfigurationReader.lastModified());
     }
 }
 
