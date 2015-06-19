@@ -129,9 +129,10 @@ public class NotificationEMail {
      * Initialize recipiencts.<br>
      * Later stages, we can read a file to get the email addresses instead of hard coding.
      */
-    public void initRecipients() {
-        recipients.add("prstsn@gmail.com");
+    public List<String> initRecipients() {
+        recipients.add("prst.test@gmail.com");
         recipients.add("cmunightowls@gmail.com");
+        return recipients;
     }
 
     /**
@@ -170,58 +171,4 @@ public class NotificationEMail {
         emailBody.append("<br><br>We advice you to check the status of the collectd process in these daemons. You may also find useful information in collectd logs. <br>Thank you.");
         return emailBody.toString();
     }
-
-    /**
-     * Sends the email for daemon not-responding or not-collecting depending on the flag
-     * @param respodingXYZ
-     * @return boolean status of emaail sending
-     */
-    public boolean sendDaemonNotXYZEmail(boolean respodingXYZ) {
-        initRecipients();
-
-        String filePath = new DaemonHeartbeatMain().getFullFilePath(respodingXYZ);
-
-//        filePath = "/Users/prasanthnair/obs-prototype-intellij/src/main/java/com/observability/monitoring/server/NotResponding-2015-06-12";
-//        System.out.println(filePath);
-
-        ArrayList<String> ips = new ArrayList<String>();
-        ArrayList<String> date = new ArrayList<String>();
-
-        try {
-            File fileDir = new File(filePath);
-            if (!fileDir.exists())
-                return false;
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
-
-            String str;
-            while ((str = in.readLine()) != null) {
-                String[] line = str.split(" ", 6);
-                ips.add(line[3]);
-                date.add(line[5]);
-            }
-            in.close();
-        } catch (UnsupportedEncodingException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        String body = respodingXYZ ? makeNotRespondingEmailBody(ips, date) : makeNotCollectingEmailBody(ips, date);
-        boolean ret = sendEMail(recipients, "Observability: Daemons not responding", body, false);
-        return ret;
-    }
-
-    /**
-     * We can start this in a thread to run at the end of everyday to automatically send emails with status of daemons.
-     */
-    /*
-    public static void main(String[] args) {
-        NotificationEMail n = new NotificationEMail();
-        n.sendDaemonNotXYZEmail(true);
-    }
-    */
-
 }

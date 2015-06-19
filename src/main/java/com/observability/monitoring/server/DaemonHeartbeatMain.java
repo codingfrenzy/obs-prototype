@@ -79,6 +79,17 @@ public class DaemonHeartbeatMain implements Runnable {
     private HashMap<String, DaemonInfo> listOfDaemonHeartbeatReceived2;
 
     /**
+     * At every interval (hours), an email will be sent with list of daemons not respodning/collecting
+     */
+    int emailInterval = 4;
+
+    /**
+     * Last email sent at.<br>
+     * Initialized with current timestamp when starting so that the first email will be sent exactly after the interval.
+     */
+    Long lastEmailTimestamp = System.currentTimeMillis() / 1000;
+
+    /**
      * Constructor<br>
      * Intiliazes the reference to the 2 Hashmap objects and the AtomicBoolean object that controls the toggle.
      *
@@ -130,21 +141,24 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void verifyDaemonHeartbeat() {
 
+        // select the hashmap based on toggle
         HashMap<String, DaemonInfo> tempHeartbeatReceived = null;
         if (daemonHeartbeatCollectionToggle.get()) {
             tempHeartbeatReceived = listOfDaemonHeartbeatReceived1;
-//            System.out.println("Using VH1");
         } else {
             tempHeartbeatReceived = listOfDaemonHeartbeatReceived2;
-//            System.out.println("Using VH2");
         }
 
-//        System.out.println("Verifying daemons");
+        // toggle the hashmap so that the same hashmap is not used for saving new daemons and retreiving it for verification
+        daemonHeartbeatCollectionToggle.set(!daemonHeartbeatCollectionToggle.get());
+
+        // iterate through all the configured daemons to see which haven't send
         for (String configuredIp : listOfConfiguredDaemons) {
 
             boolean foundFlag = false;
             boolean collecting = false;
 
+            // if the daemon has sent heartbeat
             if (tempHeartbeatReceived.containsKey(configuredIp)) {
                 foundFlag = true;
                 collecting = tempHeartbeatReceived.get(configuredIp).metricStatus;
@@ -162,6 +176,8 @@ public class DaemonHeartbeatMain implements Runnable {
                 }
 
             }
+
+            // if not found, then save it as appropriate
             if (!foundFlag) {
                 saveDaemonNotResponding(configuredIp);
             }
@@ -170,8 +186,7 @@ public class DaemonHeartbeatMain implements Runnable {
             }
         }
 
-        // toggle and clear the old hashmap
-        daemonHeartbeatCollectionToggle.set(!daemonHeartbeatCollectionToggle.get());
+        // clear the hashmap
         tempHeartbeatReceived.clear();
     }
 
@@ -192,6 +207,8 @@ public class DaemonHeartbeatMain implements Runnable {
      * @param ip - IP of the daemon that is not responding
      */
     private void saveDaemonNotResponding(String ip) {
+
+        // add only if it does not already exist
         if (!listOfNotRespondingDaemons.containsKey(ip)) {
             Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotRespondingDaemons.put(ip, systemEpoch);
@@ -215,6 +232,7 @@ public class DaemonHeartbeatMain implements Runnable {
      * @param ip - IP of the daemon that is not responding
      */
     private void saveDaemonNotCollectingMetrics(String ip) {
+        // add only if it does not already exist
         if (!listOfNotCollectingDaemons.containsKey(ip)) {
             Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotCollectingDaemons.put(ip, systemEpoch);
@@ -222,7 +240,7 @@ public class DaemonHeartbeatMain implements Runnable {
         }
     }
 
-    /*
+    /**
      * Method to get the current date. Used for metric collection CSV file
      * name.<br>
      *
@@ -285,27 +303,111 @@ public class DaemonHeartbeatMain implements Runnable {
     private void processNotRespondingCollectingDaemons() {
         Iterator entries = listOfNotRespondingDaemons.entrySet().iterator();
         long systemEpoch = System.currentTimeMillis() / 1000;
+
+        // iterate through not responding daemons
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
+
+            // if the timestamp at which it was saved is greater than
             if (systemEpoch - value.longValue() > getThreshold()) {
                 logDaemonNotResponding(key, value.longValue());
+                // After saving to log, remove the entry
                 entries.remove();
             }
         }
 
+        // iterate through not collecting daemons
         entries = listOfNotCollectingDaemons.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
+
+            // if the timestamp at which it was saved is greater than
             if (systemEpoch - value.longValue() > getThreshold()) {
                 logDaemonNotCollecting(key, value.longValue());
+                // After saving to log, remove the entry
                 entries.remove();
             }
         }
 
+    }
+
+    /**
+     * Sends the email for daemon not-responding or not-collecting depending on the flag
+     *
+     * @return boolean status of email sending
+     */
+    public boolean sendEMail() {
+
+        long systemEpoch = System.currentTimeMillis() / 1000;
+
+        // Return if enough time, as per emailInterval, has not passed
+        if (systemEpoch - lastEmailTimestamp < (long) emailInterval * 60 * 60 * 1000) {
+            return false;
+        }
+
+        NotificationEMail ne = new NotificationEMail();
+        List<String> recipients = ne.initRecipients();
+        String[] filePaths = {
+                getFullFilePath(true),
+                getFullFilePath(false)
+        };
+        String[] emailBodies = new String[2];
+        ArrayList<String> ips = new ArrayList<String>();
+        ArrayList<String> dates = new ArrayList<String>();
+
+//        filePath = "/Users/prasanthnair/obs-prototype-intellij/src/main/java/com/observability/monitoring/server/NotResponding-2015-06-12";
+//        System.out.println(filePath);
+
+        int i = 0;
+        while (i < filePaths.length) {
+            try {
+                // Open file
+                File fileDir = new File(filePaths[i]);
+                if (!fileDir.exists()) {
+                    System.out.println("File does not exist: " + filePaths[i]);
+                    return false;
+                }
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
+                String str;
+
+                // Read file
+                while ((str = in.readLine()) != null) {
+                    String[] line = str.split(" ", 6);
+                    ips.add(line[3]);
+                    dates.add(line[5]);
+                }
+                in.close();
+            } catch (UnsupportedEncodingException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            // Not responding email
+            if (i == 0) {
+                emailBodies[i] = ne.makeNotRespondingEmailBody(ips, dates);
+            }
+            // Not collecting email
+            else {
+                emailBodies[i] = ne.makeNotCollectingEmailBody(ips, dates);
+            }
+            ips.clear();
+            dates.clear();
+        }
+
+        // IF both emails are sent, then return true
+        if (ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[0], false) &&
+                ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[1], false)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -319,6 +421,9 @@ public class DaemonHeartbeatMain implements Runnable {
                 if (!first) {
                     verifyDaemonHeartbeat();
                     processNotRespondingCollectingDaemons();
+                    if (sendEMail()) {
+                        System.out.println("Daemon Not respoding/collecting email sent");
+                    }
                 }
                 long sleepTime = (long) samplingRate * 1000;
                 Thread.sleep(sleepTime);
