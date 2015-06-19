@@ -100,9 +100,6 @@ public class MetricDatabaseHandlerTest {
 	public void testUpdateMetrics() throws RemoteException {
 		assertTrue(imdhs.updateMetrics(epoch3, values3, metricPath3));	// positive TC
 		assertFalse(imdhs.updateMetrics(epoch3, values3, " "));			// negative TC
-	}
+	}	
 	
-	public static void main(String[] args){
-		MetricDatabaseHandlerTest.setUp();
-	}
 }
