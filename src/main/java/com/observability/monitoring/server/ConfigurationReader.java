@@ -27,7 +27,7 @@ public class ConfigurationReader {
     /**
      * Filepath string where the log will be stored.
      */
-    String filePath = "/home/owls/collectd.conf";
+    static String filePath = "/home/owls/collectd.conf";
 
 
     public static String getValue(String keyName){
@@ -38,6 +38,10 @@ public class ConfigurationReader {
         return "";
     }
 
+    /**
+     * Gets the last modified time of collectd.conf in (long) timestamp
+     * @return long timestamp of last modified time
+     */
     public static long lastModified(){
         File file = new File(filePath);
         long lastModified = file.lastModified() / 1000;
