@@ -34,7 +34,39 @@
 
 #include <pthread.h>
 
+#include "uthash.h"	/* hash table data structure*/
+
+#define MAX_KEY_LENGTH 		255
+#define AGG_RETENTION_ROUND	3
+// Measurements hash table
+struct obs_val_hash_s {
+	char 		metric_name[MAX_KEY_LENGTH];
+	value_list_t 	*vl; 
+	UT_hash_handle  hh;         /* makes this structure hashable */
+};
+typedef struct obs_val_hash_s obs_val_hash_t;
+
+// Aggregation round
+struct obs_round_s {
+	cdtime_t 	start_t;
+	cdtime_t	end_t;
+	obs_val_hash_t 	*val_hash;
+};
+typedef struct obs_round_s obs_round_t;
+
+static obs_round_t obs_agg_rawdata[AGG_RETENTION_ROUND];
+
 //static pthread_mutex_t agg_instance_list_lock = PTHREAD_MUTEX_INITIALIZER;
+static void init_datastructure()
+{
+	int i = 0;
+	for ( ; i < AGG_RETENTION_ROUND	; i++)
+	{
+		obs_agg_rawdata[i].start_t = 0;
+		obs_agg_rawdata[i].end_t   = 0;
+		obs_agg_rawdata[i].val_hash = NULL;
+	}
+}
 
 static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter_t num_aggr_nodes, const char *plugin, const char *type)
 {
@@ -66,11 +98,13 @@ static int obsaggr_read (void)
 static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     __attribute__((unused)) user_data_t *user_data)
 {
-  _Bool created_by_aggregation = 0;
-  int status;
+	return 0;
+	// _Bool created_by_aggregation = 0;
+	//int status;
 
   /* Ignore values that were created by the aggregation plugin to avoid weird
    * effects. */
+	/*
   (void) meta_data_get_boolean (vl->meta, "aggregation:created",
       &created_by_aggregation);
   if (created_by_aggregation)
@@ -85,11 +119,49 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
       status = 0;
   }
 
-  return (status);
+  return (status);*/
 } /* }}} int agg_write */
+
+static int obsagg_config (oconfig_item_t *ci) /* {{{ */
+{
+/*
+  int i;
+
+  pthread_mutex_lock (&agg_instance_list_lock);
+
+  if (lookup == NULL)
+  {
+    lookup = lookup_create (agg_lookup_class_callback,
+        agg_lookup_obj_callback,
+        agg_lookup_free_class_callback,
+        agg_lookup_free_obj_callback);
+    if (lookup == NULL)
+    {
+      pthread_mutex_unlock (&agg_instance_list_lock);
+      ERROR ("aggregation plugin: lookup_create failed.");
+      return (-1);
+    }
+  }
+
+  for (i = 0; i < ci->children_num; i++)
+  {
+    oconfig_item_t *child = ci->children + i;
+
+    if (strcasecmp ("Aggregation", child->key) == 0)
+      agg_config_aggregation (child);
+    else
+      WARNING ("aggregation plugin: The \"%s\" key is not allowed inside "
+          "<Plugin aggregation /> blocks and will be ignored.", child->key);
+  }
+
+  pthread_mutex_unlock (&agg_instance_list_lock);
+*/
+  return (0);
+} /* }}} int agg_config */
 
 void module_register (void)
 {
+	init_datastructure();
 	plugin_register_complex_config ("aggregation", obsagg_config);
   	plugin_register_write ("obsaggregation", obsagg_write, /* user_data = */ NULL);
 	plugin_register_read ("obsaggregation", obsaggr_read);
