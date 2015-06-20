@@ -29,9 +29,15 @@ import com.observability.modeling.probe.descriptor.entities.ElementTag;
 /**
  * Parses the descriptors in a given directory and converts them to a manageable
  * entity hierarchy. This object hierarchy can be used to create EMF semantic
- * elements when initializing the model. For example: An EMF DbType entity needs
- * to be created for each plugin descriptor present. This info will be taken
- * from the intermediate entities this class generates :
+ * elements when initializing the model. 
+ * 
+ * This code is used when the modeler wants to create a model of the system.
+ * An EMF DbType entity would be created for each descriptor file present, a 
+ * descriptor file is recognized by the .descriptor extension. When a cluster 
+ * is associated with a DbType, all the machines created inside that cluster 
+ * would automatically get the parameters denoted by the \@machine tag in the
+ * descriptor file. A more detailed description of the descriptor file can be
+ * found at {@link https://github.com/observability/obs-prototype/wiki/Descriptor-File-Format}
  * 
  * @see {@link DbType}
  * @see {@link Parameter}, @see {@link ElementTag} Intermediate entities are used to ensure decoupling

@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @author vsaravag (Varun Saravagi)
  *
  */
-public final class ParserUtility {
+public class ParserUtility {
 	
 	
 	private ParserUtility(){

@@ -113,12 +113,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 				throw new RuntimeException();
 			}
 		}
-		// Test code to print out the DbTypes
-		for (DbType dbType : plugins) {
-			System.out.println(dbType.toString());
-			System.out.println();
-		}
-		
 		return plugins;
 
 	}
