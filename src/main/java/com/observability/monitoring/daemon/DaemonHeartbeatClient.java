@@ -34,6 +34,8 @@ import java.util.*;
  *
  * @author Prasanth Nair<br>
  *         Created June 5 2015<br>
+ *         Joel Gao <br>
+ *         Modified Jun 19 2015<br>
  */
 
 public class DaemonHeartbeatClient extends Thread {
@@ -149,10 +151,11 @@ public class DaemonHeartbeatClient extends Thread {
      * @return boolean Returns true if valid. False if not.
      * @throws IOException
      */
-    public boolean verifyLatestMetricMeasurement() throws IOException {
-        getMetricFileName();
+    //public boolean verifyLatestMetricMeasurement() throws IOException {
+    public boolean verifyLatestMetricMeasurement(String fileName) throws IOException {
+        //getMetricFileName();
         FileInputStream stream = null;
-        stream = new FileInputStream(getMetricFileName());
+        stream = new FileInputStream(fileName);
         BufferedReader br1 = new BufferedReader( new InputStreamReader( stream, "UTF-8"));
         String strLine, temp = null;
 
@@ -238,7 +241,8 @@ public class DaemonHeartbeatClient extends Thread {
         while (true) {
             boolean metricLatestVerified = false;
             try {
-                metricLatestVerified = verifyLatestMetricMeasurement();
+            	String fileName = getMetricFileName();
+                metricLatestVerified = verifyLatestMetricMeasurement(fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }

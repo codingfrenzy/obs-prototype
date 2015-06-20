@@ -45,6 +45,7 @@ import org.junit.Test;
  * <p>
  * History:<br>
  * 1. Created					Jun 02 2015<br>
+ * 2. Modified 					Jun 19 2015<br>
  *
  */
 public class DaemonManagerTest {
@@ -63,7 +64,8 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#killProcess(java.lang.String)}.
 	 */
-	@Ignore @Test
+	//@Ignore @Test
+	@Test
 	public void testKillProcess() {
 		System.out.println("Start testing for killing collectd");
 		String processmame = "collectdmon"; 
@@ -73,36 +75,20 @@ public class DaemonManagerTest {
 		processmame = "collectd"; 
 		// Kill collectd
 		DaemonManager.killProcess(processmame);
+	}
+	
+	@Test
+	public void testKillProcess1() {
+		System.out.println("Start testing for killing collectd");
+		String processmame = "collectdmon1"; 
+		// Kill collectd monitor
+		DaemonManager.killProcess(processmame);
 		
-		// check if it is killed
-		boolean killed = true;
-		try {
-	        Vector<String> commands = new Vector<String>();
-	        commands.add("pidof");
-	        commands.add(processmame);
-	        ProcessBuilder pb = new ProcessBuilder(commands);
-	        Process pr = pb.start();
-	        pr.waitFor();
-	        if (pr.exitValue() != 0)
-	        	return;
-	        BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream(),"UTF-8"));
-	        String pros = outReader.readLine();
-	        if(pros != null && pros.length() > 0) {
-		        // no, we still have collectd process
-	        	String [] strs = pros.trim().split(" ");
-	        	System.out.println("Got the following pid of collectd");
-		        for (String pid : strs) {
-		            System.out.println("Collectd pid: " + pid);
-		        }
-		        killed = false;
-		        fail("collecd process not killed!");
-	        }
-	        outReader.close();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-		Assert.assertTrue(killed);
-		System.out.println("End testing for killing collectd");
+		processmame = "collectd1"; 
+		// Kill collectd
+		DaemonManager.killProcess(processmame);
+		
+		DaemonManager.killProcess("-impossible");
 	}
 
 	/**
@@ -114,41 +100,6 @@ public class DaemonManagerTest {
 		String processmame = "collectd"; 
 		// Start collectd monitor
 		DaemonManager.startProcess(processmame);
-		
-		// check if it is started
-		boolean started = false;
-		try {
-			// Wait for collectd to start up
-			Thread.sleep(2000);
-			Vector<String> commands = new Vector<String>();
-			commands.add("pidof");
-			commands.add(processmame);
-			ProcessBuilder pb = new ProcessBuilder(commands);
-			Process pr = pb.start();
-			pr.waitFor();
-			
-			if (pr.exitValue() != 0){
-				//System.out.println("Pr exit value is not 0");
-				//fail("collecd process not started!");
-				return;
-			}
-			BufferedReader outReader = new BufferedReader(new InputStreamReader(pr.getInputStream(),"UTF-8"));
-			String pros = outReader.readLine();
-			if(pros != null && pros.length() > 0) {
-				// yes, we have started collectd process
-			    String [] strs = pros.trim().split(" ");
-			    System.out.println("Got the following pid of collectd");
-				for (String pid : strs) {
-					System.out.println("Collectd pid: " + pid);
-				}
-				started = true;
-			 }
-			 outReader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Assert.assertTrue(started);
-		System.out.println("End testing for starting collectd");
 	}
 
 	/**
@@ -168,7 +119,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#changeConfiguration(java.lang.String, java.lang.String)}.
 	 */
-	//@Test
+	@Test
 	public void testChangeConfiguration() {
 		try{
 			// change interval from 30 to 20
@@ -194,6 +145,11 @@ public class DaemonManagerTest {
 					"  Interval 60\n" +
 					"</Plugin>";
 			dm.changeConfiguration(null, s3);
+			
+			dm.changeConfiguration(null, "");
+			
+			dm.changeConfiguration("", null);
+			dm.changeConfiguration(null, null);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -202,7 +158,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#replaceWholeConfiguration(java.lang.String)}.
 	 */
-	//@Test
+	@Test
 	public void testReplaceWholeConfiguration() {
 		try {
 			String s1 = 
@@ -216,7 +172,14 @@ public class DaemonManagerTest {
 					"</Plugin>";
 			
 			boolean ret = dm.replaceWholeConfiguration(s1);
-			Assert.assertTrue(ret);
+			//Assert.assertTrue(ret);
+			
+			ret = dm.replaceWholeConfiguration(null);
+			Assert.assertFalse(ret);
+			
+			ret = dm.replaceWholeConfiguration("");
+			Assert.assertFalse(ret);
+
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -226,7 +189,7 @@ public class DaemonManagerTest {
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#stopConfigurationModification()}.
 	 */
-	//@Test
+	@Test
 	public void testStopConfigurationModification() {
 		try {
 			boolean ret = dm.stopConfigurationModification();
@@ -250,7 +213,12 @@ public class DaemonManagerTest {
 		testStopConfigurationModification();
 		testReplaceWholeConfiguration();
 	}
-
+	
+	@Test
+	public void testInitializeService() {
+		DaemonManager.initializeService("127.0.0.1", "22345");
+	}
+/*
 	public static void main(String[] args) {
 		
 		System.out.println("Start testing: com.observability.monitoring.daemon.DaemonManagerTest");
@@ -279,10 +247,10 @@ public class DaemonManagerTest {
 		dmt.testStartConfigurationModification();
 		System.out.println("4.2. Modify");
 		dmt.testChangeConfiguration();
-		///*
+		//
 		System.out.println("4.3. Replace all");
 		dmt.testReplaceWholeConfiguration();
-		//*/
+		//
 		System.out.println("4.4. Stop");
 		dmt.testStopConfigurationModification();
 		System.out.println("4. Done");
@@ -291,4 +259,5 @@ public class DaemonManagerTest {
 		System.out.println("Finished testing: com.observability.monitoring.daemon.DaemonManagerTest");
 		System.exit(0);
 	}
+	*/
 }

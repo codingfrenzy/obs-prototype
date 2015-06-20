@@ -49,6 +49,7 @@ import java.util.Vector;
  * 3. Modified					May 31 2015<br>
  * 4. Modified					Jun 02 2015<br>
  * 5. Modified					Jun 07 2015<br>
+ * 6. Modified					Jun 19 2015<br>
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -71,14 +72,16 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * DaemonHeartbeatClient object
 	 */
-	DaemonHeartbeatClient dhc = null;
+	final static DaemonHeartbeatClient dhc = new DaemonHeartbeatClient();
 	/**
 	 * Default constructor
 	 * 
 	 */
 	protected DaemonManager() throws RemoteException {
 		super();
-		dhc = new DaemonHeartbeatClient();
+	}
+
+	static {
 		dhc.start();
 	}
 
@@ -118,6 +121,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		            kill.waitFor();
 		            System.out.println("Killing pid: " + pid);
 		            // get the output and print
+		            /*
 		            BufferedReader br = new BufferedReader(new InputStreamReader(kill.getInputStream(),"UTF-8"));
 		            String killOutputLine = "";
 		            while ((killOutputLine = br.readLine()) != null) {
@@ -125,6 +129,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 
 		            }
 		            br.close();
+		            */
 		        }
 	        }
 	        outReader.close();
@@ -137,11 +142,10 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * Start the process by name, this class file should be in the same folder as the target program.
 	 * @param process name of the process
 	 */
-	public static void startProcess(String process, DaemonHeartbeatClient dhc) {
+	public static void startProcess(String process) {
 		try {
 			// start process with sudo (required by collectd)
 			Runtime.getRuntime().exec("sudo " + process);
-			dhc.updateInterval();
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -237,15 +241,17 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public boolean stopConfigurationModification() throws RemoteException {
 		try{
 			// 1. save to conf file
-			if(confString != null && confString.length() > 0){
+			if(confString != null){
 				Path path = Paths.get(configPath);
 				Files.write(path, confString.getBytes(StandardCharsets.US_ASCII));
 			}
 			
 			// 2. stop collect process
 			killProcess("collectd");
+			// Update heartbeat client
+			dhc.updateInterval();
 			// 3. start collect process
-			startProcess("collectd", dhc);
+			startProcess("collectd");
 			
 		} catch(Exception e) {
             e.printStackTrace();
@@ -256,19 +262,11 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	}
 
 	/**
-	 * Main function
-	 * @param args arguments - arg1: binding IP, arg2: binding port
+	 * Initialize the RMI service.
+	 * @param rmiIP Binding IP address
+	 * @param rmiPort Binding port
 	 */
-	public static void main(String[] args) {
-		// Get IP & port from arguments
-		if(args.length  != 2){
-			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
-			return;
-		}
-
-		String rmiIP = args[0];
-		String rmiPort = args[1];
-		
+	public static void initializeService(String rmiIP, String rmiPort) {
 		try {
 			int port = Integer.parseInt(rmiPort);
 			//create the RMI registry if it doesn't exist.
@@ -294,5 +292,21 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
  		} catch (MalformedURLException e) {
 			System.out.println(e);
 		}
+	}
+	
+	/**
+	 * Main function
+	 * @param args arguments - arg1: binding IP, arg2: binding port
+	 */
+	public static void main(String[] args) {
+		// Get IP & port from arguments
+		if(args.length  != 2){
+			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
+			return;
+		}
+
+		String rmiIP = args[0];
+		String rmiPort = args[1];
+		initializeService(rmiIP, rmiPort);
 	}
 }
