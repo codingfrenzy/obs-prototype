@@ -78,7 +78,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	public DescriptorParserImpl(Path descriptorDirPath) {
 		this.descriptorDirectory = descriptorDirPath;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -137,8 +137,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 		Stack<ElementTag> elementStack = new Stack<ElementTag>();
 		String currentAnnotation = null;
 		
-		try {
-			Scanner scanner = new Scanner(file, "UTF-8");
+		try (Scanner scanner = new Scanner(file, "UTF-8")){
 			while(scanner.hasNextLine()){
 				
 				String line = scanner.nextLine().trim();
