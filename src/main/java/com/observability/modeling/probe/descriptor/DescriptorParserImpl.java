@@ -41,7 +41,7 @@ import com.observability.modeling.probe.descriptor.entities.ElementTag;
  * This class implements the functionality to parse the 
  * probe descriptor files.
  * 
- * @author vsaravag (Varun Saravagi)
+ * @author vsaravag (Varun Saravagi) , gemici
  * 
  *
  */
@@ -78,7 +78,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	public DescriptorParserImpl(Path descriptorDirPath) {
 		this.descriptorDirectory = descriptorDirPath;
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -113,12 +113,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 				throw new RuntimeException();
 			}
 		}
-		// Test code to print out the DbTypes
-		for (DbType dbType : plugins) {
-			System.out.println(dbType.toString());
-			System.out.println();
-		}
-		
 		return plugins;
 
 	}
@@ -137,8 +131,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 		Stack<ElementTag> elementStack = new Stack<ElementTag>();
 		String currentAnnotation = null;
 		
-		try {
-			Scanner scanner = new Scanner(file, "UTF-8");
+		try (Scanner scanner = new Scanner(file, "UTF-8")){
 			while(scanner.hasNextLine()){
 				
 				String line = scanner.nextLine().trim();
