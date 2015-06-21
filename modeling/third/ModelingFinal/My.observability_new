@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
+  <clusters associatedDbType="//@availableDbTypes.0" name="cluster1">
+    <machines>
+      <hasParentElement name="root">
+        <hasElements name="Connection">
+          <hasKeyValues key="Host" value="10.10.10.10"/>
+          <hasKeyValues key="ServiceURL"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+  </clusters>
+  <availableDbTypes name="cassandra">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="metrics"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="lang"/>
+  </availableDbTypes>
+  <availableDbTypes name="mongodb"/>
+  <availableDbTypes name="postgres">
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="magic"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="rt36_tickets"/>
+  </availableDbTypes>
+</observability_new:Model>
