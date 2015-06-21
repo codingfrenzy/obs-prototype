@@ -40,10 +40,12 @@
 #define AGG_FUNC_PLACEHOLDER "%{obsaggregation}"
 
 #define MAX_KEY_LENGTH 		6 * DATA_MAX_NAME_LEN
-#define AGG_RETENTION_ROUND	3
+#define AGG_RETENTION_ROUND	3	/*NOTE! at least 2*/
+
 // Measurements hash table
 struct obs_val_hash_s {
 	char 		metric_name[MAX_KEY_LENGTH];
+	data_set_t	*ds;
 	value_list_t 	*vl; 
 	UT_hash_handle  hh;         /* makes this structure hashable */
 };
@@ -59,7 +61,7 @@ struct obs_round_s {
 
 typedef struct obs_round_s obs_round_t;
 
-static obs_round_t obs_agg_rawdata[AGG_RETENTION_ROUND];
+static obs_round_t * obs_agg_rawdata[AGG_RETENTION_ROUND];
 
 struct aggregation_s /* {{{ */
 {
@@ -366,114 +368,43 @@ static void init_datastructure()
 	int i = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
 	{
-		obs_agg_rawdata[i].start_t = 0;
-		obs_agg_rawdata[i].end_t   = 0;
-		obs_agg_rawdata[i].val_hash = NULL;
+		obs_agg_rawdata[i] = (obs_round_t *) malloc (sizeof(obs_round_t));
+		obs_agg_rawdata[i]->start_t = 0;
+		obs_agg_rawdata[i]->end_t   = 0;
+		obs_agg_rawdata[i]->val_hash = NULL;
 	}
 }
 
-static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter_t num_aggr_nodes, const char *plugin, const char *type)
+static void hash_table_delete_all(obs_val_hash_t * hash_val) 
 {
-	//value_t values[3];
-	value_t values[1];
-	value_list_t vl = VALUE_LIST_INIT;
+	obs_val_hash_t *current_item, *tmp;
 
-	values[0].gauge   = aggr_val;
-	//values[1].counter = num_total_nodes;
-	//values[2].counter = num_aggr_nodes;
-
-	vl.values = values;
-	vl.values_len = STATIC_ARRAY_SIZE (values);
-	sstrncpy (vl.host, "global-aggr", sizeof (vl.host));
-	sstrncpy (vl.plugin, plugin, sizeof (vl.plugin));
-	sstrncpy (vl.type, type, sizeof (vl.type));
-
-	plugin_dispatch_values (&vl);
+  	HASH_ITER(hh, hash_val, current_item, tmp) 
+	{
+	    	HASH_DEL(hash_val,current_item);  	/* delete; users advances to next */
+	    	free(current_item);            		/* optional- if you want to free  */
+  	}
 }
 
-static int obsaggr_read (void)
+static void free_round(obs_round_t * round) 
 {
-	// First two read is used to decide the interval of aggregation
-	// I don't want to add extra configuration items since it causes incompatibility with general CollectD system 
-	if(gAggInterval == 0)
-	{ // not initialized
-		if(gFirstRead == 0)
-		{
-			gFirstRead = cdtime();
-		} else {
-			cdtime_t now = cdtime();
-			cdtime_t delta = now - gFirstRead;
-
-			// init the timestamps of aggregation rounds
-			int i = 0;
-			for ( ; i < AGG_RETENTION_ROUND	; i++)
-			{
-				obs_agg_rawdata[i].start_t = now - i * delta;
-				obs_agg_rawdata[i].end_t   = obs_agg_rawdata[i].start_t + delta;
-				//obs_agg_rawdata[i].val_hash = NULL;
-			}
-			// it's safer here considering concurrent behavior with write 
-			gAggInterval = delta;
-		}
-		return (0);
-	}
-
-	// 
-
-	return (0);
+	if(round == NULL)
+		return;
+	// delete hash table
+	hash_table_delete_all(round->val_hash);
+	round->val_hash = NULL;
+	sfree(round);
 }
 
-static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
-    __attribute__((unused)) user_data_t *user_data)
+static void free_datastructure()
 {
-	if(gAggInterval == 0)
-	{ // not initialized
-		return (0);
-	}
-	
-	_Bool created_by_aggregation = 0;
-
-  	/* Ignore values that were created by the aggregation plugin to avoid weird
-   	* effects. */
-  	(void) meta_data_get_boolean (vl->meta, "aggregation:created", &created_by_aggregation);
-	if (created_by_aggregation)
-    		return (0);
-
-	// Add the value to cache
 	int i = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
 	{
-		if(vl->time >= obs_agg_rawdata[i].start_t &&
-		   vl->time < obs_agg_rawdata[i].end_t)
-		{ // should be added to this cache round
-			// get the key
-			char name[MAX_KEY_LENGTH];
-			if (FORMAT_VL (name, sizeof (name), vl) != 0)
-			{
-				ERROR ("uc_update: FORMAT_VL failed.");
-				return (-1);
-			}
-			obs_val_hash_t * s = (obs_val_hash_t *)malloc(sizeof(obs_val_hash_t));
-			strncpy(s->metric_name, name, MAX_KEY_LENGTH);
-			s->vl = (value_list_t *) malloc (sizeof(value_list_t));
-			if(s->vl == NULL)
-			{
-				ERROR ("obsaggregation: obsagg_write: malloc failed.");
-			} else {
-				memcpy(s->vl, vl, sizeof(value_list_t));
-				obs_val_hash_t * r = NULL;
-				HASH_REPLACE_STR(obs_agg_rawdata[i].val_hash, metric_name, s, r);
-				if(r != NULL)
-				{
-					sfree(r);
-				}
-			}
-			break;
-		}
+		free_round(obs_agg_rawdata[i]);		
 	}
+}
 
-  return (0);
-} /* }}} int agg_write */
 
 static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
   char const *func, gauge_t rate, rate_to_value_state_t *state,
@@ -854,10 +785,204 @@ static int obsagg_config (oconfig_item_t *ci) /* {{{ */
   return (0);
 } /* }}} int agg_config */
 
+static int obsagg_shutdown (void)
+{
+	free_datastructure();
+	return (0);
+}
+
+static int agg_read (void) /* {{{ */
+{
+  agg_instance_t *this;
+  cdtime_t t;
+  int success;
+
+  t = cdtime ();
+  success = 0;
+
+  pthread_mutex_lock (&agg_instance_list_lock);
+
+  /* agg_instance_list_head only holds data, after the "write" callback has
+   * been called with a matching value list at least once. So on startup,
+   * there's a race between the aggregations read() and write() callback. If
+   * the read() callback is called first, agg_instance_list_head is NULL and
+   * "success" may be zero. This is expected and should not result in an error.
+   * Therefore we need to handle this case separately. */
+  if (agg_instance_list_head == NULL)
+  {
+    pthread_mutex_unlock (&agg_instance_list_lock);
+    return (0);
+  }
+
+  for (this = agg_instance_list_head; this != NULL; this = this->next)
+  {
+    int status;
+
+    status = agg_instance_read (this, t);
+    if (status != 0)
+      WARNING ("aggregation plugin: Reading an aggregation instance "
+          "failed with status %i.", status);
+    else
+      success++;
+  }
+
+  pthread_mutex_unlock (&agg_instance_list_lock);
+
+  return ((success > 0) ? 0 : -1);
+} /* }}} int agg_read */
+
+static int agg_write (data_set_t const *ds, value_list_t const *vl)
+{
+	int status;
+	
+	if (lookup == NULL)
+	{
+    		status = ENOENT;
+  	} else {
+    		status = lookup_search (lookup, ds, vl);
+    		if (status > 0)
+      			status = 0;
+  	}
+	return (status);
+} /* }}} int agg_write */
+
+/*
+static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter_t num_aggr_nodes, const char *plugin, const char *type)
+{
+	//value_t values[3];
+	value_t values[1];
+	value_list_t vl = VALUE_LIST_INIT;
+
+	values[0].gauge   = aggr_val;
+	//values[1].counter = num_total_nodes;
+	//values[2].counter = num_aggr_nodes;
+
+	vl.values = values;
+	vl.values_len = STATIC_ARRAY_SIZE (values);
+	sstrncpy (vl.host, "global-aggr", sizeof (vl.host));
+	sstrncpy (vl.plugin, plugin, sizeof (vl.plugin));
+	sstrncpy (vl.type, type, sizeof (vl.type));
+
+	plugin_dispatch_values (&vl);
+}
+*/
+static int obsaggr_read (void)
+{
+	// First two read is used to decide the interval of aggregation
+	// I don't want to add extra configuration items since it causes incompatibility with general CollectD system 
+	if(gAggInterval == 0)
+	{ // not initialized
+		if(gFirstRead == 0)
+		{
+			gFirstRead = cdtime();
+		} else {
+			cdtime_t now = cdtime();
+			cdtime_t delta = now - gFirstRead;
+
+			// init the timestamps of aggregation rounds
+			int i = 0;
+			for ( ; i < AGG_RETENTION_ROUND	; i++)
+			{
+				obs_agg_rawdata[i]->start_t = now - i * delta;
+				obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
+				//obs_agg_rawdata[i].val_hash = NULL;
+			}
+			// it's safer here considering concurrent behavior with write 
+			gAggInterval = delta;
+		}
+		return (0);
+	}
+
+	// process the round of (AGG_RETENTION_ROUND - 1)
+	// iterate through the hash table
+	obs_val_hash_t * de;
+
+	for(de = obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->val_hash; de != NULL; de = de->hh.next) 
+	{
+		agg_write(de->ds, de->vl);
+	}
+	// submit the values
+	agg_read();
+
+	// free it
+	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
+	// copy all the rounds before to their next
+	int i = AGG_RETENTION_ROUND - 1;
+	for ( ; i > 0 ; i--)
+	{
+		obs_agg_rawdata[i] = obs_agg_rawdata[i - 1];
+	}
+	// add a new round at 0
+	// take the operation time into consideration ?
+	cdtime_t now = cdtime();
+	obs_agg_rawdata[0] = (obs_round_t *) malloc (sizeof(obs_round_t));
+	obs_agg_rawdata[0]->start_t = obs_agg_rawdata[1]->end_t;
+	obs_agg_rawdata[0]->end_t   = now + gAggInterval;
+	obs_agg_rawdata[0]->val_hash = NULL;
+
+	return (0);
+}
+
+static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
+    __attribute__((unused)) user_data_t *user_data)
+{
+	if(gAggInterval == 0)
+	{ // not initialized
+		return (0);
+	}
+	
+	_Bool created_by_aggregation = 0;
+
+  	/* Ignore values that were created by the aggregation plugin to avoid weird
+   	* effects. */
+  	(void) meta_data_get_boolean (vl->meta, "aggregation:created", &created_by_aggregation);
+	if (created_by_aggregation)
+    		return (0);
+
+	// Add the value to cache
+	int i = 0;
+	for ( ; i < AGG_RETENTION_ROUND	; i++)
+	{
+		if(vl->time >= obs_agg_rawdata[i]->start_t &&
+		   vl->time < obs_agg_rawdata[i]->end_t)
+		{ // should be added to this cache round
+			// get the key
+			char name[MAX_KEY_LENGTH];
+			if (FORMAT_VL (name, sizeof (name), vl) != 0)
+			{
+				ERROR ("uc_update: FORMAT_VL failed.");
+				return (-1);
+			}
+			obs_val_hash_t * s = (obs_val_hash_t *) malloc (sizeof(obs_val_hash_t));
+			
+			strncpy(s->metric_name, name, MAX_KEY_LENGTH);
+			s->vl = (value_list_t *) malloc (sizeof(value_list_t));
+			s->ds = (data_set_t *) malloc (sizeof(data_set_t));
+			if(s->vl == NULL)
+			{
+				ERROR ("obsaggregation: obsagg_write: malloc failed.");
+			} else {
+				memcpy(s->vl, vl, sizeof(value_list_t));
+				memcpy(s->ds, ds, sizeof(data_set_t));
+				obs_val_hash_t * r = NULL;
+				HASH_REPLACE_STR(obs_agg_rawdata[i]->val_hash, metric_name, s, r);
+				if(r != NULL)
+				{// no need to keep the replaced entry
+					sfree(r);
+				}
+			}
+			break;
+		}
+	}
+
+  return (0);
+} /* }}} int agg_write */
+
 void module_register (void)
 {
 	init_datastructure();
 	plugin_register_complex_config ("aggregation", obsagg_config);
   	plugin_register_write ("obsaggregation", obsagg_write, /* user_data = */ NULL);
 	plugin_register_read ("obsaggregation", obsaggr_read);
+	plugin_register_shutdown ("obsaggregation", obsagg_shutdown);
 } /* void module_register */
