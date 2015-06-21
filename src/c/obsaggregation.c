@@ -39,7 +39,7 @@
 #define AGG_MATCHES_ALL(str) (strcmp ("/.*/", str) == 0)
 #define AGG_FUNC_PLACEHOLDER "%{obsaggregation}"
 
-#define MAX_KEY_LENGTH 		255
+#define MAX_KEY_LENGTH 		6 * DATA_MAX_NAME_LEN
 #define AGG_RETENTION_ROUND	3
 // Measurements hash table
 struct obs_val_hash_s {
@@ -112,6 +112,9 @@ static lookup_t *lookup = NULL;
 
 static pthread_mutex_t agg_instance_list_lock = PTHREAD_MUTEX_INITIALIZER;
 static agg_instance_t *agg_instance_list_head = NULL;
+
+static cdtime_t gAggInterval = 0;
+static cdtime_t gFirstRead = 0;
 
 static _Bool agg_is_regex (char const *str) /* {{{ */
 {
@@ -260,12 +263,12 @@ static agg_instance_t *agg_instance_create (data_set_t const *ds, /* {{{ */
 {
   agg_instance_t *inst;
 
-  DEBUG ("aggregation plugin: Creating new instance.");
+  DEBUG ("obsaggregation plugin: Creating new instance.");
 
   inst = malloc (sizeof (*inst));
   if (inst == NULL)
   {
-    ERROR ("aggregation plugin: malloc() failed.");
+    ERROR ("obsaggregation plugin: malloc() failed.");
     return (NULL);
   }
   memset (inst, 0, sizeof (*inst));
@@ -319,7 +322,7 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
 
   if (ds->ds_num != 1)
   {
-    ERROR ("aggregation plugin: The \"%s\" type (data set) has more than one "
+    ERROR ("obsaggregation plugin: The \"%s\" type (data set) has more than one "
         "data source. This is currently not supported by this plugin. "
         "Sorry.", ds->type);
     return (EINVAL);
@@ -330,7 +333,7 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
   {
     char ident[6 * DATA_MAX_NAME_LEN];
     FORMAT_VL (ident, sizeof (ident), vl);
-    ERROR ("aggregation plugin: Unable to read the current rate of \"%s\".",
+    ERROR ("obsaggregation plugin: Unable to read the current rate of \"%s\".",
         ident);
     return (ENOENT);
   }
@@ -390,8 +393,32 @@ static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter
 
 static int obsaggr_read (void)
 {
-	obsaggr_submit(0.555, 2, 1, "obsaggregation", "cpu");
-	obsaggr_submit(12345678, 2, 1, "obsaggregation", "memory");
+	// First two read is used to decide the interval of aggregation
+	// I don't want to add extra configuration items since it causes incompatibility with general CollectD system 
+	if(gAggInterval == 0)
+	{ // not initialized
+		if(gFirstRead == 0)
+		{
+			gFirstRead = cdtime();
+		} else {
+			cdtime_t now = cdtime();
+			cdtime_t delta = now - gFirstRead;
+
+			// init the timestamps of aggregation rounds
+			int i = 0;
+			for ( ; i < AGG_RETENTION_ROUND	; i++)
+			{
+				obs_agg_rawdata[i].start_t = now - i * delta;
+				obs_agg_rawdata[i].end_t   = obs_agg_rawdata[i].start_t + delta;
+				//obs_agg_rawdata[i].val_hash = NULL;
+			}
+			// it's safer here considering concurrent behavior with write 
+			gAggInterval = delta;
+		}
+		return (0);
+	}
+
+	// 
 
 	return (0);
 }
@@ -399,28 +426,53 @@ static int obsaggr_read (void)
 static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     __attribute__((unused)) user_data_t *user_data)
 {
-	return 0;
-	// _Bool created_by_aggregation = 0;
-	//int status;
+	if(gAggInterval == 0)
+	{ // not initialized
+		return (0);
+	}
+	
+	_Bool created_by_aggregation = 0;
 
-  /* Ignore values that were created by the aggregation plugin to avoid weird
-   * effects. */
-	/*
-  (void) meta_data_get_boolean (vl->meta, "aggregation:created",
-      &created_by_aggregation);
-  if (created_by_aggregation)
-    return (0);
+  	/* Ignore values that were created by the aggregation plugin to avoid weird
+   	* effects. */
+  	(void) meta_data_get_boolean (vl->meta, "aggregation:created", &created_by_aggregation);
+	if (created_by_aggregation)
+    		return (0);
 
-  if (lookup == NULL)
-    status = ENOENT;
-  else
-  {
-    status = lookup_search (lookup, ds, vl);
-    if (status > 0)
-      status = 0;
-  }
+	// Add the value to cache
+	int i = 0;
+	for ( ; i < AGG_RETENTION_ROUND	; i++)
+	{
+		if(vl->time >= obs_agg_rawdata[i].start_t &&
+		   vl->time < obs_agg_rawdata[i].end_t)
+		{ // should be added to this cache round
+			// get the key
+			char name[MAX_KEY_LENGTH];
+			if (FORMAT_VL (name, sizeof (name), vl) != 0)
+			{
+				ERROR ("uc_update: FORMAT_VL failed.");
+				return (-1);
+			}
+			obs_val_hash_t * s = (obs_val_hash_t *)malloc(sizeof(obs_val_hash_t));
+			strncpy(s->metric_name, name, MAX_KEY_LENGTH);
+			s->vl = (value_list_t *) malloc (sizeof(value_list_t));
+			if(s->vl == NULL)
+			{
+				ERROR ("obsaggregation: obsagg_write: malloc failed.");
+			} else {
+				memcpy(s->vl, vl, sizeof(value_list_t));
+				obs_val_hash_t * r = NULL;
+				HASH_REPLACE_STR(obs_agg_rawdata[i].val_hash, metric_name, s, r);
+				if(r != NULL)
+				{
+					sfree(r);
+				}
+			}
+			break;
+		}
+	}
 
-  return (status);*/
+  return (0);
 } /* }}} int agg_write */
 
 static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
