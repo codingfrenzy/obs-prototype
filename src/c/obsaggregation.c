@@ -113,6 +113,7 @@ struct agg_instance_s /* {{{ */
 static lookup_t *lookup = NULL;
 
 static pthread_mutex_t agg_instance_list_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t agg_cache_lock = PTHREAD_MUTEX_INITIALIZER;
 static agg_instance_t *agg_instance_list_head = NULL;
 
 static cdtime_t gAggInterval = 0;
@@ -787,17 +788,22 @@ static int obsagg_config (oconfig_item_t *ci) /* {{{ */
 
 static int obsagg_shutdown (void)
 {
+	pthread_mutex_lock (&agg_cache_lock);
 	free_datastructure();
+	pthread_mutex_unlock (&agg_cache_lock);
+
 	return (0);
 }
 
-static int agg_read (void) /* {{{ */
+//static int agg_read (void) /* {{{ */
+static int agg_read (cdtime_t tmval) /* {{{ */
 {
   agg_instance_t *this;
   cdtime_t t;
   int success;
 
-  t = cdtime ();
+  //t = cdtime ();
+  t = tmval;
   success = 0;
 
   pthread_mutex_lock (&agg_instance_list_lock);
@@ -880,6 +886,7 @@ static int obsaggr_read (void)
 			cdtime_t delta = now - gFirstRead;
 
 			// init the timestamps of aggregation rounds
+			pthread_mutex_lock (&agg_cache_lock);
 			int i = 0;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
@@ -889,20 +896,31 @@ static int obsaggr_read (void)
 			}
 			// it's safer here considering concurrent behavior with write 
 			gAggInterval = delta;
+			pthread_mutex_unlock (&agg_cache_lock);
+			INFO("Obsaggr: interval: %ld", CDTIME_T_TO_TIME_T(delta));
 		}
 		return (0);
 	}
 
+	pthread_mutex_lock (&agg_cache_lock);
 	// process the round of (AGG_RETENTION_ROUND - 1)
 	// iterate through the hash table
 	obs_val_hash_t * de;
+	
+	// log - should be deleted later
+	INFO("Start obsaggr round N - 1. %ld - %ld", 
+		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
+		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t));
 
 	for(de = obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->val_hash; de != NULL; de = de->hh.next) 
 	{
 		agg_write(de->ds, de->vl);
+		// Log
+		INFO("Obsaggr: key: %s - time - %ld", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time));
+		//
 	}
 	// submit the values
-	agg_read();
+	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t);
 
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
@@ -919,6 +937,15 @@ static int obsaggr_read (void)
 	obs_agg_rawdata[0]->start_t = obs_agg_rawdata[1]->end_t;
 	obs_agg_rawdata[0]->end_t   = now + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
+
+	// log - should be removed later
+	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
+	{
+		INFO("Obsaggr: round %i : %ld - %ld", i, 
+			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
+			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
+	}
+	pthread_mutex_unlock (&agg_cache_lock);
 
 	return (0);
 }
@@ -940,6 +967,7 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     		return (0);
 
 	// Add the value to cache
+	pthread_mutex_lock (&agg_cache_lock);
 	int i = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
 	{
@@ -950,7 +978,8 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 			char name[MAX_KEY_LENGTH];
 			if (FORMAT_VL (name, sizeof (name), vl) != 0)
 			{
-				ERROR ("uc_update: FORMAT_VL failed.");
+				ERROR ("obsagg_write: FORMAT_VL failed.");
+				pthread_mutex_unlock (&agg_cache_lock);
 				return (-1);
 			}
 			obs_val_hash_t * s = (obs_val_hash_t *) malloc (sizeof(obs_val_hash_t));
@@ -974,8 +1003,9 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 			break;
 		}
 	}
+	pthread_mutex_unlock (&agg_cache_lock);
 
-  return (0);
+	return (0);
 } /* }}} int agg_write */
 
 void module_register (void)
