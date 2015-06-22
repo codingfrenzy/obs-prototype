@@ -3,10 +3,7 @@ package observability_new.design;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 
 public class TestService {
 	
@@ -19,8 +16,8 @@ public class TestService {
 		return "Machine";
 	}
 	
-	public List getList(EObject obj){
-		ArrayList<String> arr = new ArrayList<>();
+	public List<String> getList(EObject obj){
+		ArrayList<String> arr = new ArrayList<String>();
 		arr.add("hi");
 		arr.add("hello");
 		return arr;

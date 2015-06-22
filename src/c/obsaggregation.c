@@ -21,6 +21,10 @@
  *   Ying venomJ Gao	  <joelyinggao at gmail.com>
  **/
 
+
+// Use the following command to check memory leak
+// valgrind -v --leak-check=full --show-reachable=yes collectd
+
 #define _BSD_SOURCE
 
 #include "collectd.h"
@@ -113,7 +117,7 @@ struct agg_instance_s /* {{{ */
 static lookup_t *lookup = NULL;
 
 static pthread_mutex_t agg_instance_list_lock = PTHREAD_MUTEX_INITIALIZER;
-static pthread_mutex_t agg_cache_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t agg_cache_lock;//PTHREAD_MUTEX_INITIALIZER;
 static agg_instance_t *agg_instance_list_head = NULL;
 
 static cdtime_t gAggInterval = 0;
@@ -364,8 +368,75 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
   return (0);
 } /* }}} int agg_instance_update */
 
+static void plugin_value_list_free (value_list_t *vl) 
+{
+	if (vl == NULL)
+		return;
+
+	meta_data_destroy (vl->meta);
+	sfree (vl->values);
+	sfree (vl);
+}
+
+static value_list_t *plugin_value_list_clone (value_list_t const *vl_orig) 
+{
+	value_list_t *vl;
+
+	if (vl_orig == NULL)
+		return (NULL);
+
+	vl = malloc (sizeof (*vl));
+	if (vl == NULL)
+		return (NULL);
+	memcpy (vl, vl_orig, sizeof (*vl));
+
+	vl->values = calloc (vl_orig->values_len, sizeof (*vl->values));
+	if (vl->values == NULL)
+	{
+		plugin_value_list_free (vl);
+		return (NULL);
+	}
+	memcpy (vl->values, vl_orig->values,
+			vl_orig->values_len * sizeof (*vl->values));
+
+	vl->meta = meta_data_clone (vl->meta);
+	if ((vl_orig->meta != NULL) && (vl->meta == NULL))
+	{
+		plugin_value_list_free (vl);
+		return (NULL);
+	}
+
+	if (vl->time == 0)
+		vl->time = cdtime ();
+
+	// Fill in the interval from the thread context, if it is zero.
+	if (vl->interval == 0)
+	{
+		plugin_ctx_t ctx = plugin_get_ctx ();
+
+		if (ctx.interval != 0)
+			vl->interval = ctx.interval;
+		else
+		{
+			char name[6 * DATA_MAX_NAME_LEN];
+			FORMAT_VL (name, sizeof (name), vl);
+			ERROR ("plugin_value_list_clone: Unable to determine "
+					"interval from context for "
+					"value list \"%s\". "
+					"This indicates a broken plugin. "
+					"Please report this problem to the "
+					"collectd mailing list or at "
+					"<http://collectd.org/bugs/>.", name);
+			vl->interval = cf_get_default_interval ();
+		}
+	}
+
+	return (vl);
+} 
+
 static void init_datastructure()
 {
+	pthread_mutex_init(&agg_cache_lock, NULL);
 	int i = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
 	{
@@ -382,8 +453,29 @@ static void hash_table_delete_all(obs_val_hash_t * hash_val)
 
   	HASH_ITER(hh, hash_val, current_item, tmp) 
 	{
+		//INFO("delete hash entry");
 	    	HASH_DEL(hash_val,current_item);  	/* delete; users advances to next */
-	    	free(current_item);            		/* optional- if you want to free  */
+		if(current_item->ds != NULL)
+		{
+			//INFO("delete ds");
+			//int i = 0;
+			//for (; i < current_item->ds->ds_num; i++)
+			//	free(current_item->ds->ds + i);
+			if(current_item->ds->ds != NULL)
+			{
+				sfree(current_item->ds->ds);
+			}
+			//INFO("delete ds2");
+			sfree(current_item->ds);
+		}
+		if(current_item->vl != NULL)
+		{
+			//free(current_item->vl);
+			//INFO("delete vl");
+			plugin_value_list_free (current_item->vl);
+		}
+		//INFO("delete whole item");
+	    	sfree(current_item);            		/* optional- if you want to free  */
   	}
 }
 
@@ -395,6 +487,7 @@ static void free_round(obs_round_t * round)
 	hash_table_delete_all(round->val_hash);
 	round->val_hash = NULL;
 	sfree(round);
+	round = NULL;
 }
 
 static void free_datastructure()
@@ -792,6 +885,7 @@ static int obsagg_shutdown (void)
 	free_datastructure();
 	pthread_mutex_unlock (&agg_cache_lock);
 
+	pthread_mutex_destroy(&agg_cache_lock);
 	return (0);
 }
 
@@ -872,6 +966,8 @@ static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter
 	plugin_dispatch_values (&vl);
 }
 */
+
+
 static int obsaggr_read (void)
 {
 	// First two read is used to decide the interval of aggregation
@@ -890,7 +986,7 @@ static int obsaggr_read (void)
 			int i = 0;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
-				obs_agg_rawdata[i]->start_t = now - i * delta;
+				obs_agg_rawdata[i]->start_t = now - i * delta + delta / 2;
 				obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
 				//obs_agg_rawdata[i].val_hash = NULL;
 			}
@@ -902,7 +998,11 @@ static int obsaggr_read (void)
 		return (0);
 	}
 
-	pthread_mutex_lock (&agg_cache_lock);
+	int ret = pthread_mutex_lock (&agg_cache_lock);
+	if(ret != 0)
+	{
+		ERROR("Get lock error: %s", strerror(ret));
+	}
 	// process the round of (AGG_RETENTION_ROUND - 1)
 	// iterate through the hash table
 	obs_val_hash_t * de;
@@ -911,19 +1011,32 @@ static int obsaggr_read (void)
 	INFO("Start obsaggr round N - 1. %ld - %ld", 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t));
-
+	cdtime_t lastt = 0;
+	long count = 0;
 	for(de = obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->val_hash; de != NULL; de = de->hh.next) 
 	{
 		agg_write(de->ds, de->vl);
+		if(de->vl->time > lastt)
+		{
+			lastt = de->vl->time;
+		}
+		count++;
 		// Log
 		INFO("Obsaggr: key: %s - time - %ld", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time));
 		//
 	}
+	INFO("End obsaggr round N - 1. %ld - %ld, total number:%ld", 
+		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
+		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t),
+		count);
 	// submit the values
-	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t);
-
+	//agg_read(lastt + gAggInterval/*obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t*/);
+	INFO("Starting calculation...");
+	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + gAggInterval / 2);
+	INFO("Done, free the mem");
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
+	INFO("Done");
 	// copy all the rounds before to their next
 	int i = AGG_RETENTION_ROUND - 1;
 	for ( ; i > 0 ; i--)
@@ -932,10 +1045,11 @@ static int obsaggr_read (void)
 	}
 	// add a new round at 0
 	// take the operation time into consideration ?
-	cdtime_t now = cdtime();
+	//cdtime_t now = cdtime();
 	obs_agg_rawdata[0] = (obs_round_t *) malloc (sizeof(obs_round_t));
 	obs_agg_rawdata[0]->start_t = obs_agg_rawdata[1]->end_t;
-	obs_agg_rawdata[0]->end_t   = now + gAggInterval;
+	//obs_agg_rawdata[0]->end_t   = now + gAggInterval;
+	obs_agg_rawdata[0]->end_t   = obs_agg_rawdata[0]->start_t + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
 
 	// log - should be removed later
@@ -967,8 +1081,14 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     		return (0);
 
 	// Add the value to cache
-	pthread_mutex_lock (&agg_cache_lock);
+	int ret = pthread_mutex_lock (&agg_cache_lock);
+	if(ret != 0)
+	{
+		ERROR("Get lock error: %s", strerror(ret));
+	}
+
 	int i = 0;
+	_Bool inserted = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
 	{
 		if(vl->time >= obs_agg_rawdata[i]->start_t &&
@@ -985,22 +1105,52 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 			obs_val_hash_t * s = (obs_val_hash_t *) malloc (sizeof(obs_val_hash_t));
 			
 			strncpy(s->metric_name, name, MAX_KEY_LENGTH);
-			s->vl = (value_list_t *) malloc (sizeof(value_list_t));
+
+			
+			//s->vl = (value_list_t *) malloc (sizeof(value_list_t));
+			s->vl = plugin_value_list_clone (vl);
 			s->ds = (data_set_t *) malloc (sizeof(data_set_t));
 			if(s->vl == NULL)
 			{
 				ERROR ("obsaggregation: obsagg_write: malloc failed.");
 			} else {
-				memcpy(s->vl, vl, sizeof(value_list_t));
+				//memcpy(s->vl, vl, sizeof(value_list_t));
 				memcpy(s->ds, ds, sizeof(data_set_t));
+				
+				s->ds->ds = (data_source_t *) malloc (sizeof (data_source_t) * ds->ds_num);
+				if (s->ds == NULL)
+				{
+					free (s->ds);
+					return (-1);
+				}
+				int j = 0;
+				for (; j < ds->ds_num; j++)
+					memcpy (s->ds->ds + j, ds->ds + j, sizeof (data_source_t));
+				
+
 				obs_val_hash_t * r = NULL;
 				HASH_REPLACE_STR(obs_agg_rawdata[i]->val_hash, metric_name, s, r);
 				if(r != NULL)
 				{// no need to keep the replaced entry
+					ERROR ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
+						name, CDTIME_T_TO_TIME_T(r->vl->time), CDTIME_T_TO_TIME_T(vl->time));
+					ERROR ("Round: %d - from: %ld to: %ld", 
+						i, CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t), CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
 					sfree(r);
 				}
 			}
+			inserted = 1;
+			INFO ("obsagg_write: value inserted in round %d : %s - time:%ld.", i, name, CDTIME_T_TO_TIME_T(vl->time));
 			break;
+		}
+	}
+
+	if(inserted == 0)
+	{//error
+		char name[MAX_KEY_LENGTH];
+		if (FORMAT_VL (name, sizeof (name), vl) == 0)
+		{
+			ERROR ("obsagg_write: value not inserted: %s - time:%ld.", name, CDTIME_T_TO_TIME_T(vl->time));
 		}
 	}
 	pthread_mutex_unlock (&agg_cache_lock);
