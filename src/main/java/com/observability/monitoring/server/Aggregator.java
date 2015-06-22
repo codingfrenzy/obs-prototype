@@ -36,8 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.observability.monitoring.server.IMetricDatabaseHandlerServer;
-
 /**
  * Aggregator is a process to aggregate metric data. It has the following
  * functionalities: 
@@ -119,7 +117,7 @@ public class Aggregator extends UnicastRemoteObject {
 												// collectd.conf file
 
 		// Interval validation
-		if (!intervalStr.equals(null) || Integer.parseInt(intervalStr) > 0) {
+		if ((intervalStr != null) && Integer.parseInt(intervalStr) > 0) {
 			interval = Integer.parseInt(intervalStr);
 		}
 
@@ -144,11 +142,11 @@ public class Aggregator extends UnicastRemoteObject {
 		try{
 			bufferReader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(fileName), "UTF-8"));
-			if (bufferReader.equals(null))
-				System.exit(-1);
 		} catch (IOException e) {
-		e.printStackTrace();
+			e.printStackTrace();	
 		}
+		if (bufferReader == null)
+			return null;
 		
 		String line = "";
 		String[] intervalConfigItem = new String[2];	// The array has 2 elements: key and value of the interval. 
@@ -156,22 +154,26 @@ public class Aggregator extends UnicastRemoteObject {
 		do {
 			try {
 				line = bufferReader.readLine();
+				if(line == null)
+					break;
 				// Collectd.conf file has 2 intervals. Use the one specified for aggregation 
 				if (line != null && line.equalsIgnoreCase("<LoadPlugin aggregation>")) {	
 					do {
 						line = bufferReader.readLine();
+						if (line == null)
+							break;
 						line = line.trim();	//Trim any spaces at the beginning of the line
 						if (line.isEmpty() || line.trim().equals("")
-								|| line.trim().equals("\n"))
+									|| line.trim().equals("\n"))
 							continue;	// Read the next line
 						else if (line.startsWith("Interval")) {
 							String str[] = line.trim().split("\\s+");
 							if (str.length > 1) {
 								intervalConfigItem[0] = str[0];
-								intervalConfigItem[1] = str[1];
+								intervalConfigItem[1] = str[1];		
+								}
 							}
-						}
-					} while (!line.equalsIgnoreCase("</LoadPlugin>"));
+					} while (!line.equalsIgnoreCase("</LoadPlugin>") && (line != null));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -204,20 +206,23 @@ public class Aggregator extends UnicastRemoteObject {
 				if (line != null && line.equals("<Aggregation>")) {	//go to aggregation configuration section
 					do {
 						line = bufferReader.readLine();
+						if (line == null)
+							break;
 						line = line.trim();		//Trim any spaces at the beginning of the line
 						if (line.isEmpty() || line.trim().equals("")
-								|| line.trim().equals("\n"))
+									|| line.trim().equals("\n"))
 							continue;	// Read the next line
 						else {
 							String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array
 							if (str.length > 1) {
-								String[] aggConfigItem = new String[2];
+								String[] aggConfigItem = new String[2];										
 								aggConfigItem[0] = str[0];
-								aggConfigItem[1] = str[1];
+								aggConfigItem[1] = str[1];	
 								aggConfig.add(aggConfigItem);	// Add this configuration element to the list
 							}
 						}
-					} while (!line.equals("</Aggregation>"));
+						
+					} while (!line.equals("</Aggregation>") && (line != null));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -300,7 +305,7 @@ public class Aggregator extends UnicastRemoteObject {
 	 * @throws RemoteException
 	 * @throws MalformedURLException
 	 */
-	public static void readData(String[] nodeListTemp, AggConfigElements aggConfig)
+	public static boolean readData(String[] nodeListTemp, AggConfigElements aggConfig)
 			throws MalformedURLException, RemoteException, NotBoundException {
 
 		String str = "collectd/";
@@ -308,8 +313,8 @@ public class Aggregator extends UnicastRemoteObject {
 		String str3 = "-0";
 		ArrayList<String> metricMeasurements = new ArrayList<String>();
 
-		if (nodeListTemp.equals(null) || aggConfig.equals(null)){
-			//exit
+		if ((nodeListTemp == null) || (aggConfig ==null)){
+			return false;
 		}
 		
 		long currentTimeStamp = System.currentTimeMillis() / 1000L;	//The current time stamp of the server
@@ -325,7 +330,7 @@ public class Aggregator extends UnicastRemoteObject {
 		
 		for (int i = 0; i < nodeListTemp.length; i++) {
 			String s = aggConfig.getPlugin();
-			if (aggConfig.getPlugin() == s) {
+			if (aggConfig.getPlugin().equals(s)) {
 				metricPath = str.concat(nodeListTemp[i]).concat(str2)
 						.concat(aggConfig.getPlugin()).concat(str3)
 						.concat(str2).concat(aggConfig.getTypeInst());
@@ -360,6 +365,7 @@ public class Aggregator extends UnicastRemoteObject {
 				aggConfig.isCalMin(), aggConfig.isCalMax(),
 				aggConfig.isCalStd(), aggConfig.getPlugin(),
 				aggConfig.getTypeInst());
+		return true;
 	}
 
 
@@ -396,7 +402,7 @@ public class Aggregator extends UnicastRemoteObject {
 		ArrayList<Double> metricMeasurementsDouble = null;
 		int counter = 0;
 
-		if (metricMeasurements.isEmpty() || aggTimeStampStartStr.equals(null) || metric.equals(null) || metricType.equals(null)){
+		if ((metricMeasurements == null) || (aggTimeStampStartStr == null) || (metric == null) || (metricType == null)){
 			// exit
 		}
 			
@@ -530,8 +536,8 @@ public class Aggregator extends UnicastRemoteObject {
 			String metricType) throws MalformedURLException, RemoteException,
 			NotBoundException {
 
-		if (timeStampStartStr.equals(null) || timeStampStartStr.equals("0") || aggregatedMeasurement.equals(null) 
-				|| func.equals(null) || metric.equals(null) || metricType.equals(null)){
+		if ((timeStampStartStr == null) || (timeStampStartStr.equals("0")) || (aggregatedMeasurement == null) 
+				|| (func == null) || (metric == null) || (metricType == null)){
 			//do something
 		}
 		
@@ -552,7 +558,7 @@ public class Aggregator extends UnicastRemoteObject {
 		IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer) Naming
 				.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
 						+ "/MetricDatabaseHandler");
-		if (imdhs.equals(null)){
+		if (imdhs ==null){
 			//do something
 		}
 		
@@ -578,18 +584,23 @@ public class Aggregator extends UnicastRemoteObject {
 		/**
 		 * Path and name of the configuration file
 		 */
-		//static String configFilePath = "/opt/collectd/etc/collectd.conf";
+		//String configFilePath = "/opt/collectd/etc/collectd.conf";
 		String configFilePath = "Test.txt";
+
 		File file = new File(configFilePath);		
+		
+		long startTime = 0;
+		long endTime = 0;
+		long totalTime = 0;
 		Long lastModified = file.lastModified() / 1000;	
-			
+		boolean dataIsRead = false;
+	
 		try {
 			imdhs = (IMetricDatabaseHandlerServer) Naming
 					.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
 							+ "/MetricDatabaseHandler");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 		AggConfigElements aggConfigurationElements = readConfigurationFile(configFilePath);
 		// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
@@ -601,7 +612,25 @@ public class Aggregator extends UnicastRemoteObject {
 		nodeListTemp[1] = "45_55_240_162"; // "observabilityCassandra1";
 		
 		while (true) {
-			readData(nodeListTemp, aggConfigurationElements);	// Read, aggregate and save aggregated data
+			startTime = System.currentTimeMillis(); //This to calculate the running time of readData()
+			dataIsRead = readData(nodeListTemp, aggConfigurationElements);	// Read, aggregate and save aggregated data
+			endTime = System.currentTimeMillis();	//This to calculate the running time of readData()
+			totalTime = endTime - startTime;	//This to calculate the running time of readData()
+			
+			try {
+			    Thread.sleep((aggConfigurationElements.getInterval() * 1000) - totalTime);	//Sleep for a duration of aggregation interval minus the running time of readData(),
+			    																	//before trying to read more data. 1 second = 1000 milliseconds
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
+			
+			if (!dataIsRead){
+				try {
+				    Thread.sleep(aggConfigurationElements.getInterval());	// Sleep before trying to read more data
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
+			}
 			
 			if (!(lastModified.equals(file.lastModified() / 1000))){	// Check if the configuration file was modified 
 				lastModified = file.lastModified() / 1000;
