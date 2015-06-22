@@ -979,7 +979,11 @@ static int obsaggr_read (void)
 		return (0);
 	}
 
-	pthread_mutex_lock (&agg_cache_lock);
+	int ret = pthread_mutex_lock (&agg_cache_lock);
+	if(ret != 0)
+	{
+		ERROR("Get lock error: %s", strerror(ret));
+	}
 	// process the round of (AGG_RETENTION_ROUND - 1)
 	// iterate through the hash table
 	obs_val_hash_t * de;
@@ -1056,7 +1060,12 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     		return (0);
 
 	// Add the value to cache
-	pthread_mutex_lock (&agg_cache_lock);
+	int ret = pthread_mutex_lock (&agg_cache_lock);
+	if(ret != 0)
+	{
+		ERROR("Get lock error: %s", strerror(ret));
+	}
+
 	int i = 0;
 	_Bool inserted = 0;
 	for ( ; i < AGG_RETENTION_ROUND	; i++)
@@ -1093,9 +1102,9 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 					free (s->ds);
 					return (-1);
 				}
-
-				for (i = 0; i < ds->ds_num; i++)
-					memcpy (s->ds->ds + i, ds->ds + i, sizeof (data_source_t));
+				int j = 0;
+				for (; j < ds->ds_num; j++)
+					memcpy (s->ds->ds + j, ds->ds + j, sizeof (data_source_t));
 				
 
 				obs_val_hash_t * r = NULL;
