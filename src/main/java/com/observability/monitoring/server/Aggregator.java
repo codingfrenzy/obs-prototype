@@ -157,7 +157,7 @@ public class Aggregator extends UnicastRemoteObject {
 				if(line == null)
 					break;
 				// Collectd.conf file has 2 intervals. Use the one specified for aggregation 
-				if (line != null && line.equalsIgnoreCase("<LoadPlugin aggregation>")) {	
+				if (line.equalsIgnoreCase("<LoadPlugin aggregation>")) {	
 					do {
 						line = bufferReader.readLine();
 						if (line == null)
@@ -180,8 +180,7 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 		} while (line != null);
 		try {
-			if(bufferReader!=null)		// Close the BufferedReader
-				bufferReader.close();
+			bufferReader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
