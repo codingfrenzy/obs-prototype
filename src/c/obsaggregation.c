@@ -21,6 +21,10 @@
  *   Ying venomJ Gao	  <joelyinggao at gmail.com>
  **/
 
+
+// Use the following command to check memory leak
+// valgrind -v --leak-check=full --show-reachable=yes collectd
+
 #define _BSD_SOURCE
 
 #include "collectd.h"
@@ -449,14 +453,29 @@ static void hash_table_delete_all(obs_val_hash_t * hash_val)
 
   	HASH_ITER(hh, hash_val, current_item, tmp) 
 	{
+		//INFO("delete hash entry");
 	    	HASH_DEL(hash_val,current_item);  	/* delete; users advances to next */
-		int i = 0;
-		for (; i < current_item->ds->ds_num; i++)
-			free(current_item->ds->ds + i);
-		free(current_item->ds);
-		//free(current_item->vl);
-		plugin_value_list_free (current_item->vl);
-	    	free(current_item);            		/* optional- if you want to free  */
+		if(current_item->ds != NULL)
+		{
+			//INFO("delete ds");
+			//int i = 0;
+			//for (; i < current_item->ds->ds_num; i++)
+			//	free(current_item->ds->ds + i);
+			if(current_item->ds->ds != NULL)
+			{
+				sfree(current_item->ds->ds);
+			}
+			//INFO("delete ds2");
+			sfree(current_item->ds);
+		}
+		if(current_item->vl != NULL)
+		{
+			//free(current_item->vl);
+			//INFO("delete vl");
+			plugin_value_list_free (current_item->vl);
+		}
+		//INFO("delete whole item");
+	    	sfree(current_item);            		/* optional- if you want to free  */
   	}
 }
 
@@ -1012,10 +1031,12 @@ static int obsaggr_read (void)
 		count);
 	// submit the values
 	//agg_read(lastt + gAggInterval/*obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t*/);
+	INFO("Starting calculation...");
 	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + gAggInterval / 2);
-
+	INFO("Done, free the mem");
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
+	INFO("Done");
 	// copy all the rounds before to their next
 	int i = AGG_RETENTION_ROUND - 1;
 	for ( ; i > 0 ; i--)
