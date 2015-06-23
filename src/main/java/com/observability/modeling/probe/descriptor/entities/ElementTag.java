@@ -155,7 +155,7 @@ public class ElementTag {
 	 * @author vsaravag
 	 *
 	 */
-	public  class KeyValue {
+	public static class KeyValue {
 		
 		private String name;
 		private String value;
