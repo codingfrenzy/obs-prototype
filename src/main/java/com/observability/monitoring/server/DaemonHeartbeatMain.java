@@ -433,7 +433,7 @@ public class DaemonHeartbeatMain implements Runnable {
 
                     // if the entry is newer than last email sent, then add it. This means that this entry is a new daemon that failed that did not appaer in the last email.
                     if (!timestamp.isEmpty() && lastEmailTimestamp < Long.parseLong(timestamp)){
-                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s \n", lastEmailTimestamp, timestamp, ip, date);
+                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s %n", lastEmailTimestamp, timestamp, ip, date);
                         ips.add(ip);
                         dates.add(date);
                     }

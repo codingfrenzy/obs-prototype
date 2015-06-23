@@ -38,7 +38,7 @@ import java.util.*;
  *         Modified Jun 19 2015<br>
  */
 
-public class DaemonHeartbeatClient extends Thread {
+public class DaemonHeartbeatClient extends Thread implements Serializable{
 
     /**
      * IP for the collectd server
