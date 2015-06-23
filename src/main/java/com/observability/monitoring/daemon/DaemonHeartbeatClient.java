@@ -38,7 +38,7 @@ import java.util.*;
  *         Modified Jun 19 2015<br>
  */
 
-public class DaemonHeartbeatClient extends Thread {
+public class DaemonHeartbeatClient extends Thread implements Serializable{
 
     /**
      * IP for the collectd server
@@ -54,11 +54,6 @@ public class DaemonHeartbeatClient extends Thread {
      * This daemon's IP. (IP of this machine)
      */
     String currentDaemonIP;
-
-    /**
-     * Object of Socket class. Used for connecting
-     */
-//    Socket client;
 
     /**
      * The metric used to check if measurements are being collected at the right
@@ -96,17 +91,17 @@ public class DaemonHeartbeatClient extends Thread {
      * Initialize current daemon IP. <br> Depending on where we are storing the
      * configuration, it can be taken from there. For now its hard coded.
      */
-    public void initCurrentDaemonIP() {
-        currentDaemonIP = "45.55.240.162";
+    public void initCurrentDaemonIP(String currentDaemonIP) {
+        this.currentDaemonIP = currentDaemonIP;
     }
 
     /**
      * Default constructor. Also initializes the server IP and port and the IP of the current machine.
      */
-    DaemonHeartbeatClient(){
+    DaemonHeartbeatClient(String currentDaemonIP){
         initCollectdServerIP();
         initCollectdServerPort();
-        initCurrentDaemonIP();
+        initCurrentDaemonIP(currentDaemonIP);
     }
     /*
      * Method to get the current date. Used for metric collection CSV file
@@ -154,6 +149,8 @@ public class DaemonHeartbeatClient extends Thread {
     //public boolean verifyLatestMetricMeasurement() throws IOException {
     public boolean verifyLatestMetricMeasurement(String fileName) throws IOException {
         //getMetricFileName();
+
+        // Read the metric file in csv folder
         FileInputStream stream = null;
         stream = new FileInputStream(fileName);
         BufferedReader br1 = new BufferedReader( new InputStreamReader( stream, "UTF-8"));
@@ -170,11 +167,12 @@ public class DaemonHeartbeatClient extends Thread {
         // Close the input stream
         br1.close();
 
+        // extract timestamp and save
         temp = temp.substring(0, temp.indexOf('.'));
-
         systemEpoch = System.currentTimeMillis() / 1000;
         long metricLatestEpoch = Long.parseLong(temp);
 
+        // check if the measurement is older than threshold
         int thresholod = getThreshold();
         if ((systemEpoch - metricLatestEpoch) <= thresholod) {
             return true;
@@ -191,10 +189,12 @@ public class DaemonHeartbeatClient extends Thread {
     public void sendToCollectdServer(String message) {
         try {
 
+            // Send the packet via UDP
             byte[] buffer = message.getBytes("UTF-8");
             InetAddress address = InetAddress.getByName(collectdServerIP);
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, collectdServerPort);
 
+            // send the message in the packet
             DatagramSocket datagramSocket = new DatagramSocket();
             datagramSocket.send(packet);
             datagramSocket.close();
@@ -241,16 +241,19 @@ public class DaemonHeartbeatClient extends Thread {
         while (true) {
             boolean metricLatestVerified = false;
             try {
+                // get the file name and verify the last measurement
             	String fileName = getMetricFileName();
                 metricLatestVerified = verifyLatestMetricMeasurement(fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
+            // get the message to be sent and send it to server
             String message = getMessage(metricLatestVerified);
             sendToCollectdServer(message);
             System.out.println(systemEpoch + " : " + metricLatestVerified);
 
+            // pause thread for the collection interval
             try {
                 long sleepTime = (long) samplingRate * 1000;
                 Thread.sleep(sleepTime);
