@@ -106,8 +106,8 @@ public class ModelHandler implements IModelHandlerServer {
 			// make sure the path exist
 			File targetFile = new File(combinedPath);
 			File parent = targetFile.getParentFile();
-			if(!parent.exists()){
-				parent.mkdirs();
+			if(!parent.exists() && !parent.mkdirs()) {
+				return false;
 			}
 			
 			// 2. Open the file from the beginning
@@ -209,19 +209,25 @@ public class ModelHandler implements IModelHandlerServer {
         
 		// get file list
 		File[] files = dirFile.listFiles();
+		if(files == null) {
+			return -3;
+		}
 		// loop through file list
-		for (File file : files) {
-	        if (file.isFile()) {
-	        	String fn = file.getName();
+		int totalSent = 0;
+		for (int i = 0 ; i < files.length ; i++) {
+	        if (files[i] != null && files[i].isFile()) {
+	        	String fn = files[i].getName();
 	        	String[] items = pattern.split(fn);
 	           
 	            System.out.println("File: " + fn + " IP: " + items[0] + " Port: " + items[1]);
 	            // send the files
-	            propagateConfig(items[0], items[1], fn);
+	            if(propagateConfig(items[0], items[1], fn)){//sent ok
+	            	totalSent++;
+	            }
 	        }
 	    }
 		
-		return 0;
+		return totalSent;
 	}
 
 	/**
