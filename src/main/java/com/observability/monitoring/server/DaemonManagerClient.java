@@ -18,46 +18,39 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 //**************************************************************************************************//
+package com.observability.monitoring.server;
 
- package com.observability.monitoring.server;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+import com.observability.monitoring.daemon.IDaemonManagerServer;
 
 /**
- * DaemonInfo is a class to hold the information of each daemons.<br>
- * @author Prasanth Nair
+ * This is the RMI client for DaemonHandler.<br>
+ * Client code can use this class to get IDaemonManagerServer instance.<br>
+ * 
+ * @author Ying (Joel) Gao
+ * 
+ * History: 
+ * 1. Created					Jun 03 2015
+ *
  */
-public class DaemonInfo {
 
-    /**
-     * IP of daemon
-     */
-    String ip;
-    /**
-     * epoch of the heartbeat of the daemon
-     */
-    String epoch;
-    /**
-     * the status of the collectd measurement collectiom
-     */
-    boolean metricStatus;
-
-    /**
-     * Default constructor
-     * @param ip
-     * @param epoch
-     * @param metricStatus
-     */
-    public DaemonInfo(String ip, String epoch, boolean metricStatus) {
-        this.ip = ip;
-        this.epoch = epoch;
-        this.metricStatus = metricStatus;
-    }
-
-    /**
-     * Helper method to display the values of the current object.
-     * @return
-     */
-    public String toString() {
-        return ip + " : " + epoch + " : " + metricStatus;
-    }
-
+public class DaemonManagerClient {
+	public static IDaemonManagerServer getServerInstance(String ip, String port) {
+	    String url = String.format("//%s:%s/DaemonManager", ip, port);
+	    try {
+	      return (IDaemonManagerServer) Naming.lookup (url);
+	    } catch (MalformedURLException e) {
+	      //you probably want to do logging more properly
+	      System.err.println("Bad URL" + e);
+	    } catch (RemoteException e) {
+	      System.err.println("Remote connection refused to url "+ url + " " + e);
+	    } catch (NotBoundException e) {
+	      System.err.println("Not bound " + e);
+	    }
+	    return null;
+  	}
 }

@@ -23,7 +23,8 @@ import org.junit.Test;
  */
 public class AggregatorTest {
 
-	private static Aggregator aggregation;
+	//private static Aggregator aggregation;
+	//private static AggConfigElements aggConfigElements;
 
 	static final String[] elements1 =  {"Plugin", "cpu"}; 
 	static final String[] elements2 =  {"TypeInstance", "cpu-system"};
@@ -79,6 +80,17 @@ public class AggregatorTest {
 		//assertNotNull(Aggregator.readConfigurationFile(wrongFileName));	//
 	}
 	
+	@Test
+	public void testStartAggregating() throws IOException, NotBoundException, InterruptedException{
+		//Aggregator.main();
+	}
+	
+	@Test
+	public void testAggConfigElementsClass(){
+		//aggConfigElements.setFaultTolTimeWindow(10); // positive TC
+		//aggConfigElements.setInterval(10); // positive TC
+		//aggConfigElements.setPlugin("cpu"); // positive TC
+	}
 	
 	public static void main(String[] args) {
 		AggregatorTest.setUp();

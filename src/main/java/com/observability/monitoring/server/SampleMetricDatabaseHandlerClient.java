@@ -21,7 +21,7 @@ public class SampleMetricDatabaseHandlerClient {
 	public static void main(String[] args) throws IOException {
 		String serverIP, serverPort;
 		IMetricDatabaseHandlerServer imdhs = null;
-		Scanner scn = new Scanner(System.in);
+		Scanner scn = new Scanner(System.in, "UTF-8");
 		System.out.print("Enter RMI Server IP:");
 		serverIP = scn.next();
 		System.out.print("Enter RMI Server port:");

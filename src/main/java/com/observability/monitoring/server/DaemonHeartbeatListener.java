@@ -82,10 +82,9 @@ public class DaemonHeartbeatListener implements Runnable {
                 datagramSocket.receive(packet);
                 buffer = packet.getData();
                 String messageFromDaemon = new String(buffer, "UTF-8");
-//                System.out.println(messageFromDaemon);
+                System.out.println(messageFromDaemon);
 
                 saveDaemonInfo(messageFromDaemon);
-                datagramSocket.close();
 
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");
@@ -95,6 +94,7 @@ public class DaemonHeartbeatListener implements Runnable {
                 break;
             }
         }
+        datagramSocket.close();
     }
 
     /**

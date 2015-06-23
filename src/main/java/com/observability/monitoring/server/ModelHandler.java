@@ -24,13 +24,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.regex.Matcher;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.regex.Pattern;
 
+import com.observability.monitoring.daemon.IDaemonManagerServer;
 
 /**
  * ModelHandler is the a RMI service. It has the following functionalities:<br>
@@ -187,6 +189,52 @@ public class ModelHandler implements IModelHandlerServer {
 	}
 
 	private boolean propagateConfig(String rmtIP, String rmtPort, String confPath) {
+		// 1. connect to daemon manager on remote node
+		IDaemonManagerServer dmServer = null;
+		try{
+			dmServer = DaemonManagerClient.getServerInstance(rmtIP, rmtPort);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		if(dmServer == null) {
+			System.out.println("ModelHandler - error - Cannot connect to server: " + rmtIP + " Port: " + rmtPort);
+			return false;
+		}
+		boolean ret = false;
+		try {
+			// 1. Start modifying configuration
+			ret = dmServer.startConfigurationModification();
+			if(!ret){//failed
+				System.out.println("ModelHandler - Failed to start configuration modification to server: " + rmtIP + " Port: " + rmtPort);
+				return false;
+			}
+			// 2. Modify the content
+			// read in the whole file as a string
+			String cfgData = new String(Files.readAllBytes(Paths.get(confPath)), "UTF-8");
+			// Replace the whole file			
+			ret = dmServer.replaceWholeConfiguration(cfgData);
+			if(!ret){//failed
+				System.out.println("ModelHandler - Failed to modify configuration on server: " + rmtIP + " Port: " + rmtPort);
+				return false;
+			}
+			// 3. Stop configuration process
+			ret = dmServer.stopConfigurationModification();
+			if(!ret){//failed
+				System.out.println("ModelHandler - Failed to end configuration modification to server: " + rmtIP + " Port: " + rmtPort);
+				return false;
+			}
+			return true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// 2. send the whole configuration file
 		return false;
 	}
 	/**
@@ -221,7 +269,15 @@ public class ModelHandler implements IModelHandlerServer {
 	           
 	            System.out.println("File: " + fn + " IP: " + items[0] + " Port: " + items[1]);
 	            // send the files
-	            if(propagateConfig(items[0], items[1], fn)){//sent ok
+	            String canonicalPath = null;
+				try {
+					canonicalPath = files[i].getCanonicalPath();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					continue;
+				}
+	            if(propagateConfig(items[0], items[1], canonicalPath)){//sent ok
 	            	totalSent++;
 	            }
 	        }
@@ -237,23 +293,17 @@ public class ModelHandler implements IModelHandlerServer {
 	 */
 	public static void initializeService(String rmiIP, String rmiPort) {
 		try {
+			IModelHandlerServer imhs = new ModelHandler();
+            UnicastRemoteObject.unexportObject(imhs, true);
+            IModelHandlerServer stub = (IModelHandlerServer) UnicastRemoteObject.exportObject(imhs, 0);
+            
 			int port = Integer.parseInt(rmiPort);
 			//create the RMI registry if it doesn't exist.
-			LocateRegistry.createRegistry(port);
+			Registry registry = LocateRegistry.createRegistry(port);
+			registry.rebind("ModelHandler", stub);
 		}
 		catch(RemoteException e) {
 			System.out.println("ModelHandler - error - Failed to create the RMI registry " + e);
-		}
-		
-		ModelHandler server = new ModelHandler(); 
-		
-		try {
-			// bind service
-			Naming.rebind(String.format("//%s:%s/ModelHandler", rmiIP, rmiPort), server);
-		} catch (RemoteException e) {
-			System.out.println(e);
- 		} catch (MalformedURLException e) {
-			System.out.println(e);
 		}
 	}
 	
@@ -262,7 +312,7 @@ public class ModelHandler implements IModelHandlerServer {
 	 * @param args arguments - arg1: binding IP, arg2: binding port
 	 */
 	public static void main(String[] args) {
-		// test
+		/*/ test
 		ModelHandler server = new ModelHandler(); 
 		try {
 			server.beginFileUpload("v1");
@@ -274,8 +324,8 @@ public class ModelHandler implements IModelHandlerServer {
 		
 		
 		return;
-		// end test
-		/*
+		// end test*/
+
 		// Get IP & port from arguments
 		if(args.length  != 2){
 			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
@@ -285,7 +335,6 @@ public class ModelHandler implements IModelHandlerServer {
 		String rmiIP = args[0];
 		String rmiPort = args[1];
 		initializeService(rmiIP, rmiPort);
-		*/
 	}
 
 }
