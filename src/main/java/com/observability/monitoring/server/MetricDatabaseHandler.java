@@ -29,6 +29,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * MetricDatabaseHandlerServer is a manager process which can be used to:<br>
@@ -41,6 +47,7 @@ import java.util.ArrayList;
  * History:<br> 
  * 1. Created					Jun 03 2015<br>
  * 2. Modified					Jun 06 2015<br>
+ * 3. Modified					Jun 23 2015<br>
  */
 
 public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetricDatabaseHandlerServer{
@@ -50,11 +57,14 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	 */
 	private static final long serialVersionUID = 1379506436554341853L;
 	
+	private static Logger LOGGER;
+	
 	/**
 	 * Default constructor
 	 */
 	protected MetricDatabaseHandler() throws RemoteException {
 		super();
+		LOGGER = Logger.getLogger(MetricDatabaseHandler.class.getName());
 	}
 	
 	/**
@@ -97,6 +107,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		    	returnStr =  actualEpoch+"\t"+value[1];	// separated by a tab
 		    }
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
 			e.printStackTrace();
 			return null;
 		} finally{
@@ -104,6 +115,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 				if(outReader!=null)
 					outReader.close();		// close the BufferedReader stream at the end
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
 				e.printStackTrace();
 			}
 		}
@@ -142,6 +154,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		     }
 		    }
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
 			e.printStackTrace();
 			return null;
 		} finally{
@@ -149,6 +162,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 				if(outReader!=null)		// close the BufferedReader
 					outReader.close();
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
 				e.printStackTrace();
 			}
 		}
@@ -181,8 +195,33 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		    else
 		    	return true;		    	// else return true
 		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Exception in updateMetrics::", e);
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	/*
+	 * initLogger() method is used to start Java logging
+	 */
+	
+	private static void initLogger() {
+		Handler fileHandler = null;
+		Formatter simpleFormatter = null;
+		try {
+			// Creating FileHandler
+			fileHandler = new FileHandler("MetricDBHandler.log", true);
+			// Creating SimpleFormatter
+			simpleFormatter = new SimpleFormatter();
+			// Assigning handler to logger
+			LOGGER.addHandler(fileHandler);
+			fileHandler.setFormatter(simpleFormatter);
+			// Setting Level to ALL
+			fileHandler.setLevel(Level.ALL);
+			LOGGER.setLevel(Level.ALL);
+			LOGGER.info("Logging started");
+		} catch(IOException exception) {
+			LOGGER.log(Level.SEVERE, "Error occured in FileHandler.", exception);
 		}
 	}
 	
@@ -197,10 +236,12 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			System.out.println("Invalid arguments: Please provide port no. as an argument");
 			System.exit(1);
 		}
+		
 		try {
 			int portno = Integer.parseInt(args[0]);
 			String name = "MetricDatabaseHandler";		// name of RMI service
 			IMetricDatabaseHandlerServer engine = new MetricDatabaseHandler();
+			initLogger();
 			UnicastRemoteObject.unexportObject(engine, true);	// unexport a unicast object if it already exported
 			IMetricDatabaseHandlerServer stub =
 					(IMetricDatabaseHandlerServer) UnicastRemoteObject.exportObject(engine, 0);	// export unicast object again 
@@ -208,7 +249,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			registry.rebind(name, stub);								// re-bind service to this registry
 			System.out.println("MetricDatabaseHandler bound");
 		} catch (Exception e) {
-			System.err.println("MetricDatabaseHandler exception:");
+			LOGGER.log(Level.SEVERE, "Exception in MetricDatabaseHandler::", e);
 			e.printStackTrace();
 		}
 	}
