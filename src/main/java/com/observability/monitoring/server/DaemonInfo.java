@@ -27,16 +27,35 @@
  */
 public class DaemonInfo {
 
+    /**
+     * IP of daemon
+     */
     String ip;
+    /**
+     * epoch of the heartbeat of the daemon
+     */
     String epoch;
+    /**
+     * the status of the collectd measurement collectiom
+     */
     boolean metricStatus;
 
+    /**
+     * Default constructor
+     * @param ip
+     * @param epoch
+     * @param metricStatus
+     */
     public DaemonInfo(String ip, String epoch, boolean metricStatus) {
         this.ip = ip;
         this.epoch = epoch;
         this.metricStatus = metricStatus;
     }
 
+    /**
+     * Helper method to display the values of the current object.
+     * @return
+     */
     public String toString() {
         return ip + " : " + epoch + " : " + metricStatus;
     }

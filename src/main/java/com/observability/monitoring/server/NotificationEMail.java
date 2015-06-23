@@ -137,7 +137,8 @@ public class NotificationEMail {
 
     /**
      * Makes the body of email for Not responding.
-     * @param ips Arraylist of the daemon ips
+     *
+     * @param ips      Arraylist of the daemon ips
      * @param dateTime Arraylist of the time
      * @return String body
      */
@@ -156,19 +157,22 @@ public class NotificationEMail {
 
     /**
      * Makes the body of email for Not collecting.
-     * @param ips Arraylist of the daemon ips
+     *
+     * @param ips      Arraylist of the daemon ips
      * @param dateTime Arraylist of the time
      * @return String body
      */
     public String makeNotCollectingEmailBody(ArrayList<String> ips, ArrayList<String> dateTime) {
-        StringBuilder emailBody = new StringBuilder("Hi Observability observers, <br>" +
-                "This email is to notify you that the following daemons are not collecting measurements as expected. The details are: <br>");
+        String newLine = "\n";
+        StringBuilder emailBody = new StringBuilder("Hi Observability observers," + newLine +
+                "This email is to notify you that the following daemons are not collecting measurements as expected. The details are: " + newLine);
 
         for (int i = 0; i < ips.size(); i++) {
-            emailBody.append("<br>IP: " + ips.get(i) + " since " + dateTime.get(i));
+            emailBody.append(newLine + "IP: " + ips.get(i) + " since " + dateTime.get(i));
         }
 
-        emailBody.append("<br><br>We advice you to check the status of the collectd process in these daemons. You may also find useful information in collectd logs. <br>Thank you.");
+        emailBody.append(newLine + newLine + "We advice you to check the status of the collectd process in these daemons. You may also find useful information in collectd logs. " + newLine +
+                "Thank you.");
         return emailBody.toString();
     }
 }

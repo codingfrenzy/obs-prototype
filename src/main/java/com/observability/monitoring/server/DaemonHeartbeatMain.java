@@ -25,6 +25,8 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * DaemonHeartbeatMain is a process that runs in the server. Functionalities<br>
@@ -79,15 +81,15 @@ public class DaemonHeartbeatMain implements Runnable {
     private HashMap<String, DaemonInfo> listOfDaemonHeartbeatReceived2;
 
     /**
-     * At every interval (hours), an email will be sent with list of daemons not respodning/collecting
+     * At every interval (minutes), an email will be sent with list of daemons not respodning/collecting
      */
-    int emailInterval = 4;
+    int emailInterval = 15;
 
     /**
      * Last email sent at.<br>
      * Initialized with current timestamp when starting so that the first email will be sent exactly after the interval.
      */
-    Long lastEmailTimestamp = System.currentTimeMillis() / 1000;
+    long lastEmailTimestamp = System.currentTimeMillis() / 1000;
 
     /**
      * Constructor<br>
@@ -140,6 +142,8 @@ public class DaemonHeartbeatMain implements Runnable {
      * At the end of the method, we toggle the toggle so that the current hashmap can be cleared, meanwhile data will be entered into the other hashmap.
      */
     private void verifyDaemonHeartbeat() {
+
+        System.out.println("Verifying daemons' heartbeat");
 
         // select the hashmap based on toggle
         HashMap<String, DaemonInfo> tempHeartbeatReceived = null;
@@ -277,12 +281,16 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void writeToFile(String ip, long time, boolean responding) {
 
+        // create the line to be written in the log file
         String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
-        String line = "IP:" + ip + " since " + date + " (" + time + ")";
+        String line = "IP: " + ip + " since " + date + " (" + time + ")";
+
+        // get file path
         String fullFile = getFullFilePath(responding);
         System.out.println("Writing to log: " + line);
 
         try {
+            // append to file
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fullFile, true), "UTF-8");
             BufferedWriter fbw = new BufferedWriter(writer);
             fbw.write(line);
@@ -301,11 +309,16 @@ public class DaemonHeartbeatMain implements Runnable {
      * If timestamp is older than threshold, then logs it and deletes it from hashmap.
      */
     private void processNotRespondingCollectingDaemons() {
+
+        System.out.println("Processing daemons' heartbeat & threshold");
+
         Iterator entries = listOfNotRespondingDaemons.entrySet().iterator();
         long systemEpoch = System.currentTimeMillis() / 1000;
 
         // iterate through not responding daemons
         while (entries.hasNext()) {
+
+            // get key and value
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
@@ -321,6 +334,8 @@ public class DaemonHeartbeatMain implements Runnable {
         // iterate through not collecting daemons
         entries = listOfNotCollectingDaemons.entrySet().iterator();
         while (entries.hasNext()) {
+
+            //get key and value
             Map.Entry entry = (Map.Entry) entries.next();
             String key = entry.getKey().toString();
             Long value = Long.parseLong(entry.getValue().toString());
@@ -342,19 +357,28 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     public boolean sendEMail() {
 
+        System.out.println("Last email timestamp " + lastEmailTimestamp);
+        System.out.println("Next email timestamp " + ( lastEmailTimestamp + (emailInterval * 60)));
         long systemEpoch = System.currentTimeMillis() / 1000;
+        System.out.println("Current timestamp " + systemEpoch);
 
         // Return if enough time, as per emailInterval, has not passed
-        if (systemEpoch - lastEmailTimestamp < (long) emailInterval * 60 * 60 * 1000) {
+        if (systemEpoch - lastEmailTimestamp < (long) emailInterval * 60) {
             return false;
         }
 
+        System.out.println("Email");
+        // initailize email object
         NotificationEMail ne = new NotificationEMail();
         List<String> recipients = ne.initRecipients();
+
+        // get both file paths
         String[] filePaths = {
                 getFullFilePath(true),
                 getFullFilePath(false)
         };
+
+        // make email bodies
         String[] emailBodies = new String[2];
         ArrayList<String> ips = new ArrayList<String>();
         ArrayList<String> dates = new ArrayList<String>();
@@ -363,6 +387,8 @@ public class DaemonHeartbeatMain implements Runnable {
 //        System.out.println(filePath);
 
         int i = 0;
+
+        // iterate through both types of non-responsiveness log filfes
         while (i < filePaths.length) {
             try {
                 // Open file
@@ -372,22 +398,57 @@ public class DaemonHeartbeatMain implements Runnable {
                     return false;
                 }
 
+                // read file
                 BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
                 String str;
 
-                // Read file
+                // get each line in the file
                 while ((str = in.readLine()) != null) {
-                    String[] line = str.split(" ", 6);
-                    ips.add(line[3]);
-                    dates.add(line[5]);
+
+                    String ip = null, date = null, timestamp = null;
+
+                    // example line: "IP: 441.442.444.446 since 06/22/2015 15:19:41 (1435000781)"
+
+                    // get ip
+                    Pattern pattern = Pattern.compile("\\ (.{1,3}?\\..{1,3}?\\..{1,3}?\\..{1,3}?\\ )*\\w", Pattern.CASE_INSENSITIVE);
+                    Matcher matcher = pattern.matcher(str);
+                    if (matcher.find()) {
+                        ip = matcher.group(1);
+                    }
+
+                    // get timestamp
+                    pattern = Pattern.compile("\\((.+)\\)", Pattern.CASE_INSENSITIVE);
+                    matcher = pattern.matcher(str);
+                    if (matcher.find()) {
+                        timestamp = matcher.group(1);
+                    }
+
+                    // get whole date
+                    pattern = Pattern.compile("since (.+)$", Pattern.CASE_INSENSITIVE);
+                    matcher = pattern.matcher(str);
+                    if (matcher.find()) {
+                        date = matcher.group(1);
+                    }
+
+
+                    // if the entry is newer than last email sent, then add it. This means that this entry is a new daemon that failed that did not appaer in the last email.
+                    if (!timestamp.isEmpty() && lastEmailTimestamp < Long.parseLong(timestamp)){
+                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s \n", lastEmailTimestamp, timestamp, ip, date);
+                        ips.add(ip);
+                        dates.add(date);
+                    }
                 }
                 in.close();
             } catch (UnsupportedEncodingException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+
+            if(ips.size() == 0){
+                return false;
             }
 
             // Not responding email
@@ -398,13 +459,17 @@ public class DaemonHeartbeatMain implements Runnable {
             else {
                 emailBodies[i] = ne.makeNotCollectingEmailBody(ips, dates);
             }
+
+            // clear the array list
             ips.clear();
             dates.clear();
+            i++;
         }
 
-        // IF both emails are sent, then return true
+        // If both emails are sent, then return true
         if (ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[0], false) &&
-                ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[1], false)) {
+                ne.sendEMail(recipients, "Observability: Daemons not collecting", emailBodies[1], false)) {
+            lastEmailTimestamp = systemEpoch;
             return true;
         }
         return false;
@@ -419,8 +484,14 @@ public class DaemonHeartbeatMain implements Runnable {
         while (true) {
             try {
                 if (!first) {
+
+                    // verify the heartbeats of clients
                     verifyDaemonHeartbeat();
+
+                    // process deamons that have not send heartbeat for threshold
                     processNotRespondingCollectingDaemons();
+
+                    // send mail
                     if (sendEMail()) {
                         System.out.println("Daemon Not respoding/collecting email sent");
                     }
@@ -436,17 +507,22 @@ public class DaemonHeartbeatMain implements Runnable {
 
     public static void main(String[] args) {
 
+        // initalize both hashmaps and the toggle
         HashMap<String, DaemonInfo> l1 = new HashMap<String, DaemonInfo>();
         HashMap<String, DaemonInfo> l2 = new HashMap<String, DaemonInfo>();
         AtomicBoolean toggle = new AtomicBoolean(true);
 
+        // start main thread
         DaemonHeartbeatMain main = new DaemonHeartbeatMain(l1, l2, toggle);
         Thread t1 = new Thread(main);
         t1.start();
 
+        // start UDP server thread
         DaemonHeartbeatListener listener = new DaemonHeartbeatListener(l1, l2, toggle);
         Thread t2 = new Thread(listener);
         t2.start();
     }
 
 }
+
+//java com/observability/monitoring/server/DaemonHeartbeatMain > missingDaemon 2>&1 &
