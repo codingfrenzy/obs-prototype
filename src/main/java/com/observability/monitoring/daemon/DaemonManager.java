@@ -24,14 +24,13 @@ package com.observability.monitoring.daemon;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
@@ -67,7 +66,11 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Path to the configuration file 
 	 */
-	String configPath = "collectd.conf";
+	private static String collectdPath = "/opt/collectd/sbin/collectd";
+	/**
+	 * Path to the configuration file 
+	 */
+	private static String configPath = "/etc/collectd/collectd.conf";
 
 	/**
 	 * DaemonHeartbeatClient object
@@ -247,7 +250,8 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			// Update heartbeat client
 			dhc.updateInterval();
 			// 3. start collect process
-			startProcess("collectd");
+			//startProcess("collectd");
+			startProcess(collectdPath);
 			
 		} catch(Exception e) {
             e.printStackTrace();
@@ -264,14 +268,23 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 */
 	public static void initializeService(String rmiIP, String rmiPort) {
 		try {
+			DaemonManager server = new DaemonManager();
+			IDaemonManagerServer idms = server;//new DaemonManager();
+            UnicastRemoteObject.unexportObject(idms, true);
+            IDaemonManagerServer stub = (IDaemonManagerServer) UnicastRemoteObject.exportObject(idms, 0);
+            
 			int port = Integer.parseInt(rmiPort);
 			//create the RMI registry if it doesn't exist.
-			LocateRegistry.createRegistry(port);
+			Registry registry = LocateRegistry.createRegistry(port);
+			registry.rebind("DaemonManager", stub);
+			
+			server.dhc = new DaemonHeartbeatClient(rmiIP);
+			server.dhc.start();
 		}
 		catch(RemoteException e) {
 			System.out.println("DaemonManager - error - Failed to create the RMI registry " + e);
 		}
-		
+		/*
 		DaemonManager server = null;
 		try{
 			server = new DaemonManager(); 
@@ -283,15 +296,11 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		try {
 			// bind service
 			Naming.rebind(String.format("//%s:%s/DaemonManager", rmiIP, rmiPort), server);
-			server.dhc = new DaemonHeartbeatClient(rmiIP);
-			server.dhc.start();
 		} catch (RemoteException e) {
 			System.out.println(e);
  		} catch (MalformedURLException e) {
 			System.out.println(e);
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/**
@@ -300,11 +309,24 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 */
 	public static void main(String[] args) {
 		// Get IP & port from arguments
-		if(args.length  != 2){
-			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
+		if(args.length  < 2){
+			System.out.println("DaemonManager - error - should be started with at least two parameters: IP + port.");
+			System.out.println("DaemonManager - Usage:");
+			System.out.println("Parameter 1 - IP");
+			System.out.println("Parameter 2 - Port");
+			System.out.println("Parameter 3 - collectd path. E.g. /opt/collectd/sbin/collectd");
+			System.out.println("Parameter 4 - collectd.conf path. E.g. /etc/collectd/collectd.conf");
 			return;
 		}
-
+		if(args.length >= 3){
+			collectdPath = args[2];
+		}
+		if(args.length >= 4){
+			configPath = args[3];
+		}
+		// Set to use IP v4
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		
 		String rmiIP = args[0];
 		String rmiPort = args[1];
 		initializeService(rmiIP, rmiPort);
