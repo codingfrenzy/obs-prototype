@@ -75,7 +75,8 @@ public class CustomServices {
 	
 	static {
     	Observability_newPackage.eINSTANCE.eClass();
-	    DescriptorParserImpl parser = new DescriptorParserImpl( Paths.get("D:/observability modeling/modeling/workspace/observability_new/src/resources"));		
+	    //DescriptorParserImpl parser = new DescriptorParserImpl( Paths.get("D:/observability modeling/modeling/workspace/observability_new/src/resources"));
+	    DescriptorParserImpl parser = new DescriptorParserImpl( Paths.get("/home/vsaravag/git/obs-prototype/modeling/workspace/observability_new/src/resources"));
 		dbTypes = parser.parseDescriptors();
     }
 	

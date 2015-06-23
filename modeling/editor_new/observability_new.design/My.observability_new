@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
   <clusters associatedDbType="//@availableDbTypes.2" name="cluster1">
-    <machines>
+    <machines IP="10.10.10.1" name="machine 1">
       <hasParentElement name="root">
         <hasElements name="Connection">
           <hasKeyValues key="Host" value="&quot;10.10.10.10&quot;"/>
@@ -10,6 +10,7 @@
       </hasParentElement>
     </machines>
   </clusters>
+  <clusters associatedDbType="//@availableDbTypes.3" name="cluster2"/>
   <availableDbTypes name="basictest1">
     <availableMetrics xsi:type="observability_new:BaseMetric" name="&quot;metrics&quot;"/>
   </availableDbTypes>

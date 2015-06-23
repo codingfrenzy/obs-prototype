@@ -30,9 +30,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -50,11 +47,13 @@ import java.util.zip.ZipOutputStream;
 public class DescriptorFiles {
 
 	private static final int BUFFER = 2048;
-	private static final String FILES = "org/eclipse/acceleo/module/sample/files";
-	private static final String CONF_DIR = "srcgen/";
+	private static final String FILES =
+			"/home/vsaravag/git/obs-prototype/modeling/editor_new/"
+			+ "Generator/src/org/eclipse/acceleo/module/sample/files";
+	private static final String CONF_DIR = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal";
 	private static final String TEMPLATE_EXTENSION = ".mtl";
 	private static final String CONF_EXTENSION = ".conf";
-	private static final String ZIPPATH = "srcgen/conf.zip";
+	private static final String ZIPPATH = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal/conf.zip";
 	private static ArrayList<String> fileNames = new ArrayList<String>();
 	
 	public static void main(String[] args){
@@ -66,9 +65,13 @@ public class DescriptorFiles {
 	 */
 	public static void getAllFiles(){
 		// Get the File object of the directory containing the template files
-		String path = DescriptorFiles.class.getClassLoader().getResource(FILES).toString();
-		Path dirPath = Paths.get(URI.create(path));	
-		File dir = dirPath.toFile();
+		//URL path = DescriptorFiles.class.getClassLoader().getResource(FILES);
+		File dir;
+		//String pathDir = path.getPath();
+		dir = new File(FILES);
+		
+//		Path dirPath = Paths.get(URI.create(path));	
+//		File dir = dirPath.toFile();
 		
 		// Get only the *.mtl files
 		File[] files = dir.listFiles(new FilenameFilter() {

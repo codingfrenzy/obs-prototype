@@ -1,11 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new">
+<observability_new:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:observability_new="http://www.example.org/observability_new" frequency="30">
   <clusters associatedDbType="//@availableDbTypes.0" name="cluster1">
-    <machines>
+    <machines IP="1.1.1.1" name="machine 1">
       <hasParentElement name="root">
         <hasElements name="Connection">
           <hasKeyValues key="Host" value="10.10.10.10"/>
-          <hasKeyValues key="ServiceURL"/>
+          <hasKeyValues key="ServiceURL" value="test.com"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+    <machines IP="1.1.1.2" name="machine 2">
+      <hasParentElement name="root">
+        <hasElements name="Connection">
+          <hasKeyValues key="Host" value="10.10.10.11"/>
+          <hasKeyValues key="ServiceURL" value="test1.com"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+  </clusters>
+  <clusters associatedDbType="//@availableDbTypes.1" name="cluster2">
+    <machines IP="1.1.1.3" name="machine 1">
+      <hasParentElement name="root">
+        <hasElements name="Module" value="mongodb">
+          <hasKeyValues key="Port" value="8080"/>
+          <hasKeyValues key="Host" value="test"/>
+          <hasKeyValues key="User" value="testuser"/>
+          <hasKeyValues key="Password" value="testpass"/>
+          <hasKeyValues key="Database" value="testdb"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+    <machines IP="1.1.1.4" name="machine 4">
+      <hasParentElement name="root">
+        <hasElements name="Module" value="mongodb">
+          <hasKeyValues key="Port" value="80801"/>
+          <hasKeyValues key="Host" value="test1"/>
+          <hasKeyValues key="User" value="testuser1"/>
+          <hasKeyValues key="Password" value="testpass1"/>
+          <hasKeyValues key="Database" value="testdb1"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+  </clusters>
+  <clusters collectedBaseMetric="//@availableDbTypes.2/@availableMetrics.1 //@availableDbTypes.2/@availableMetrics.0" associatedDbType="//@availableDbTypes.2" name="cluster3">
+    <machines IP="1.1.1.5" name="machine 5">
+      <hasParentElement name="root">
+        <hasElements name="Database" value="foo">
+          <hasKeyValues key="Host" value="test"/>
+          <hasKeyValues key="Port" value="8080"/>
+          <hasKeyValues key="User" value="testuser"/>
+          <hasKeyValues key="Password" value="testpass"/>
+          <hasKeyValues key="SSLMode" value="tls"/>
+          <hasKeyValues key="KRBSrvName" value="krbs"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+    <machines IP="1.1.1.7" name="machine 7">
+      <hasParentElement name="root">
+        <hasElements name="Database" value="foo">
+          <hasKeyValues key="Host" value="test1"/>
+          <hasKeyValues key="Port" value="80801"/>
+          <hasKeyValues key="User" value="testuser1"/>
+          <hasKeyValues key="Password" value="testpass1"/>
+          <hasKeyValues key="SSLMode" value="tls"/>
+          <hasKeyValues key="KRBSrvName" value="krbs"/>
+        </hasElements>
+      </hasParentElement>
+    </machines>
+    <machines IP="1.1.1.6" name="machine 6">
+      <hasParentElement name="root">
+        <hasElements name="Database" value="foo">
+          <hasKeyValues key="Host" value="test2"/>
+          <hasKeyValues key="Port" value="80802"/>
+          <hasKeyValues key="User" value="testuset2"/>
+          <hasKeyValues key="Password" value="testpass2"/>
+          <hasKeyValues key="SSLMode" value="tls"/>
+          <hasKeyValues key="KRBSrvName" value="krbs"/>
         </hasElements>
       </hasParentElement>
     </machines>
@@ -16,7 +86,7 @@
   </availableDbTypes>
   <availableDbTypes name="mongodb"/>
   <availableDbTypes name="postgres">
-    <availableMetrics xsi:type="observability_new:BaseMetric" name="magic"/>
-    <availableMetrics xsi:type="observability_new:BaseMetric" name="rt36_tickets"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="magic" databaseCluster="//@clusters.2"/>
+    <availableMetrics xsi:type="observability_new:BaseMetric" name="rt36_tickets" databaseCluster="//@clusters.2"/>
   </availableDbTypes>
 </observability_new:Model>

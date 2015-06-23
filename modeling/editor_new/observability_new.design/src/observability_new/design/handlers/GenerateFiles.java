@@ -9,14 +9,10 @@ import org.eclipse.acceleo.module.sample.files.Main;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.internal.resources.Resource;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -26,11 +22,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class SampleHandler extends AbstractHandler {
+public class GenerateFiles extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
-	public SampleHandler() {
+	public GenerateFiles() {
 	}
 
 	/**
@@ -39,12 +35,10 @@ public class SampleHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		IWorkbenchPart part = HandlerUtil.getActivePartChecked(event);
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();
 		workspace.getFullPath().toString();
-		String modelPath = workspace.getLocationURI().toString() + "/Final.design/My.observability_new";
-		//String target = workspace.getLocationURI().toString();
-		String target = "/home/vsaravag/git/obs-prototype/modeling/observability_new.design";
+		String modelPath = workspace.getLocationURI().toString() + "/ModelingFinal/My.observability_new";
+		String target = workspace.getLocation() + "/ModelingFinal";
 		
 		URI modelURI = URI.createURI(modelPath);
         File folder = new File(target);
@@ -60,8 +54,8 @@ public class SampleHandler extends AbstractHandler {
 		
 		MessageDialog.openInformation(
 				window.getShell(),
-				"observability_new.design",
-				workspace.getLocation().toString());
+				"Generate File",
+				("File generated in project directory"));
 		return null;
 	}
 }
