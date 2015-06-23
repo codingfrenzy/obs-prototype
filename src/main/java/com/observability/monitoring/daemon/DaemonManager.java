@@ -72,17 +72,13 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * DaemonHeartbeatClient object
 	 */
-	final static DaemonHeartbeatClient dhc = new DaemonHeartbeatClient();
+	public DaemonHeartbeatClient dhc = null;
 	/**
 	 * Default constructor
 	 * 
 	 */
 	protected DaemonManager() throws RemoteException {
 		super();
-	}
-
-	static {
-		dhc.start();
 	}
 
 	/**
@@ -287,10 +283,14 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		try {
 			// bind service
 			Naming.rebind(String.format("//%s:%s/DaemonManager", rmiIP, rmiPort), server);
+			server.dhc = new DaemonHeartbeatClient(rmiIP);
+			server.dhc.start();
 		} catch (RemoteException e) {
 			System.out.println(e);
  		} catch (MalformedURLException e) {
 			System.out.println(e);
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 	
