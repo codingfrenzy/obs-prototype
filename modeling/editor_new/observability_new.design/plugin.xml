@@ -17,6 +17,11 @@
            categoryId="observability_new.design.commands.category"
            id="observability_new.design.commands.generateFiles"
            name="Generate Files">
+        <commandParameter
+              id="observability_new.design.commandParameter1"
+              name="modelPath"
+              optional="false">
+        </commandParameter>
      </command>
   </extension>
   <extension

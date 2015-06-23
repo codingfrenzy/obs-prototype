@@ -11,7 +11,7 @@
 
 [for (machine : NodeMachine | aCluster.machines)]
 
-[file ( machine.IP + '_collectd.conf' , false, 'UTF-8')]
+[file ( machine.IP +  '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
 
 <Plugin python>

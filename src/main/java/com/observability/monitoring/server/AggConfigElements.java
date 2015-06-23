@@ -108,7 +108,6 @@ public class AggConfigElements implements Serializable {
 	 * Return the faultTolTimeWindow
 	 */
 	public int getFaultTolTimeWindow() {
-		System.out.println("Debug: ");
 		return faultTolTimeWindow;
 	}
 
