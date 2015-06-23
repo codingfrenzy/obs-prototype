@@ -70,10 +70,15 @@ public class Aggregator extends UnicastRemoteObject {
 	static IMetricDatabaseHandlerServer imdhs = null;	
 	
 	/**
+	 * Path and name of the configuration file
+	 */
+	static String configFilePath = "/opt/collectd/etc/collectd.conf";
+
+	/**
 	 * Enumeration of the possible aggregation functions
 	 */
 	public enum AggFunc {
-		NUM, SUM, AVG, MAX, MIN, STD
+		NUM, SUM, AVERAGE, MAX, MIN, STDDEV
 	}
 
 	/**
@@ -123,8 +128,14 @@ public class Aggregator extends UnicastRemoteObject {
 
 		List<String[]> aggConfigurationsList = getAggConf(fileName); // Get configuration section from collectd.conf
 															 // TODO: better to merge getIntervalConf() & getAggConf()
-		//System.out.println("Test: " + aggConfigurationsList.get(4));
-
+		/*ArrayList<List<String[]>> aggConfigurationsListArray = getAggConf2(fileName);
+		List<String[]> test1 = aggConfigurationsListArray.get(0);
+		String[] test2 = test1.get(0);	
+		System.out.println(test2[1]);
+		List<String[]> test3 = aggConfigurationsListArray.get(1);
+		String[] test4 = test3.get(0);	
+		System.out.println(test4[1]);*/
+		
 		AggConfigElements aggConfigurationElements = setConfigurations(
 				faultTolTimeWindow, interval, aggConfigurationsList); // Save configurations in an object
 		System.out.println("Plugin: " + aggConfigurationElements.getPlugin());
@@ -234,6 +245,58 @@ public class Aggregator extends UnicastRemoteObject {
 			e.printStackTrace();
 		}		return aggConfig;
 	}
+	
+	protected static ArrayList<List<String[]>> getAggConf2(String fileName) throws IOException {
+		List<String[]> aggConfig = new ArrayList<String[]>();
+		ArrayList<List<String[]>> aggConfigArray = new ArrayList<List<String[]>>();
+		
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(fileName), "UTF-8"));
+		String line = "";
+		do {
+			try {
+				line = bufferReader.readLine();
+				//do {
+					if (line != null && line.equals("<Aggregation>")) {	//go to aggregation configuration section
+						do {						System.out.println("Line: "+ line);
+
+							line = bufferReader.readLine();
+							if (line == null)
+								break;
+							line = line.trim();		//Trim any spaces at the beginning of the line
+							if (line.isEmpty() || line.trim().equals("")
+										|| line.trim().equals("\n"))
+								continue;	// Read the next line
+							else {
+								String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array
+								if (str.length > 1) {
+									String[] aggConfigItem = new String[2];										
+									aggConfigItem[0] = str[0];
+									aggConfigItem[1] = str[1];	
+									aggConfig.add(aggConfigItem);	// Add this configuration element to the list
+								}
+							}
+							
+						} while (!line.equals("</Aggregation>") && (line != null));
+						aggConfigArray.add(aggConfig);
+						line = bufferReader.readLine();
+						System.out.println("Line: "+ line);
+						System.out.println("array size: "+ aggConfigArray.size());
+					}
+				//} while (line != null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} while (line != null);
+		try {
+			if(bufferReader!=null)		// Close the BufferedReader
+				bufferReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		return aggConfigArray;
+	}
+
 
 	/**
 	 * TODO: Get the monitored nodes host names (or IPs)
@@ -324,9 +387,10 @@ public class Aggregator extends UnicastRemoteObject {
 		String aggTimeStampEndStr = Long.toString(aggTimeStampEnd);
 
 		String metricPath = "";	// Set the metric path according to Whisper 
-		
-		
-		
+
+		// Generate the metric path to send it as a parameter to the database handler
+		// This is done by concatenate a list of strings to form the metric path expected by the database handler
+		// For example: collectd/10.0.0.0/cpu-0/cpu-system
 		for (int i = 0; i < nodeListTemp.length; i++) {
 			String s = aggConfig.getPlugin();
 			if (aggConfig.getPlugin().equals(s)) {
@@ -440,7 +504,7 @@ public class Aggregator extends UnicastRemoteObject {
 				measurementAvg = measurementSum / counter;
 			}
 
-			func = AggFunc.AVG;
+			func = AggFunc.AVERAGE;
 			System.out.println("Measurement Avg: " + measurementAvg); // Debug
 			saveData(aggTimeStampStartStr, String.valueOf(measurementAvg), func,
 					metric, metricType);
@@ -466,6 +530,7 @@ public class Aggregator extends UnicastRemoteObject {
 		}
 
 		if (isCalMax == true) {
+			System.out.println("isCalMax = "+isCalMax);
 			metricMeasurementsDouble = new ArrayList<Double>();
 			for (int i = 0; i < metricMeasurements.size(); i++) {
 				String str = metricMeasurements.get(i);
@@ -511,7 +576,7 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 			measurementVariance = sumOfSquared / (metricMeasurements.size() - 1);
 			measurementStd = Math.sqrt(measurementVariance);
-			func = AggFunc.STD;
+			func = AggFunc.STDDEV;
 			System.out.println("Standard Dev: " + measurementStd); // Debug
 			saveData(aggTimeStampStartStr, String.valueOf(measurementStd), func,
 					metric, metricType);
@@ -578,63 +643,71 @@ public class Aggregator extends UnicastRemoteObject {
 	 *            arguments - arg1: binding IP, arg2: binding port
 	 * @throws NotBoundException
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) throws IOException, NotBoundException {
-		/**
-		 * Path and name of the configuration file
-		 */
-		//String configFilePath = "/opt/collectd/etc/collectd.conf";
-		String configFilePath = "Test.txt";
-
-		File file = new File(configFilePath);		
+	public static void main(String[] args) throws IOException, NotBoundException, InterruptedException {
 		
+		String configFilePath = "Test.txt";
 		long startTime = 0;
 		long endTime = 0;
 		long totalTime = 0;
-		Long lastModified = file.lastModified() / 1000;	
+		File file = null;
 		boolean dataIsRead = false;
 	
 		try {
-			imdhs = (IMetricDatabaseHandlerServer) Naming
-					.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
-							+ "/MetricDatabaseHandler");
-		} catch (Exception e) {
+			file = new File(configFilePath);	
+
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		AggConfigElements aggConfigurationElements = readConfigurationFile(configFilePath);
-		// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
-
-		System.out.println("plugin: " +aggConfigurationElements.getPlugin()); //debug, to be deleted
-		
-		String[] nodeListTemp = new String[2]; // Note: this is a temporary (hard coded) solution for the previous method
-		nodeListTemp[0] = "128_2_204_246"; // "msesrv6h-vm.mse.cs.cmu.edu"
-		nodeListTemp[1] = "45_55_240_162"; // "observabilityCassandra1";
-		
-		while (true) {
-			startTime = System.currentTimeMillis(); //This to calculate the running time of readData()
-			dataIsRead = readData(nodeListTemp, aggConfigurationElements);	// Read, aggregate and save aggregated data
-			endTime = System.currentTimeMillis();	//This to calculate the running time of readData()
-			totalTime = endTime - startTime;	//This to calculate the running time of readData()
-			
+		if (!file.exists() ){
+			System.err.println("Collectd.conf wasn't found.");
+			Thread.sleep(30000);
+		}
+		else {
+			Long lastModified = file.lastModified() / 1000;	
+	
 			try {
-			    Thread.sleep((aggConfigurationElements.getInterval() * 1000) - totalTime);	//Sleep for a duration of aggregation interval minus the running time of readData(),
-			    																	//before trying to read more data. 1 second = 1000 milliseconds
-			} catch(InterruptedException ex) {
-			    Thread.currentThread().interrupt();
+				imdhs = (IMetricDatabaseHandlerServer) Naming
+						.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
+								+ "/MetricDatabaseHandler");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			AggConfigElements aggConfigurationElements = readConfigurationFile(configFilePath);
+			// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
+	
+			System.out.println("plugin: " +aggConfigurationElements.getPlugin()); //debug, to be deleted
 			
-			if (!dataIsRead){
+			String[] nodeListTemp = new String[2]; // Note: this is a temporary (hard coded) solution for the previous method
+			nodeListTemp[0] = "128_2_204_246"; // "msesrv6h-vm.mse.cs.cmu.edu"
+			nodeListTemp[1] = "45_55_240_162"; // "observabilityCassandra1";
+			
+			while (true) {
+				startTime = System.currentTimeMillis(); //This to calculate the running time of readData()
+				dataIsRead = readData(nodeListTemp, aggConfigurationElements);	// Read, aggregate and save aggregated data
+				endTime = System.currentTimeMillis();	//This to calculate the running time of readData()
+				totalTime = endTime - startTime;	//This to calculate the running time of readData()
+				
 				try {
-				    Thread.sleep(aggConfigurationElements.getInterval());	// Sleep before trying to read more data
+				    Thread.sleep((aggConfigurationElements.getInterval() * 1000) - totalTime);	//Sleep for a duration of aggregation interval minus the running time of readData(),
+				    																	//before trying to read more data. 1 second = 1000 milliseconds
 				} catch(InterruptedException ex) {
 				    Thread.currentThread().interrupt();
 				}
-			}
-			
-			if (!(lastModified.equals(file.lastModified() / 1000))){	// Check if the configuration file was modified 
-				lastModified = file.lastModified() / 1000;
-				aggConfigurationElements = readConfigurationFile(configFilePath);		// Re-read the configurations
-				//bufferReader.close();
+				
+				if (!dataIsRead){
+					try {
+					    Thread.sleep(aggConfigurationElements.getInterval());	// Sleep before trying to read more data
+					} catch(InterruptedException ex) {
+					    Thread.currentThread().interrupt();
+					}
+				}
+				
+				if (!(lastModified.equals(file.lastModified() / 1000))){	// Check if the configuration file was modified 
+					lastModified = file.lastModified() / 1000;
+					aggConfigurationElements = readConfigurationFile(configFilePath);		// Re-read the configurations
+				}
 			}
 		}
 	}
