@@ -135,16 +135,16 @@ public interface IModelHandlerServer extends Remote {
 		 * @param zipfilePath the file path of the zip file
 		 * @param targetDirectory the target directory of the output
 		 * @return  equal or larger than 0 - number of files extracted<br>
-		 * 			-1 zip format not supported<br>
-		 * 			-2 zip file not valid<br>
-		 * 			-3 zip file cannot be read due to security reason
-		 * 			-4 cannot create target directory<br>
+		 * 			-21 zip format not supported<br>
+		 * 			-22 zip file not valid<br>
+		 * 			-23 zip file cannot be read due to security reason
+		 * 			-24 cannot create target directory<br>
 		 */
 		public static int unzipFile(String zipfilePath, String targetDirectory) {
 			try {
 				// create the directory
 				if(!createDirectory(targetDirectory))
-					return -4;
+					return -24;
 				// file operations
 		        BufferedOutputStream dest = null;
 		        BufferedInputStream is = null;
@@ -172,13 +172,13 @@ public interface IModelHandlerServer extends Remote {
 		        return fileExtracted;
 		      } catch(ZipException e1) {
 		    	  e1.printStackTrace();
-		    	  return -1;
+		    	  return -21;
 		      } catch (IOException e2) {
 				  e2.printStackTrace();
-				  return -2;
+				  return -22;
 			  } catch (SecurityException e3) {
 				  e3.printStackTrace();
-				  return -3;
+				  return -23;
 			  }
 		}
 	}
@@ -210,7 +210,16 @@ public interface IModelHandlerServer extends Remote {
 	 * Program will unzip the file and propagate all configuration files to remote nodes.<br>
 	 * This method may take a long time in a large system.  
 	 * @param md5 MD5 hash value of the file in client system
-	 * @return the number of configuration files that are successfully transfered, negative for error
+	 * @return the number of configuration files that are successfully transfered, negative for error<br>
+	 * 			-1 : file error<br>
+	 * 			-2 : MD5 checksum error<br>
+	 * 			-3 : unzipped directory error<br><br>
+	 * 
+	 * 			-21 zip format not supported<br>
+	 * 			-22 zip file not valid<br>
+	 * 			-23 zip file cannot be read due to security reason
+	 * 			-24 cannot create target directory<br>
+	 * 			
 	 * @throws RemoteException connection error
 	 */
 	public int endFileUpload(String md5) throws RemoteException;
