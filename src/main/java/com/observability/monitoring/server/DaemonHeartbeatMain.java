@@ -120,7 +120,7 @@ public class DaemonHeartbeatMain implements Runnable {
     private void initListofConfiguredDaemons() {
         listOfConfiguredDaemons.add("45.55.240.162");
         listOfConfiguredDaemons.add("128.2.204.246");
-        listOfConfiguredDaemons.add("123.2.204.246");
+//        listOfConfiguredDaemons.add("123.2.204.246");
     }
 
     /**
