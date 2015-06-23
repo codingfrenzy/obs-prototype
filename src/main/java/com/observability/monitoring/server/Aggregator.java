@@ -139,6 +139,8 @@ public class Aggregator extends UnicastRemoteObject {
 		AggConfigElements aggConfigurationElements = setConfigurations(
 				faultTolTimeWindow, interval, aggConfigurationsList); // Save configurations in an object
 		System.out.println("Plugin: " + aggConfigurationElements.getPlugin());
+		System.out.println("Metric: " + aggConfigurationElements.getTypeInst());
+		System.out.println("*******************************");
 		return aggConfigurationElements;
 	}
 
@@ -393,7 +395,7 @@ public class Aggregator extends UnicastRemoteObject {
 		// For example: collectd/10.0.0.0/cpu-0/cpu-system
 		for (int i = 0; i < nodeListTemp.length; i++) {
 			String s = aggConfig.getPlugin();
-			if (aggConfig.getPlugin().equals(s)) {
+			if (aggConfig.getPlugin().toLowerCase().equals("cpu")) {
 				metricPath = str.concat(nodeListTemp[i]).concat(str2)
 						.concat(aggConfig.getPlugin()).concat(str3)
 						.concat(str2).concat(aggConfig.getTypeInst());
@@ -412,17 +414,14 @@ public class Aggregator extends UnicastRemoteObject {
 			String[] metricsArray = metrics.split(delimiter);
 
 			////////////Debug: to be removed later/////////
-			System.out.println("-------------Debug: Metric-----------------");
+			System.out.println("----Debug: Value from Nodes----");
 			System.out.println(metricsArray[1]);
+			System.out.println("*******************************");
 			// ///////////////////
 
 			metricMeasurements.add(metricsArray[1]);
 			metricPath = "";
-		}
-		////////////Debug: to be removed later/////////
-		System.out.println("\n-------------Debug: Measurements-----------------");
-		System.out.println(metricMeasurements);
-
+		}		
 		aggregate(metricMeasurements, aggTimeStampStartStr,
 				aggConfig.isCalSum(), aggConfig.isCalAvg(),
 				aggConfig.isCalMin(), aggConfig.isCalMax(),
@@ -481,7 +480,7 @@ public class Aggregator extends UnicastRemoteObject {
 				}
 			}
 			func = AggFunc.SUM;
-			System.out.println("Measurement Sum: " + measurementSum); // Debug
+			System.out.println("Sum: " + measurementSum); // Debug
 			saveData(aggTimeStampStartStr, String.valueOf(measurementSum), func,
 					metric, metricType);
 		}
@@ -505,8 +504,8 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 
 			func = AggFunc.AVERAGE;
-			System.out.println("Measurement Avg: " + measurementAvg); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(measurementAvg), func,
+			System.out.println("Avg: " + Math.abs(measurementAvg)); // Debug
+			saveData(aggTimeStampStartStr, String.valueOf(Math.abs(measurementAvg)), func,
 					metric, metricType);
 		}
 
@@ -524,7 +523,7 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 			measurementMin = Collections.min(metricMeasurementsDouble);
 			func = AggFunc.MIN;
-			System.out.println("Measurement Min: " + measurementMin); // Debug
+			System.out.println("Min: " + measurementMin); // Debug
 			saveData(aggTimeStampStartStr, String.valueOf(measurementMin), func,
 					metric, metricType);
 		}
@@ -545,7 +544,7 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 			measurementMax = Collections.max(metricMeasurementsDouble);
 			func = AggFunc.MAX;
-			System.out.println("Measurement Max: " + measurementMax); // Debug
+			System.out.println("Max: " + measurementMax); // Debug
 			saveData(aggTimeStampStartStr, String.valueOf(measurementMax), func,
 					metric, metricType);
 		}
@@ -568,7 +567,7 @@ public class Aggregator extends UnicastRemoteObject {
 			for (int i = 0; i < metricMeasurements.size(); i++) {
 				String str = metricMeasurements.get(i);
 				if (!str.equals("None")){
-					sumOfSquared += Math.pow((Double.parseDouble(metricMeasurements.get(i)) - measurementAvg), 2);
+					sumOfSquared += Math.pow((Double.parseDouble(metricMeasurements.get(i)) - Math.abs(measurementAvg)), 2);
 				}
 				else {
 					sumOfSquared +=0;
@@ -630,9 +629,8 @@ public class Aggregator extends UnicastRemoteObject {
 				aggregatedMeasurementArray, metricPath);
 		// TODO add to log file
 		System.out.println("Time Stamp: " + timeStampStartStrArray[0]); // Debug: remove later
-		System.out.println("Metric: " + aggregatedMeasurementArray[0]); // Debug:remove later
 		System.out.println("Metric path: " + metricPath); // Debug: remove later
-		System.out.println("Aggregation result: " + isSaved); // Debug: remove later
+		System.out.println("Aggregation completed? " + isSaved); // Debug: remove later
 		System.out.println("***********************************"); // Debug:remove later
 	}
 
@@ -660,7 +658,7 @@ public class Aggregator extends UnicastRemoteObject {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (!file.exists() ){
+		if (file != null && !file.exists()){
 			System.err.println("Collectd.conf wasn't found.");
 			Thread.sleep(30000);
 		}
@@ -674,11 +672,11 @@ public class Aggregator extends UnicastRemoteObject {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			System.out.println("------Start Aggregating -------");
+			System.out.println("*******************************");
 			AggConfigElements aggConfigurationElements = readConfigurationFile(configFilePath);
 			// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
-	
-			System.out.println("plugin: " +aggConfigurationElements.getPlugin()); //debug, to be deleted
-			
+				
 			String[] nodeListTemp = new String[2]; // Note: this is a temporary (hard coded) solution for the previous method
 			nodeListTemp[0] = "128_2_204_246"; // "msesrv6h-vm.mse.cs.cmu.edu"
 			nodeListTemp[1] = "45_55_240_162"; // "observabilityCassandra1";
