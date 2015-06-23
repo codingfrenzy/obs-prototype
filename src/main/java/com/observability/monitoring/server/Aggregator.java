@@ -659,7 +659,7 @@ public class Aggregator extends UnicastRemoteObject {
 			e.printStackTrace();
 		}
 		if (file != null && !file.exists()){
-			System.err.println("Collectd.conf wasn't found.");
+			System.err.println("Collectd.conf wasn't found. Please place it in the correct directory.");
 			Thread.sleep(30000);
 		}
 		else {
