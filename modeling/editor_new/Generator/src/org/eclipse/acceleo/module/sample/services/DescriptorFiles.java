@@ -110,6 +110,7 @@ public class DescriptorFiles {
 	public static void zipAll(){
 		// Get all the configuration files in the directory
 		File dir = new File(CONF_DIR);
+		
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().endsWith(CONF_EXTENSION);
@@ -121,7 +122,8 @@ public class DescriptorFiles {
 			BufferedInputStream origin = null;
 			
 			// Create an output stream at the destination where zip is to be created
-			FileOutputStream dest = new FileOutputStream(ZIPPATH);
+			// overwrite if the zip already exists
+			FileOutputStream dest = new FileOutputStream(ZIPPATH, false);
 			
 			// Create the zip output stream
 			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -131,7 +133,6 @@ public class DescriptorFiles {
 			
 			// Add each file to the zip
 			for(int i=0; i< files.length;i++){
-				System.out.println("Adding: " + files[i].getName());
 				// read the file
 				FileInputStream fi = new FileInputStream(files[i]);
 				origin = new BufferedInputStream(fi, BUFFER);
