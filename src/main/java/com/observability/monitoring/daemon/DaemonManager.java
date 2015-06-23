@@ -49,6 +49,7 @@ import java.util.Vector;
  * 4. Modified					Jun 02 2015<br>
  * 5. Modified					Jun 07 2015<br>
  * 6. Modified					Jun 19 2015<br>
+ * 7. Modified					Jun 23 2015<br>
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -84,6 +85,24 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		super();
 	}
 
+	/**
+	 * Get the file path of configuration
+	 * @return the file path
+	 * 
+	 */
+	public static String getConfigurationFilePath() {
+		return configPath;
+	}
+	
+	/**
+	 * Get the file path of configuration
+	 * @param config the new file path of configuration file
+	 * 
+	 */
+	public static void setConfigurationFilePath(String config) {
+		configPath = config;
+	}
+	
 	/**
 	 * Kill process by the process name.<br>
 	 * This method runs the following commands as external process.<br>
@@ -248,7 +267,8 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			// 2. stop collect process
 			killProcess("collectd");
 			// Update heartbeat client
-			dhc.updateInterval();
+			if(dhc != null)
+				dhc.updateInterval();
 			// 3. start collect process
 			//startProcess("collectd");
 			startProcess(collectdPath);

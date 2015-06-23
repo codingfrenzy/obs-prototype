@@ -108,6 +108,7 @@ public class DaemonManagerTest {
 	//@Test
 	public void testStartConfigurationModification() {
 		try {
+			DaemonManager.setConfigurationFilePath("collectd.conf");
 			boolean ret = dm.startConfigurationModification();
 			Assert.assertTrue(ret);
 		} catch (RemoteException e) {
@@ -192,6 +193,7 @@ public class DaemonManagerTest {
 	@Test
 	public void testStopConfigurationModification() {
 		try {
+			DaemonManager.setConfigurationFilePath("collectd.conf");
 			boolean ret = dm.stopConfigurationModification();
 			Assert.assertTrue(ret);
 		} catch (RemoteException e) {
