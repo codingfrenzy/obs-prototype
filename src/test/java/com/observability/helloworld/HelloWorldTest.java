@@ -6,9 +6,10 @@ import org.junit.Test;
 
 public class HelloWorldTest {
 
+	int a = 0;
 	@Test
 	public void test() {
-		//fail("Not yet implemented");
+		fail("Not yet implemented");
 	}
 
 }
