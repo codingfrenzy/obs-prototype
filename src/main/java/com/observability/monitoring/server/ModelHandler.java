@@ -40,6 +40,12 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
  * 2. Save & unzip the files on disk<br>
  * 3. Propagate them to remote nodes by communicating with daemon manager<p>
  * 
+ * Tests:<br>
+ * Model handler:<br>
+ * java com.obrvability.monitoring.server.ModelHandler 128.237.201.134 17680<br>
+ * Daemon manager:<br>
+ * sudo java com.observability.moniting.daemon.DaemonManager 45.55.197.112 17670<br>
+ * 
  * @author Ying (Joel) Gao
  * <p>
  * History:<br>
@@ -48,12 +54,22 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
  * 
  */
 
-public class ModelHandler implements IModelHandlerServer {
+public class ModelHandler extends UnicastRemoteObject implements IModelHandlerServer {
+
+	/**
+	 * Auto generated serial version id
+	 */
+	private static final long serialVersionUID = 510701247259432165L;
+
 	// File object for handling uploaded zip file
-	private RandomAccessFile 	rafZip = null;
+	private transient RandomAccessFile 	rafZip = null;
 	
 	// File target name
 	private String				targetName = null;
+	
+	protected ModelHandler() throws RemoteException {
+		super();
+	}
 	
 	/**
 	 * Get the target directory by the target name
@@ -175,6 +191,9 @@ public class ModelHandler implements IModelHandlerServer {
 		if(dir == null){
 			return -1;
 		}
+		// delete the directory contents if any
+		FileOperationHelper.deleteDirectoryContents(new File(dir));
+		
 		// make sure the directory is created
 		if(!FileOperationHelper.createDirectory(dir)){
 			return -3;
@@ -331,9 +350,14 @@ public class ModelHandler implements IModelHandlerServer {
 			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
 			return;
 		}
-
 		String rmiIP = args[0];
 		String rmiPort = args[1];
+		
+		// Set to use IP v4
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		System.setProperty("java.rmi.server.hostname", rmiIP);
+		
+		
 		initializeService(rmiIP, rmiPort);
 	}
 
