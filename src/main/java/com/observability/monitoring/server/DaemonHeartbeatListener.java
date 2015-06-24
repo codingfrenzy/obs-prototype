@@ -106,10 +106,10 @@ public class DaemonHeartbeatListener implements Runnable {
     private void saveDaemonInfo(String messageFromDaemon) {
         String[] daemonInfo = messageFromDaemon.split("_");
         if (daemonHeartbeatCollectionToggle.get()) {
-            listOfDaemonHeartbeatReceived1.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].equals("2"))));
+            listOfDaemonHeartbeatReceived1.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].contains("2"))));
 //            System.out.println("Using SH1");
         } else {
-            listOfDaemonHeartbeatReceived2.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].equals("2"))));
+            listOfDaemonHeartbeatReceived2.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].contains("2"))));
 //            System.out.println("Using SH2");
         }
     }
