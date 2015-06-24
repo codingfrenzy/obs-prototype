@@ -63,7 +63,10 @@ public class SampleMetricDatabaseHandlerClient {
 					System.out.print("Enter metricPath:");
 					metricPath = scn.next();
 					ArrayList<String> out2 = imdhs.getMetricsBtwEpochRange(fromEpoch, toEpoch, metricPath);
-					System.out.println(out2.toString());
+					if(out2 == null)
+						System.out.println("null");
+					else
+						System.out.println(out2.toString());
 					break;
 			case 3: System.out.println("\nCurrent epoch is: "+System.currentTimeMillis()/1000);
 					System.out.println("Enter the epochs and metric values in the format:");
