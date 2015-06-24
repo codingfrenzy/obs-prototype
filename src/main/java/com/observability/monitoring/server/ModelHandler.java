@@ -83,7 +83,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 		try {
 			canonicalPath = new File(".").getCanonicalPath();
 			String combinedPath = canonicalPath + "/models/" + target;
-			System.out.println(combinedPath);
+			//System.out.println(combinedPath);
 			return combinedPath;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -131,6 +131,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 			// 2. Open the file from the beginning
 			rafZip = new RandomAccessFile(combinedPath, "rw");
 			rafZip.setLength(0);// start from 0
+			System.out.println("----------Begin file uploading with target name: " + target);
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -186,6 +187,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 		if(!calcMD5.equals(md5)){//MD5 checksum error
 			return -2;
 		}
+		
 		// 3. unzip the file into the corresponding folder
 		String dir = getTargetFileDirectory(targetName);
 		if(dir == null){
@@ -198,10 +200,12 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 		if(!FileOperationHelper.createDirectory(dir)){
 			return -3;
 		}
+		System.out.println("---File successfully uploaded, unzipping it to: " + dir);
 		int unzipret = FileOperationHelper.unzipFile(combinedPath, dir);
 		if(unzipret < 0){//unzip error
 			return unzipret;
 		}
+		System.out.println("---Done");
 		// 4. deploy the model
 		
 		return deployModel(targetName);
@@ -279,6 +283,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 		if(files == null) {
 			return -3;
 		}
+		System.out.println("---Start deploying configuration files of totally: " + files.length);
 		// loop through file list
 		int totalSent = 0;
 		for (int i = 0 ; i < files.length ; i++) {
@@ -286,7 +291,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 	        	String fn = files[i].getName();
 	        	String[] items = pattern.split(fn);
 	           
-	            System.out.println("File: " + fn + " IP: " + items[0] + " Port: " + items[1]);
+	            System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
 	            // send the files
 	            String canonicalPath = null;
 				try {
@@ -298,10 +303,13 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 				}
 	            if(propagateConfig(items[0], items[1], canonicalPath)){//sent ok
 	            	totalSent++;
+	            	System.out.println("---Successful");
+	            } else {
+	            	System.out.println("---Failed");
 	            }
 	        }
 	    }
-		
+		System.out.println("----------End deploying model, " + totalSent + " out of " + files.length + " were successful");
 		return totalSent;
 	}
 
