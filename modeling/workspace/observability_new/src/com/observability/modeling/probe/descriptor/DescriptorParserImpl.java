@@ -173,7 +173,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 					// The annotation is decided. Create the element 
 					
 					// The line is an element start
-					if (ParserUtility.isElementStart(line)){
+					if (ParserUtility.isElementStart(line)){	
 					
 						String[] elementDetails = ParserUtility.getElementDetails(line);
 						element = new ElementTag(elementDetails[0], elementDetails[1]);

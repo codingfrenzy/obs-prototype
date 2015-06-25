@@ -48,7 +48,7 @@ public class Deploy {
 	
 	public static void main(String[] args){
 		try {
-			deployFile(args[0], args[1], "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal/conf.zip");			
+			deployFile(args[0], args[1], args[2]);
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
+import org.eclipse.acceleo.module.sample.services.DescriptorFiles;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
@@ -406,4 +407,14 @@ public class Main extends AbstractAcceleoGenerator {
         // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
     }
     
+    
+    /**
+     * This method is used to set the parameters required to generate the configuration files.
+     * @param templateFiles the absolute path of the directory where the template files are located.
+     * @param confDir the absolute path of the directory where the configuration files are created
+     * @param zipPath the absolute path of the directory where the configuration zip is to be created
+     */
+    public void setFileParameters(String templateFiles, String confDir, String zipPath){
+    	DescriptorFiles.setParameters(templateFiles, confDir, zipPath);
+    }
 }

@@ -42,30 +42,25 @@
   </extension>
   <extension
         point="org.eclipse.ui.menus">
+     
      <menuContribution
-           locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-        <menu
-              id="observability_new.design.menus.generate"
-              label="Generate"
-              mnemonic="G">
+           locationURI="popup:org.eclipse.ui.popup.any?after=additions">
            <command
                  commandId="observability_new.design.commands.generateFiles"
-                 id="observability_new.design.menus.generate"
+                 label="Generate"
                  mnemonic="G">
+                 <visibleWhen>
+                       <with variable="activeMenuSelection">
+				            <iterate
+				                 ifEmpty="false">
+				             <adapt type="org.eclipse.core.resources.IResource">
+				               <test property="org.eclipse.core.resources.name" value="*.observability_new" />
+				             </adapt>
+				            </iterate>
+				           </with>
+                 </visibleWhen>
            </command>
-        </menu>
-     </menuContribution>
-     <menuContribution
-           locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-        <toolbar
-              id="observability_new.design.toolbars.generate">
-           <command
-                 commandId="observability_new.design.commands.generateFiles"
-                 icon="icons/sample.gif"
-                 id="observability_new.design.toolbars.generate"
-                 tooltip="Generate">
-           </command>
-        </toolbar>
+           
      </menuContribution>
   </extension>
 </plugin>

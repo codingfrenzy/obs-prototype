@@ -22,7 +22,6 @@ Export-Package: org.eclipse.acceleo.module.sample,
  org.eclipse.acceleo.module.sample.files,
  org.eclipse.acceleo.module.sample.services
 Bundle-ClassPath: src/org/eclipse/acceleo/module/sample/files/,
- srcgen/,
  .
 Import-Package: observability_new
 

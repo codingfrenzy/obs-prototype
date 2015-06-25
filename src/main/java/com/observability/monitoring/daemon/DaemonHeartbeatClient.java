@@ -38,7 +38,7 @@ import java.util.*;
  *         Modified Jun 19 2015<br>
  */
 
-public class DaemonHeartbeatClient extends Thread implements Serializable{
+public class DaemonHeartbeatClient extends Thread implements Serializable {
 
     /**
      * IP for the collectd server
@@ -98,11 +98,12 @@ public class DaemonHeartbeatClient extends Thread implements Serializable{
     /**
      * Default constructor. Also initializes the server IP and port and the IP of the current machine.
      */
-    DaemonHeartbeatClient(String currentDaemonIP){
+    DaemonHeartbeatClient(String currentDaemonIP) {
         initCollectdServerIP();
         initCollectdServerPort();
         initCurrentDaemonIP(currentDaemonIP);
     }
+
     /*
      * Method to get the current date. Used for metric collection CSV file
      * name.<br>
@@ -146,38 +147,45 @@ public class DaemonHeartbeatClient extends Thread implements Serializable{
      * @return boolean Returns true if valid. False if not.
      * @throws IOException
      */
-    //public boolean verifyLatestMetricMeasurement() throws IOException {
-    public boolean verifyLatestMetricMeasurement(String fileName) throws IOException {
-        //getMetricFileName();
+    public boolean verifyLatestMetricMeasurement(String fileName) {
+        systemEpoch = System.currentTimeMillis() / 1000;
 
         // Read the metric file in csv folder
+        boolean verification = false;
         FileInputStream stream = null;
-        stream = new FileInputStream(fileName);
-        BufferedReader br1 = new BufferedReader( new InputStreamReader( stream, "UTF-8"));
         String strLine, temp = null;
+        try {
+            stream = new FileInputStream(fileName);
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
-        // Read file line by line and save the last line.
-        while (true) {
-            if ((strLine = br1.readLine()) == null) {
-                break;
+            // Read file line by line and save the last line.
+            while (true) {
+                if ((strLine = br1.readLine()) == null) {
+                    break;
+                }
+                temp = strLine;
             }
-            temp = strLine;
-        }
 
-        // Close the input stream
-        br1.close();
+            // Close the input stream
+            br1.close();
+        } catch (Exception e) {
+            System.out.println("Collectd metric file not found.");
+//            e.printStackTrace();
+//            verification = false;
+        }
 
         // extract timestamp and save
-        temp = temp.substring(0, temp.indexOf('.'));
-        systemEpoch = System.currentTimeMillis() / 1000;
-        long metricLatestEpoch = Long.parseLong(temp);
+        if(temp != null) {
+            temp = temp.substring(0, temp.indexOf('.'));
+            long metricLatestEpoch = Long.parseLong(temp);
 
-        // check if the measurement is older than threshold
-        int thresholod = getThreshold();
-        if ((systemEpoch - metricLatestEpoch) <= thresholod) {
-            return true;
+            // check if the measurement is older than threshold
+            int thresholod = getThreshold();
+            if ((systemEpoch - metricLatestEpoch) <= thresholod) {
+                verification = true;
+            }
         }
-        return false;
+        return verification;
     }
 
     /**
@@ -229,7 +237,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable{
     /**
      * Update the interval upon change of collectd configuration
      */
-    public void updateInterval(){
+    public void updateInterval() {
         System.out.println("Daemon Heartbeat interval updated to " + samplingRate);
     }
 
@@ -242,7 +250,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable{
             boolean metricLatestVerified = false;
             try {
                 // get the file name and verify the last measurement
-            	String fileName = getMetricFileName();
+                String fileName = getMetricFileName();
                 metricLatestVerified = verifyLatestMetricMeasurement(fileName);
             } catch (Exception e) {
                 e.printStackTrace();

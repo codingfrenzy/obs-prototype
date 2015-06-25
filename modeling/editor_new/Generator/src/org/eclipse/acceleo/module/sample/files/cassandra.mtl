@@ -33,6 +33,16 @@ LoadPlugin "csv"
   StoreRates true
 </Plugin>
 
+LoadPlugin df
+<Plugin "df">
+  IgnoreSelected true
+</Plugin>
+
+LoadPlugin interface
+<Plugin "interface">
+  IgnoreSelected true
+</Plugin>
+
 LoadPlugin cpu
 LoadPlugin interface
 LoadPlugin load
@@ -59,6 +69,27 @@ LoadPlugin network
           Attribute "Count"
         </Value>
     </MBean>
+
+    <MBean "metrics">
+        ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
+        <Value>
+          Type "gauge"
+          InstancePrefix "ClientRequest_readCount"
+          Attribute "Count"
+        </Value>
+    </MBean>
+
+	<MBean "metrics">
+        ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
+        <Value>
+          Type "gauge"
+          InstancePrefix "ClientRequest_readCount"
+          Attribute "Count"
+        </Value>
+    </MBean>
+
+	
+
    <MBean "lang">
         ObjectName "java.lang:type=Memory"
         <Value>
