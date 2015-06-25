@@ -88,7 +88,7 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="[self.oclAsType(DatabaseCluster).associatedDbType->including(target)/]"/>
+                <subModelOperations xsi:type="tool_1:SetValue" featureName="associatedDbType" valueExpression="var:target"/>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>

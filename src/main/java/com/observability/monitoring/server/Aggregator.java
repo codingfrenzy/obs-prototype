@@ -75,6 +75,30 @@ public class Aggregator extends UnicastRemoteObject {
 	static String configFilePath = "/opt/collectd/etc/collectd.conf";
 
 	/**
+	 * 
+	 * This class has the temporary hard coded data
+	 * TODO: should be deleted before deploying the system
+	 *
+	 */
+	private static class HardCodedValues {
+		private String[] nodeListTemp = new String[2]; // Note: this is a temporary (hard coded) solution for the previous method
+		
+		private String ip1 = "128_2_204_246"; // "msesrv6h-vm.mse.cs.cmu.edu"
+		private String ip2 = "45_55_240_162"; // "observabilityCassandra1"
+		
+		private HardCodedValues(){
+			super();
+			this.nodeListTemp[0] = ip1;
+			this.nodeListTemp[1] = ip2;
+		}
+		
+		
+		private String[] getNodeListTemp() {
+			return nodeListTemp;
+		}	
+	}
+	
+	/**
 	 * Enumeration of the possible aggregation functions
 	 */
 	public enum AggFunc {
@@ -202,6 +226,7 @@ public class Aggregator extends UnicastRemoteObject {
 
 	/**
 	 * Read the configuration file and get the aggregation configuration keys and values
+	 * Save them in an array of size 2, then add them to a list that has all configurations.
 	 * 
 	 * @return list of array of string. The array has 2 elements: key and value. 
 	 * 			The list has all keys and values
@@ -225,12 +250,12 @@ public class Aggregator extends UnicastRemoteObject {
 									|| line.trim().equals("\n"))
 							continue;	// Read the next line
 						else {
-							String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array
+							String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array 
 							if (str.length > 1) {
 								String[] aggConfigItem = new String[2];										
-								aggConfigItem[0] = str[0];
-								aggConfigItem[1] = str[1];	
-								aggConfig.add(aggConfigItem);	// Add this configuration element to the list
+								aggConfigItem[0] = str[0];	// Here we save the key (ex. "plugin")
+								aggConfigItem[1] = str[1];	// Here we save the value (ex. "cpu")
+								aggConfig.add(aggConfigItem);	// Add this configuration element to the list 
 							}
 						}
 						
@@ -390,11 +415,12 @@ public class Aggregator extends UnicastRemoteObject {
 
 		String metricPath = "";	// Set the metric path according to Whisper 
 
-		// Generate the metric path to send it as a parameter to the database handler
+		// Generate the metric path to send it as a parameter to the database handler. The metric path generated
+		// has to match the folder path in Whisper that has the metric data collected from the nodes.
 		// This is done by concatenate a list of strings to form the metric path expected by the database handler
 		// For example: collectd/10.0.0.0/cpu-0/cpu-system
+		// This part is required by the MetricDatabaseHandler
 		for (int i = 0; i < nodeListTemp.length; i++) {
-			String s = aggConfig.getPlugin();
 			if (aggConfig.getPlugin().toLowerCase().equals("cpu")) {
 				metricPath = str.concat(nodeListTemp[i]).concat(str2)
 						.concat(aggConfig.getPlugin()).concat(str3)
@@ -618,10 +644,7 @@ public class Aggregator extends UnicastRemoteObject {
 				.concat(String.valueOf(func).toLowerCase()).concat(str2)
 				.concat(metricType);
 
-		IMetricDatabaseHandlerServer imdhs = (IMetricDatabaseHandlerServer) Naming
-				.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
-						+ "/MetricDatabaseHandler");
-		if (imdhs ==null){
+		if (imdhs == null){
 			//do something
 		}
 		
@@ -645,7 +668,8 @@ public class Aggregator extends UnicastRemoteObject {
 	 */
 	public static void main(String[] args) throws IOException, NotBoundException, InterruptedException {
 		
-		String configFilePath = "Test.txt";
+		String configFilePath = "Test.txt"; //debug: to be deleted
+		HardCodedValues hardCodedValues = new HardCodedValues();
 		long startTime = 0;
 		long endTime = 0;
 		long totalTime = 0;
@@ -672,18 +696,17 @@ public class Aggregator extends UnicastRemoteObject {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (imdhs == null){
+				System.out.println("MetricDatabaseHAndler is not working. Please start it");
+			}
 			System.out.println("------Start Aggregating -------");
 			System.out.println("*******************************");
 			AggConfigElements aggConfigurationElements = readConfigurationFile(configFilePath);
 			// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
-				
-			String[] nodeListTemp = new String[2]; // Note: this is a temporary (hard coded) solution for the previous method
-			nodeListTemp[0] = "128_2_204_246"; // "msesrv6h-vm.mse.cs.cmu.edu"
-			nodeListTemp[1] = "45_55_240_162"; // "observabilityCassandra1";
 			
 			while (true) {
 				startTime = System.currentTimeMillis(); //This to calculate the running time of readData()
-				dataIsRead = readData(nodeListTemp, aggConfigurationElements);	// Read, aggregate and save aggregated data
+				dataIsRead = readData(hardCodedValues.getNodeListTemp(), aggConfigurationElements);	// Read, aggregate and save aggregated data
 				endTime = System.currentTimeMillis();	//This to calculate the running time of readData()
 				totalTime = endTime - startTime;	//This to calculate the running time of readData()
 				

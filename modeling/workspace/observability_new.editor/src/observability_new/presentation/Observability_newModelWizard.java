@@ -187,10 +187,14 @@ public class Observability_newModelWizard extends Wizard implements INewWizard {
 	 * Create a new model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	protected EObject createInitialModel() {
-		EClass eClass = (EClass)observability_newPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
+		/**
+		 * Select "Model" entity as the root class. If EMF metamodel changes
+		 * this might need to change.
+		 */
+		EClass eClass = (EClass)observability_newPackage.getEClassifier("Model");
 		EObject rootObject = observability_newFactory.create(eClass);
 		return rootObject;
 	}
@@ -237,7 +241,12 @@ public class Observability_newModelWizard extends Wizard implements INewWizard {
 							// Save the contents of the resource to the file system.
 							//
 							Map<Object, Object> options = new HashMap<Object, Object>();
-							options.put(XMLResource.OPTION_ENCODING, initialObjectCreationPage.getEncoding());
+							
+							/**
+							 * The encoding is set implicitly because we are not asking 
+							 * the user now.
+							 */
+							options.put(XMLResource.OPTION_ENCODING, "UTF-8");
 							
 							/**
 							 * -----Extension point---
@@ -553,7 +562,7 @@ public class Observability_newModelWizard extends Wizard implements INewWizard {
 	 * The framework calls this to create the contents of the wizard.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 		@Override
 	public void addPages() {
@@ -598,10 +607,14 @@ public class Observability_newModelWizard extends Wizard implements INewWizard {
 				}
 			}
 		}
-		initialObjectCreationPage = new Observability_newModelWizardInitialObjectCreationPage("Whatever2");
-		initialObjectCreationPage.setTitle(Observability_newEditorPlugin.INSTANCE.getString("_UI_Observability_newModelWizard_label"));
-		initialObjectCreationPage.setDescription(Observability_newEditorPlugin.INSTANCE.getString("_UI_Wizard_initial_object_description"));
-		addPage(initialObjectCreationPage);
+		/**
+		 * No need to show the user a page to select the root node and the encoding
+		 * We will do it implicitly.
+		 */
+		//initialObjectCreationPage = new Observability_newModelWizardInitialObjectCreationPage("Whatever2");
+		//initialObjectCreationPage.setTitle(Observability_newEditorPlugin.INSTANCE.getString("_UI_Observability_newModelWizard_label"));
+		//initialObjectCreationPage.setDescription(Observability_newEditorPlugin.INSTANCE.getString("_UI_Wizard_initial_object_description"));
+		//addPage(initialObjectCreationPage);
 	}
 
 	/**
