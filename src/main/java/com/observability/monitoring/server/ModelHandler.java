@@ -40,6 +40,12 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
  * 2. Save & unzip the files on disk<br>
  * 3. Propagate them to remote nodes by communicating with daemon manager<p>
  * 
+ * Tests:<br>
+ * Model handler:<br>
+ * java com.obrvability.monitoring.server.ModelHandler 128.237.201.134 17680<br>
+ * Daemon manager:<br>
+ * sudo java com.observability.moniting.daemon.DaemonManager 45.55.197.112 17670<br>
+ * 
  * @author Ying (Joel) Gao
  * <p>
  * History:<br>
@@ -48,12 +54,22 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
  * 
  */
 
-public class ModelHandler implements IModelHandlerServer {
+public class ModelHandler extends UnicastRemoteObject implements IModelHandlerServer {
+
+	/**
+	 * Auto generated serial version id
+	 */
+	private static final long serialVersionUID = 510701247259432165L;
+
 	// File object for handling uploaded zip file
-	private RandomAccessFile 	rafZip = null;
+	private transient RandomAccessFile 	rafZip = null;
 	
 	// File target name
 	private String				targetName = null;
+	
+	protected ModelHandler() throws RemoteException {
+		super();
+	}
 	
 	/**
 	 * Get the target directory by the target name
@@ -67,7 +83,7 @@ public class ModelHandler implements IModelHandlerServer {
 		try {
 			canonicalPath = new File(".").getCanonicalPath();
 			String combinedPath = canonicalPath + "/models/" + target;
-			System.out.println(combinedPath);
+			//System.out.println(combinedPath);
 			return combinedPath;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -115,6 +131,7 @@ public class ModelHandler implements IModelHandlerServer {
 			// 2. Open the file from the beginning
 			rafZip = new RandomAccessFile(combinedPath, "rw");
 			rafZip.setLength(0);// start from 0
+			System.out.println("----------Begin file uploading with target name: " + target);
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -170,19 +187,25 @@ public class ModelHandler implements IModelHandlerServer {
 		if(!calcMD5.equals(md5)){//MD5 checksum error
 			return -2;
 		}
+		
 		// 3. unzip the file into the corresponding folder
 		String dir = getTargetFileDirectory(targetName);
 		if(dir == null){
 			return -1;
 		}
+		// delete the directory contents if any
+		FileOperationHelper.deleteDirectoryContents(new File(dir));
+		
 		// make sure the directory is created
 		if(!FileOperationHelper.createDirectory(dir)){
 			return -3;
 		}
+		System.out.println("---File successfully uploaded, unzipping it to: " + dir);
 		int unzipret = FileOperationHelper.unzipFile(combinedPath, dir);
 		if(unzipret < 0){//unzip error
 			return unzipret;
 		}
+		System.out.println("---Done");
 		// 4. deploy the model
 		
 		return deployModel(targetName);
@@ -260,6 +283,7 @@ public class ModelHandler implements IModelHandlerServer {
 		if(files == null) {
 			return -3;
 		}
+		System.out.println("---Start deploying configuration files of totally: " + files.length);
 		// loop through file list
 		int totalSent = 0;
 		for (int i = 0 ; i < files.length ; i++) {
@@ -267,7 +291,7 @@ public class ModelHandler implements IModelHandlerServer {
 	        	String fn = files[i].getName();
 	        	String[] items = pattern.split(fn);
 	           
-	            System.out.println("File: " + fn + " IP: " + items[0] + " Port: " + items[1]);
+	            System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
 	            // send the files
 	            String canonicalPath = null;
 				try {
@@ -279,10 +303,13 @@ public class ModelHandler implements IModelHandlerServer {
 				}
 	            if(propagateConfig(items[0], items[1], canonicalPath)){//sent ok
 	            	totalSent++;
+	            	System.out.println("---Successful");
+	            } else {
+	            	System.out.println("---Failed");
 	            }
 	        }
 	    }
-		
+		System.out.println("----------End deploying model, " + totalSent + " out of " + files.length + " were successful");
 		return totalSent;
 	}
 
@@ -331,9 +358,14 @@ public class ModelHandler implements IModelHandlerServer {
 			System.out.println("DaemonManager - error - should be started with two parameters: IP + port.");
 			return;
 		}
-
 		String rmiIP = args[0];
 		String rmiPort = args[1];
+		
+		// Set to use IP v4
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		System.setProperty("java.rmi.server.hostname", rmiIP);
+		
+		
 		initializeService(rmiIP, rmiPort);
 	}
 

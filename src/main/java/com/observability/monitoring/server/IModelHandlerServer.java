@@ -131,6 +131,38 @@ public interface IModelHandlerServer extends Remote {
 		}
 		
 		/**
+		 * Delete a directory on file system
+		 * @param directory directory file object
+		 * @return true/false as operation result
+		 */
+		public static boolean deleteDirectoryContents(File directory) {
+		    if(!directory.exists()){
+		    	// doesn't exist
+		    	return true;
+		    }
+		    boolean ret = false;
+		    try {
+		        File[] files = directory.listFiles();
+		        if(files != null){
+		            for(int i = 0; i < files.length; i++) {
+		                if(files[i].isDirectory()) { 
+		                	// recursively delete all sub directories
+		                	deleteDirectoryContents(files[i]);
+		                }
+		                else {
+		                	// delete the files
+		                    ret = files[i].delete();
+		                }
+		            }
+		        }
+		    } catch(Exception e) {
+		    	e.printStackTrace();
+		    	ret = false;
+		    }
+		    return ret;
+		}
+		
+		/**
 		 * Unzip a zip file to a target directory
 		 * @param zipfilePath the file path of the zip file
 		 * @param targetDirectory the target directory of the output

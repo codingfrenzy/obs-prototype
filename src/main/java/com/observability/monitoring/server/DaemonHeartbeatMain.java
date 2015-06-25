@@ -143,7 +143,7 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     private void verifyDaemonHeartbeat() {
 
-        System.out.println("Verifying daemons' heartbeat");
+        System.out.println("Verifying daemons' heartbeat at " + (System.currentTimeMillis() / 1000));
 
         // select the hashmap based on toggle
         HashMap<String, DaemonInfo> tempHeartbeatReceived = null;
@@ -175,7 +175,7 @@ public class DaemonHeartbeatMain implements Runnable {
                     listOfNotRespondingDaemons.remove(configuredIp);
                     System.out.println(configuredIp);
                 }
-                if (listOfNotCollectingDaemons.containsKey(configuredIp)) {
+                if (listOfNotCollectingDaemons.containsKey(configuredIp) && collecting) {
                     listOfNotCollectingDaemons.remove(configuredIp);
                 }
 
@@ -186,6 +186,7 @@ public class DaemonHeartbeatMain implements Runnable {
                 saveDaemonNotResponding(configuredIp);
             }
             if (!collecting) {
+//                System.out.println("Saving not collecting daemon: " + configuredIp);
                 saveDaemonNotCollectingMetrics(configuredIp);
             }
         }
@@ -216,7 +217,7 @@ public class DaemonHeartbeatMain implements Runnable {
         if (!listOfNotRespondingDaemons.containsKey(ip)) {
             Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotRespondingDaemons.put(ip, systemEpoch);
-            System.out.println("Saving Daemon not responding: " + ip + " date " + systemEpoch.toString());
+//            System.out.println("Saving Daemon not responding: " + ip + " date " + systemEpoch.toString());
         }
     }
 
@@ -287,7 +288,7 @@ public class DaemonHeartbeatMain implements Runnable {
 
         // get file path
         String fullFile = getFullFilePath(responding);
-        System.out.println("Writing to log: " + line);
+        System.out.println(fullFile + " Writing to log: " + line);
 
         try {
             // append to file
@@ -357,10 +358,10 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     public boolean sendEMail() {
 
-        System.out.println("Last email timestamp " + lastEmailTimestamp);
-        System.out.println("Next email timestamp " + ( lastEmailTimestamp + (emailInterval * 60)));
+//        System.out.println("Last email timestamp " + lastEmailTimestamp);
+//        System.out.println("Next email timestamp " + ( lastEmailTimestamp + (emailInterval * 60)));
         long systemEpoch = System.currentTimeMillis() / 1000;
-        System.out.println("Current timestamp " + systemEpoch);
+//        System.out.println("Current timestamp " + systemEpoch);
 
         // Return if enough time, as per emailInterval, has not passed
         if (systemEpoch - lastEmailTimestamp < (long) emailInterval * 60) {
@@ -497,7 +498,7 @@ public class DaemonHeartbeatMain implements Runnable {
                 }
                 long sleepTime = (long) samplingRate * 1000;
                 Thread.sleep(sleepTime);
-                first = !first;
+                first = false;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
