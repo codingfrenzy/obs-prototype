@@ -47,17 +47,25 @@ import java.util.zip.ZipOutputStream;
 public class DescriptorFiles {
 
 	private static final int BUFFER = 2048;
-	private static final String FILES =
+	private static String FILES = 
 			"/home/vsaravag/git/obs-prototype/modeling/editor_new/"
 			+ "Generator/src/org/eclipse/acceleo/module/sample/files";
-	private static final String CONF_DIR = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal";
+	private static String CONF_DIR = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal";
 	private static final String TEMPLATE_EXTENSION = ".mtl";
 	private static final String CONF_EXTENSION = ".conf";
-	private static final String ZIPPATH = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal/conf.zip";
+	private static String ZIPPATH = "";//"/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal/conf.zip";
 	private static ArrayList<String> fileNames = new ArrayList<String>();
 	
 	public static void main(String[] args){
 		zipAll();
+	}
+	
+	public static void setParameters(String templateFiles, String confDir, String zipPath){
+		templateFiles = "/home/vsaravag/git/obs-prototype/modeling/editor_new/"
+				+ "Generator/src/org/eclipse/acceleo/module/sample/files";
+		FILES = templateFiles;
+		CONF_DIR = confDir;
+		ZIPPATH = zipPath;
 	}
 	/**
 	 * Get all the generator files in the files resource directory.
@@ -65,13 +73,8 @@ public class DescriptorFiles {
 	 */
 	public static void getAllFiles(){
 		// Get the File object of the directory containing the template files
-		//URL path = DescriptorFiles.class.getClassLoader().getResource(FILES);
 		File dir;
-		//String pathDir = path.getPath();
 		dir = new File(FILES);
-		
-//		Path dirPath = Paths.get(URI.create(path));	
-//		File dir = dirPath.toFile();
 		
 		// Get only the *.mtl files
 		File[] files = dir.listFiles(new FilenameFilter() {
@@ -123,7 +126,7 @@ public class DescriptorFiles {
 			
 			// Create an output stream at the destination where zip is to be created
 			// overwrite if the zip already exists
-			FileOutputStream dest = new FileOutputStream(ZIPPATH, false);
+			FileOutputStream dest = new FileOutputStream(ZIPPATH+"/conf.zip", false);
 			
 			// Create the zip output stream
 			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));

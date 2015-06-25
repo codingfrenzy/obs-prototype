@@ -19,7 +19,7 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_new.DatabaseCluster">
+        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_new.DatabaseCluster" childrenPresentation="List">
           <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_new.NodeMachine">
             <style xsi:type="style:SquareDescription" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>

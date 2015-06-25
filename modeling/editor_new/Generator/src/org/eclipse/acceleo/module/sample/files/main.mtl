@@ -4,6 +4,7 @@
 [import org::eclipse::acceleo::module::sample::files::mongodb/]
 [import org::eclipse::acceleo::module::sample::files::postgres/]
 
+
 [template public mainModel(aModel : Model)]
 	
 	[for (aDatabaseCluster:DatabaseCluster | aModel.clusters)]
