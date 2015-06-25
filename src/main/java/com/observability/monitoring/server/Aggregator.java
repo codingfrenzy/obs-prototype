@@ -691,7 +691,7 @@ public class Aggregator extends UnicastRemoteObject {
 	 */
 	public static void main(String[] args) throws IOException, NotBoundException, InterruptedException {
 		
-		String configFilePath = "Test.txt"; //debug: to be deleted
+		//String configFilePath = "Test.txt"; //debug: to be deleted
 		HardCodedValues hardCodedValues = new HardCodedValues();
 		long startTime = 0;
 		long endTime = 0;
