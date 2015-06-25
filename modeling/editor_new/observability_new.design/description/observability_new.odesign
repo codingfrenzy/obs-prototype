@@ -77,7 +77,9 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
+                <subModelOperations xsi:type="tool_1:If" conditionExpression="[target.oclAsType(Metric).eContainer().oclAsType(DbType) = source.oclAsType(DatabaseCluster).associatedDbType/]">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
