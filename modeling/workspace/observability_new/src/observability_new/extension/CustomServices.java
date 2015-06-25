@@ -210,8 +210,28 @@ public class CustomServices {
 			} 
 		}
 	}
+	/**
+	 * Clear all nodes of a cluster and create noOfMachines
+	 * number of new nodes with appropriate sub elements
+	 * 
+	 * TODO For now existing nodes are cleared. We should think
+	 * about what to do to them
+	 * @param databaseCluster cluster that new node machines will be added to
+	 * @param noOfMachines number of machines to be created
+	 */
+	public static void createNodes(DatabaseCluster databaseCluster,
+			int noOfMachines) {
+		databaseCluster.getMachines().clear();
+		for (int i = 0; i < noOfMachines; i++) {
+			initializeMachine(databaseCluster);
+			
+		}
+		
+	}
 
-	
+	public CustomServices(){
+		System.out.println("CustomServices ready!");
+	}
 	
 	public static void main(String[] args) {
 		Observability_newPackage.eINSTANCE.eClass();
@@ -220,6 +240,8 @@ public class CustomServices {
 	    Model m = factory.createModel();
 	    initializeDbTypes(m);
 	}
+
+	
 
 
 }
