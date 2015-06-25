@@ -83,7 +83,7 @@ public class DaemonHeartbeatMain implements Runnable {
     /**
      * At every interval (minutes), an email will be sent with list of daemons not respodning/collecting
      */
-    int emailInterval = 15;
+    int emailInterval = 3;
 
     /**
      * Last email sent at.<br>
@@ -387,16 +387,15 @@ public class DaemonHeartbeatMain implements Runnable {
 //        filePath = "/Users/prasanthnair/obs-prototype-intellij/src/main/java/com/observability/monitoring/server/NotResponding-2015-06-12";
 //        System.out.println(filePath);
 
-        int i = 0;
-
         // iterate through both types of non-responsiveness log filfes
-        while (i < filePaths.length) {
+        for (int i = 0; i < filePaths.length; i++) {
             try {
                 // Open file
                 File fileDir = new File(filePaths[i]);
                 if (!fileDir.exists()) {
-                    System.out.println("File does not exist: " + filePaths[i]);
-                    return false;
+                    System.out.println("For Email File does not exist: " + filePaths[i]);
+                    continue;
+//                    return false;
                 }
 
                 // read file
@@ -433,22 +432,18 @@ public class DaemonHeartbeatMain implements Runnable {
 
                     // if the entry is newer than last email sent, then add it. This means that this entry is a new daemon that failed that did not appaer in the last email.
                     if (timestamp != null && !timestamp.isEmpty() && lastEmailTimestamp < Long.parseLong(timestamp)){
-                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s %n", lastEmailTimestamp, timestamp, ip, date);
+//                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s %n", lastEmailTimestamp, timestamp, ip, date);
                         ips.add(ip);
                         dates.add(date);
                     }
                 }
                 in.close();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if(ips.size() == 0){
-                return false;
+                continue;
             }
 
             // Not responding email
@@ -463,12 +458,17 @@ public class DaemonHeartbeatMain implements Runnable {
             // clear the array list
             ips.clear();
             dates.clear();
-            i++;
         }
 
+        boolean nr = false, nc = false;
+        if(emailBodies[0] != null)
+            nr = ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[0], false);
+
+        if(emailBodies[1] != null)
+            nc = ne.sendEMail(recipients, "Observability: Daemons not collecting", emailBodies[1], false);
+
         // If both emails are sent, then return true
-        if (ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[0], false) &&
-                ne.sendEMail(recipients, "Observability: Daemons not collecting", emailBodies[1], false)) {
+        if (nr || nc) {
             lastEmailTimestamp = systemEpoch;
             return true;
         }
