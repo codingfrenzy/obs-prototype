@@ -61,7 +61,7 @@ LoadPlugin network
     LoadPlugin "org.collectd.java.GenericJMX"
 <Plugin "GenericJMX">
 
-    <MBean "metrics">
+    <MBean "load_metric">
         ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load"
         <Value>
           Type "gauge"
@@ -70,7 +70,7 @@ LoadPlugin network
         </Value>
     </MBean>
 
-    <MBean "metrics">
+    <MBean "readcount_metric">
         ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
         <Value>
           Type "gauge"
@@ -79,7 +79,7 @@ LoadPlugin network
         </Value>
     </MBean>
 
-   <MBean "lang">
+   <MBean "memory_metric">
         ObjectName "java.lang:type=Memory"
         <Value>
           Type "memory"
