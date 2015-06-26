@@ -18,7 +18,7 @@
         </Value>
     </MBean>
     
-    <MBean "readcount_metric"> @ Metric
+    <MBean "readcount_metric"> @Metric
         ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
         <Value>
           Type "gauge"
