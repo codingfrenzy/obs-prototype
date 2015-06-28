@@ -152,6 +152,7 @@ public class CustomServices {
 				break;
 			}
 		}
+		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
 		cluster.getMachines().add(machine);
 		return true;
 		

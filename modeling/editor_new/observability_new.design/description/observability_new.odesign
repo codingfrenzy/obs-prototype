@@ -19,7 +19,7 @@
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
-        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_new.DatabaseCluster">
+        <containerMappings name="dbCluster" semanticCandidatesExpression="feature:clusters" domainClass="observability_new.DatabaseCluster" childrenPresentation="List">
           <subNodeMappings name="nodeMachine" semanticCandidatesExpression="feature:machines" domainClass="observability_new.NodeMachine">
             <style xsi:type="style:SquareDescription" resizeKind="NSEW">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
@@ -77,7 +77,9 @@
             <targetViewVariable name="targetView"/>
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
-                <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
+                <subModelOperations xsi:type="tool_1:If" conditionExpression="[target.oclAsType(Metric).eContainer().oclAsType(DbType) = source.oclAsType(DatabaseCluster).associatedDbType/]">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedBaseMetric" valueExpression="[self.oclAsType(DatabaseCluster).collectedBaseMetric->including(target)/]"/>
+                </subModelOperations>
               </firstModelOperations>
             </initialOperation>
           </ownedTools>
