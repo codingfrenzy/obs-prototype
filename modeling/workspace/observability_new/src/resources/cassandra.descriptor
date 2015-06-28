@@ -27,8 +27,8 @@
         </Value>
     </MBean>
     
-    <MBean "lang"> 
-        ObjectName "java.lang:type=Memory" @Metric
+    <MBean "lang"> @Metric
+        ObjectName "java.lang:type=Memory"
         <Value>
           Type "memory"
           InstancePrefix "heap_mem"
