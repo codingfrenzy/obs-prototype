@@ -36,7 +36,7 @@
         </containerMappings>
         <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="observability_new.DbType">
           <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="observability_new.BaseMetric">
-            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" labelPosition="node" resizeKind="NSEW">
+            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="5" verticalDiameterComputationExpression="5">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_chocolate']"/>
