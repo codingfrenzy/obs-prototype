@@ -21,16 +21,12 @@
 
 package com.observability.monitoring.daemon;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.Vector;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
