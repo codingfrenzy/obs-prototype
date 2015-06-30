@@ -108,7 +108,10 @@ public class DaemonManagerTest {
 	//@Test
 	public void testStartConfigurationModification() {
 		try {
-			DaemonManager.setConfigurationFilePath("collectd.conf");
+			ClassLoader classLoader = DaemonManagerTest.class.getClassLoader();
+			URL path = classLoader.getResource("collectd.conf");
+			
+			DaemonManager.setConfigurationFilePath( new File (path.getFile()).toPath().toString());
 			boolean ret = dm.startConfigurationModification();
 			Assert.assertTrue(ret);
 		} catch (RemoteException e) {
