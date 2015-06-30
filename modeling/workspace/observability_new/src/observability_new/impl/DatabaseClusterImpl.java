@@ -9,19 +9,17 @@ import observability_new.DatabaseCluster;
 import observability_new.DbType;
 import observability_new.DerivedMetric;
 import observability_new.NodeMachine;
+import observability_new.Observability_newFactory;
 import observability_new.Observability_newPackage;
+import observability_new.extension.CustomServices;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
@@ -154,6 +152,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		if (machines == null) {
 			machines = new EObjectContainmentEList<NodeMachine>(NodeMachine.class, this, Observability_newPackage.DATABASE_CLUSTER__MACHINES);
 		}
+		noOfMachines = machines.size();
 		return machines;
 	}
 
@@ -240,11 +239,16 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	public void setNoOfMachines(int newNoOfMachines) {
 		int oldNoOfMachines = noOfMachines;
 		noOfMachines = newNoOfMachines;
+		/**
+		 * Custom code to create the actual instances when this
+		 * attribute changes
+		 */
+		CustomServices.createNodes(this,noOfMachines);
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, Observability_newPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
 	}

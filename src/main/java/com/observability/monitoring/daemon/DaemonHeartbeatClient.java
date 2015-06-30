@@ -168,6 +168,9 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
             // Close the input stream
             br1.close();
+        } catch (RuntimeException e) {
+            System.out.println("Collectd metric file: RuntimeException occured");
+            //e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Collectd metric file not found.");
 //            e.printStackTrace();
@@ -175,7 +178,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         }
 
         // extract timestamp and save
-        if(temp != null) {
+        if (temp != null) {
             temp = temp.substring(0, temp.indexOf('.'));
             long metricLatestEpoch = Long.parseLong(temp);
 

@@ -71,7 +71,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Path to the configuration file 
 	 */
-	private static String configPath = "/etc/collectd/collectd.conf";
+	private static String configPath = "/opt/collectd/etc/collectd.conf";
 
 	/**
 	 * DaemonHeartbeatClient object
@@ -344,11 +344,13 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		if(args.length >= 4){
 			configPath = args[3];
 		}
-		// Set to use IP v4
-		System.setProperty("java.net.preferIPv4Stack" , "true");
 		
 		String rmiIP = args[0];
 		String rmiPort = args[1];
+		// Set to use IP v4
+		System.setProperty("java.net.preferIPv4Stack" , "true");
+		System.setProperty("java.rmi.server.hostname", rmiIP);
+		// Initialize the RMI service
 		initializeService(rmiIP, rmiPort);
 	}
 }

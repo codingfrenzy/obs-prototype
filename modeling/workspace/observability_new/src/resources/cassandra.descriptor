@@ -4,7 +4,7 @@
     LoadPlugin "org.collectd.java.GenericJMX"
 <Plugin "GenericJMX">
 
-    <MBean "metrics"> @Metric
+    <MBean "load_metric"> @Metric
         ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load" 
         <Value>
           Type "gauge"
@@ -18,7 +18,7 @@
         </Value>
     </MBean>
     
-    <MBean "metrics">
+    <MBean "readcount_metric"> @Metric
         ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
         <Value>
           Type "gauge"
@@ -27,8 +27,8 @@
         </Value>
     </MBean>
     
-    <MBean "lang"> 
-        ObjectName "java.lang:type=Memory" @Metric
+    <MBean "memory_metric"> @Metric
+        ObjectName "java.lang:type=Memory" 
         <Value>
           Type "memory"
           InstancePrefix "heap_mem"
@@ -41,8 +41,9 @@
     <Connection> @Machine
       Host "10.10.10.10" @Machine 
       ServiceURL @Machine
-      Collect "metrics" @Collect 
-	  Collect "lang" @Collect
+      Collect "load_metric" @Collect 
+	  Collect "readcount_metric" @Collect
+	  Collect "memory_metric" @Collect
     </Connection>
   </Plugin>
 </Plugin>

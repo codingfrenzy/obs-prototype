@@ -5,7 +5,7 @@
 <Plugin "GenericJMX">
 
     <MBean "metrics"> @Metric
-        ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load" 
+        ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load" @Name
         <Value>
           Type "gauge"
           InstancePrefix "data_load"

@@ -48,6 +48,7 @@ import java.util.logging.SimpleFormatter;
  * 1. Created					Jun 03 2015<br>
  * 2. Modified					Jun 06 2015<br>
  * 3. Modified					Jun 23 2015<br>
+ * 4. Modified					Jun 25 2015<br>
  */
 
 public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetricDatabaseHandlerServer{
@@ -84,7 +85,14 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		if(epoch == null || "".equals(epoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
 			return null;	// for any invalid input, return null
 		StringBuilder command = new StringBuilder();	// used to build command string
-		long actualEpoch = (long)Double.parseDouble(epoch);	// convert epoch to long
+		long actualEpoch = 0;
+		try{
+			actualEpoch = (long)Double.parseDouble(epoch);	// convert epoch to long
+		} catch(NumberFormatException e){
+			LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
+			e.printStackTrace();
+			return null;
+		}
 		actualEpoch = actualEpoch - (actualEpoch % lowestInterval);	// round down
 		// whisper-fetch utility needs a range of epoch so to get the result
 		// for a specific epoch find metric value b/w epoch-1 and epoch+1 
@@ -132,10 +140,17 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		StringBuilder command = new StringBuilder();	// used to store the command
 		// convert the from and to epoch values to long from String and
 		// round them down to the nearest 'lowestInterval'
-		long fromEpochLong = (long)Double.parseDouble(fromEpoch);
-		fromEpochLong = fromEpochLong - (fromEpochLong % lowestInterval);
-		long toEpochLong = (long)Double.parseDouble(toEpoch);
-		toEpochLong = toEpochLong - (toEpochLong % lowestInterval);
+		long fromEpochLong, toEpochLong;
+		try{
+			fromEpochLong = (long)Double.parseDouble(fromEpoch);
+			fromEpochLong = fromEpochLong - (fromEpochLong % lowestInterval);
+			toEpochLong = (long)Double.parseDouble(toEpoch);
+			toEpochLong = toEpochLong - (toEpochLong % lowestInterval);
+		} catch(NumberFormatException e){
+			LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
+			e.printStackTrace();
+			return null;
+		}
 		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+(fromEpochLong-1)+" --until="+(toEpochLong+1));
 		Process p;
 		BufferedReader outReader = null;
@@ -177,15 +192,24 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		if(epoch == null || values == null || metricPath == null || "".equals(metricPath.trim()) || epoch.length != values.length)
 			return false;		// return false if the input provided is invalid
 		Process p;
+		int noOfBadEpochs = 0;
 		StringBuilder command = new StringBuilder();		// holds the command to execute
 		command.append("whisper-update.py "+whisperPath+metricPath+".wsp ");
-		long currentEpoch;	// holds the currentEpoch when epoch[] is iterated
+		long currentEpoch = 0;	// holds the currentEpoch when epoch[] is iterated
 		for(int i=0;i<epoch.length;i++){
-			currentEpoch = (long)Double.parseDouble(epoch[i]);		// parse to long
+			try{
+				currentEpoch = (long)Double.parseDouble(epoch[i]);		// parse to long
+			} catch(NumberFormatException e){
+				noOfBadEpochs++;
+			}
 			currentEpoch = currentEpoch - (currentEpoch % lowestInterval);	// round down
 			command.append(currentEpoch+":"+values[i]);				// append to command string
 			if(i!=epoch.length-1)
 				command.append(" ");		// append a space if it is not the last element of array
+		}
+		if(noOfBadEpochs == epoch.length){
+			LOGGER.log(Level.SEVERE, "Exception in updateMetrics::No Epoch to update/Invalid epochs");
+			return false;
 		}
 		try {
 			p = Runtime.getRuntime().exec(command.toString());		// run the command
