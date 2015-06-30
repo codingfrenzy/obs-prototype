@@ -58,9 +58,12 @@ public interface IModelHandlerServer extends Remote {
 		 * @return MD5 hash in string format
 		 */
 		public static String getFileMD5(String filePath) {
+			if(filePath == null)
+				return null;
 			// open filepath as a file
 			File f = new File(filePath);
-			if(f.isDirectory() 	||	// it's a directory
+			if(f == null		||  // null
+			   f.isDirectory() 	||	// it's a directory
 			   !f.exists() 		||	// does not exist
 			   !f.canRead()			// cannot read
 			   ){
