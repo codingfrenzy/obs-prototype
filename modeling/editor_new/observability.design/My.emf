@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:emf="http://www.observability.com/emf">
+  <availableDbTypes name="cassandra">
+    <availableMetrics xsi:type="emf:BaseMetric" name="load_metric"/>
+    <availableMetrics xsi:type="emf:BaseMetric" name="readcount_metric"/>
+    <availableMetrics xsi:type="emf:BaseMetric" name="memory_metric"/>
+  </availableDbTypes>
+  <availableDbTypes name="mongodb"/>
+  <availableDbTypes name="postgres">
+    <availableMetrics xsi:type="emf:BaseMetric" name="magic"/>
+    <availableMetrics xsi:type="emf:BaseMetric" name="rt36_tickets"/>
+  </availableDbTypes>
+</emf:Model>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:emf="http://www.observability.com/emf" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_9EzcoB9UEeWFzaA7_nmciQ" selectedViews="_hoOnMB9eEeWLSOCnpDO2BA" version="8.1.1">
+  <models xmi:type="emf:Model" href="My.emf#/"/>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_hoOnMB9eEeWLSOCnpDO2BA" initialized="true">
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_hpRwEB9eEeWLSOCnpDO2BA" name="Diagram">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_hplSEB9eEeWLSOCnpDO2BA" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_hplSER9eEeWLSOCnpDO2BA" type="Sirius" element="_hpRwEB9eEeWLSOCnpDO2BA" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_hpz7kB9eEeWLSOCnpDO2BA" type="2002" element="_hpRwER9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_hqFBUB9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_hqGPcB9eEeWLSOCnpDO2BA" type="7001">
+              <children xmi:type="notation:Node" xmi:id="_hqOLQB9eEeWLSOCnpDO2BA" type="3007" element="_hpRwFx9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_hqPZYB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_hqPZYR9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_hqaYgB9eEeWLSOCnpDO2BA" type="3016" element="_hpRwGB9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_hqaYgR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqaYgh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_hqOyUB9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqOyUR9eEeWLSOCnpDO2BA" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_hqYjUB9eEeWLSOCnpDO2BA" type="3007" element="_hpRwHB9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_hqZKYB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_hqZKYR9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_hqa_kB9eEeWLSOCnpDO2BA" type="3016" element="_hpRwHR9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_hqa_kR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqa_kh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_hqYjUR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqYjUh9eEeWLSOCnpDO2BA" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_hqZKYh9eEeWLSOCnpDO2BA" type="3007" element="_hpRwIR9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_hqZxcB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_hqZxcR9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_hqa_kx9eEeWLSOCnpDO2BA" type="3016" element="_hpRwIh9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_hqa_lB9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqa_lR9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_hqZKYx9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqZKZB9eEeWLSOCnpDO2BA" width="50" height="50"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_hqGPcR9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_hqGPch9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_hpz7kR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hpz7kh9eEeWLSOCnpDO2BA"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_hqLvAB9eEeWLSOCnpDO2BA" type="2002" element="_hpRwJh9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_hqMWEB9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_hqM9IB9eEeWLSOCnpDO2BA" type="7001">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_hqM9IR9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_hqM9Ih9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_hqLvAR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqLvAh9eEeWLSOCnpDO2BA"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_hqM9Ix9eEeWLSOCnpDO2BA" type="2002" element="_hpRwLB9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_hqM9Jh9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_hqNkMB9eEeWLSOCnpDO2BA" type="7001">
+              <children xmi:type="notation:Node" xmi:id="_hqbmoB9eEeWLSOCnpDO2BA" type="3007" element="_hpRwMh9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_hqbmox9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_hqbmpB9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_hqc0wh9eEeWLSOCnpDO2BA" type="3016" element="_hpRwMx9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_hqc0wx9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqc0xB9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_hqbmoR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqbmoh9eEeWLSOCnpDO2BA" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_hqcNsB9eEeWLSOCnpDO2BA" type="3007" element="_hpRwNx9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_hqc0wB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_hqc0wR9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_hqeC4B9eEeWLSOCnpDO2BA" type="3016" element="_hpRwOB9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_hqeC4R9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqeC4h9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_hqcNsR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqcNsh9eEeWLSOCnpDO2BA" width="50" height="50"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_hqNkMR9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_hqNkMh9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_hqM9JB9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hqM9JR9eEeWLSOCnpDO2BA"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_hplSEh9eEeWLSOCnpDO2BA"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_hpRwER9eEeWLSOCnpDO2BA" name="cassandra">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.0"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.0"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_hpRwEh9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwEx9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwFB9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwFR9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwFh9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_hpRwFx9eEeWLSOCnpDO2BA" name="load_metric" tooltipText="load_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.0"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.0"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_hpRwGB9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwGR9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwGh9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_hpRwGx9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_hpRwHB9eEeWLSOCnpDO2BA" name="readcount_metric" tooltipText="readcount_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.1"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.1"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_hpRwHR9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwHh9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwHx9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_hpRwIB9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_hpRwIR9eEeWLSOCnpDO2BA" name="memory_metric" tooltipText="memory_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.2"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.2"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_hpRwIh9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwIx9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwJB9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_hpRwJR9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_hpRwJh9eEeWLSOCnpDO2BA" name="mongodb">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.1"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.1"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_hpRwJx9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwKB9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwKR9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwKh9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwKx9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_hpRwLB9eEeWLSOCnpDO2BA" name="postgres">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.2"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.2"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_hpRwLR9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwLh9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwLx9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwMB9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwMR9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_hpRwMh9eEeWLSOCnpDO2BA" name="magic" tooltipText="magic" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.0"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.0"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_hpRwMx9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwNB9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwNR9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_hpRwNh9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_hpRwNx9eEeWLSOCnpDO2BA" name="rt36_tickets" tooltipText="rt36_tickets" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.1"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.1"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_hpRwOB9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwOR9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_hpRwOh9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_hpRwOx9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_hpRwPB9eEeWLSOCnpDO2BA"/>
+      <activatedLayers xmi:type="description_1:Layer" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer"/>
+      <target xmi:type="emf:Model" href="My.emf#/"/>
+    </ownedRepresentations>
+    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_kR-QoB9eEeWLSOCnpDO2BA" name="diagram">
+      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_kR-3sB9eEeWLSOCnpDO2BA" source="GMF_DIAGRAMS">
+        <data xmi:type="notation:Diagram" xmi:id="_kR-3sR9eEeWLSOCnpDO2BA" type="Sirius" element="_kR-QoB9eEeWLSOCnpDO2BA" measurementUnit="Pixel">
+          <children xmi:type="notation:Node" xmi:id="_kR_ewB9eEeWLSOCnpDO2BA" type="2002" element="_kR-QoR9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_kR_ewx9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_kSAF0B9eEeWLSOCnpDO2BA" type="7001">
+              <children xmi:type="notation:Node" xmi:id="_kSBT8B9eEeWLSOCnpDO2BA" type="3007" element="_kR-Qpx9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_kSBT8x9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_kSBT9B9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_kSDwMB9eEeWLSOCnpDO2BA" type="3016" element="_kR-QqB9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_kSDwMR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSDwMh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_kSBT8R9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSBT8h9eEeWLSOCnpDO2BA" x="31" y="30" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_kSB7AB9eEeWLSOCnpDO2BA" type="3007" element="_kR-QrB9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_kSCiEB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_kSCiER9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_kSEXQB9eEeWLSOCnpDO2BA" type="3016" element="_kR-QrR9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_kSEXQR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSEXQh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_kSB7AR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSB7Ah9eEeWLSOCnpDO2BA" x="115" y="30" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_kSCiEh9eEeWLSOCnpDO2BA" type="3007" element="_kR-QsR9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_kSDJIB9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_kSDJIR9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_kSE-UB9eEeWLSOCnpDO2BA" type="3016" element="_kR-Qsh9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_kSE-UR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSE-Uh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_kSCiEx9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSCiFB9eEeWLSOCnpDO2BA" x="223" y="30" width="50" height="50"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_kSAF0R9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_kSAF0h9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_kR_ewR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kR_ewh9eEeWLSOCnpDO2BA" width="351" height="123"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_kSAF0x9eEeWLSOCnpDO2BA" type="2002" element="_kR-Qth9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_kSAF1h9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_kSAs4B9eEeWLSOCnpDO2BA" type="7001">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_kSAs4R9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_kSAs4h9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_kSAF1B9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSAF1R9eEeWLSOCnpDO2BA" x="360"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_kSAs4x9eEeWLSOCnpDO2BA" type="2002" element="_kR-QvB9eEeWLSOCnpDO2BA">
+            <children xmi:type="notation:Node" xmi:id="_kSAs5h9eEeWLSOCnpDO2BA" type="5006"/>
+            <children xmi:type="notation:Node" xmi:id="_kSAs5x9eEeWLSOCnpDO2BA" type="7001">
+              <children xmi:type="notation:Node" xmi:id="_kSFlYB9eEeWLSOCnpDO2BA" type="3007" element="_kR-Qwh9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_kSFlYx9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_kSFlZB9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_kSGzgB9eEeWLSOCnpDO2BA" type="3016" element="_kR-Qwx9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_kSGzgR9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSGzgh9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_kSFlYR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSFlYh9eEeWLSOCnpDO2BA" x="31" y="30" width="50" height="50"/>
+              </children>
+              <children xmi:type="notation:Node" xmi:id="_kSGMcB9eEeWLSOCnpDO2BA" type="3007" element="_kR-Qxx9eEeWLSOCnpDO2BA">
+                <children xmi:type="notation:Node" xmi:id="_kSGMcx9eEeWLSOCnpDO2BA" type="5003">
+                  <layoutConstraint xmi:type="notation:Location" xmi:id="_kSGMdB9eEeWLSOCnpDO2BA" y="-21"/>
+                </children>
+                <children xmi:type="notation:Node" xmi:id="_kSGzgx9eEeWLSOCnpDO2BA" type="3016" element="_kR-QyB9eEeWLSOCnpDO2BA">
+                  <styles xmi:type="notation:ShapeStyle" xmi:id="_kSGzhB9eEeWLSOCnpDO2BA" fontName="Segoe UI"/>
+                  <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSGzhR9eEeWLSOCnpDO2BA"/>
+                </children>
+                <styles xmi:type="notation:ShapeStyle" xmi:id="_kSGMcR9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSGMch9eEeWLSOCnpDO2BA" x="115" y="30" width="50" height="50"/>
+              </children>
+              <styles xmi:type="notation:SortingStyle" xmi:id="_kSAs6B9eEeWLSOCnpDO2BA"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_kSAs6R9eEeWLSOCnpDO2BA"/>
+            </children>
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_kSAs5B9eEeWLSOCnpDO2BA" fontName="Segoe UI" fontHeight="8"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kSAs5R9eEeWLSOCnpDO2BA" x="576"/>
+          </children>
+          <styles xmi:type="notation:DiagramStyle" xmi:id="_kR-3sh9eEeWLSOCnpDO2BA"/>
+        </data>
+      </ownedAnnotationEntries>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_kR-QoR9eEeWLSOCnpDO2BA" name="cassandra">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.0"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.0"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_kR-Qoh9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qox9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QpB9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QpR9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qph9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_kR-Qpx9eEeWLSOCnpDO2BA" name="load_metric" tooltipText="load_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.0"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.0"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_kR-QqB9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QqR9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qqh9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qqx9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_kR-QrB9eEeWLSOCnpDO2BA" name="readcount_metric" tooltipText="readcount_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.1"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.1"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_kR-QrR9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qrh9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qrx9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_kR-QsB9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_kR-QsR9eEeWLSOCnpDO2BA" name="memory_metric" tooltipText="memory_metric" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.2"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.0/@availableMetrics.2"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_kR-Qsh9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qsx9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QtB9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_kR-QtR9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_kR-Qth9eEeWLSOCnpDO2BA" name="mongodb">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.1"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.1"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_kR-Qtx9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QuB9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QuR9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Quh9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qux9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+      </ownedDiagramElements>
+      <ownedDiagramElements xmi:type="diagram:DNodeContainer" xmi:id="_kR-QvB9eEeWLSOCnpDO2BA" name="postgres">
+        <target xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.2"/>
+        <semanticElements xmi:type="emf:DbType" href="My.emf#//@availableDbTypes.2"/>
+        <ownedStyle xmi:type="diagram:FlatContainerStyle" xmi:id="_kR-QvR9eEeWLSOCnpDO2BA">
+          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qvh9eEeWLSOCnpDO2BA"/>
+          <description xmi:type="style:FlatContainerStyleDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@style"/>
+          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qvx9eEeWLSOCnpDO2BA"/>
+          <backgroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QwB9eEeWLSOCnpDO2BA" red="255" green="255" blue="255"/>
+          <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QwR9eEeWLSOCnpDO2BA" red="114" green="73" blue="110"/>
+        </ownedStyle>
+        <actualMapping xmi:type="description_1:ContainerMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']"/>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_kR-Qwh9eEeWLSOCnpDO2BA" name="magic" tooltipText="magic" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.0"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.0"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_kR-Qwx9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QxB9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QxR9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qxh9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+        <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_kR-Qxx9eEeWLSOCnpDO2BA" name="rt36_tickets" tooltipText="rt36_tickets" width="5" height="5" resizeKind="NSEW">
+          <target xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.1"/>
+          <semanticElements xmi:type="emf:BaseMetric" href="My.emf#//@availableDbTypes.2/@availableMetrics.1"/>
+          <ownedStyle xmi:type="diagram:Ellipse" xmi:id="_kR-QyB9eEeWLSOCnpDO2BA" horizontalDiameter="5" verticalDiameter="5">
+            <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-QyR9eEeWLSOCnpDO2BA"/>
+            <description xmi:type="style:EllipseNodeDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']/@style"/>
+            <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qyh9eEeWLSOCnpDO2BA"/>
+            <color xmi:type="viewpoint:RGBValues" xmi:id="_kR-Qyx9eEeWLSOCnpDO2BA" red="238" green="201" blue="142"/>
+          </ownedStyle>
+          <actualMapping xmi:type="description_1:NodeMapping" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric']"/>
+        </ownedDiagramElements>
+      </ownedDiagramElements>
+      <description xmi:type="description_1:DiagramDescription" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']"/>
+      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_kR-QzB9eEeWLSOCnpDO2BA"/>
+      <activatedLayers xmi:type="description_1:Layer" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer"/>
+      <target xmi:type="emf:Model" href="My.emf#/"/>
+    </ownedRepresentations>
+    <viewpoint xmi:type="description:Viewpoint" href="description/observability.odesign#//@ownedViewpoints[name='ModelerView']"/>
+  </ownedViews>
+</viewpoint:DAnalysis>
