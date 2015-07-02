@@ -21,6 +21,10 @@
 
 package com.observability.modeling.emf.extension;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -65,16 +69,19 @@ public class CustomServices {
      * 		class gets destroyed between the calls to initializeDbTypes and initializeMachine
      */
 	
-	static {
-    	EmfPackage.eINSTANCE.eClass();
-    	String os = System.getProperty("os.name").toLowerCase();
-    	DescriptorParserImpl parser;
-    	
-    	if(os.indexOf("win") >= 0)
-    		parser = new DescriptorParserImpl( Paths.get("D:/observability modeling/modeling/workspace/observability/src/com/observability/modeling/resources"));
-    	else
-    		parser = new DescriptorParserImpl( Paths.get("/home/vsaravag/git/obs-prototype/modeling/workspace/observability/src/com/observability/modeling/resources"));
-		dbTypes = parser.parseDescriptors();
+	private static void getParser(Path dirPath) throws Exception{
+		// get the descriptor directory
+		String descriptorPath = dirPath.toString() + File.separatorChar + PROBE_DESCRIPTOR_DIR_PATH;
+		
+		if(Files.exists(Paths.get(descriptorPath), LinkOption.NOFOLLOW_LINKS)){
+			// if descriptors exist, get the parsed descriptors
+			DescriptorParserImpl parser = new DescriptorParserImpl(Paths.get(descriptorPath));
+			dbTypes = parser.parseDescriptors();
+		}
+		else {
+			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
+					+ "directory in the root of the project and create the file again."); 
+		}
     }
 	
 	
@@ -85,16 +92,13 @@ public class CustomServices {
 	 * from the descriptors.
 	 * 
 	 * @param model the root element to fill in the new entities
+	 * @param dirPath 
 	 */
-	public static void initializeDbTypes( Model model){
+	public static void initializeDbTypes( Model model, Path dirPath) throws Exception{
 		
-				
-		//Read descriptor files
-		//ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
-		//URL path = classLoader.getResource("basicTest2.descriptor");
-	    //DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
-
-		
+		//Get the parsers
+		getParser(dirPath);
+					
 		//Create dbTypes for each descriptor file
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			DbType newDbType = factory.createDbType();

@@ -3,6 +3,8 @@
 package com.observability.modeling.emf.presentation;
 
 
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,6 +31,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,9 +57,6 @@ import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Model;
 import com.observability.modeling.emf.extension.CustomServices;
 import com.observability.modeling.emf.provider.ObservabilityEditPlugin;
-
-
-
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
@@ -211,7 +211,6 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 			// Remember the file.
 			//
 			final IFile modelFile = getModelFile();
-
 			// Do the work within an operation.
 			//
 			WorkspaceModifyOperation operation =
@@ -226,11 +225,9 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							// Get the URI of the model file.
 							//
 							URI fileURI = URI.createPlatformResourceURI(modelFile.getFullPath().toString(), true);
-
 							// Create a resource for this file.
 							//
 							Resource resource = resourceSet.createResource(fileURI);
-
 							// Add the initial model object to the contents.
 							//
 							EObject rootObject = createInitialModel();
@@ -251,12 +248,17 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							 * -----Extension point---
 							 * Read the plugin descriptors and create the corresponding dbType instances
 							 */
-							
-							CustomServices.initializeDbTypes((Model)rootObject);
+							// get the absolute path of the model file
+							IPath filePath = modelFile.getLocation();
+							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
+							CustomServices.initializeDbTypes((Model)rootObject, dirPath);
 							resource.save(options);
 						}
 						catch (Exception exception) {
 							ObservabilityEditorPlugin.INSTANCE.log(exception);
+							MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
+									"Descriptors not found", 
+									exception.getMessage());
 						}
 						finally {
 							progressMonitor.done();
@@ -284,9 +286,11 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 			// Open an editor on the new file.
 			//
 			try {
-				page.openEditor
-					(new FileEditorInput(modelFile),
-					 workbench.getEditorRegistry().getDefaultEditor(modelFile.getFullPath().toString()).getId());					 	 
+				if(Files.exists((java.nio.file.Path) modelFile.getLocation().toFile().toPath(), LinkOption.NOFOLLOW_LINKS)){
+					page.openEditor
+						(new FileEditorInput(modelFile),
+								workbench.getEditorRegistry().getDefaultEditor(modelFile.getFullPath().toString()).getId());
+				}
 			}
 			catch (PartInitException exception) {
 				MessageDialog.openError(workbenchWindow.getShell(), ObservabilityEditorPlugin.INSTANCE.getString("_UI_OpenEditorError_label"), exception.getMessage());
