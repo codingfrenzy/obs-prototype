@@ -26,9 +26,11 @@ class MongoDB(object):
 
     def submit(self, type, instance, value, db=None):
         if db:
-            plugin_instance = '%s-%s' % (self.mongo_port, db)
+            #plugin_instance = '%s-%s' % (self.mongo_port, db)
+	    plugin_instance = 'db-%s' % (db)
         else:
-            plugin_instance = str(self.mongo_port)
+            #plugin_instance = str(self.mongo_port)
+	    plugin_instance = "server"
         v = collectd.Values()
         v.plugin = self.plugin_name
         v.plugin_instance = plugin_instance
@@ -54,11 +56,16 @@ class MongoDB(object):
             self.submit('total_operations', k, v)
 
         # memory
-        for t in ['resident', 'virtual', 'mapped']:
+        for t in ['resident', 'virtual', 'mapped', 'mappedWithJournal']:
             self.submit('memory', t, server_status['mem'][t])
 
         # connections
-        self.submit('connections', 'connections', server_status['connections']['current'])
+        self.submit('connections', 'current', server_status['connections']['current'])
+	self.submit('connections', 'available', server_status['connections']['available'])
+
+	# network
+	for t in ['bytesIn', 'bytesOut', 'numRequests']:
+            self.submit('network', t, server_status['network'][t])
 
         # locks
 #        if self.lockTotalTime is not None and self.lockTime is not None:
