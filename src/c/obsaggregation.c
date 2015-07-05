@@ -1140,7 +1140,7 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 				}
 			}
 			inserted = 1;
-			INFO ("obsagg_write: value inserted in round %d : %s - time:%ld.", i, name, CDTIME_T_TO_TIME_T(vl->time));
+			INFO ("obsagg_write: plugin: %s - value inserted in round %d : %s - time:%ld.", vl->plugin, i, name, CDTIME_T_TO_TIME_T(vl->time));
 			break;
 		}
 	}
