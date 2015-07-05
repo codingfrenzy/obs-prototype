@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedDerivedMetrics <em>Collected Derived Metrics</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  * </ul>
  * </p>
  *
@@ -155,5 +156,21 @@ public interface DatabaseCluster extends EObject {
 	 * @generated
 	 */
 	EList<DerivedMetric> getCollectedDerivedMetrics();
+
+	/**
+	 * Returns the value of the '<em><b>Associated Notifications</b></em>' reference list.
+	 * The list contents are of type {@link com.observability.modeling.emf.Notification}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Associated Notifications</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Associated Notifications</em>' reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster_AssociatedNotifications()
+	 * @model
+	 * @generated
+	 */
+	EList<Notification> getAssociatedNotifications();
 
 } // DatabaseCluster

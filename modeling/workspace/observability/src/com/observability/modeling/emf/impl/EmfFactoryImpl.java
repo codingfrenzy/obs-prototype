@@ -64,6 +64,7 @@ public class EmfFactoryImpl extends EFactoryImpl implements EmfFactory {
 			case EmfPackage.MODEL: return createModel();
 			case EmfPackage.BASE_METRIC: return createBaseMetric();
 			case EmfPackage.DERIVED_METRIC: return createDerivedMetric();
+			case EmfPackage.NOTIFICATION: return createNotification();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -147,6 +148,16 @@ public class EmfFactoryImpl extends EFactoryImpl implements EmfFactory {
 	public DerivedMetric createDerivedMetric() {
 		DerivedMetricImpl derivedMetric = new DerivedMetricImpl();
 		return derivedMetric;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Notification createNotification() {
+		NotificationImpl notification = new NotificationImpl();
+		return notification;
 	}
 
 	/**

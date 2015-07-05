@@ -190,11 +190,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	protected EObject createInitialModel() {
-		/**
-		 * Select "Model" entity as the root class. If EMF metamodel changes
-		 * this might need to change.
-		 */
-		EClass eClass = (EClass)emfPackage.getEClassifier("Model");
+		EClass eClass = (EClass)emfPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
 		EObject rootObject = emfFactory.create(eClass);
 		return rootObject;
 	}
@@ -203,7 +199,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 	 * Do the work after everything is specified.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	@Override
 	public boolean performFinish() {
@@ -396,8 +392,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 		 * @generated
 		 */
 		public void createControl(Composite parent) {
-			Composite composite = new Composite(parent, SWT.NONE);
-			{
+			Composite composite = new Composite(parent, SWT.NONE); {
 				GridLayout layout = new GridLayout();
 				layout.numColumns = 1;
 				layout.verticalSpacing = 12;
@@ -565,7 +560,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 	 * The framework calls this to create the contents of the wizard.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 		@Override
 	public void addPages() {
@@ -624,7 +619,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 	 * Get the file from the page.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	public IFile getModelFile() {
 		return newFileCreationPage.getModelFile();

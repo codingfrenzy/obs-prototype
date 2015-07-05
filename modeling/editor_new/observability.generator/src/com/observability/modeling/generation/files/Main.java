@@ -411,11 +411,10 @@ public class Main extends AbstractAcceleoGenerator {
     
     /**
      * This method is used to set the parameters required to generate the configuration files.
-     * @param templateFiles the absolute path of the directory where the template files are located.
      * @param confDir the absolute path of the directory where the configuration files are created
      * @param zipPath the absolute path of the directory where the configuration zip is to be created
      */
-    public void setFileParameters(String templateFiles, String confDir, String zipPath){
-    	DescriptorFiles.setParameters(templateFiles, confDir, zipPath);
+    public void setFileParameters(String confDir, String zipPath){
+    	DescriptorFiles.setParameters(confDir, zipPath);
     }
 }

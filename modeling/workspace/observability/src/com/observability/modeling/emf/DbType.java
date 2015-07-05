@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link com.observability.modeling.emf.DbType#getName <em>Name</em>}</li>
- *   <li>{@link com.observability.modeling.emf.DbType#getProbeLocation <em>Probe Location</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DbType#getCollectionFrequency <em>Collection Frequency</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DbType#getAvailableMetrics <em>Available Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DbType#getHasParentElement <em>Has Parent Element</em>}</li>
@@ -52,32 +51,6 @@ public interface DbType extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Probe Location</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Probe Location</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Probe Location</em>' attribute.
-	 * @see #setProbeLocation(String)
-	 * @see com.observability.modeling.emf.EmfPackage#getDbType_ProbeLocation()
-	 * @model
-	 * @generated
-	 */
-	String getProbeLocation();
-
-	/**
-	 * Sets the value of the '{@link com.observability.modeling.emf.DbType#getProbeLocation <em>Probe Location</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Probe Location</em>' attribute.
-	 * @see #getProbeLocation()
-	 * @generated
-	 */
-	void setProbeLocation(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Collection Frequency</b></em>' attribute.

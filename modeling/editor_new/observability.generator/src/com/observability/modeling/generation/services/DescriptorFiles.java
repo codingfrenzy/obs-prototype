@@ -19,7 +19,6 @@
  */
 //**************************************************************************************************//	
 
-
 package com.observability.modeling.generation.services;
 
 import java.io.BufferedInputStream;
@@ -30,16 +29,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-
-
-
 /**
- * The class has methods to check for the descriptor template files 
- * and zip them together into a single file.
+ * The class has methods to check for the descriptor template files and zip them
+ * together into a single file.
  * 
  * @author vsaravag
  *
@@ -47,110 +46,126 @@ import java.util.zip.ZipOutputStream;
 public class DescriptorFiles {
 
 	private static final int BUFFER = 2048;
-	private static String FILES = 
-			"/home/vsaravag/git/obs-prototype/modeling/editor_new/observability.generator/src/com/observability/modeling/generation/files";
-	private static String CONF_DIR = "/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal";
+	private static String FILES = "";
+	//"/home/vsaravag/git/obs-prototype/modeling/editor_new/observability.generator/src/com/observability/modeling/generation/files";
+	private static String CONF_DIR = "";
 	private static final String TEMPLATE_EXTENSION = ".mtl";
 	private static final String CONF_EXTENSION = ".conf";
-	private static String ZIPPATH = "";//"/home/vsaravag/git/obs-prototype/modeling/third/ModelingFinal/conf.zip";
+	private static String ZIPPATH = "";
 	private static ArrayList<String> fileNames = new ArrayList<String>();
-	
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		zipAll();
 	}
 	
-	public static void setParameters(String templateFiles, String confDir, String zipPath){
-		String os = System.getProperty("os.name").toLowerCase();
-    	   	
-    	if(os.indexOf("win") >= 0)
-    		templateFiles = "D:/observability modeling/modeling/editor_new/observability.generator/src/com/observability/modeling/generation/files";
-    	
+	
+	/**
+	 * Set the parameters required to generate the configuration files
+	 * @param confDir the path where the configuration files are to be created
+	 * @param zipPath the path where the zip file is to be created
+	 */
+	public static void setParameters(String confDir, String zipPath) {
+		// Get the absolute path and normalize.  
+		// It gives the path of the project and not the class
+		String projectPath = DescriptorFiles.class.getProtectionDomain()
+				.getCodeSource().getLocation().getPath();
+		Path p = Paths.get(projectPath).normalize();
 		
+		// Get the relative path of the class
+		URL classUrl = DescriptorFiles.class
+				.getResource("DescriptorFiles.class");
+		Path classPath = Paths.get(classUrl.getPath());
+		classPath = classPath.getParent().getParent();
+		
+		// Make the path for the template files directory
+		String templateFiles = p.toString() + File.separatorChar + "src"
+				+ classPath.toString() + File.separatorChar + "files";
+
 		FILES = templateFiles;
 		CONF_DIR = confDir;
 		ZIPPATH = zipPath;
 	}
+
 	/**
-	 * Get all the generator files in the files resource directory.
-	 * Generator files have extension *.mtl 
+	 * Get all the generator files in the files resource directory. Generator
+	 * files have extension *.mtl
 	 */
-	public static void getAllFiles(){
+	public static void getAllFiles() {
 		// Get the File object of the directory containing the template files
 		File dir;
 		dir = new File(FILES);
-		
+
 		// Get only the *.mtl files
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().endsWith(TEMPLATE_EXTENSION);
 			}
 		});
-		
+
 		// Store the file name of all the files without the extension
-		for(File file : files){
+		for (File file : files) {
 			String fileName = file.getName();
 			fileNames.add(fileName.split("\\.")[0].toLowerCase());
 		}
 	}
-	
-	
-	
+
 	/**
-	 * @param dbName the name of the DbType
-	 * @return true if the template file for the dbName exists,
-	 * false otherwise
+	 * @param dbName
+	 *            the name of the DbType
+	 * @return true if the template file for the dbName exists, false otherwise
 	 */
-	public static boolean hasFile(String dbName){
+	public static boolean hasFile(String dbName) {
 		getAllFiles();
-		if(fileNames.contains(dbName.toLowerCase())){
+		if (fileNames.contains(dbName.toLowerCase())) {
 			return true;
 		}
 		return false;
 	}
-	
-	
+
 	/**
-	 * Zip all the generated configuration files.
-	 * Configuration files are of the format *_collectd.conf
+	 * Zip all the generated configuration files. Configuration files are of the
+	 * format *_collectd.conf
 	 */
-	public static void zipAll(){
+	public static void zipAll() {
 		// Get all the configuration files in the directory
 		File dir = new File(CONF_DIR);
-		
+
 		File[] files = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().endsWith(CONF_EXTENSION);
 			}
 		});
-		
-		try{
-			
+
+		try {
+
 			BufferedInputStream origin = null;
-			
-			// Create an output stream at the destination where zip is to be created
+
+			// Create an output stream at the destination where zip is to be
+			// created
 			// overwrite if the zip already exists
-			FileOutputStream dest = new FileOutputStream(ZIPPATH+"/conf.zip", false);
-			
+			FileOutputStream dest = new FileOutputStream(ZIPPATH,
+					false);
+
 			// Create the zip output stream
-			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+			ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
+					dest));
 			out.setMethod(ZipOutputStream.DEFLATED);
-			
+
 			byte[] data = new byte[BUFFER];
-			
+
 			// Add each file to the zip
-			for(int i=0; i< files.length;i++){
+			for (int i = 0; i < files.length; i++) {
 				// read the file
 				FileInputStream fi = new FileInputStream(files[i]);
 				origin = new BufferedInputStream(fi, BUFFER);
-				
+
 				// create a zip entry and put it in the zip output stream
 				ZipEntry entry = new ZipEntry(files[i].getName());
 				out.putNextEntry(entry);
-				
+
 				// read the file and add it to the zip output stream
 				int count;
-				while((count = origin.read(data, 0, 
-						BUFFER)) != -1) {
+				while ((count = origin.read(data, 0, BUFFER)) != -1) {
 					out.write(data, 0, count);
 				}
 				origin.close();
@@ -158,8 +173,7 @@ public class DescriptorFiles {
 			}
 			out.close();
 			dest.close();
-		}
-		catch (FileNotFoundException e){
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getName <em>Name</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getProbeLocation <em>Probe Location</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getCollectionFrequency <em>Collection Frequency</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getAvailableMetrics <em>Available Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getHasParentElement <em>Has Parent Element</em>}</li>
@@ -60,26 +59,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getProbeLocation() <em>Probe Location</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProbeLocation()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PROBE_LOCATION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getProbeLocation() <em>Probe Location</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProbeLocation()
-	 * @generated
-	 * @ordered
-	 */
-	protected String probeLocation = PROBE_LOCATION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getCollectionFrequency() <em>Collection Frequency</em>}' attribute.
@@ -159,27 +138,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DB_TYPE__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String getProbeLocation() {
-		return probeLocation;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setProbeLocation(String newProbeLocation) {
-		String oldProbeLocation = probeLocation;
-		probeLocation = newProbeLocation;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DB_TYPE__PROBE_LOCATION, oldProbeLocation, probeLocation));
 	}
 
 	/**
@@ -284,8 +242,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		switch (featureID) {
 			case EmfPackage.DB_TYPE__NAME:
 				return getName();
-			case EmfPackage.DB_TYPE__PROBE_LOCATION:
-				return getProbeLocation();
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				return getCollectionFrequency();
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
@@ -307,9 +263,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		switch (featureID) {
 			case EmfPackage.DB_TYPE__NAME:
 				setName((String)newValue);
-				return;
-			case EmfPackage.DB_TYPE__PROBE_LOCATION:
-				setProbeLocation((String)newValue);
 				return;
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				setCollectionFrequency((Integer)newValue);
@@ -336,9 +289,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 			case EmfPackage.DB_TYPE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case EmfPackage.DB_TYPE__PROBE_LOCATION:
-				setProbeLocation(PROBE_LOCATION_EDEFAULT);
-				return;
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				setCollectionFrequency(COLLECTION_FREQUENCY_EDEFAULT);
 				return;
@@ -362,8 +312,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		switch (featureID) {
 			case EmfPackage.DB_TYPE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case EmfPackage.DB_TYPE__PROBE_LOCATION:
-				return PROBE_LOCATION_EDEFAULT == null ? probeLocation != null : !PROBE_LOCATION_EDEFAULT.equals(probeLocation);
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				return collectionFrequency != COLLECTION_FREQUENCY_EDEFAULT;
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
@@ -386,8 +334,6 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
-		result.append(", probeLocation: ");
-		result.append(probeLocation);
 		result.append(", collectionFrequency: ");
 		result.append(collectionFrequency);
 		result.append(')');

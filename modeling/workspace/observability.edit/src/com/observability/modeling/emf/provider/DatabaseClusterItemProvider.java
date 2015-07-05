@@ -68,6 +68,7 @@ public class DatabaseClusterItemProvider
 			addNamePropertyDescriptor(object);
 			addNoOfMachinesPropertyDescriptor(object);
 			addCollectedDerivedMetricsPropertyDescriptor(object);
+			addAssociatedNotificationsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -174,6 +175,28 @@ public class DatabaseClusterItemProvider
 				 getString("_UI_DatabaseCluster_collectedDerivedMetrics_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedDerivedMetrics_feature", "_UI_DatabaseCluster_type"),
 				 EmfPackage.Literals.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Associated Notifications feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addAssociatedNotificationsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DatabaseCluster_associatedNotifications_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_associatedNotifications_feature", "_UI_DatabaseCluster_type"),
+				 EmfPackage.Literals.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS,
 				 true,
 				 false,
 				 true,

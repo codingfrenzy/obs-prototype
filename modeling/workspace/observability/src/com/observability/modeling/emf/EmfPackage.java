@@ -121,13 +121,22 @@ public interface EmfPackage extends EPackage {
 	int DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS = 5;
 
 	/**
+	 * The feature id for the '<em><b>Associated Notifications</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = 6;
+
+	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER_FEATURE_COUNT = 6;
+	int DATABASE_CLUSTER_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Database Cluster</em>' class.
@@ -158,22 +167,13 @@ public interface EmfPackage extends EPackage {
 	int DB_TYPE__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Probe Location</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DB_TYPE__PROBE_LOCATION = 1;
-
-	/**
 	 * The feature id for the '<em><b>Collection Frequency</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE__COLLECTION_FREQUENCY = 2;
+	int DB_TYPE__COLLECTION_FREQUENCY = 1;
 
 	/**
 	 * The feature id for the '<em><b>Available Metrics</b></em>' containment reference list.
@@ -182,7 +182,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE__AVAILABLE_METRICS = 3;
+	int DB_TYPE__AVAILABLE_METRICS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
@@ -191,7 +191,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE__HAS_PARENT_ELEMENT = 4;
+	int DB_TYPE__HAS_PARENT_ELEMENT = 3;
 
 	/**
 	 * The number of structural features of the '<em>Db Type</em>' class.
@@ -200,7 +200,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE_FEATURE_COUNT = 5;
+	int DB_TYPE_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Db Type</em>' class.
@@ -396,13 +396,13 @@ public interface EmfPackage extends EPackage {
 	int MODEL = 5;
 
 	/**
-	 * The feature id for the '<em><b>Frequency</b></em>' attribute.
+	 * The feature id for the '<em><b>Interval</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL__FREQUENCY = 0;
+	int MODEL__INTERVAL = 0;
 
 	/**
 	 * The feature id for the '<em><b>Clusters</b></em>' containment reference list.
@@ -423,13 +423,40 @@ public interface EmfPackage extends EPackage {
 	int MODEL__AVAILABLE_DB_TYPES = 2;
 
 	/**
+	 * The feature id for the '<em><b>Server IP</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__SERVER_IP = 3;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__NAME = 4;
+
+	/**
+	 * The feature id for the '<em><b>Notifications</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__NOTIFICATIONS = 5;
+
+	/**
 	 * The number of structural features of the '<em>Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_FEATURE_COUNT = 3;
+	int MODEL_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -451,22 +478,13 @@ public interface EmfPackage extends EPackage {
 	int METRIC = 8;
 
 	/**
-	 * The feature id for the '<em><b>Unit</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int METRIC__UNIT = 0;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC__NAME = 1;
+	int METRIC__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -475,7 +493,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC__DESCRIPTION = 2;
+	int METRIC__DESCRIPTION = 1;
 
 	/**
 	 * The number of structural features of the '<em>Metric</em>' class.
@@ -484,7 +502,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC_FEATURE_COUNT = 3;
+	int METRIC_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Metric</em>' class.
@@ -504,15 +522,6 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	int BASE_METRIC = 6;
-
-	/**
-	 * The feature id for the '<em><b>Unit</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BASE_METRIC__UNIT = METRIC__UNIT;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -579,15 +588,6 @@ public interface EmfPackage extends EPackage {
 	int DERIVED_METRIC = 7;
 
 	/**
-	 * The feature id for the '<em><b>Unit</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DERIVED_METRIC__UNIT = METRIC__UNIT;
-
-	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -631,6 +631,161 @@ public interface EmfPackage extends EPackage {
 	 * @ordered
 	 */
 	int DERIVED_METRIC_OPERATION_COUNT = METRIC_OPERATION_COUNT + 0;
+
+
+	/**
+	 * The meta object id for the '{@link com.observability.modeling.emf.impl.NotificationImpl <em>Notification</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.observability.modeling.emf.impl.NotificationImpl
+	 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getNotification()
+	 * @generated
+	 */
+	int NOTIFICATION = 9;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__TYPE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Failure Max</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__FAILURE_MAX = 1;
+
+	/**
+	 * The feature id for the '<em><b>Failure Min</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__FAILURE_MIN = 2;
+
+	/**
+	 * The feature id for the '<em><b>Warning Max</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__WARNING_MAX = 3;
+
+	/**
+	 * The feature id for the '<em><b>Warning Min</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__WARNING_MIN = 4;
+
+	/**
+	 * The feature id for the '<em><b>Data Source</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__DATA_SOURCE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Invert</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__INVERT = 6;
+
+	/**
+	 * The feature id for the '<em><b>Persist</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__PERSIST = 7;
+
+	/**
+	 * The feature id for the '<em><b>Percentage</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__PERCENTAGE = 8;
+
+	/**
+	 * The feature id for the '<em><b>Hits</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__HITS = 9;
+
+	/**
+	 * The feature id for the '<em><b>Hysteresis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__HYSTERESIS = 10;
+
+	/**
+	 * The feature id for the '<em><b>Persist Ok</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__PERSIST_OK = 11;
+
+	/**
+	 * The feature id for the '<em><b>Interesting</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__INTERESTING = 12;
+
+	/**
+	 * The feature id for the '<em><b>Instance</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION__INSTANCE = 13;
+
+	/**
+	 * The number of structural features of the '<em>Notification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION_FEATURE_COUNT = 14;
+
+	/**
+	 * The number of operations of the '<em>Notification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NOTIFICATION_OPERATION_COUNT = 0;
 
 
 	/**
@@ -710,6 +865,17 @@ public interface EmfPackage extends EPackage {
 	EReference getDatabaseCluster_CollectedDerivedMetrics();
 
 	/**
+	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Associated Notifications</em>'.
+	 * @see com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications()
+	 * @see #getDatabaseCluster()
+	 * @generated
+	 */
+	EReference getDatabaseCluster_AssociatedNotifications();
+
+	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.DbType <em>Db Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -729,17 +895,6 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDbType_Name();
-
-	/**
-	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.DbType#getProbeLocation <em>Probe Location</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Probe Location</em>'.
-	 * @see com.observability.modeling.emf.DbType#getProbeLocation()
-	 * @see #getDbType()
-	 * @generated
-	 */
-	EAttribute getDbType_ProbeLocation();
 
 	/**
 	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.DbType#getCollectionFrequency <em>Collection Frequency</em>}'.
@@ -925,15 +1080,15 @@ public interface EmfPackage extends EPackage {
 	EClass getModel();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Model#getFrequency <em>Frequency</em>}'.
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Model#getInterval <em>Interval</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Frequency</em>'.
-	 * @see com.observability.modeling.emf.Model#getFrequency()
+	 * @return the meta object for the attribute '<em>Interval</em>'.
+	 * @see com.observability.modeling.emf.Model#getInterval()
 	 * @see #getModel()
 	 * @generated
 	 */
-	EAttribute getModel_Frequency();
+	EAttribute getModel_Interval();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Model#getClusters <em>Clusters</em>}'.
@@ -956,6 +1111,39 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getModel_AvailableDbTypes();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Model#getServerIP <em>Server IP</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Server IP</em>'.
+	 * @see com.observability.modeling.emf.Model#getServerIP()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EAttribute getModel_ServerIP();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Model#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see com.observability.modeling.emf.Model#getName()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EAttribute getModel_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Model#getNotifications <em>Notifications</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Notifications</em>'.
+	 * @see com.observability.modeling.emf.Model#getNotifications()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EReference getModel_Notifications();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.BaseMetric <em>Base Metric</em>}'.
@@ -1021,17 +1209,6 @@ public interface EmfPackage extends EPackage {
 	EClass getMetric();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Metric#getUnit <em>Unit</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Unit</em>'.
-	 * @see com.observability.modeling.emf.Metric#getUnit()
-	 * @see #getMetric()
-	 * @generated
-	 */
-	EAttribute getMetric_Unit();
-
-	/**
 	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Metric#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1052,6 +1229,170 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getMetric_Description();
+
+	/**
+	 * Returns the meta object for class '{@link com.observability.modeling.emf.Notification <em>Notification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Notification</em>'.
+	 * @see com.observability.modeling.emf.Notification
+	 * @generated
+	 */
+	EClass getNotification();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see com.observability.modeling.emf.Notification#getType()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Type();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getFailureMax <em>Failure Max</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Failure Max</em>'.
+	 * @see com.observability.modeling.emf.Notification#getFailureMax()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_FailureMax();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getFailureMin <em>Failure Min</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Failure Min</em>'.
+	 * @see com.observability.modeling.emf.Notification#getFailureMin()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_FailureMin();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getWarningMax <em>Warning Max</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Warning Max</em>'.
+	 * @see com.observability.modeling.emf.Notification#getWarningMax()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_WarningMax();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getWarningMin <em>Warning Min</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Warning Min</em>'.
+	 * @see com.observability.modeling.emf.Notification#getWarningMin()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_WarningMin();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getDataSource <em>Data Source</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Data Source</em>'.
+	 * @see com.observability.modeling.emf.Notification#getDataSource()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_DataSource();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#isInvert <em>Invert</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Invert</em>'.
+	 * @see com.observability.modeling.emf.Notification#isInvert()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Invert();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#isPersist <em>Persist</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Persist</em>'.
+	 * @see com.observability.modeling.emf.Notification#isPersist()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Persist();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#isPercentage <em>Percentage</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Percentage</em>'.
+	 * @see com.observability.modeling.emf.Notification#isPercentage()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Percentage();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getHits <em>Hits</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Hits</em>'.
+	 * @see com.observability.modeling.emf.Notification#getHits()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Hits();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getHysteresis <em>Hysteresis</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Hysteresis</em>'.
+	 * @see com.observability.modeling.emf.Notification#getHysteresis()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Hysteresis();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#isPersistOk <em>Persist Ok</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Persist Ok</em>'.
+	 * @see com.observability.modeling.emf.Notification#isPersistOk()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_PersistOk();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#isInteresting <em>Interesting</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Interesting</em>'.
+	 * @see com.observability.modeling.emf.Notification#isInteresting()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Interesting();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Notification#getInstance <em>Instance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Instance</em>'.
+	 * @see com.observability.modeling.emf.Notification#getInstance()
+	 * @see #getNotification()
+	 * @generated
+	 */
+	EAttribute getNotification_Instance();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -1135,6 +1476,14 @@ public interface EmfPackage extends EPackage {
 		EReference DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS = eINSTANCE.getDatabaseCluster_CollectedDerivedMetrics();
 
 		/**
+		 * The meta object literal for the '<em><b>Associated Notifications</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = eINSTANCE.getDatabaseCluster_AssociatedNotifications();
+
+		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.DbTypeImpl <em>Db Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1151,14 +1500,6 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DB_TYPE__NAME = eINSTANCE.getDbType_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Probe Location</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DB_TYPE__PROBE_LOCATION = eINSTANCE.getDbType_ProbeLocation();
 
 		/**
 		 * The meta object literal for the '<em><b>Collection Frequency</b></em>' attribute feature.
@@ -1305,12 +1646,12 @@ public interface EmfPackage extends EPackage {
 		EClass MODEL = eINSTANCE.getModel();
 
 		/**
-		 * The meta object literal for the '<em><b>Frequency</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Interval</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODEL__FREQUENCY = eINSTANCE.getModel_Frequency();
+		EAttribute MODEL__INTERVAL = eINSTANCE.getModel_Interval();
 
 		/**
 		 * The meta object literal for the '<em><b>Clusters</b></em>' containment reference list feature.
@@ -1327,6 +1668,30 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference MODEL__AVAILABLE_DB_TYPES = eINSTANCE.getModel_AvailableDbTypes();
+
+		/**
+		 * The meta object literal for the '<em><b>Server IP</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODEL__SERVER_IP = eINSTANCE.getModel_ServerIP();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODEL__NAME = eINSTANCE.getModel_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Notifications</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODEL__NOTIFICATIONS = eINSTANCE.getModel_Notifications();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.BaseMetricImpl <em>Base Metric</em>}' class.
@@ -1383,14 +1748,6 @@ public interface EmfPackage extends EPackage {
 		EClass METRIC = eINSTANCE.getMetric();
 
 		/**
-		 * The meta object literal for the '<em><b>Unit</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute METRIC__UNIT = eINSTANCE.getMetric_Unit();
-
-		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1405,6 +1762,128 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute METRIC__DESCRIPTION = eINSTANCE.getMetric_Description();
+
+		/**
+		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.NotificationImpl <em>Notification</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.observability.modeling.emf.impl.NotificationImpl
+		 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getNotification()
+		 * @generated
+		 */
+		EClass NOTIFICATION = eINSTANCE.getNotification();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__TYPE = eINSTANCE.getNotification_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Failure Max</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__FAILURE_MAX = eINSTANCE.getNotification_FailureMax();
+
+		/**
+		 * The meta object literal for the '<em><b>Failure Min</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__FAILURE_MIN = eINSTANCE.getNotification_FailureMin();
+
+		/**
+		 * The meta object literal for the '<em><b>Warning Max</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__WARNING_MAX = eINSTANCE.getNotification_WarningMax();
+
+		/**
+		 * The meta object literal for the '<em><b>Warning Min</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__WARNING_MIN = eINSTANCE.getNotification_WarningMin();
+
+		/**
+		 * The meta object literal for the '<em><b>Data Source</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__DATA_SOURCE = eINSTANCE.getNotification_DataSource();
+
+		/**
+		 * The meta object literal for the '<em><b>Invert</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__INVERT = eINSTANCE.getNotification_Invert();
+
+		/**
+		 * The meta object literal for the '<em><b>Persist</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__PERSIST = eINSTANCE.getNotification_Persist();
+
+		/**
+		 * The meta object literal for the '<em><b>Percentage</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__PERCENTAGE = eINSTANCE.getNotification_Percentage();
+
+		/**
+		 * The meta object literal for the '<em><b>Hits</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__HITS = eINSTANCE.getNotification_Hits();
+
+		/**
+		 * The meta object literal for the '<em><b>Hysteresis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__HYSTERESIS = eINSTANCE.getNotification_Hysteresis();
+
+		/**
+		 * The meta object literal for the '<em><b>Persist Ok</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__PERSIST_OK = eINSTANCE.getNotification_PersistOk();
+
+		/**
+		 * The meta object literal for the '<em><b>Interesting</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__INTERESTING = eINSTANCE.getNotification_Interesting();
+
+		/**
+		 * The meta object literal for the '<em><b>Instance</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NOTIFICATION__INSTANCE = eINSTANCE.getNotification_Instance();
 
 	}
 

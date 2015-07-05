@@ -256,6 +256,29 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link com.observability.modeling.emf.Notification} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected NotificationItemProvider notificationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link com.observability.modeling.emf.Notification}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createNotificationAdapter() {
+		if (notificationItemProvider == null) {
+			notificationItemProvider = new NotificationItemProvider(this);
+		}
+
+		return notificationItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -362,6 +385,7 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 		if (modelItemProvider != null) modelItemProvider.dispose();
 		if (baseMetricItemProvider != null) baseMetricItemProvider.dispose();
 		if (derivedMetricItemProvider != null) derivedMetricItemProvider.dispose();
+		if (notificationItemProvider != null) notificationItemProvider.dispose();
 	}
 
 }

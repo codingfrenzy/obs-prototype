@@ -4,11 +4,8 @@ package com.observability.modeling.emf.impl;
 
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Metric;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -19,7 +16,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getUnit <em>Unit</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getDescription <em>Description</em>}</li>
  * </ul>
@@ -28,26 +24,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * @generated
  */
 public abstract class MetricImpl extends MinimalEObjectImpl.Container implements Metric {
-	/**
-	 * The default value of the '{@link #getUnit() <em>Unit</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getUnit()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String UNIT_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getUnit() <em>Unit</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getUnit()
-	 * @generated
-	 * @ordered
-	 */
-	protected String unit = UNIT_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -112,27 +88,6 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getUnit() {
-		return unit;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setUnit(String newUnit) {
-		String oldUnit = unit;
-		unit = newUnit;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.METRIC__UNIT, oldUnit, unit));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public String getName() {
 		return name;
 	}
@@ -178,8 +133,6 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case EmfPackage.METRIC__UNIT:
-				return getUnit();
 			case EmfPackage.METRIC__NAME:
 				return getName();
 			case EmfPackage.METRIC__DESCRIPTION:
@@ -196,9 +149,6 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case EmfPackage.METRIC__UNIT:
-				setUnit((String)newValue);
-				return;
 			case EmfPackage.METRIC__NAME:
 				setName((String)newValue);
 				return;
@@ -217,9 +167,6 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EmfPackage.METRIC__UNIT:
-				setUnit(UNIT_EDEFAULT);
-				return;
 			case EmfPackage.METRIC__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -238,8 +185,6 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EmfPackage.METRIC__UNIT:
-				return UNIT_EDEFAULT == null ? unit != null : !UNIT_EDEFAULT.equals(unit);
 			case EmfPackage.METRIC__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.METRIC__DESCRIPTION:
@@ -258,9 +203,7 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (unit: ");
-		result.append(unit);
-		result.append(", name: ");
+		result.append(" (name: ");
 		result.append(name);
 		result.append(", description: ");
 		result.append(description);

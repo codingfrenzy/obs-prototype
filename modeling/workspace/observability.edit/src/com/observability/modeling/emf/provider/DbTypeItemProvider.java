@@ -64,7 +64,6 @@ public class DbTypeItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
-			addProbeLocationPropertyDescriptor(object);
 			addCollectionFrequencyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -84,28 +83,6 @@ public class DbTypeItemProvider
 				 getString("_UI_DbType_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_DbType_name_feature", "_UI_DbType_type"),
 				 EmfPackage.Literals.DB_TYPE__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Probe Location feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addProbeLocationPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DbType_probeLocation_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DbType_probeLocation_feature", "_UI_DbType_type"),
-				 EmfPackage.Literals.DB_TYPE__PROBE_LOCATION,
 				 true,
 				 false,
 				 false,
@@ -206,7 +183,6 @@ public class DbTypeItemProvider
 
 		switch (notification.getFeatureID(DbType.class)) {
 			case EmfPackage.DB_TYPE__NAME:
-			case EmfPackage.DB_TYPE__PROBE_LOCATION:
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

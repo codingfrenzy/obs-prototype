@@ -32,6 +32,7 @@ import com.observability.modeling.generation.files.Main;
  */
 public class GenerateFiles extends AbstractHandler {
 	
+	private static String ZIPEXTENSION = ".zip";
 	/**
 	 * The constructor.
 	 */
@@ -69,10 +70,13 @@ public class GenerateFiles extends AbstractHandler {
 		TreePath[] path = selection.getPaths();
 		// Get the selected file
 		IFile file =  (IFile) path[0].getSegment(1);
+		String zipName = file.getName().split("\\.")[0];
 		// Get the project 
 		IProject project = (IProject) path[0].getFirstSegment();
 		// Absolute path of the project
 		String projectPath = project.getLocation().toString();
+		// Absolute path where the zip file is to be created
+		String zipPath = projectPath + File.separatorChar + zipName + ZIPEXTENSION;
 		// Absolute path of the file
 		String modelPath = file.getLocation().toString();
 		
@@ -86,17 +90,14 @@ public class GenerateFiles extends AbstractHandler {
         
 		try {
 			Main generator = new Main(modelURI, targetFolder, arguments);
-			generator.setFileParameters("", projectPath, projectPath);
+			generator.setFileParameters(projectPath, zipPath);
 			generator.doGenerate(new BasicMonitor());
 			
 			MessageDialog.openInformation(
 					window.getShell(),
 					"Generate File",
 					("File conf.zip generated in project directory"));
-			
-			//String ip = "128.237.201.134";
-			//String port = "17680";
-			
+						
 			if(transfer){
 				// Deploy the zip file on the server
 				Deploy.deployFile(ip, port, (projectPath+ File.separatorChar + "conf.zip"));

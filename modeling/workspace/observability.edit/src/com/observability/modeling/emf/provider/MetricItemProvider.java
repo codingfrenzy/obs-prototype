@@ -60,33 +60,10 @@ public class MetricItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addUnitPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Unit feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addUnitPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Metric_unit_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Metric_unit_feature", "_UI_Metric_type"),
-				 EmfPackage.Literals.METRIC__UNIT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -160,7 +137,6 @@ public class MetricItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Metric.class)) {
-			case EmfPackage.METRIC__UNIT:
 			case EmfPackage.METRIC__NAME:
 			case EmfPackage.METRIC__DESCRIPTION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));

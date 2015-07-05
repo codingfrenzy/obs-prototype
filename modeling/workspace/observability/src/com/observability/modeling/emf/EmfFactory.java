@@ -94,6 +94,15 @@ public interface EmfFactory extends EFactory {
 	DerivedMetric createDerivedMetric();
 
 	/**
+	 * Returns a new object of class '<em>Notification</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Notification</em>'.
+	 * @generated
+	 */
+	Notification createNotification();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -52,8 +52,45 @@ LoadPlugin network
 
 
 <Plugin "network">
-  Server "45.55.197.112"
+  Server "[aCluster.eContainer(Model).serverIP/]"
 </Plugin>
+
+[for (noti : Notification | aCluster.associatedNotifications)]
+LoadPlugin "threshold"
+<Plugin "threshold">
+  <Host "[aCluster.eContainer(Model).serverIP/]">
+    <Type "[noti.type/]">
+	[if noti.warningMin <> 0.0]
+     WarningMin    [noti.warningMin/]
+	[/if]
+	[if noti.warningMax <> 0.0]
+     WarningMax    [noti.warningMax/]
+	[/if]
+	[if noti.failureMin <> 0.0]
+     FailureMin    [noti.failureMin/]
+	[/if]
+	[if noti.failureMax <> 0.0]
+     FailureMax    [noti.failureMax/]
+	[/if]
+     Invert [noti.invert/]
+	[if noti.dataSource.strcmp('') <> 0]
+	 DataSource [noti.dataSource/]
+	[/if]
+	Persist [noti.persist/]
+	Percentage [noti.percentage/]
+	[if noti.hits <> 0]
+	 Hits [noti.hits/]
+	[/if]	
+	[if noti.hysteresis <> 0]
+	 Hysteresis [noti.hysteresis/]
+	[/if]
+	 PersistOK [noti.persistOk/]
+	 Interesting [noti.interesting/]
+     Instance "[noti.instance/]"
+    </Type>
+   </Host>
+ </Plugin>
+[/for]
 
 <Plugin "java">
 

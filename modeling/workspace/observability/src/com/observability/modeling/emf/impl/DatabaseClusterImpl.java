@@ -8,10 +8,7 @@ import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.DerivedMetric;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.NodeMachine;
-import com.observability.modeling.emf.extension.CustomServices;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getNoOfMachines <em>No Of Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedDerivedMetrics <em>Collected Derived Metrics</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  * </ul>
  * </p>
  *
@@ -124,6 +122,16 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	protected EList<DerivedMetric> collectedDerivedMetrics;
 
 	/**
+	 * The cached value of the '{@link #getAssociatedNotifications() <em>Associated Notifications</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAssociatedNotifications()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<com.observability.modeling.emf.Notification> associatedNotifications;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -151,11 +159,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		if (machines == null) {
 			machines = new EObjectContainmentEList<NodeMachine>(NodeMachine.class, this, EmfPackage.DATABASE_CLUSTER__MACHINES);
 		}
-		/**
-		* Syncronize the cluster noOfMachines attribute 
-		* with the actual machines inside it.
-		*/
-		noOfMachines = machines.size();
 		return machines;
 	}
 
@@ -247,11 +250,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	public void setNoOfMachines(int newNoOfMachines) {
 		int oldNoOfMachines = noOfMachines;
 		noOfMachines = newNoOfMachines;
-		/**
-		 * Custom code to create the actual instances when this
-		 * attribute changes
-		 */
-		CustomServices.createNodes(this,noOfMachines);
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
 	}
@@ -266,6 +264,18 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			collectedDerivedMetrics = new EObjectResolvingEList<DerivedMetric>(DerivedMetric.class, this, EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS);
 		}
 		return collectedDerivedMetrics;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<com.observability.modeling.emf.Notification> getAssociatedNotifications() {
+		if (associatedNotifications == null) {
+			associatedNotifications = new EObjectResolvingEList<com.observability.modeling.emf.Notification>(com.observability.modeling.emf.Notification.class, this, EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS);
+		}
+		return associatedNotifications;
 	}
 
 	/**
@@ -320,6 +330,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return getNoOfMachines();
 			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
 				return getCollectedDerivedMetrics();
+			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
+				return getAssociatedNotifications();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -354,6 +366,10 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				getCollectedDerivedMetrics().clear();
 				getCollectedDerivedMetrics().addAll((Collection<? extends DerivedMetric>)newValue);
 				return;
+			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
+				getAssociatedNotifications().clear();
+				getAssociatedNotifications().addAll((Collection<? extends com.observability.modeling.emf.Notification>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -384,6 +400,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
 				getCollectedDerivedMetrics().clear();
 				return;
+			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
+				getAssociatedNotifications().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -408,6 +427,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
 			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
 				return collectedDerivedMetrics != null && !collectedDerivedMetrics.isEmpty();
+			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
+				return associatedNotifications != null && !associatedNotifications.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
