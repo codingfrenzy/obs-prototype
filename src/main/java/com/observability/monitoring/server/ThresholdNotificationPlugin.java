@@ -40,7 +40,7 @@ import org.collectd.api.OConfigValue;
  * 3. Write log to collect log file<br>
  *
  * <p>
- * Build jar file: jar cvf thresholdnotification.jar com/observability/monitoring/server/ThresholdNotificationPlugin.class
+ * Build jar file: jar cvf thresholdnotification.jar com/observability/monitoring/server/*Notification*.class
  * <p>
  * @author Ying (Joel) Gao
  * <p>
