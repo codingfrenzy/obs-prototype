@@ -104,6 +104,11 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		return 0;
 	}
 	
+	/**
+     * Notification message from collectd
+     * @param arg0 the notification structure
+     * @return result
+     */
 	public int notification(Notification arg0) {
 		
 		int recipientNum = emailRecipients.size();
@@ -126,8 +131,13 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		return 0;
 	}
 	
+	/**
+     * Add email recipient from configuration file
+     * @param ci configuration item
+     */
 	private void addEMailRecipient(OConfigItem ci) {
 		//Collectd.logInfo("ObsAggregationPlugin plugin: config: ci = " + ci.toString() + ";");
+		// Get values of the configuration item
 		List<OConfigValue> values = ci.getValues();
   	  	if(values != null && values.size() > 0) {
   	  		OConfigValue cv = values.get(0);
@@ -138,12 +148,17 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
   	  	}
 	}
 
+	/**
+     * Get configuration from collectd
+     * @param ci configuration item
+     * @return result
+     */
 	public int config(OConfigItem ci) {
 		List<OConfigItem> children;
 	    int i;
 
 	    //Collectd.logInfo("ObsAggregationPlugin plugin: config: ci = " + ci.toString() + ";");
-
+	    // Children of the configuration item
 	    children = ci.getChildren ();
 	    for (i = 0; i < children.size (); i++)
 	    {
@@ -152,20 +167,21 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 
 	      child = children.get (i);
 	      key = child.getKey ();
-
+	      // recipient 1 
 	      if (key.equalsIgnoreCase ("recpt1"))
 	      {
 	    	  addEMailRecipient(child);
-	      }
+	      }// recipient 2
 	      else if (key.equalsIgnoreCase ("recpt2"))
 	      {
 	    	  addEMailRecipient(child);
-	      }
+	      }// recipient 3
 	      else if (key.equalsIgnoreCase ("recpt3"))
 	      {
 	    	  addEMailRecipient(child);
 	      }
 	    }
+	    // write to collectd.log
 	    Collectd.logInfo("ThresholdNotificationPlugin started..." + emailRecipients.size() + " email recipient(s) added");
 	    for(int j = 0 ; j < emailRecipients.size() ; j++) {
 	    	Collectd.logInfo("ThresholdNotificationPlugin alert notification recipient: " + emailRecipients.get(j));
