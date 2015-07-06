@@ -984,10 +984,17 @@ static int obsaggr_read (void)
 			// init the timestamps of aggregation rounds
 			pthread_mutex_lock (&agg_cache_lock);
 			int i = 0;
+			// 3 retention rounds, each is delta long
+			// --- 2 ---|---> 1 ---|---> 0
+			//                |
+			//          time Now
+			cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
-				obs_agg_rawdata[i]->start_t = now - i * delta + delta / 2;
-				obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
+				obs_agg_rawdata[i]->end_t   = futurepoint - i * delta;
+				obs_agg_rawdata[i]->start_t = obs_agg_rawdata[i]->end_t - delta;
+				//obs_agg_rawdata[i]->start_t = now - i * delta + delta / 2;
+				//obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
 				//obs_agg_rawdata[i].val_hash = NULL;
 			}
 			// it's safer here considering concurrent behavior with write 
@@ -1008,7 +1015,7 @@ static int obsaggr_read (void)
 	obs_val_hash_t * de;
 	
 	// log - should be deleted later
-	INFO("Start obsaggr round N - 1. %ld - %ld", 
+	INFO("Start obsaggr round %d: %ld - %ld", AGG_RETENTION_ROUND - 1,
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t));
 	cdtime_t lastt = 0;
@@ -1025,14 +1032,16 @@ static int obsaggr_read (void)
 		INFO("Obsaggr: key: %s - time - %ld", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time));
 		//
 	}
-	INFO("End obsaggr round N - 1. %ld - %ld, total number:%ld", 
+	INFO("End obsaggr round %d: %ld - %ld, total number:%ld", AGG_RETENTION_ROUND - 1,
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t),
 		count);
 	// submit the values
 	//agg_read(lastt + gAggInterval/*obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t*/);
 	INFO("Starting calculation...");
-	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + gAggInterval / 2);
+
+	//agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + gAggInterval / 2);
+	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + (double)(AGG_RETENTION_ROUND) * gAggInterval / 2);
 	INFO("Done, free the mem");
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
@@ -1046,6 +1055,7 @@ static int obsaggr_read (void)
 	// add a new round at 0
 	// take the operation time into consideration ?
 	//cdtime_t now = cdtime();
+	obs_agg_rawdata[0] = NULL;
 	obs_agg_rawdata[0] = (obs_round_t *) malloc (sizeof(obs_round_t));
 	obs_agg_rawdata[0]->start_t = obs_agg_rawdata[1]->end_t;
 	//obs_agg_rawdata[0]->end_t   = now + gAggInterval;
@@ -1055,9 +1065,12 @@ static int obsaggr_read (void)
 	// log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
+		//INFO("Obsaggr: round %i : %ld - %ld", i, 
+		//	CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
+		//	CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
-			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
-			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
+			obs_agg_rawdata[i]->start_t,
+			obs_agg_rawdata[i]->end_t);
 	}
 	pthread_mutex_unlock (&agg_cache_lock);
 
