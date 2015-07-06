@@ -44,7 +44,7 @@
 #define AGG_FUNC_PLACEHOLDER "%{obsaggregation}"
 
 #define MAX_KEY_LENGTH 		6 * DATA_MAX_NAME_LEN
-#define AGG_RETENTION_ROUND	3	/*NOTE! at least 2*/
+#define AGG_RETENTION_ROUND	5	/*NOTE! at least 2*/
 
 // Measurements hash table
 struct obs_val_hash_s {
@@ -1065,12 +1065,12 @@ static int obsaggr_read (void)
 	// log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
-		//INFO("Obsaggr: round %i : %ld - %ld", i, 
-		//	CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
-		//	CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
-			obs_agg_rawdata[i]->start_t,
-			obs_agg_rawdata[i]->end_t);
+			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
+			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
+		//INFO("Obsaggr: round %i : %ld - %ld", i, 
+		//	obs_agg_rawdata[i]->start_t,
+		//	obs_agg_rawdata[i]->end_t);
 	}
 	pthread_mutex_unlock (&agg_cache_lock);
 
