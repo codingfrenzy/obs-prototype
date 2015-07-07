@@ -1,0 +1,70 @@
+
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module cassandra.
+ */]
+[module postgres('http://www.observability.com/emf')]
+
+
+[**
+ * The documentation of the template generateCassandra.
+ * @param aNodeMachine
+ */]
+[template public generatePostgres(aCluster : DatabaseCluster, frequency : Integer)]
+
+[for (machine : NodeMachine | aCluster.machines)]
+
+[file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
+Interval [frequency/]
+
+<Plugin postgresql>
+    <Query magic>
+      Statement "SELECT magic FROM wizard WHERE host = $1;"
+      Param hostname
+      <Result>
+        Type gauge
+        InstancePrefix "magic"
+        ValuesFrom magic
+      </Result>
+    </Query>
+    <Query rt36_tickets>
+      Statement "SELECT COUNT(type) AS count, type \
+                        FROM (SELECT CASE \
+                                     WHEN resolved = 'epoch' THEN 'open' \
+                                     ELSE 'resolved' END AS type \
+                                     FROM tickets) type \
+                        GROUP BY type;"
+      <Result>
+        Type counter
+        InstancePrefix "rt36_tickets"
+        InstancesFrom "type"
+        ValuesFrom "count"
+      </Result>
+    </Query>
+
+    <Writer sqlstore>
+      Statement "SELECT collectd_insert($1, $2, $3, $4, $5, $6, $7, $8, $9);"
+      StoreRates true
+    </Writer>
+	
+	
+	
+[let rootElement : Element = machine.hasParentElement]
+  [for (element : Element | rootElement.hasElements)]
+	[if element.name.strcmp('Database') = 0]
+    <Database [element.value/]>
+	  [for (keyValue : KeyValue | element.hasKeyValues)]
+	  [keyValue.key/] "[keyValue.value/]"
+	  [/for]
+	  [for (m : BaseMetric | aCluster.collectedBaseMetric) ]
+	  Query [m.name/]		
+	  [/for]	  	
+    </Database>
+	[/if]
+  [/for]
+[/let]	
+    
+  </Plugin>
+[/file]
+[/for]
+[/template]

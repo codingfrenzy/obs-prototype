@@ -21,11 +21,9 @@
 
 package com.observability.monitoring.server;
 
-import java.io.*;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-//import javax.activation.*;
 
 /**
  * NotificationEMail is a class that can send emails through a predefined SMTP server.<br>
