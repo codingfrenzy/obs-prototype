@@ -46,11 +46,11 @@ public class MetricDatabaseHandlerTest {
 	static final String rmiIp = "45.55.197.112";		// Server IP
 	static final String rmiPort = "8100";		// Server port
 	// testGetMetricValueAtEpoch variables to be set:
-	static final String epoch1 = "1433641326.507";
-	static final String metricPath1 = "collectd/observabilityCassandra1/memory/memory-used";
+	static final String epoch1 = "1436368170.507";
+	static final String metricPath1 = "collectd/45_55_197_112/memory/memory-used";
 	// testGetMetricsBtwEpochRange variables to be set:
-	static final String fromEpoch2 = "1433641326.507";
-	static final String toEpoch2 = "1433641416.508";
+	static final String fromEpoch2 = "1436367990.507";
+	static final String toEpoch2 = "1436368080.508";
 	static final String metricPath2 = "collectd/observabilityCassandra1/memory/memory-used";
 	// testUpdateMetrics variables to be set:
 	static final String[] epoch3 = new String[]{"1433641326.507", "1433641416.508"};
