@@ -1,12 +1,13 @@
 cd
-wget http://mirror.tcpdiag.net/apache/cassandra/2.0.15/apache-cassandra-2.0.15-bin.tar.gz
-tar -xvf apache-cassandra-2.0.15-bin.tar.gz
+wget http://mirrors.gigenet.com/apache/cassandra/2.0.16/apache-cassandra-2.0.16-bin.tar.gz
+tar -xvf apache-cassandra-2.0.16-bin.tar.gz
 sudo mkdir /var/lib/cassandra
 sudo mkdir /var/log/cassandra
-sudo chown -R $USER:$GROUP /var/log/cassandra
-sudo chown -R $USER:$GROUP /var/lib/cassandra
+sudo mkdir /var/lib/cassandra/data
+sudo chmod 777 -R /var/log/cassandra
+sudo chmod 777 -R /var/lib/cassandra
 cd
-cd apache-cassandra-2.0.15/
+cd apache-cassandra-2.0.16/
 sudo echo "export CASSANDRA_HOME=`pwd`" >> $HOME/.bashrc
 . $HOME/.bashrc
 sudo echo "export PATH=$PATH:$CASSANDRA_HOME/bin" >> $HOME/.bashrc
