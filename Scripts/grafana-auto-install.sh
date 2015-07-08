@@ -34,6 +34,7 @@ sudo chmod 777 go/
 sudo echo "export PATH=$PATH:/usr/local/go/bin" >> $HOME/.bashrc
 sudo echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
 . $HOME/.bashrc
+sudo apt-get install git
 echo This will take some time..
 /usr/local/go/bin/go get github.com/grafana/grafana
 cd $GOPATH/src/github.com/grafana/grafana
