@@ -9,6 +9,9 @@ sudo apt-get install graphite-web graphite-carbon
 cd /etc/graphite/
 sudo rm local_settings.py
 sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/config-files/graphite-config/local_settings.py
+cd /etc/carbon/
+sudo rm storage-schemas.conf
+sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/config-files/graphite-config/storage-schemas.conf
 sudo graphite-manage syncdb
 
 # keep user as root and enter password as graphite
