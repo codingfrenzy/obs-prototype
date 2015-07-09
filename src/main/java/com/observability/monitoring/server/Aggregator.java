@@ -68,7 +68,7 @@ public class Aggregator extends UnicastRemoteObject {
 	}
 
 	static IMetricDatabaseHandlerServer imdhs = null;	
-	
+	//static PrintWriter out;
 	/**
 	 * Path and name of the configuration file
 	 */
@@ -139,7 +139,7 @@ public class Aggregator extends UnicastRemoteObject {
 										// TODO: It is hard coded now, but we
 										// need to find a place for it in the
 										// collectd.conf file
-		int interval = 60; // Aggregation interval. Default value is set to 60
+		int interval = 30; // Aggregation interval. Default value is set to 60
 							// seconds
 
 		String intervalStr = getIntervalConf(fileName); // Get interval value from
@@ -188,6 +188,8 @@ public class Aggregator extends UnicastRemoteObject {
 	 */
 	protected static String getIntervalConf(String fileName) throws IOException, FileNotFoundException {
 		BufferedReader bufferReader = null;
+		boolean intervalFound = false;
+		
 		try{
 			bufferReader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(fileName), "UTF-8"));
@@ -205,7 +207,7 @@ public class Aggregator extends UnicastRemoteObject {
 				line = bufferReader.readLine();
 				if(line == null)
 					break;
-				// Collectd.conf file has 2 intervals. Use the one specified for aggregation 
+				/*// Collectd.conf file has 2 intervals. Use the one specified for aggregation 
 				if (line.equalsIgnoreCase("<LoadPlugin aggregation>")) {	
 					do {
 						line = bufferReader.readLine();
@@ -223,16 +225,30 @@ public class Aggregator extends UnicastRemoteObject {
 								}
 							}
 					} while (!line.equalsIgnoreCase("</LoadPlugin>") && (line != null));
-				}
+				}*/
+				
+				line = line.trim();	//Trim any spaces at the beginning of the line
+				if (line.isEmpty() || line.trim().equals("")
+							|| line.trim().equals("\n"))
+					continue;	// Read the next line
+				else if (line.startsWith("Interval")) {
+					String str[] = line.trim().split("\\s+");
+					if (str.length > 1) {
+						intervalConfigItem[0] = str[0];
+						intervalConfigItem[1] = str[1];		
+						}
+					}
+				intervalFound = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} while (line != null);
+		} while (line != null && !intervalFound);
 		try {
 			bufferReader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(intervalConfigItem[1]);
 		return intervalConfigItem[1];
 	}
 
@@ -244,7 +260,7 @@ public class Aggregator extends UnicastRemoteObject {
 	 * 			The list has all keys and values
 	 * @throws IOException
 	 */
-	protected static List<String[]> getAggConf(String fileName) throws IOException {
+	/*protected static List<String[]> getAggConf(String fileName) throws IOException {
 		List<String[]> aggConfig = new ArrayList<String[]>();
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(fileName), "UTF-8"));
@@ -252,7 +268,7 @@ public class Aggregator extends UnicastRemoteObject {
 		do {
 			try {
 				line = bufferReader.readLine();
-				if (line != null && line.equals("<Aggregation>")) {	//go to aggregation configuration section
+				if (line != null && line.trim().equals("<Aggregation>")) {	//go to aggregation configuration section
 					do {
 						line = bufferReader.readLine();
 						if (line == null)
@@ -271,7 +287,7 @@ public class Aggregator extends UnicastRemoteObject {
 							}
 						}
 						
-					} while (!line.equals("</Aggregation>") && (line != null));
+					} while (!line.trim().equals("</Aggregation>") && (line != null));
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -286,7 +302,7 @@ public class Aggregator extends UnicastRemoteObject {
 		return aggConfig;
 	}
 	
-	protected static ArrayList<List<String[]>> getAggConf2(String fileName) throws IOException {
+*/	protected static ArrayList<List<String[]>> getAggConf2(String fileName) throws IOException {
 		
 		ArrayList<List<String[]>> aggConfigArray = new ArrayList<List<String[]>>();
 		
@@ -298,7 +314,7 @@ public class Aggregator extends UnicastRemoteObject {
 				List<String[]> aggConfig = new ArrayList<String[]>();
 				line = bufferReader.readLine();
 				//do {
-					if (line != null && line.equals("<Aggregation>")) {	//go to aggregation configuration section
+					if (line != null && line.trim().equals("<Aggregation>")) {	//go to aggregation configuration section
 						do {						
 
 							line = bufferReader.readLine();
@@ -318,7 +334,7 @@ public class Aggregator extends UnicastRemoteObject {
 								}
 							}
 							
-						} while (!line.equals("</Aggregation>") && (line != null) );
+						} while (!line.trim().equals("</Aggregation>") && (line != null) );
 						aggConfigArray.add(aggConfig);
 						line = bufferReader.readLine();
 					}
@@ -343,10 +359,10 @@ public class Aggregator extends UnicastRemoteObject {
 	 * 
 	 * @return list of strings of nodes' names
 	 */
-	protected static List<String> getNodeList() {
+	/*protected static List<String> getNodeList() {
 		List<String> nodesList = new ArrayList<String>();
 		return nodesList;
-	}
+	}*/
 
 	/**
 	 * Set the configurations to AggConfigItems object
@@ -361,7 +377,6 @@ public class Aggregator extends UnicastRemoteObject {
 		String[] str = null;
 		String plugin = null;
 		String typeInst = null; //TODO: if typeInst preceded with #, then calculate everything
-		Boolean calNum = false;
 		Boolean calSum = false;
 		Boolean calAvg = false;
 		Boolean calMin = false;
@@ -370,7 +385,7 @@ public class Aggregator extends UnicastRemoteObject {
 
 		for (int i = 0; i < aggConfigurations.size(); i++) {
 			str = aggConfigurations.get(i);
-			String itemName = str[0].toLowerCase();	//Read the aggregation configuration key (plugin, typeInstance,etc..)
+			String itemName = str[0].toLowerCase().trim();	//Read the aggregation configuration key (plugin, typeInstance,etc..)
 			// TODO: change indexOf to matches(str)
 			if (itemName.matches("plugin")) {
 				plugin = str[1].replaceAll("^\"|\"$", ""); // To remove double quotations
@@ -390,7 +405,7 @@ public class Aggregator extends UnicastRemoteObject {
 		}
 		// Save the elements in the object
 		AggConfigElements aggConfigElements = new AggConfigElements(
-				faultTolTimeWindow, interval, plugin, typeInst, calNum, calSum,
+				faultTolTimeWindow, interval, plugin, typeInst, calSum,
 				calAvg, calMin, calMax, calStd);
 
 		return aggConfigElements;
@@ -407,7 +422,7 @@ public class Aggregator extends UnicastRemoteObject {
 	 * @throws RemoteException
 	 * @throws MalformedURLException
 	 */
-	public static boolean readData(String[] nodeListTemp, AggConfigElements aggConfig)
+	public static boolean readData(long currentTimeStamp, String[] nodeListTemp, AggConfigElements aggConfig)
 			throws MalformedURLException, RemoteException, NotBoundException {
 
 		String str = "collectd/";
@@ -419,7 +434,6 @@ public class Aggregator extends UnicastRemoteObject {
 			return false;
 		}
 		
-		long currentTimeStamp = System.currentTimeMillis() / 1000L;	//The current time stamp of the server
 		long aggTimeStampStart = currentTimeStamp - aggConfig.getFaultTolTimeWindow() - aggConfig.getInterval(); // Set the start time
 		long aggTimeStampEnd = currentTimeStamp - aggConfig.getFaultTolTimeWindow();	// Set the end time
 
@@ -444,9 +458,15 @@ public class Aggregator extends UnicastRemoteObject {
 						.concat(aggConfig.getTypeInst());
 			}
 
-			ArrayList<String> metricsArrayTemp = imdhs.getMetricsBtwEpochRange(
+			ArrayList<String> metricsArrayTemp = null;
+			metricsArrayTemp = imdhs.getMetricsBtwEpochRange(
 					aggTimeStampStartStr, aggTimeStampEndStr, metricPath);
-
+ 
+			if (metricsArrayTemp == null)
+			{
+				return false;
+			}
+				
 			String metrics = metricsArrayTemp.get(0);
 
 			String delimiter = "\t";
@@ -462,17 +482,17 @@ public class Aggregator extends UnicastRemoteObject {
 		////////////Debug: to be removed later/////////
 		System.out.println("*******************************");
 		// ///////////////////
-		aggregate(metricMeasurements, aggTimeStampStartStr,
+		boolean dataIsAggregated = aggregate(metricMeasurements, aggTimeStampStartStr,
 				aggConfig.isCalSum(), aggConfig.isCalAvg(),
 				aggConfig.isCalMin(), aggConfig.isCalMax(),
 				aggConfig.isCalStd(), aggConfig.getPlugin(),
 				aggConfig.getTypeInst());
-		return true;
+		return dataIsAggregated;
 	}
 
 
 	/**
-	 * aggregate the metric data.
+	 * Aggregate the metric data.
 	 * 
 	 * @param metricMeasurements
 	 * @param aggTimeStampStartStr
@@ -488,7 +508,7 @@ public class Aggregator extends UnicastRemoteObject {
 	 * @throws MalformedURLException
 	 * 
 	 */
-	public static void aggregate(ArrayList<String> metricMeasurements,
+	public static boolean aggregate(ArrayList<String> metricMeasurements,
 			String aggTimeStampStartStr, boolean isCalSum,
 			boolean isCalAvg, boolean isCalMin, boolean isCalMax,
 			boolean isCalStd, String metric, String metricType)
@@ -503,9 +523,14 @@ public class Aggregator extends UnicastRemoteObject {
 		double measurementStd = 0;
 		ArrayList<Double> metricMeasurementsDouble = null;
 		int counter = 0;
+		boolean sumDataIsSaved = false;
+		boolean avgDataIsSaved = false;
+		boolean minDataIsSaved = false;
+		boolean maxDataIsSaved = false;
+		boolean stdDataIsSaved = false;
 
 		if ((metricMeasurements == null) || (aggTimeStampStartStr == null) || (metric == null) || (metricType == null)){
-			// exit
+			return false;
 		}
 			
 		if (isCalSum == true) {
@@ -521,7 +546,7 @@ public class Aggregator extends UnicastRemoteObject {
 			}
 			func = AggFunc.SUM;
 			System.out.println("Sum: " + measurementSum); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(measurementSum), func,
+			sumDataIsSaved = saveData(aggTimeStampStartStr, String.valueOf(measurementSum), func,
 					metric, metricType);
 			measurementSum = 0;
 		}
@@ -538,15 +563,16 @@ public class Aggregator extends UnicastRemoteObject {
 					}
 					else {
 						measurementSum += 0;
-						counter -=1;
 					}
 				}
-				measurementAvg = measurementSum / counter;
+				if (counter != 0){
+					measurementAvg = measurementSum / counter;
+				}
 			}
 
 			func = AggFunc.AVERAGE;
 			System.out.println("Avg: " + Math.abs(measurementAvg)); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(Math.abs(measurementAvg)), func,
+			avgDataIsSaved = saveData(aggTimeStampStartStr, String.valueOf(Math.abs(measurementAvg)), func,
 					metric, metricType);
 			measurementAvg = 0;
 		}
@@ -566,13 +592,12 @@ public class Aggregator extends UnicastRemoteObject {
 			measurementMin = Collections.min(metricMeasurementsDouble);
 			func = AggFunc.MIN;
 			System.out.println("Min: " + measurementMin); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(measurementMin), func,
+			minDataIsSaved = saveData(aggTimeStampStartStr, String.valueOf(measurementMin), func,
 					metric, metricType);
 			measurementMin = 0;
 		}
 
 		if (isCalMax == true) {
-			System.out.println("isCalMax = "+isCalMax);
 			metricMeasurementsDouble = new ArrayList<Double>();
 			for (int i = 0; i < metricMeasurements.size(); i++) {
 				String str = metricMeasurements.get(i);
@@ -588,7 +613,7 @@ public class Aggregator extends UnicastRemoteObject {
 			measurementMax = Collections.max(metricMeasurementsDouble);
 			func = AggFunc.MAX;
 			System.out.println("Max: " + measurementMax); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(measurementMax), func,
+			maxDataIsSaved = saveData(aggTimeStampStartStr, String.valueOf(measurementMax), func,
 					metric, metricType);
 			measurementMax = 0;
 		}
@@ -608,10 +633,11 @@ public class Aggregator extends UnicastRemoteObject {
 				}
 				else {
 					measurementSum += 0;
-					counter -=1;
 				}
 			}
-			measurementAvg = measurementSum / counter;
+			if (counter != 0){
+				measurementAvg = measurementSum / counter;
+			}
 			
 			for (int i = 0; i < metricMeasurements.size(); i++) {
 				String str = metricMeasurements.get(i);
@@ -626,9 +652,16 @@ public class Aggregator extends UnicastRemoteObject {
 			measurementStd = Math.sqrt(measurementVariance);
 			func = AggFunc.STDDEV;
 			System.out.println("Standard Dev: " + measurementStd); // Debug
-			saveData(aggTimeStampStartStr, String.valueOf(measurementStd), func,
+			stdDataIsSaved = saveData(aggTimeStampStartStr, String.valueOf(measurementStd), func,
 					metric, metricType);
 		}
+		if (sumDataIsSaved || avgDataIsSaved || minDataIsSaved || maxDataIsSaved || stdDataIsSaved){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
 	}
 
 	/**
@@ -639,45 +672,56 @@ public class Aggregator extends UnicastRemoteObject {
 	 * @param func
 	 * @param metric
 	 * @param metricType
+	 * @return 
 	 * @throws NotBoundException
 	 * @throws RemoteException
 	 * @throws MalformedURLException
 	 */
-	public static void saveData(String timeStampStartStr,
+	public static boolean saveData(String timeStampStartStr,
 			String aggregatedMeasurement, AggFunc func, String metric,
 			String metricType) throws MalformedURLException, RemoteException,
 			NotBoundException {
 
+		boolean isSaved = false;
+		
 		if ((timeStampStartStr == null) || (timeStampStartStr.equals("0")) || (aggregatedMeasurement == null) 
 				|| (func == null) || (metric == null) || (metricType == null)){
-			//do something
+			System.out.println("Can't save data. Data is not valid or missing");
+			return false;
+		}
+		else{
+			String[] timeStampStartStrArray = new String[1];
+			timeStampStartStrArray[0] = timeStampStartStr;
+
+			String[] aggregatedMeasurementArray = new String[1];
+			aggregatedMeasurementArray[0] = aggregatedMeasurement;
+			
+			// "collectd/global/aggregation-cpu-sum/cpu-idle.wsp
+			String str = "collectd/global/aggregation";
+			String str2 = "/";
+			String str3 = "-"; //test
+			String metricPath = str.concat(str3).concat(metric).concat(str3)
+					.concat(String.valueOf(func).toLowerCase()).concat(str2)
+					.concat(metricType);
+
+			if (imdhs == null){
+				return false;
+			}
+			
+			isSaved = imdhs.updateMetrics(timeStampStartStrArray,
+					aggregatedMeasurementArray, metricPath);
+			// TODO add to log file
+			System.out.println("Time Stamp: " + timeStampStartStrArray[0]); // Debug: remove later
+			System.out.println("Metric path: " + metricPath); // Debug: remove later
+			System.out.println("Aggregation completed? " + isSaved); // Debug: remove later
+			System.out.println("***********************************"); // Debug:remove later
+			
+			//out.println("Metric Path: "+ metricPath);
+			//out.println(timeStampStartStrArray[0]+ " " + aggregatedMeasurementArray[0]);
+			//out.println();
+			return isSaved;
 		}
 		
-		String[] timeStampStartStrArray = new String[1];
-		timeStampStartStrArray[0] = timeStampStartStr;
-
-		String[] aggregatedMeasurementArray = new String[1];
-		aggregatedMeasurementArray[0] = aggregatedMeasurement;
-		
-		// "collectd/global/aggregation-cpu-sum/cpu-idle.wsp
-		String str = "collectd/global/aggregation";
-		String str2 = "/";
-		String str3 = "-"; //test
-		String metricPath = str.concat(str3).concat(metric).concat(str3)
-				.concat(String.valueOf(func).toLowerCase()).concat(str2)
-				.concat(metricType);
-
-		if (imdhs == null){
-			//do something
-		}
-		
-		boolean isSaved = imdhs.updateMetrics(timeStampStartStrArray,
-				aggregatedMeasurementArray, metricPath);
-		// TODO add to log file
-		System.out.println("Time Stamp: " + timeStampStartStrArray[0]); // Debug: remove later
-		System.out.println("Metric path: " + metricPath); // Debug: remove later
-		System.out.println("Aggregation completed? " + isSaved); // Debug: remove later
-		System.out.println("***********************************"); // Debug:remove later
 	}
 
 	/**
@@ -690,15 +734,15 @@ public class Aggregator extends UnicastRemoteObject {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws IOException, NotBoundException, InterruptedException {
-		
-		//String configFilePath = "Test.txt"; //debug: to be deleted
+		String configFilePath = "Test.txt"; //debug: to be deleted
 		HardCodedValues hardCodedValues = new HardCodedValues();
 		long startTime = 0;
 		long endTime = 0;
 		long totalTime = 0;
 		File file = null;
 		boolean dataIsRead = false;
-	
+		long currentTimeStamp = 0;
+		
 		try {
 			file = new File(configFilePath);	
 
@@ -712,6 +756,11 @@ public class Aggregator extends UnicastRemoteObject {
 		else {
 			Long lastModified = file.lastModified() / 1000;	
 	
+			System.out.println("------Start Aggregating -------");
+			System.out.println("*******************************");
+			ArrayList<AggConfigElements> aggConfigurationElementsArray = readConfigurationFile(configFilePath);
+			// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file	
+			
 			try {
 				imdhs = (IMetricDatabaseHandlerServer) Naming
 						.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
@@ -722,18 +771,15 @@ public class Aggregator extends UnicastRemoteObject {
 			if (imdhs == null){
 				System.out.println("MetricDatabaseHAndler is not working. Please start it");
 			}
-			System.out.println("------Start Aggregating -------");
-			System.out.println("*******************************");
-			ArrayList<AggConfigElements> aggConfigurationElementsArray = readConfigurationFile(configFilePath);
-			// List<String> nodeList = getNodeList(); // Get Nodes list // TODO: after modeling team finalizes the configuration file				
 			
 			while (true) {
+				currentTimeStamp = System.currentTimeMillis() / 1000L;	//The current time stamp of the server
 				startTime = System.currentTimeMillis(); //This to calculate the running time of readData()
 				for (int i=0; i<aggConfigurationElementsArray.size(); i++){
 					System.out.println("Plugin: " + aggConfigurationElementsArray.get(i).getPlugin());
 					System.out.println("Metric: " + aggConfigurationElementsArray.get(i).getTypeInst());
 					System.out.println("*******************************");
-					dataIsRead = readData(hardCodedValues.getNodeListTemp(), aggConfigurationElementsArray.get(i));	// Read, aggregate and save aggregated data
+					dataIsRead = readData(currentTimeStamp, hardCodedValues.getNodeListTemp(), aggConfigurationElementsArray.get(i));	// Read, aggregate and save aggregated data
 				}
 				endTime = System.currentTimeMillis();	//This to calculate the running time of readData()
 				totalTime = endTime - startTime;	//This to calculate the running time of readData()
@@ -747,7 +793,7 @@ public class Aggregator extends UnicastRemoteObject {
 				
 				if (!dataIsRead){
 					try {
-					    Thread.sleep(aggConfigurationElementsArray.get(0).getInterval());	// Sleep before trying to read more data
+					    Thread.sleep(aggConfigurationElementsArray.get(0).getInterval() - 5);	// Sleep before trying to read more data
 					} catch(InterruptedException ex) {
 					    Thread.currentThread().interrupt();
 					}

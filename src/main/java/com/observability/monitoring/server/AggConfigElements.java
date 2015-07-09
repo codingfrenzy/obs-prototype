@@ -89,7 +89,7 @@ public class AggConfigElements implements Serializable {
 	 *            is the status of the standard deviation calculation
 	 */
 	public AggConfigElements(int faultTolTimeWindow, int interval, String plugin, String typeInst,
-			boolean calNum, boolean calSum, boolean calAvg, boolean calMin,
+			boolean calSum, boolean calAvg, boolean calMin,
 			boolean calMax, boolean calStd) {
 		super();
 		this.faultTolTimeWindow = faultTolTimeWindow;
