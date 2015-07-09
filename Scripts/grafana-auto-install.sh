@@ -9,10 +9,15 @@ sudo apt-get install graphite-web graphite-carbon
 cd /etc/graphite/
 sudo rm local_settings.py
 sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/config-files/graphite-config/local_settings.py
+cd /etc/carbon/
+sudo rm storage-schemas.conf
+sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/config-files/graphite-config/storage-schemas.conf
 sudo graphite-manage syncdb
 
 # keep user as root and enter password as graphite
 
+sudo chown -R _graphite:_graphite /var/lib/graphite/
+sudo chmod 777 -R /var/lib/graphite/whisper/
 sudo perl -pi -e 's/CARBON_CACHE_ENABLED=false/CARBON_CACHE_ENABLED=true/g' /etc/default/graphite-carbon
 sudo perl -pi -e 's/ENABLE_LOGROTATION = False/ENABLE_LOGROTATION = True/g' /etc/carbon/carbon.conf
 
@@ -31,6 +36,7 @@ sudo chmod 777 go/
 sudo echo "export PATH=$PATH:/usr/local/go/bin" >> $HOME/.bashrc
 sudo echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
 . $HOME/.bashrc
+sudo apt-get install git
 echo This will take some time..
 /usr/local/go/bin/go get github.com/grafana/grafana
 cd $GOPATH/src/github.com/grafana/grafana
