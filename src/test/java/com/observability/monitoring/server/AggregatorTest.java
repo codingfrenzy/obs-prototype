@@ -102,11 +102,11 @@ public class AggregatorTest {
 		//assertNotNull(Aggregator.readConfigurationFile(wrongFileName));	// Negative TC
 	}
 	
-	@Test
+	/*@Test
 	public void tesGetIntervalConf() throws IOException, NotBoundException {
 		assertNotNull(Aggregator.getIntervalConf(fileName));	// positive TC
 		//assertNotNull(Aggregator.readConfigurationFile(wrongFileName));	// Negative TC
-	}
+	}*/
 	
 	
 	@Test
