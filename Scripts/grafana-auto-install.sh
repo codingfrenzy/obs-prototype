@@ -16,6 +16,8 @@ sudo graphite-manage syncdb
 
 # keep user as root and enter password as graphite
 
+sudo chown -R _graphite:_graphite /var/lib/graphite/
+sudo chmod 777 -R /var/lib/graphite/whisper/
 sudo perl -pi -e 's/CARBON_CACHE_ENABLED=false/CARBON_CACHE_ENABLED=true/g' /etc/default/graphite-carbon
 sudo perl -pi -e 's/ENABLE_LOGROTATION = False/ENABLE_LOGROTATION = True/g' /etc/carbon/carbon.conf
 
