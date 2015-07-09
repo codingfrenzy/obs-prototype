@@ -75,6 +75,14 @@ public class AggregatorTest {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			imdhs = (IMetricDatabaseHandlerServer) Naming
+					.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
+							+ "/MetricDatabaseHandler");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -144,27 +152,23 @@ public class AggregatorTest {
 	
 	/*@Test
 	public void testRead() throws NotBoundException, IOException, InterruptedException {
+		
+		IMetricDatabaseHandlerServer imdhs = null;	
+
 		String[] nodeListTemp = new String[2];
 		nodeListTemp[0] = "128_2_204_246";
 		nodeListTemp[1] = "45_55_240_162";
 		long timeSatmp = 1435856310;
-		
-		try {
-			imdhs = (IMetricDatabaseHandlerServer) Naming
-					.lookup("rmi://" + "45.55.197.112" + ":" + "8100"
-							+ "/MetricDatabaseHandler");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	
 		AggConfigElements aggConfigElements = new AggConfigElements(
 				60, 30, "cpu", "cpu-user", true, false, false, false, false);
 		boolean dataIsRead = Aggregator.readData(timeSatmp, nodeListTemp, aggConfigElements);
 		System.out.println("Data read? " + dataIsRead);
 	}*/
 	
-	@Test
+	/*@Test
 	public void testMain() throws IOException, NotBoundException, InterruptedException{
+		
 		Aggregator.main(new String[0]);
-	}
+	}*/
 }
