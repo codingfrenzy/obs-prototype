@@ -533,11 +533,33 @@ static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
 
   plugin_dispatch_values (vl);
 
+  // DEBUG log, should be removed later 
+  gauge_t outputval = 0;
+  memcpy(&outputval, vl->values, sizeof(outputval));
+  INFO ("obsagg_write: Final Submit - plugin: %s - type: %s-%s - time:%ld - value: %f.", vl->plugin, vl->type, vl->type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
+
   vl->values = NULL;
   vl->values_len = 0;
 
   return (0);
 } /* }}} int agg_instance_read_func */
+
+/*
+static void agg_instance_reset (agg_instance_t *inst)
+{
+  if(inst == NULL)
+	return;
+  //pthread_mutex_lock (&inst->lock);
+	// Reset internal state.
+  inst->num = 0;
+  inst->sum = 0.0;
+  inst->squares_sum = 0.0;
+  inst->min = NAN;
+  inst->max = NAN;
+
+  //pthread_mutex_unlock (&inst->lock);
+}
+*/
 
 static int agg_instance_read (agg_instance_t *inst, cdtime_t t) /* {{{ */
 {
@@ -1011,6 +1033,12 @@ static int obsaggr_read (void)
 		ERROR("Get lock error: %s", strerror(ret));
 	}
 	// process the round of (AGG_RETENTION_ROUND - 1)
+	// init the instances
+	//agg_instance_t *this;
+	//for (this = agg_instance_list_head; this != NULL; this = this->next)
+	//{
+	//    agg_instance_reset(this);
+	//}
 	// iterate through the hash table
 	obs_val_hash_t * de;
 	
@@ -1022,6 +1050,9 @@ static int obsaggr_read (void)
 	long count = 0;
 	for(de = obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->val_hash; de != NULL; de = de->hh.next) 
 	{
+		// modify the date time
+		//de->vl->time += AGG_RETENTION_ROUND * gAggInterval;
+		//
 		agg_write(de->ds, de->vl);
 		if(de->vl->time > lastt)
 		{
@@ -1029,7 +1060,9 @@ static int obsaggr_read (void)
 		}
 		count++;
 		// Log
-		INFO("Obsaggr: key: %s - time - %ld", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time));
+		gauge_t outputval = 0;
+		memcpy(&outputval, de->vl->values, sizeof(outputval));
+		INFO("Obsaggr: Read: key: %s - time - %ld - value: %f", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time), outputval);
 		//
 	}
 	INFO("End obsaggr round %d: %ld - %ld, total number:%ld", AGG_RETENTION_ROUND - 1,
@@ -1039,9 +1072,9 @@ static int obsaggr_read (void)
 	// submit the values
 	//agg_read(lastt + gAggInterval/*obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t*/);
 	INFO("Starting calculation...");
-
-	//agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + gAggInterval / 2);
-	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + (double)(AGG_RETENTION_ROUND) * gAggInterval / 2);
+	
+	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t);
+	//agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + (double)(AGG_RETENTION_ROUND) * gAggInterval / 2);
 	INFO("Done, free the mem");
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
@@ -1100,12 +1133,12 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 		ERROR("Get lock error: %s", strerror(ret));
 	}
 
-	int i = 0;
+	int iround = 0;
 	_Bool inserted = 0;
-	for ( ; i < AGG_RETENTION_ROUND	; i++)
+	for ( ; iround < AGG_RETENTION_ROUND ; iround++)
 	{
-		if(vl->time >= obs_agg_rawdata[i]->start_t &&
-		   vl->time < obs_agg_rawdata[i]->end_t)
+		if(vl->time >= obs_agg_rawdata[iround]->start_t &&
+		   vl->time < obs_agg_rawdata[iround]->end_t)
 		{ // should be added to this cache round
 			// get the key
 			char name[MAX_KEY_LENGTH];
@@ -1142,18 +1175,20 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 				
 
 				obs_val_hash_t * r = NULL;
-				HASH_REPLACE_STR(obs_agg_rawdata[i]->val_hash, metric_name, s, r);
+				HASH_REPLACE_STR(obs_agg_rawdata[iround]->val_hash, metric_name, s, r);
 				if(r != NULL)
 				{// no need to keep the replaced entry
 					ERROR ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
 						name, CDTIME_T_TO_TIME_T(r->vl->time), CDTIME_T_TO_TIME_T(vl->time));
 					ERROR ("Round: %d - from: %ld to: %ld", 
-						i, CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t), CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
+						iround, CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->start_t), CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->end_t));
 					sfree(r);
 				}
 			}
 			inserted = 1;
-			INFO ("obsagg_write: plugin: %s - value inserted in round %d : %s - time:%ld.", vl->plugin, i, name, CDTIME_T_TO_TIME_T(vl->time));
+			gauge_t outputval = 0;
+			memcpy(&outputval, vl->values, sizeof(outputval));
+			INFO ("obsagg_write: plugin: %s - value inserted in round %d : %s - time:%ld - value: %f.", vl->plugin, iround, name, CDTIME_T_TO_TIME_T(vl->time), outputval);
 			break;
 		}
 	}
