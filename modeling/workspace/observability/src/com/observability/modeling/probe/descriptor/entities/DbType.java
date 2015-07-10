@@ -21,81 +21,98 @@
 
 package com.observability.modeling.probe.descriptor.entities;
 
+import java.util.ArrayList;
+
 
 /**
  * @author vsaravag
+ *
+ *
+ *
  *
  */
 public class DbType {
 	
 	private String name;
-	private Machine machineParams;
-	private Metric metricParams;
-	private Collect collectParams;
-	
+	private Machine machine;
+	private ArrayList<SystemMetric> systemMetrics;
+	private ArrayList<DbMetric> dbMetrics;
+	private ArrayList<AggregatedMetric> aggregatedMetrics;
 	
 	public DbType(String name){
 		this.name = name;
-		setMachineParams(new Machine());
-		setMetricParams(new Metric());
-		setCollectParams(new Collect());
+		machine = new Machine();
+		systemMetrics = new ArrayList<SystemMetric>();
+		dbMetrics = new ArrayList<DbMetric>();
+		aggregatedMetrics = new ArrayList<AggregatedMetric>();
 	}
+
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
 	}
+
+
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 	/**
-	 * @return the machineParams
+	 * @return the machines
 	 */
-	public Machine getMachineParams() {
-		return machineParams;
+	public Machine getMachine() {
+		return machine;
 	}
+
+
 	/**
-	 * @param machineParams the machineParams to set
+	 * @param machines the machines to set
 	 */
-	public void setMachineParams(Machine machineParams) {
-		this.machineParams = machineParams;
+	public void setMachine(Machine machine) {
+		this.machine = machine;
 	}
+
+
 	/**
-	 * @return the metricParams
+	 * @return the systemMetrics
 	 */
-	public Metric getMetricParams() {
-		return metricParams;
+	public ArrayList<SystemMetric> getSystemMetrics() {
+		return systemMetrics;
 	}
+	
+
 	/**
-	 * @param metricParams the metricParams to set
+	 * @return the dbMetrics
 	 */
-	public void setMetricParams(Metric metricParams) {
-		this.metricParams = metricParams;
+	public ArrayList<DbMetric> getDbMetrics() {
+		return dbMetrics;
 	}
+
+
 	/**
-	 * @return the collectParams
+	 * @return the aggregatedMetrics
 	 */
-	public Collect getCollectParams() {
-		return collectParams;
+	public ArrayList<AggregatedMetric> getAggregatedMetrics() {
+		return aggregatedMetrics;
 	}
-	/**
-	 * @param collectParams the collectParams to set
-	 */
-	public void setCollectParams(Collect collectParams) {
-		this.collectParams = collectParams;
-	}
+	
+	
 	
 	@Override
 	public String toString(){
 		String string = "";
 		string += "DbType (" + name + ")\n";
-		string += "Machine Parameters" + machineParams.toString();
-		string += "Metric Parameters" + metricParams.toString();
-		string += "Collect Parameters" + collectParams.toString();
+		string += "Machine Parameters" + machine.toString() +"\n\n";
+		string += "System Metric Parameters" + systemMetrics.toString() + "\n\n";
+		string += "Db Metric Parameters" + dbMetrics.toString() + "\n\n";
+		string += "Aggregated Metric Parameters" + aggregatedMetrics.toString();
 		return string;
 	}
 	

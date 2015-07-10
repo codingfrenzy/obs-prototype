@@ -5,35 +5,41 @@ LoadPlugin "memory"
 LoadPlugin "df"
 LoadPlugin "cpu"
 LoadPlugin "interface"
+<<<<<<< Updated upstream:config-files/release 2 config files/cassandra.collectd.conf
 LoadPlugin "disk"
 LoadPlugin load
+=======
+LoadPlugin "logfile"
+LoadPlugin "csv" 
+>>>>>>> Stashed changes:modeling/workspace/observability/src/com/observability/modeling/probe/descriptor/resources/cassandra.descriptor
 
-<Plugin “cpu”>
-	ReportByState true #variable
-	ReportByCpu true #variable
-	ValuesPercentage true #variable
+<Plugin "cpu"> @MetricSystem
+	ReportByState true @Attribute
+	ReportByCpu true @Attribute
+	ValuesPercentage true @Attribute
 </Plugin>
 
-<Plugin “memory”>
-	ValuesAbsolute true #variable
-	ValuesPercentage false #variable
+<Plugin "memory"> @MetricSystem
+	ValuesAbsolute true @Attribute
+	ValuesPercentage false @Attribute
 </Plugin>
 
-<Plugin "df"> 
-	Device "/dev/hda1" #variable
-	MountPoint "/home" #variable
-	FSType "ext3" #variable
-	IgnoreSelected false #variable
-	ReportInodes false #variable
-	ReportReserved false #variable
+<Plugin "df"> @MetricSystem(file)
+	Device "/dev/hda1" @Machine
+	MountPoint "/home" @Machine
+	FSType "ext3" @Machine
+	IgnoreSelected false @Attribute
+	ReportInodes false @Attribute
+	ReportReserved false @Attribute
 </Plugin>
 
-<Plugin “interface”>
-	Interface "lo" #variable
-	Interface "sit0" #variable
-	IgnoreSelected true #variable
+<Plugin "interface"> @MetricSystem
+	Interface "lo" @Machine
+	Interface "sit0" @Machine
+	IgnoreSelected true @Attribute
 </Plugin>
 
+<<<<<<< Updated upstream:config-files/release 2 config files/cassandra.collectd.conf
 <Plugin "disk">
   Disk "sda" #variable
   Disk "/^hd/" #variable
@@ -46,12 +52,18 @@ LoadPlugin "logfile"
   File "/home/owls/collectd/log/collectd.log" #variable
   Timestamp true #variable
   PrintSeverity true #variable
+=======
+<Plugin "logfile">  @MetricSystem 
+  LogLevel "info" @Machine
+  File "/home/owls/collectd/log/collectd.log" @Machine
+  Timestamp true @Attribute
+  PrintSeverity true @Attribute
+>>>>>>> Stashed changes:modeling/workspace/observability/src/com/observability/modeling/probe/descriptor/resources/cassandra.descriptor
 </Plugin>
 
-LoadPlugin "csv"
-<Plugin "csv">
-  DataDir "/home/owls/collectd/csv" #variable
-  StoreRates true #variable
+<Plugin "csv"> @MetricSystem
+  DataDir "/home/owls/collectd/csv" @Machine
+  StoreRates true @Attribute
 </Plugin>
 
 LoadPlugin java
@@ -62,96 +74,96 @@ LoadPlugin java
 <Plugin "GenericJMX">
 
    # Size of the data on the node.
-   <MBean "data-load">
-  	 ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "data-load"
-  	   Attribute "Count"
+   <MBean "data-load"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "data-load" @Attribute
+  	   Attribute "Count" @Attribute
   	 </Value>
    </MBean>
 
    # Number of compaction operations queued and waiting to run.
-   <MBean "pending-compaction-tasks">
-  	 ObjectName "org.apache.cassandra.db:type=CompactionManager"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-compaction-tasks"
-  	   Attribute "PendingTasks"
+   <MBean "pending-compaction-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.db:type=CompactionManager" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-compaction-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Number of memtables queued for the flush process.
-   <MBean "pending-flushes">
-  	 ObjectName "org.apache.cassandra.internal:type=FlushWriter"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-flushes"
-  	   Attribute "PendingTasks"
+   <MBean "pending-flushes"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=FlushWriter" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-flushes" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Number of gossip messages and acknowledgments queued and waiting to be sent
    # or received.
-   <MBean "pending-gossip-tasks">
-  	 ObjectName "org.apache.cassandra.internal:type=GossipStage"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-gossip-tasks"
-  	   Attribute "PendingTasks"
+   <MBean "pending-gossip-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=GossipStage" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-gossip-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Number of hints in the queue waiting to be delivered after a failed node
    # comes up.
-   <MBean "pending-hinted-handoff">
-  	 ObjectName "org.apache.cassandra.internal:type=HintedHandoff"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-hinted-handoff"
-  	   Attribute "PendingTasks"
+   <MBean "pending-hinted-handoff"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=HintedHandoff" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-hinted-handoff" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Number of read requests received by the cluster and waiting to be handled.
-   <MBean "pending-read-ops">
-  	 ObjectName "org.apache.cassandra.request:type=ReadStage"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-read-ops"
-  	   Attribute "PendingTasks"
+   <MBean "pending-read-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReadStage" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-read-ops" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Number of read repair operations in the queue waiting to run.
-   <MBean "pending-read-repair-tasks">
-  	 ObjectName "org.apache.cassandra.request:type=ReadRepairStage"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-read-repair-tasks"
-  	   Attribute "PendingTasks"
+   <MBean "pending-read-repair-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReadRepairStage" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-read-repair-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Manual repair tasks pending, operations to be completed during anti-entropy
    # repair of a node.
-   <MBean "pending-repair-tasks">
-  	 ObjectName "org.apache.cassandra.internal:type=AntiEntropyStage"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-repair-tasks"
-  	   Attribute "PendingTasks"
+   <MBean "pending-repair-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=AntiEntropyStage" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-repair-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
    # Pending tasks related replication of data after an insert or update to a
    # row.
-   <MBean "pending-repl-on-write-tasks">
-  	 ObjectName "org.apache.cassandra.request:type=ReplicateOnWriteStage"
-  	 <Value>
-  	   Type "gauge"
-  	   InstancePrefix "pending-repl-on-write-tasks"
-  	   Attribute "PendingTasks"
+   <MBean "pending-repl-on-write-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReplicateOnWriteStage" @Attribute
+  	 <Value> @Attribute
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-repl-on-write-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
   	 </Value>
    </MBean>
 
@@ -370,9 +382,31 @@ LoadPlugin java
   	 </Value>
    </MBean>  
 
+
+	<Aggregation> @MetricAggregated(memory)
+		Host "/128.+|45.+/" @Attribute
+		Plugin "GenericJMX" @Attribute
+		Type "memory" @Attribute
+		#TypeInstance "/^heap-mem.*/"
+		GroupBy "TypeInstance" @Attribute
+
+		# Sets the name of the output folder
+		SetHost "global" @Attribute
+		SetPlugin "aggregation" @Attribute
+		SetPluginInstance "heap-mem-%{aggregation}" @Attribute
+
+		CalculateNum true  
+		CalculateSum true 
+		CalculateAverage false 
+		CalculateMinimum false 
+		CalculateMaximum false 
+		CalculateStddev false 
+	</Aggregation>
+
+
 	<Connection>
-      	Host "45.55.240.162" #variable
-      	ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:7199/jmxrmi" #variable
+      	Host "45.55.240.162" @Machine
+      	ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:7199/jmxrmi" @Machine
 		Collect "data-load"
 		Collect "pending-compaction-tasks"
 		Collect "pending-flushes"
@@ -402,12 +436,11 @@ LoadPlugin java
 		Collect "cf-write-latency-op"
 		Collect "cf-write-ops"
 		Collect "heap-mem"
-		Collect "nonheap-mem”
+		Collect "nonheap-mem"
 
 	</Connection>
   </Plugin>
 </Plugin>
-
 
 
 

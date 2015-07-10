@@ -5,6 +5,9 @@ package com.observability.modeling.probe.descriptor;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -74,12 +77,13 @@ public class DescriptorParserTest {
 	
 	@Test
 	public void testCassandraParseDescriptors() {
-		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
-		URL path = classLoader.getResource("cassandra.descriptor");
-		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
-		
+		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
+				+ "/workspace/observability/src/com/observability/modeling/"
+				+ "probe/descriptor/resources/cassandra.descriptor"); 
+		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("cassandra");
-		parser.parseFile(new File(path.getFile()), dbType);
+		
+		parser.parseFile(path.toFile(), dbType);
 		System.out.println(dbType.toString());	
 	}
 	

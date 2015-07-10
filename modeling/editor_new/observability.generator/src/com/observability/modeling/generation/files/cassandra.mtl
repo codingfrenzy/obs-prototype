@@ -17,38 +17,20 @@
 Interval [frequency/]
 Hostname [machine.IP/]
 
-LoadPlugin "logfile"
+[for (metric : BaseMetric | aCluster.collectedBaseMetric)]
+[if metric.type == 'system']
+LoadPlugin "[metric.name/]"
+<Plugin "[metric.name/]">
+[for (kv : KeyValue | metric.keyValues)/]
+keyValue.name keyValue.value
+[/for]
 
-<Plugin "logfile">
-  LogLevel "info"
-  File "/home/owls/collectd/log/collectd.log"
-  Timestamp true
-  PrintSeverity true
+#Loop at elements inside the machine. Find the element with the unique id
+and display its key-values
+
 </Plugin>
-
-LoadPlugin "csv"
-
-<Plugin "csv">  
-  DataDir "/home/owls/collectd/csv"
-  StoreRates true
-</Plugin>
-
-LoadPlugin df
-<Plugin "df">
-  IgnoreSelected true
-</Plugin>
-
-LoadPlugin interface
-<Plugin "interface">
-  IgnoreSelected true
-</Plugin>
-
-LoadPlugin cpu
-LoadPlugin interface
-LoadPlugin load
-LoadPlugin memory
-LoadPlugin java
-LoadPlugin network
+[/if]
+[/for]
 
 
 <Plugin "network">
@@ -97,35 +79,22 @@ LoadPlugin "threshold"
     JVMARG "-Djava.class.path=/opt/collectd/java-dep/generic-jmx.jar:/opt/collectd/java-dep/collectd-api.jar"
     LoadPlugin "org.collectd.java.GenericJMX"
 <Plugin "GenericJMX">
-
-    <MBean "load_metric">
-        ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load"
+	
+	[for dbMetric : BaseMetric | aCluster.collectedBaseMetric]
+	[if dbMetric.type = 'database']
+    <MBean dbMetric.name>
+        [for keyValue : KeyValue | dbMetric.keyValues]
+        [keyValue.name/] "[keyValue.value/]"
+        [/for]
+        
+        [for element : Element | dbMetric.elements]
         <Value>
-          Type "gauge"
-          InstancePrefix "data_load"
-          Attribute "Count"
-        </Value>
-    </MBean>
-
-    <MBean "readcount_metric">
-        ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency"
-        <Value>
-          Type "gauge"
-          InstancePrefix "ClientRequest_readCount"
-          Attribute "Count"
-        </Value>
-    </MBean>
-
-   <MBean "memory_metric">
-        ObjectName "java.lang:type=Memory"
-        <Value>
-          Type "memory"
-          InstancePrefix "heap_mem"
-          Table true
-          Attribute "HeapMemoryUsage"
-        </Value>
-    </MBean>
-
+        [for keyValue : KeyValue | element.keyValues]
+        [keyValue.name/] "[keyValue.value/]"
+        [/for]
+        [/for]
+    </MBean>        
+        
     
   [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Connection') = 0]
@@ -133,10 +102,17 @@ LoadPlugin "threshold"
 	  [for (keyValue : KeyValue | element.keyValues)]
 	  [keyValue.key/] "[keyValue.value/]"
 	  [/for]
+<<<<<<< Updated upstream
 	  [for (m : Metric | aCluster.collectedMetrics) ]
 		[if m.oclIsKindOf(BaseMetric)]
 	  		Collect "[m.name/]"		
 		[/if]
+=======
+	  [for (m : BaseMetric | aCluster.collectedBaseMetric) ]
+	  [if m.type = 'database']
+	  Collect "[m.name/]"		
+	  [/if]
+>>>>>>> Stashed changes
 	  [/for]	  	
     </Connection>
 	[/if]

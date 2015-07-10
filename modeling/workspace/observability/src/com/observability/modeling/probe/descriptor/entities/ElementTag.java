@@ -25,8 +25,7 @@ import java.util.ArrayList;
 
 /**
  * The class creates an element tag and its related attributes. <br>
- * An element tag in the descritor file is one which is within a <> and has 
- * an annotation. <br>
+ * An element tag in the descriptor file is one which is within a <>.
  * 
  * @author vsaravag
  *
@@ -35,14 +34,17 @@ public class ElementTag {
 	
 	private String name;
 	private String value;
-	
+	private String id;
+	private Scope scope;
 	private ArrayList<KeyValue> keyValues;
 	private ArrayList<ElementTag> elements;
 	
-	public ElementTag(String name, String value){
+	public ElementTag(String name, String value, String id, Scope scope){
 		this.name = name;
 		this.value = value;
-		keyValues = new ArrayList<ElementTag.KeyValue>();
+		this.id = id;
+		this.scope = scope;
+		keyValues = new ArrayList<KeyValue>();
 		elements = new ArrayList<ElementTag>();
 	}
 	/**
@@ -74,7 +76,38 @@ public class ElementTag {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
+	
+	
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	/**
+	 * @return the scope
+	 */
+	public Scope getScope() {
+		return scope;
+	}
+	
+	
+	/**
+	 * @param scope the scope to set
+	 */
+	public void setScope(Scope scope) {
+		this.scope = scope;
+	}
+	
+	
 	/**
 	 * @return the list of all the key-values for the element
 	 */
@@ -104,17 +137,6 @@ public class ElementTag {
 	}
 	
 	
-	/**
-	 * add the given element to the current element
-	 * @param name the name of the element
-	 * @param value the value of the element tag
-	 */
-	public void addElement(String name, String value){
-		if(name!=null){
-			elements.add(new ElementTag(name, value));
-		}
-	}
-	
 	public void addElement(ElementTag element){
 		if(element!=null){
 			elements.add(element);
@@ -131,10 +153,10 @@ public class ElementTag {
 		StringBuffer buf = new StringBuffer();
 		//add as many arrows as the level
 		for(int i=0; i< level; i++)
-			buf.append("->");
+			buf.append("-> ");
 		
-		buf.append("Element (" + name + ", " + value + ")\n");
-		
+		buf.append("Element (" + name + ", " + value + ", " + id + ", " + scope + ")\n");
+		    
 		//Print all the key-value pairs
 		for(KeyValue keyValue : keyValues){
 			buf.append(keyValue.toString(level+1));
@@ -147,70 +169,5 @@ public class ElementTag {
 					
 		return buf.toString();
 	}
-	
-	/**
-	 * The class defines a key-value pair. <br>
-	 * This is an inner class and can be used within an element tag only. <br>
-	 * 
-	 * @author vsaravag
-	 *
-	 */
-	public static class KeyValue {
-		
-		private String name;
-		private String value;
-		
-		/**
-		 * @param name the name of key. Cannot be null
-		 * @param value the value of the key
-		 */
-		public KeyValue(String name, String value){
-			if(name!=null){
-				this.name = name;
-				this.value = value;
-			}
-		}
-		
-		/**
-		 * @return the name
-		 */
-		public String getName() {
-			return name;
-		}
-		/**
-		 * @param name the name to set
-		 */
-		public void setName(String name) {
-			this.name = name;
-		}
-		/**
-		 * @return the value
-		 */
-		public String getValue() {
-			return value;
-		}
-		/**
-		 * @param value the value to set
-		 */
-		public void setValue(String value) {
-			this.value = value;
-		}
-		
-		@Override
-		public String toString() {
-			return "KeyValue (" + name + ", " + value + ")\n";
-		}
-		
-		private String toString(int level){
-			StringBuffer buf = new StringBuffer();
-			//add as many arrows as the level
-			for(int i=0; i< level; i++)
-				buf.append("->");
-			buf.append("KeyValue (" + name + ", " + value + ")\n");
-			return buf.toString();
-			
-		}
-	}
-	
 	
 }

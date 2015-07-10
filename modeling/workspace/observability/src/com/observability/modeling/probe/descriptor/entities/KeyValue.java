@@ -21,26 +21,27 @@
 
 package com.observability.modeling.probe.descriptor.entities;
 
-import java.util.ArrayList;
-
 /**
- * The abstract class defines the attributes and methods needed to define
- * parameters for any type of annotation.<br>
- * Any new annotation would need to extend this class. <br>
- * Currently, the following annotations are supported<br>
- * <li>@Metric</li>
- * <li>@Machine</li>
- * <li>@Collect</li>
- * 
+ * The class defines the structure for a key-value entity
  * @author vsaravag
  *
  */
-public abstract class Parameter {
+public class KeyValue {
 	
-	protected String name;
-	protected String value;
-	protected ArrayList<ElementTag> elements;
-	protected ArrayList<KeyValue> keyValues;
+	private String name;
+	private String value;
+	
+	/**
+	 * @param name the name of key. Cannot be null
+	 * @param value the value of the key
+	 */
+	public KeyValue(String name, String value){
+		if(name!=null){
+			this.name = name;
+			this.value = value;
+		}
+	}
+	
 	/**
 	 * @return the name
 	 */
@@ -65,35 +66,19 @@ public abstract class Parameter {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	/**
-	 * @return the elements
-	 */
-	public ArrayList<ElementTag> getElements() {
-		return elements;
-	}
-	/**
-	 * @param elements the elements to set
-	 */
-	public void setElements(ArrayList<ElementTag> elements) {
-		this.elements = elements;
+	
+	@Override
+	public String toString() {
+		return "-> KeyValue (" + name + ", " + value + ")\n";
 	}
 	
-	public void addKeyValue(KeyValue keyValue){
-		if(keyValue != null){
-			this.keyValues.add(keyValue);
-		}
+	public String toString(int level){
+		StringBuffer buf = new StringBuffer();
+		//add as many arrows as the level
+		for(int i=0; i< level; i++)
+			buf.append("->");
+		buf.append(" KeyValue (" + name + ", " + value + ")\n");
+		return buf.toString();
+		
 	}
-	
-	/**
-	 * Adds the element to the parameter
-	 * @param element
-	 * 			the element to be added
-	 */
-	public void addElement(ElementTag element){
-		if(element!=null){
-			elements.add(element);
-		}
-	}
-	
-	
 }

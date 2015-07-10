@@ -19,31 +19,46 @@
  */
 //**************************************************************************************************//
 
-
-/**
- * @Deprecated class
- */
-
 package com.observability.modeling.probe.descriptor.entities;
 
 import java.util.ArrayList;
 
 /**
- * The class defines the metrics which the user wants to collect
- * from the list of available metrics.
+ * This class defines the semantic structure of a Metric.<br>
+ * The metric identifier (tag) and metric name would go in
+ * name and the value parameter respectively.
  * @author vsaravag
  *
  */
-public class Collect extends Parameter {
+public class DbMetric extends Parameter {
 	
-	public Collect(){
+	private MetricType type;
+	
+	public DbMetric(){
 		this.elements = new ArrayList<ElementTag>();
+		this.keyValues = new ArrayList<KeyValue>();
 	}
-	public Collect(String name, String value){
+	
+	public DbMetric(String name, MetricType type){
 		if(name!=null){
 			this.name = name;
-			this.value = value;
+			this.type = type;
 			this.elements = new ArrayList<ElementTag>();
+			this.keyValues = new ArrayList<KeyValue>();
 		}
 	}
-}
+	
+	@Override
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("\nDbMetric (" + name + ", " + value + ", " + type + ")\n");
+		
+		for (KeyValue keyValue : keyValues){
+			buf.append(keyValue.toString(1));
+		}
+		for (ElementTag element : elements) {
+			buf.append(element.toString());
+		}
+		return buf.toString();
+	}
+}	

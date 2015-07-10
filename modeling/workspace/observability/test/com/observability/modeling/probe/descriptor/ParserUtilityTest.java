@@ -72,6 +72,11 @@ public class ParserUtilityTest {
 		line = null;
 		assertFalse(ParserUtility.isAnnotated(line));
 		
+		line = "<Mbean \"abcdef\"> @Metric(someName)";
+		assertTrue(ParserUtility.isAnnotated(line));
+		
+		line = "SetPlugin \"aggregation\"      	# first part of the name @Attribute";
+		System.out.println(ParserUtility.isAnnotated(line));
 	}
 
 	/**
@@ -98,6 +103,7 @@ public class ParserUtilityTest {
 		// Test element start on a null string
 		line = null;
 		assertFalse(ParserUtility.isElementStart(line));
+		
 	}
 
 	/**
@@ -207,7 +213,53 @@ public class ParserUtilityTest {
 		line = null;
 		System.out.println(ParserUtility.getAnnotation(line));
 		
+		line = "<Mbean \"abcdef\"> @Metric(someName)";
+		System.out.println(ParserUtility.getAnnotation(line));
+		
+		line = "SetPlugin \"aggregation\"      	# first part of the name @Attribute";
+		System.out.println(ParserUtility.getAnnotation(line));
+	}
+	
+	/**
+	 * Test method for {@link com.observability.modeling.probe.descriptor.ParserUtility#getNameFromAnnotated(java.lang.String)}.
+	 */
+	@Test
+	public void testGetNameFromAnnotated(){
+		
+		// Get name from a named annotation
+		String annotation = "@Metric(abc)";
+		System.out.println(ParserUtility.getNameFromAnnotated(annotation));
+		
+		// Get name from a not-named annotation
+		annotation = "@Metric";
+		System.out.println(ParserUtility.getNameFromAnnotated(annotation));
+		
+		// Get name from a named annotation
+		annotation = "@Metric(foo bar)";
+		System.out.println(ParserUtility.getNameFromAnnotated(annotation));
+	}
+	
+	/**
+	 * Test method for {@link com.observability.modeling.probe.descriptor.ParserUtility#getNameFromAnnotated(java.lang.String)}.
+	 */
+	@Test
+	public void testGetAnnotationfromAnnotated(){
+		
+		// Get name from a named annotation
+		String annotation = "@Metric(abc)";
+		System.out.println(ParserUtility.getAnnotationFromAnnotated(annotation));
+		
+		// Get name from a not-named annotation
+		annotation = "@Metric";
+		System.out.println(ParserUtility.getAnnotationFromAnnotated(annotation));
+		
+		// Get name from a named annotation
+		annotation = "@Metric  (foo bar)";
+		System.out.println(ParserUtility.getAnnotationFromAnnotated(annotation));
+		
+		// Get name from a named annotation
 
 	}
-
+	
+	
 }

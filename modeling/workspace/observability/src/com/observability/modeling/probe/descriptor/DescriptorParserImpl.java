@@ -29,8 +29,14 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
+import com.observability.modeling.probe.descriptor.entities.AggregatedMetric;
+import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.KeyValue;
+import com.observability.modeling.probe.descriptor.entities.MetricType;
+import com.observability.modeling.probe.descriptor.entities.Scope;
+import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
 
 /**
@@ -53,17 +59,21 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * */
 
 	private static final String DESCRIPTOR_EXTENSION = "descriptor";
-
+	
+	private static final String ELEMENT_ID_SEPARATOR = "_";
+	
 	/**
 	 * Anotations that represent on which entity in the semantic model the
 	 * parsed elements need to be appended. For the metamodel @see
 	 * "modeling/workspace/observability_new/model/observability_new.aird"
 	 */
 
-	private static final String MACHINE_SCOPE = "@Machine";
-	private static final String METRIC_SCOPE = "@Metric";
-	private static final String COLLECT = "@Collect";
-
+	private static final String MACHINE = "@Machine";
+	private static final String SYSTEM_METRIC = "@MetricSystem";
+	private static final String DB_METRIC = "@MetricDB";
+	private static final String AGGREGATED_METRIC = "@MetricAggregated";
+	private static final String ATTRIBUTE = "@Attribute";
+	
 	/**
 	 * The path where the descriptor files are stored
 	 */
@@ -127,58 +137,52 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 */
 	public void parseFile(File file, DbType dbType) {
 		
-		ElementTag element;
-		Stack<ElementTag> elementStack = new Stack<ElementTag>();
-		String currentAnnotation = null;
+		ElementTag parentElement = null;
+		Stack<ElementTag> parentElementStack = new Stack<ElementTag>();
+		Stack<ElementTag> secondaryElementStack = new Stack<ElementTag>();
+		Stack<String> elementNameStack = new Stack<String>();
+		String parentAnnotation = null,
+			   secondaryAnnotation = null;
 		
 		try (Scanner scanner = new Scanner(file, "UTF-8")){
 			while(scanner.hasNextLine()){
 				
+				// remove the leading and trailing spaces from the line
 				String line = scanner.nextLine().trim();
 				
 				// the line has an annotation
 				if(ParserUtility.isAnnotated(line)){
 								
 					// get the annotation string
-					String annotation = ParserUtility.getAnnotation(line);
-					
-					
-					// if it is a collect annotation, add it to DbType and continue to the next line
-					if(annotation.equals(COLLECT)){
-						// It is assumed that a collect annotation cannot be an element tag and would
-						// exist as a key-value pair only.
-						
-						// get the name and value of the annotation
-						String[] keyDetails = ParserUtility.getKeyValueDetails(line);
-						// create an empty element to store the key-value
-						element = new ElementTag(null, null);
-						element.addKeyValue(keyDetails[0], keyDetails[1]);
-						
-						// add the collect annotation to the DbType
-						addElementToDb(COLLECT, element, dbType);
-						continue;
-					}
-					else {
-						// if it is an annotation other than COLLECT,
-						// check if it is the same one as the current going on.
-						// At a time, only one annotation can be active
-						if(currentAnnotation == null || currentAnnotation.equals(annotation)){
-							currentAnnotation = annotation;
-						}
-						else {
-							throw new RuntimeException();
-						}
-					}
-					
-					// The annotation is decided. Create the element 
+					String annotatedString = ParserUtility.getAnnotation(line);					
+					String annotation = ParserUtility.getAnnotationFromAnnotated(annotatedString);
 					
 					// The line is an element start
+					// As per the collectd configuration files, an element would not have other elements
+					// with external scope. If elements are stacked, those all belong to parent scope.
 					if (ParserUtility.isElementStart(line)){	
-					
+						String name = ParserUtility.getNameFromAnnotated(annotatedString);
 						String[] elementDetails = ParserUtility.getElementDetails(line);
-						element = new ElementTag(elementDetails[0], elementDetails[1]);
-						elementStack.push(element);
+						String id = elementDetails[0] + ELEMENT_ID_SEPARATOR + elementDetails[1];
 						
+						// create an element with local scope
+						ElementTag element = new ElementTag(elementDetails[0], elementDetails[1],
+												id, Scope.LOCAL);
+						// get any name along with the annotation, if given
+						if(name == null){
+							name = element.getValue();
+						}
+						elementNameStack.push(name);
+						
+						// if the parent stack is empty, this is a new parent element.
+						// Make this parent and push to stack.
+						if(parentElementStack.isEmpty()){
+							
+							parentAnnotation = annotation;
+							parentElement = element;
+
+						}
+						parentElementStack.push(element);						
 					}
 					else {
 						// the line is a key-value pair
@@ -186,42 +190,72 @@ public class DescriptorParserImpl implements DescriptorParser {
 						String keyName = keyValueDetails[0];
 						String keyValue = keyValueDetails[1];
 						
-						if(!elementStack.isEmpty()){
-							// add the key-value to the opened element
-							elementStack.peek().addKeyValue(keyName, keyValue);
+						// the annotation is Attribute. Add it as a key-value in the parent element
+						// An @Attribute notation cannot exist independent i.e. it would be inside an 
+						// annotated element
+						if(annotation.equals(ATTRIBUTE)){
+							parentElementStack.peek().addKeyValue(keyName, keyValue);
 						}
 						else {
-							// create an empty element tag
-							element = new ElementTag(null, null);
-							element.addKeyValue(keyName, keyValue);
-							addElementToDb(currentAnnotation, element, dbType);
-							currentAnnotation = null;
-						}	
+							// it's a different annotation
+							
+							// if the parent stack is empty, then this key-value is independent
+							// and can be added as a key-value to the annotated parameter class 
+							if(parentElementStack.isEmpty()){
+								addKeyValueToDb(annotation, new KeyValue(keyName, keyValue), dbType);
+							}
+							else {
+								// the parent stack is not empty and the annotation differs from the parent
+								// annotation
+
+								// this is the first time this has been encountered. 
+								// Create a copy of the parent element and add it to the secondary stack
+								if(secondaryElementStack.isEmpty()){
+									secondaryAnnotation = annotation;
+									ElementTag secondaryElement = new ElementTag(parentElement.getName(), 
+											parentElement.getValue(), parentElement.getId(), 
+											Scope.EXTERNAL);
+									secondaryElementStack.push(secondaryElement);
+									elementNameStack.push(secondaryElement.getValue());
+								}
+								
+								// push the key-value to the secondary element
+								secondaryElementStack.peek().addKeyValue(keyName, keyValue);
+							}
+						}// end if annotation	
 					}
-				} // end if annotation
+				} // end isAnnotated
 				
-				// the line has an end tag
-				else if(ParserUtility.isElementEnd(line)){					
+				// the line is not annotated and has an end tag
+				else if(ParserUtility.isElementEnd(line)){
+					String elementName = ParserUtility.getElementDetails(line)[0];
+					// as of now, the secondary element would end at the same time the parent element ends.					
+					
 					// Pop the top element from the stack and add it to the element at its bottom.
-					if(!elementStack.isEmpty()){
-						String elementName = ParserUtility.getElementDetails(line)[0];
-						element = elementStack.pop();
+					if(!parentElementStack.isEmpty()){
+						ElementTag element = parentElementStack.pop();
 						if(!element.getName().equals(elementName)){
-							// Element being ended is different than the one on stack.
+							// Element being ended is different than the one on parent stack.
 							// Push the element back to stack and continue
-							elementStack.push(element);
+							parentElementStack.push(element);
 							continue;
 						}
-						else if(!elementStack.isEmpty()){
+						else if(!parentElementStack.isEmpty()){
 							// the element being ended is same as one on stack
 							// add the element to the element below it
-							elementStack.peek().addElement(element);	
+							parentElementStack.peek().addElement(element);
+							elementNameStack.pop();
 						}
 						else {
 							// the stack is empty. Add the element to the DbType parameter as per 
 							// the current annotation 
-							addElementToDb(currentAnnotation, element, dbType);
-							currentAnnotation = null;
+							addElementToDb(parentAnnotation, element, dbType, elementNameStack.pop());
+							if(!secondaryElementStack.isEmpty()){
+								addElementToDb(secondaryAnnotation, secondaryElementStack.pop(), 
+										dbType, elementNameStack.pop());
+							}							
+							parentAnnotation = null;
+							secondaryAnnotation = null;
 						}
 						
 					} // end if (!elementStack.isEmpty())
@@ -243,19 +277,45 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * @param element the element to be added
 	 * @param dbType instance of the DB to which the element is to be added
 	 */
-	private void addElementToDb(String currentAnnotation, ElementTag element,
-			DbType dbType) {
+	private void addElementToDb(String annotation, ElementTag element,
+			DbType dbType, String name) {
+		if(element == null)
+			return;
 		
-		if(currentAnnotation.equals(MACHINE_SCOPE)){
-			dbType.getMachineParams().addElement(element);
-		}
-		else if(currentAnnotation.equals(METRIC_SCOPE)){
-			dbType.getMetricParams().addElement(element);
-		}
-		else if(currentAnnotation.equals(COLLECT)){
-			dbType.getCollectParams().addElement(element);
+		switch(annotation){
+			case MACHINE:
+				dbType.getMachine().addElement(element);
+				break;
+			case SYSTEM_METRIC:
+				SystemMetric systemMetric = new SystemMetric(name, MetricType.SYSTEM);
+				systemMetric.addElement(element);
+				dbType.getSystemMetrics().add(systemMetric);
+				break;
+			case DB_METRIC:
+				DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
+				dbMetric.addElement(element);
+				dbType.getDbMetrics().add(dbMetric);
+				break;
+			case AGGREGATED_METRIC:
+				AggregatedMetric aggMetric = new AggregatedMetric(name, null);
+				aggMetric.addElement(element);
+				dbType.getAggregatedMetrics().add(aggMetric);
+				break;
 		}
 		
 	}
-
+	
+	private void addKeyValueToDb(String annotation, KeyValue keyValue, DbType dbType){
+		switch(annotation){
+			case MACHINE:
+				dbType.getMachine().addKeyValue(keyValue);
+				break;
+			case SYSTEM_METRIC:
+				break;
+			case DB_METRIC:
+				break;
+			case AGGREGATED_METRIC:
+				break;
+		}
+	}
 }

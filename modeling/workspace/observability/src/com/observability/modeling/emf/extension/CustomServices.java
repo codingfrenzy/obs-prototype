@@ -27,8 +27,10 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.List;
 
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import com.observability.modeling.emf.*;
 import org.eclipse.emf.ecore.EObject;
 
 import com.observability.modeling.emf.DatabaseCluster;
@@ -132,7 +134,7 @@ public class CustomServices {
 			newDbType.setName(dbType.getName());
 			
 			//Create Metrics for each @metric annotation
-			com.observability.modeling.probe.descriptor.entities.Metric metrics =  dbType.getMetricParams();
+			com.observability.modeling.probe.descriptor.entities.SystemMetric metrics =  dbType.getMetricParams();
 			for (ElementTag elementTag : metrics.getElements()) {
 				Metric newMetric = factory.createBaseMetric();
 				
@@ -143,6 +145,7 @@ public class CustomServices {
 				else 
 					//else take the name from the elementTag
 					newMetric.setName(elementTag.getValue());
+
 				newDbType.getAvailableMetrics().add(newMetric);
 			}
 			model.getAvailableDbTypes().add(newDbType);

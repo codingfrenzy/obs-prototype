@@ -30,17 +30,33 @@ import java.util.ArrayList;
  * @author vsaravag
  *
  */
-public class Metric extends Parameter {
+public class AggregatedMetric extends Parameter {
 	
-	public Metric(){
+	public AggregatedMetric(){
 		this.elements = new ArrayList<ElementTag>();
+		this.keyValues = new ArrayList<KeyValue>();
 	}
 	
-	public Metric(String name, String value){
+	public AggregatedMetric(String name, String value){
 		if(name!=null){
 			this.name = name;
 			this.value = value;
 			this.elements = new ArrayList<ElementTag>();
+			this.keyValues = new ArrayList<KeyValue>();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buf = new StringBuffer();
+		buf.append("\nAggregated Metric (" + name + ", " + value + ")\n");
+		
+		for (KeyValue keyValue : keyValues){
+			buf.append(keyValue.toString(1));
+		}
+		for (ElementTag element : elements) {
+			buf.append(element.toString());
+		}
+		return buf.toString();
 	}
 }	

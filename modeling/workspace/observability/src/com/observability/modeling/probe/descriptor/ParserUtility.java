@@ -42,7 +42,7 @@ public class ParserUtility {
 		if(line == null){
 			return false;
 		}
-		String regex = ".*@(Machine|Metric|Collect)$";
+		String regex = ".*@.*$";
 		return line.matches(regex);
 	}
 	
@@ -159,5 +159,31 @@ public class ParserUtility {
 			return matcher.group(1).trim();
 		}
 		return null;
+	}
+	
+	/**
+	 * Get the name from the annotation
+	 * @param annotation the annotation from which the name is
+	 * to be extracted
+	 * @return name, if any else null
+	 */
+	public static String getNameFromAnnotated(String annotation){
+		if(annotation == null){
+			return null;
+		}
+		String regex = "@.*\\((.*)\\)";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(annotation);
+		if(matcher.find()){ //there would be only one match in a line
+			return matcher.group(1).trim();
+		}
+		return null;
+	}
+	
+	public static String getAnnotationFromAnnotated(String annotatedString){
+		if(annotatedString == null){
+			return null;
+		}
+		return annotatedString.split("\\(")[0].trim();
 	}
 }
