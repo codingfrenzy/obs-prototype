@@ -30,6 +30,7 @@ import java.util.List;
 
 
 
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 
@@ -49,6 +50,7 @@ import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
+import com.observability.modeling.probe.descriptor.entities.Scope;
 import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
 /**
@@ -248,41 +250,29 @@ public class CustomServices {
 	 */
 	public static boolean initializeMachine(EObject containerCluster){
 		
-//		//parse only one time
-//		if(dbTypes == null)
-//			parseDescriptors();
-//		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
-//		
-//		//If the cluster is not associated with a dbType do nothing
-//		DbType associatedDbType = cluster.getAssociatedDbType();
-//		if(associatedDbType == null)
-//			return false;
-//		
-//		
-//		NodeMachine machine = factory.createNodeMachine();
-//		
-//		//Copy elements from the entities filled from descriptor to EMF semantic instance
-//		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
-//			if(dbType.getName().equals(associatedDbType.getName())){
-//				Machine machineParam = dbType.getMachineParams();
-//				
-//				
-//				//TODO get rid of the root element
-//				//create placeholder root element 
-//				Element rootElement = factory.createElement();
-//				rootElement.setName("root");
-//				
-//				
-//				fillElements( machineParam, rootElement);
-//				
-//				machine.getElements().add(rootElement);
-//				
-//				
-//				break;
-//			}
-//		}
-//		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
-//		cluster.getMachines().add(machine);
+		//parse only one time
+		if(dbTypes == null)
+			parseDescriptors();
+		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
+		
+		//If the cluster is not associated with a dbType do nothing
+		DbType associatedDbType = cluster.getAssociatedDbType();
+		if(associatedDbType == null)
+			return false;
+		
+		NodeMachine machine = factory.createNodeMachine();
+		
+		//Copy elements from the entities filled from descriptor to EMF semantic instance
+		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
+			if(dbType.getName().equals(associatedDbType.getName())){
+				Machine machineParam = dbType.getMachine();
+				
+				fillElements( machineParam, machine);
+				break;
+			}
+		}
+		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
+		cluster.getMachines().add(machine);
 		return true;
 		
 		
@@ -293,20 +283,37 @@ public class CustomServices {
 	 * @param machineParam 
 	 * @param rootElement
 	 */
-	private static void fillElements(Machine machineParam, Element rootElement) {
+	private static void fillElements(Machine machineParam, NodeMachine semanticMachine) {
 		List<ElementTag> elementTags = machineParam.getElements();
+		List<com.observability.modeling.probe.descriptor.entities.KeyValue> keyValues = machineParam.getKeyValues();
 		
 		for (ElementTag element : elementTags) {
-			Element newElement = factory.createElement();
 			
-			//copy name and value
-			newElement.setName(element.getName());
-			newElement.setValue(element.getValue());
 			
-			//fill sub elements and key values
-			fillElements(element, newElement);
+			//Only add local scope elements when a new model instance is created
+			//External scope elements will be added when a cluster is associated with a metric
 			
-			rootElement.getElements().add(newElement);
+			if(element.getScope().equals(Scope.LOCAL)){
+				Element newElement = factory.createElement();
+				
+				//copy name and value
+				newElement.setName(element.getName());
+				newElement.setValue(element.getValue());
+								
+				//fill sub elements and key values
+				fillElements(element, newElement);
+				
+				semanticMachine.getElements().add(newElement);
+			}
+			
+		}
+		
+		// We assume key values at root level are local
+		for (com.observability.modeling.probe.descriptor.entities.KeyValue keyValue: keyValues){
+			KeyValue kV = factory.createKeyValue();
+			kV.setKey(keyValue.getName());
+			kV.setValue(keyValue.getValue());
+			semanticMachine.getKeyValues().add(kV);
 		}
 		
 	}
@@ -357,6 +364,10 @@ public class CustomServices {
 			
 		}
 		
+	}
+	
+	public static boolean addMetricSpecificParamsToMachine(EObject containerCluster){
+		return true;
 	}
 
 	public CustomServices(){

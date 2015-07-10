@@ -83,6 +83,12 @@ public abstract class Parameter {
 			this.keyValues.add(keyValue);
 		}
 	}
+	/**
+	 * @return the keyValues
+	 */
+	public ArrayList<KeyValue> getKeyValues() {
+		return keyValues;
+	}
 	
 	/**
 	 * Adds the element to the parameter
