@@ -5,13 +5,10 @@ LoadPlugin "memory"
 LoadPlugin "df"
 LoadPlugin "cpu"
 LoadPlugin "interface"
-<<<<<<< Updated upstream:config-files/release 2 config files/cassandra.collectd.conf
 LoadPlugin "disk"
 LoadPlugin load
-=======
 LoadPlugin "logfile"
 LoadPlugin "csv" 
->>>>>>> Stashed changes:modeling/workspace/observability/src/com/observability/modeling/probe/descriptor/resources/cassandra.descriptor
 
 <Plugin "cpu"> @MetricSystem
 	ReportByState true @Attribute
@@ -39,26 +36,17 @@ LoadPlugin "csv"
 	IgnoreSelected true @Attribute
 </Plugin>
 
-<<<<<<< Updated upstream:config-files/release 2 config files/cassandra.collectd.conf
-<Plugin "disk">
-  Disk "sda" #variable
-  Disk "/^hd/" #variable
-  IgnoreSelected false #variable
+<Plugin "disk"> @MetricSystem
+  Disk "sda" @Machine
+  Disk "/^hd/" @Machine
+  IgnoreSelected false @Attribute
 </Plugin>
 
-LoadPlugin "logfile" 
-<Plugin "logfile">
-  LogLevel "info" #variable
-  File "/home/owls/collectd/log/collectd.log" #variable
-  Timestamp true #variable
-  PrintSeverity true #variable
-=======
 <Plugin "logfile">  @MetricSystem 
   LogLevel "info" @Machine
   File "/home/owls/collectd/log/collectd.log" @Machine
   Timestamp true @Attribute
   PrintSeverity true @Attribute
->>>>>>> Stashed changes:modeling/workspace/observability/src/com/observability/modeling/probe/descriptor/resources/cassandra.descriptor
 </Plugin>
 
 <Plugin "csv"> @MetricSystem

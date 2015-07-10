@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.Metric#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -137,5 +138,31 @@ public interface Metric extends EObject {
 	 * @generated
 	 */
 	void setDatabaseCluster(DatabaseCluster value);
+
+	/**
+	 * Returns the value of the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see #setType(String)
+	 * @see com.observability.modeling.emf.EmfPackage#getMetric_Type()
+	 * @model
+	 * @generated
+	 */
+	String getType();
+
+	/**
+	 * Sets the value of the '{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type</em>' attribute.
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(String value);
 
 } // Metric

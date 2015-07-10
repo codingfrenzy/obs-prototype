@@ -514,13 +514,22 @@ public interface EmfPackage extends EPackage {
 	int METRIC__DATABASE_CLUSTER = 4;
 
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int METRIC__TYPE = 5;
+
+	/**
 	 * The number of structural features of the '<em>Metric</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC_FEATURE_COUNT = 5;
+	int METRIC_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Metric</em>' class.
@@ -593,7 +602,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC__TYPE = METRIC_FEATURE_COUNT + 0;
+	int BASE_METRIC__TYPE = METRIC__TYPE;
 
 	/**
 	 * The number of structural features of the '<em>Base Metric</em>' class.
@@ -602,7 +611,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 1;
+	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Base Metric</em>' class.
@@ -667,6 +676,15 @@ public interface EmfPackage extends EPackage {
 	 * @ordered
 	 */
 	int AGGREGATED_METRIC__DATABASE_CLUSTER = METRIC__DATABASE_CLUSTER;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__TYPE = METRIC__TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Calculate Sum</b></em>' attribute.
@@ -1252,17 +1270,6 @@ public interface EmfPackage extends EPackage {
 	EClass getBaseMetric();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.BaseMetric#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Type</em>'.
-	 * @see com.observability.modeling.emf.BaseMetric#getType()
-	 * @see #getBaseMetric()
-	 * @generated
-	 */
-	EAttribute getBaseMetric_Type();
-
-	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.AggregatedMetric <em>Aggregated Metric</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1402,6 +1409,17 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getMetric_DatabaseCluster();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see com.observability.modeling.emf.Metric#getType()
+	 * @see #getMetric()
+	 * @generated
+	 */
+	EAttribute getMetric_Type();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Notification <em>Notification</em>}'.
@@ -1869,14 +1887,6 @@ public interface EmfPackage extends EPackage {
 		EClass BASE_METRIC = eINSTANCE.getBaseMetric();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute BASE_METRIC__TYPE = eINSTANCE.getBaseMetric_Type();
-
-		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.AggregatedMetricImpl <em>Aggregated Metric</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1983,6 +1993,14 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference METRIC__DATABASE_CLUSTER = eINSTANCE.getMetric_DatabaseCluster();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute METRIC__TYPE = eINSTANCE.getMetric_Type();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.NotificationImpl <em>Notification</em>}' class.

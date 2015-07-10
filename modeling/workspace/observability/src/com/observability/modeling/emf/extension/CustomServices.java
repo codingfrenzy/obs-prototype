@@ -28,9 +28,12 @@ import java.nio.file.Path;
 import java.util.List;
 
 
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+
 import com.observability.modeling.emf.*;
+
 import org.eclipse.emf.ecore.EObject;
 
 import com.observability.modeling.emf.DatabaseCluster;
@@ -44,6 +47,7 @@ import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
+import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
 /**
  * @author gemici
@@ -75,7 +79,7 @@ public class CustomServices {
      * This will search through all the projects in the current workspace for the descriptors dir.
      */
 	
-	private static void parseDescriptors(){
+	public static void parseDescriptors(){
 		 
 		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		File descriptorDir = null;
@@ -101,7 +105,7 @@ public class CustomServices {
      * @param descriptorsPath the path to the dir where the descriptor files are located inside the project
      * TODO remove duplicate code.
      */
-	private static void parseDescriptors(Path descriptorsPath){
+	public static void parseDescriptors(Path descriptorsPath){
 		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
 			// if descriptors exist, get the parsed descriptors
 			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
@@ -133,27 +137,52 @@ public class CustomServices {
 			DbType newDbType = factory.createDbType();
 			newDbType.setName(dbType.getName());
 			
-			//Create Metrics for each @metric annotation
-			com.observability.modeling.probe.descriptor.entities.SystemMetric metrics =  dbType.getMetricParams();
-			for (ElementTag elementTag : metrics.getElements()) {
-				Metric newMetric = factory.createBaseMetric();
-				
-				//If the metric name is not in the element, check keyValue for 
-				//the name. Assumptions: elementTag will have exactly one keyValues
-				if(elementTag.getValue() == null)
-					newMetric.setName(elementTag.getKeyValues().get(0).getValue());
-				else 
-					//else take the name from the elementTag
-					newMetric.setName(elementTag.getValue());
-
-				newDbType.getAvailableMetrics().add(newMetric);
-			}
+			createSystemMetricParameters(newDbType);
+			createDbMetricParameters(newDbType);
+			createAggregatedMetricParameters(newDbType);
+//			//Create Metrics for each @metric annotation
+//			com.observability.modeling.probe.descriptor.entities.SystemMetric metrics =  dbType.getDbMetrics()();
+//			for (ElementTag elementTag : metrics.getElements()) {
+//				Metric newMetric = factory.createBaseMetric();
+//				
+//				//If the metric name is not in the element, check keyValue for 
+//				//the name. Assumptions: elementTag will have exactly one keyValues
+//				if(elementTag.getValue() == null)
+//					newMetric.setName(elementTag.getKeyValues().get(0).getValue());
+//				else 
+//					//else take the name from the elementTag
+//					newMetric.setName(elementTag.getValue());
+//
+//				newDbType.getAvailableMetrics().add(newMetric);
+//			}
 			model.getAvailableDbTypes().add(newDbType);
 		}
 				    
 		
 	}
 	
+	private static void createAggregatedMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void createDbMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void createSystemMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
+		List<SystemMetric> systemMetrics  = parsedDbType.getSystemMetrics();
+		for (SystemMetric systemMetric : systemMetrics) {
+			
+			//Create a system metric entry in semantic model
+			BaseMetric metric = factory.createBaseMetric();
+			metric.setType(systemMetric.getType().toString());
+			systemMetric.getElements()
+		}
+		
+	}
+
 	/**
 	 * This method creates a new machine instance in the given cluster.
 	 * It will populate the correct dynamic elements and key values according

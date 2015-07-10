@@ -61,4 +61,8 @@ public class SystemMetric extends Parameter {
 		}
 		return buf.toString();
 	}
+	
+	public MetricType getType() {
+		return type;
+	}
 }	

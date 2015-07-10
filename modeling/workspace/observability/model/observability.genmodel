@@ -45,9 +45,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Model/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Model/notifications"/>
     </genClasses>
-    <genClasses ecoreClass="observability.ecore#//BaseMetric">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//BaseMetric/type"/>
-    </genClasses>
+    <genClasses ecoreClass="observability.ecore#//BaseMetric"/>
     <genClasses ecoreClass="observability.ecore#//AggregatedMetric">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateSum"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateNum"/>
@@ -62,6 +60,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/keyValues"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/elements"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/databaseCluster"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Metric/type"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Notification">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Notification/type"/>

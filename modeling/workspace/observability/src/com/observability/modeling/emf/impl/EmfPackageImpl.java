@@ -460,15 +460,6 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getBaseMetric_Type() {
-		return (EAttribute)baseMetricEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getAggregatedMetric() {
 		return aggregatedMetricEClass;
 	}
@@ -579,6 +570,15 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 */
 	public EReference getMetric_DatabaseCluster() {
 		return (EReference)metricEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getMetric_Type() {
+		return (EAttribute)metricEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -783,7 +783,6 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEReference(modelEClass, MODEL__NOTIFICATIONS);
 
 		baseMetricEClass = createEClass(BASE_METRIC);
-		createEAttribute(baseMetricEClass, BASE_METRIC__TYPE);
 
 		aggregatedMetricEClass = createEClass(AGGREGATED_METRIC);
 		createEAttribute(aggregatedMetricEClass, AGGREGATED_METRIC__CALCULATE_SUM);
@@ -799,6 +798,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEReference(metricEClass, METRIC__KEY_VALUES);
 		createEReference(metricEClass, METRIC__ELEMENTS);
 		createEReference(metricEClass, METRIC__DATABASE_CLUSTER);
+		createEAttribute(metricEClass, METRIC__TYPE);
 
 		notificationEClass = createEClass(NOTIFICATION);
 		createEAttribute(notificationEClass, NOTIFICATION__TYPE);
@@ -888,7 +888,6 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEReference(getModel_Notifications(), this.getNotification(), null, "notifications", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(baseMetricEClass, BaseMetric.class, "BaseMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBaseMetric_Type(), ecorePackage.getEString(), "type", null, 0, 1, BaseMetric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(aggregatedMetricEClass, AggregatedMetric.class, "AggregatedMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAggregatedMetric_CalculateSum(), ecorePackage.getEBoolean(), "calculateSum", null, 0, 1, AggregatedMetric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -904,6 +903,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEReference(getMetric_KeyValues(), this.getKeyValue(), null, "keyValues", null, 0, -1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMetric_Elements(), this.getElement(), null, "elements", null, 0, -1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMetric_DatabaseCluster(), this.getDatabaseCluster(), this.getDatabaseCluster_CollectedMetrics(), "databaseCluster", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMetric_Type(), ecorePackage.getEString(), "type", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(notificationEClass, Notification.class, "Notification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getNotification_Type(), ecorePackage.getEString(), "type", null, 1, 1, Notification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
