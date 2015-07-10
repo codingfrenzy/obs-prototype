@@ -49,20 +49,21 @@ Interval [frequency/]
 	
 	
 	
-[let rootElement : Element = machine.hasParentElement]
-  [for (element : Element | rootElement.hasElements)]
+  [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Database') = 0]
     <Database [element.value/]>
-	  [for (keyValue : KeyValue | element.hasKeyValues)]
+	  [for (keyValue : KeyValue | element.keyValues)]
 	  [keyValue.key/] "[keyValue.value/]"
 	  [/for]
-	  [for (m : BaseMetric | aCluster.collectedBaseMetric) ]
-	  Query [m.name/]		
+	  [for (m : Metric | aCluster.collectedMetrics) ]
+	  	[if m.oclIsKindOf(BaseMetric)]
+	  		Query "[m.name/]"		
+		[/if]
+	
 	  [/for]	  	
     </Database>
 	[/if]
   [/for]
-[/let]	
     
   </Plugin>
 [/file]

@@ -127,20 +127,20 @@ LoadPlugin "threshold"
     </MBean>
 
     
-[let rootElement : Element = machine.hasParentElement]
-  [for (element : Element | rootElement.hasElements)]
+  [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Connection') = 0]
     <Connection>
-	  [for (keyValue : KeyValue | element.hasKeyValues)]
+	  [for (keyValue : KeyValue | element.keyValues)]
 	  [keyValue.key/] "[keyValue.value/]"
 	  [/for]
-	  [for (m : BaseMetric | aCluster.collectedBaseMetric) ]
-	  Collect "[m.name/]"		
+	  [for (m : Metric | aCluster.collectedMetrics) ]
+		[if m.oclIsKindOf(BaseMetric)]
+	  		Collect "[m.name/]"		
+		[/if]
 	  [/for]	  	
     </Connection>
 	[/if]
   [/for]
-[/let]	    
   </Plugin>
 </Plugin>
 [/file]

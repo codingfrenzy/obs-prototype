@@ -19,17 +19,16 @@ Interval [frequency/]
 
     Import "mongodb"
 
-[let rootElement : Element = machine.hasParentElement]
-  [for (element : Element | rootElement.hasElements)]
+  [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Module') = 0]
     <Module mongodb>
-	  [for (keyValue : KeyValue | element.hasKeyValues)]
+	  [for (keyValue : KeyValue | element.keyValues)]
 	  [keyValue.key/] "[keyValue.value/]"
 	  [/for]	  	
     </Module>
 	[/if]
   [/for]
-[/let]	
+	
 </Plugin>
 [/file]
 [/for]
