@@ -353,6 +353,13 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
 
   pthread_mutex_lock (&inst->lock);
 
+  // DEBUG log, should be removed later
+  gauge_t outputval = 0;
+  memcpy(&outputval, vl->values, sizeof(outputval));
+  INFO ("agg_instance_update: inst %s-%s-%s-%s-%s - value time:%ld - value: %f.", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
+  inst->ident.type, inst->ident.type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
+  //
+
   inst->num++;
   inst->sum += rate[0];
   inst->squares_sum += (rate[0] * rate[0]);
@@ -537,6 +544,7 @@ static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
   gauge_t outputval = 0;
   memcpy(&outputval, vl->values, sizeof(outputval));
   INFO ("obsagg_write: Final Submit - plugin: %s - type: %s-%s - time:%ld - value: %f.", vl->plugin, vl->type, vl->type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
+  //
 
   vl->values = NULL;
   vl->values_len = 0;
@@ -966,7 +974,7 @@ static int agg_write (data_set_t const *ds, value_list_t const *vl)
       			status = 0;
   	}
 	return (status);
-} /* }}} int agg_write */
+} // }}} int agg_write
 
 /*
 static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter_t num_aggr_nodes, const char *plugin, const char *type)
