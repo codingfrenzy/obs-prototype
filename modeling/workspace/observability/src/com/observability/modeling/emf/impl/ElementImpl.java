@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getHasElements <em>Has Elements</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getHasKeyValues <em>Has Key Values</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getElements <em>Elements</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getValue <em>Value</em>}</li>
  * </ul>
@@ -40,24 +40,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class ElementImpl extends MinimalEObjectImpl.Container implements Element {
 	/**
-	 * The cached value of the '{@link #getHasElements() <em>Has Elements</em>}' containment reference list.
+	 * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getHasElements()
+	 * @see #getElements()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Element> hasElements;
+	protected EList<Element> elements;
 
 	/**
-	 * The cached value of the '{@link #getHasKeyValues() <em>Has Key Values</em>}' containment reference list.
+	 * The cached value of the '{@link #getKeyValues() <em>Key Values</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getHasKeyValues()
+	 * @see #getKeyValues()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<KeyValue> hasKeyValues;
+	protected EList<KeyValue> keyValues;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -123,11 +123,11 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Element> getHasElements() {
-		if (hasElements == null) {
-			hasElements = new EObjectContainmentEList<Element>(Element.class, this, EmfPackage.ELEMENT__HAS_ELEMENTS);
+	public EList<Element> getElements() {
+		if (elements == null) {
+			elements = new EObjectContainmentEList<Element>(Element.class, this, EmfPackage.ELEMENT__ELEMENTS);
 		}
-		return hasElements;
+		return elements;
 	}
 
 	/**
@@ -135,11 +135,11 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<KeyValue> getHasKeyValues() {
-		if (hasKeyValues == null) {
-			hasKeyValues = new EObjectContainmentEList<KeyValue>(KeyValue.class, this, EmfPackage.ELEMENT__HAS_KEY_VALUES);
+	public EList<KeyValue> getKeyValues() {
+		if (keyValues == null) {
+			keyValues = new EObjectContainmentEList<KeyValue>(KeyValue.class, this, EmfPackage.ELEMENT__KEY_VALUES);
 		}
-		return hasKeyValues;
+		return keyValues;
 	}
 
 	/**
@@ -192,10 +192,10 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-				return ((InternalEList<?>)getHasElements()).basicRemove(otherEnd, msgs);
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
-				return ((InternalEList<?>)getHasKeyValues()).basicRemove(otherEnd, msgs);
+			case EmfPackage.ELEMENT__ELEMENTS:
+				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
+			case EmfPackage.ELEMENT__KEY_VALUES:
+				return ((InternalEList<?>)getKeyValues()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -208,10 +208,10 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-				return getHasElements();
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
-				return getHasKeyValues();
+			case EmfPackage.ELEMENT__ELEMENTS:
+				return getElements();
+			case EmfPackage.ELEMENT__KEY_VALUES:
+				return getKeyValues();
 			case EmfPackage.ELEMENT__NAME:
 				return getName();
 			case EmfPackage.ELEMENT__VALUE:
@@ -229,13 +229,13 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-				getHasElements().clear();
-				getHasElements().addAll((Collection<? extends Element>)newValue);
+			case EmfPackage.ELEMENT__ELEMENTS:
+				getElements().clear();
+				getElements().addAll((Collection<? extends Element>)newValue);
 				return;
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
-				getHasKeyValues().clear();
-				getHasKeyValues().addAll((Collection<? extends KeyValue>)newValue);
+			case EmfPackage.ELEMENT__KEY_VALUES:
+				getKeyValues().clear();
+				getKeyValues().addAll((Collection<? extends KeyValue>)newValue);
 				return;
 			case EmfPackage.ELEMENT__NAME:
 				setName((String)newValue);
@@ -255,11 +255,11 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-				getHasElements().clear();
+			case EmfPackage.ELEMENT__ELEMENTS:
+				getElements().clear();
 				return;
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
-				getHasKeyValues().clear();
+			case EmfPackage.ELEMENT__KEY_VALUES:
+				getKeyValues().clear();
 				return;
 			case EmfPackage.ELEMENT__NAME:
 				setName(NAME_EDEFAULT);
@@ -279,10 +279,10 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-				return hasElements != null && !hasElements.isEmpty();
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
-				return hasKeyValues != null && !hasKeyValues.isEmpty();
+			case EmfPackage.ELEMENT__ELEMENTS:
+				return elements != null && !elements.isEmpty();
+			case EmfPackage.ELEMENT__KEY_VALUES:
+				return keyValues != null && !keyValues.isEmpty();
 			case EmfPackage.ELEMENT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.ELEMENT__VALUE:

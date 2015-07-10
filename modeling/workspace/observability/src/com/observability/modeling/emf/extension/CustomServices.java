@@ -179,12 +179,18 @@ public class CustomServices {
 			if(dbType.getName().equals(associatedDbType.getName())){
 				Machine machineParam = dbType.getMachineParams();
 				
+				
+				//TODO get rid of the root element
 				//create placeholder root element 
 				Element rootElement = factory.createElement();
 				rootElement.setName("root");
 				
+				
 				fillElements( machineParam, rootElement);
-				machine.setHasParentElement(rootElement);
+				
+				machine.getElements().add(rootElement);
+				
+				
 				break;
 			}
 		}
@@ -213,7 +219,7 @@ public class CustomServices {
 			//fill sub elements and key values
 			fillElements(element, newElement);
 			
-			rootElement.getHasElements().add(newElement);
+			rootElement.getElements().add(newElement);
 		}
 		
 	}
@@ -232,7 +238,7 @@ public class CustomServices {
 			for (ElementTag elementTag : elements) {
 				Element newSubElement = factory.createElement();
 				fillElements(elementTag, newSubElement);
-				newElement.getHasElements().add(newSubElement);
+				newElement.getElements().add(newSubElement);
 			}
 		}
 		
@@ -243,7 +249,7 @@ public class CustomServices {
 				KeyValue newKey = factory.createKeyValue();
 				newKey.setKey(keyValue.getName());
 				newKey.setValue(keyValue.getValue());
-				newElement.getHasKeyValues().add(newKey);
+				newElement.getKeyValues().add(newKey);
 			} 
 		}
 	}

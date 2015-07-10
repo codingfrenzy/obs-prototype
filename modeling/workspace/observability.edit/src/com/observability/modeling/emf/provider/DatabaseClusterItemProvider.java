@@ -63,30 +63,29 @@ public class DatabaseClusterItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addCollectedBaseMetricPropertyDescriptor(object);
+			addCollectedMetricsPropertyDescriptor(object);
 			addAssociatedDbTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addNoOfMachinesPropertyDescriptor(object);
-			addCollectedDerivedMetricsPropertyDescriptor(object);
 			addAssociatedNotificationsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Collected Base Metric feature.
+	 * This adds a property descriptor for the Collected Metrics feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addCollectedBaseMetricPropertyDescriptor(Object object) {
+	protected void addCollectedMetricsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_collectedBaseMetric_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedBaseMetric_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__COLLECTED_BASE_METRIC,
+				 getString("_UI_DatabaseCluster_collectedMetrics_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedMetrics_feature", "_UI_DatabaseCluster_type"),
+				 EmfPackage.Literals.DATABASE_CLUSTER__COLLECTED_METRICS,
 				 true,
 				 false,
 				 true,
@@ -157,28 +156,6 @@ public class DatabaseClusterItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Collected Derived Metrics feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addCollectedDerivedMetricsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_collectedDerivedMetrics_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedDerivedMetrics_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}

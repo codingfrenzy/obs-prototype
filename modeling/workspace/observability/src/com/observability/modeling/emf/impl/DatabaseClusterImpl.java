@@ -2,11 +2,10 @@
  */
 package com.observability.modeling.emf.impl;
 
-import com.observability.modeling.emf.BaseMetric;
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
-import com.observability.modeling.emf.DerivedMetric;
 import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.NodeMachine;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
@@ -29,11 +28,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getMachines <em>Machines</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedMetrics <em>Collected Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getNoOfMachines <em>No Of Machines</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedDerivedMetrics <em>Collected Derived Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  * </ul>
  * </p>
@@ -52,14 +50,14 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	protected EList<NodeMachine> machines;
 
 	/**
-	 * The cached value of the '{@link #getCollectedBaseMetric() <em>Collected Base Metric</em>}' reference list.
+	 * The cached value of the '{@link #getCollectedMetrics() <em>Collected Metrics</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCollectedBaseMetric()
+	 * @see #getCollectedMetrics()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<BaseMetric> collectedBaseMetric;
+	protected EList<Metric> collectedMetrics;
 
 	/**
 	 * The cached value of the '{@link #getAssociatedDbType() <em>Associated Db Type</em>}' reference.
@@ -112,16 +110,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	protected int noOfMachines = NO_OF_MACHINES_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getCollectedDerivedMetrics() <em>Collected Derived Metrics</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCollectedDerivedMetrics()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<DerivedMetric> collectedDerivedMetrics;
-
-	/**
 	 * The cached value of the '{@link #getAssociatedNotifications() <em>Associated Notifications</em>}' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -167,11 +155,11 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<BaseMetric> getCollectedBaseMetric() {
-		if (collectedBaseMetric == null) {
-			collectedBaseMetric = new EObjectWithInverseResolvingEList.ManyInverse<BaseMetric>(BaseMetric.class, this, EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC, EmfPackage.BASE_METRIC__DATABASE_CLUSTER);
+	public EList<Metric> getCollectedMetrics() {
+		if (collectedMetrics == null) {
+			collectedMetrics = new EObjectWithInverseResolvingEList<Metric>(Metric.class, this, EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS, EmfPackage.METRIC__DATABASE_CLUSTER);
 		}
-		return collectedBaseMetric;
+		return collectedMetrics;
 	}
 
 	/**
@@ -259,18 +247,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<DerivedMetric> getCollectedDerivedMetrics() {
-		if (collectedDerivedMetrics == null) {
-			collectedDerivedMetrics = new EObjectResolvingEList<DerivedMetric>(DerivedMetric.class, this, EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS);
-		}
-		return collectedDerivedMetrics;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<com.observability.modeling.emf.Notification> getAssociatedNotifications() {
 		if (associatedNotifications == null) {
 			associatedNotifications = new EObjectResolvingEList<com.observability.modeling.emf.Notification>(com.observability.modeling.emf.Notification.class, this, EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS);
@@ -287,8 +263,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCollectedBaseMetric()).basicAdd(otherEnd, msgs);
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getCollectedMetrics()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -303,8 +279,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case EmfPackage.DATABASE_CLUSTER__MACHINES:
 				return ((InternalEList<?>)getMachines()).basicRemove(otherEnd, msgs);
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				return ((InternalEList<?>)getCollectedBaseMetric()).basicRemove(otherEnd, msgs);
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				return ((InternalEList<?>)getCollectedMetrics()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -319,8 +295,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case EmfPackage.DATABASE_CLUSTER__MACHINES:
 				return getMachines();
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				return getCollectedBaseMetric();
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				return getCollectedMetrics();
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				if (resolve) return getAssociatedDbType();
 				return basicGetAssociatedDbType();
@@ -328,8 +304,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return getName();
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				return getNoOfMachines();
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
-				return getCollectedDerivedMetrics();
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
 				return getAssociatedNotifications();
 		}
@@ -349,9 +323,9 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				getMachines().clear();
 				getMachines().addAll((Collection<? extends NodeMachine>)newValue);
 				return;
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				getCollectedBaseMetric().clear();
-				getCollectedBaseMetric().addAll((Collection<? extends BaseMetric>)newValue);
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				getCollectedMetrics().clear();
+				getCollectedMetrics().addAll((Collection<? extends Metric>)newValue);
 				return;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				setAssociatedDbType((DbType)newValue);
@@ -361,10 +335,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return;
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				setNoOfMachines((Integer)newValue);
-				return;
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
-				getCollectedDerivedMetrics().clear();
-				getCollectedDerivedMetrics().addAll((Collection<? extends DerivedMetric>)newValue);
 				return;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
 				getAssociatedNotifications().clear();
@@ -385,8 +355,8 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case EmfPackage.DATABASE_CLUSTER__MACHINES:
 				getMachines().clear();
 				return;
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				getCollectedBaseMetric().clear();
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				getCollectedMetrics().clear();
 				return;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				setAssociatedDbType((DbType)null);
@@ -396,9 +366,6 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 				return;
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				setNoOfMachines(NO_OF_MACHINES_EDEFAULT);
-				return;
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
-				getCollectedDerivedMetrics().clear();
 				return;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
 				getAssociatedNotifications().clear();
@@ -417,16 +384,14 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case EmfPackage.DATABASE_CLUSTER__MACHINES:
 				return machines != null && !machines.isEmpty();
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_BASE_METRIC:
-				return collectedBaseMetric != null && !collectedBaseMetric.isEmpty();
+			case EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS:
+				return collectedMetrics != null && !collectedMetrics.isEmpty();
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				return associatedDbType != null;
 			case EmfPackage.DATABASE_CLUSTER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
-			case EmfPackage.DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS:
-				return collectedDerivedMetrics != null && !collectedDerivedMetrics.isEmpty();
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:
 				return associatedNotifications != null && !associatedNotifications.isEmpty();
 		}

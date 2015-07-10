@@ -96,8 +96,8 @@ public class EmfAdapterFactory extends AdapterFactoryImpl {
 				return createBaseMetricAdapter();
 			}
 			@Override
-			public Adapter caseDerivedMetric(DerivedMetric object) {
-				return createDerivedMetricAdapter();
+			public Adapter caseAggregatedMetric(AggregatedMetric object) {
+				return createAggregatedMetricAdapter();
 			}
 			@Override
 			public Adapter caseMetric(Metric object) {
@@ -226,16 +226,16 @@ public class EmfAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.observability.modeling.emf.DerivedMetric <em>Derived Metric</em>}'.
+	 * Creates a new adapter for an object of class '{@link com.observability.modeling.emf.AggregatedMetric <em>Aggregated Metric</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.observability.modeling.emf.DerivedMetric
+	 * @see com.observability.modeling.emf.AggregatedMetric
 	 * @generated
 	 */
-	public Adapter createDerivedMetricAdapter() {
+	public Adapter createAggregatedMetricAdapter() {
 		return null;
 	}
 

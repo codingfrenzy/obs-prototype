@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eef-components="http://www.eclipse.org/emf/eef/components/1.0.0" xmlns:eef-views="http://www.eclipse.org/emf/eef/views/1.0.0">
+  <eef-components:PropertiesEditionContext xmi:id="__Ua0QCEUEeWTaKSAPRBN6w" documentation="Edition Context for emf GenPackage">
+    <categories xmi:id="__UbbUCEUEeWTaKSAPRBN6w" name="emf">
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbUSEUEeWTaKSAPRBN6w" name="DatabaseCluster" views="__UbbdyEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbUiEUEeWTaKSAPRBN6w" name="machines" views="__UbbeSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/machines"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbUyEUEeWTaKSAPRBN6w" name="collectedBaseMetric" views="__UbbeiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/collectedBaseMetric"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbVCEUEeWTaKSAPRBN6w" name="associatedDbType" views="__UbbeyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/associatedDbType"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbVSEUEeWTaKSAPRBN6w" name="name" views="__UbbfCEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/name"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbViEUEeWTaKSAPRBN6w" name="noOfMachines" views="__UbbfSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/noOfMachines"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbVyEUEeWTaKSAPRBN6w" name="collectedDerivedMetrics" views="__UbbfiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster/collectedDerivedMetrics"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//DatabaseCluster"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbWCEUEeWTaKSAPRBN6w" name="DbType" views="__UbbfyEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbWSEUEeWTaKSAPRBN6w" name="name" views="__UbbgSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//DbType/name"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbWiEUEeWTaKSAPRBN6w" name="probeLocation" views="__UbbgiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//DbType/probeLocation"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbWyEUEeWTaKSAPRBN6w" name="collectionFrequency" views="__UbbgyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//DbType/collectionFrequency"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbXCEUEeWTaKSAPRBN6w" name="availableMetrics" views="__UbbhCEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//DbType/availableMetrics"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//DbType"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbXSEUEeWTaKSAPRBN6w" name="Element" views="__UbbhSEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbXiEUEeWTaKSAPRBN6w" name="hasElements" views="__UbbhyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//Element/hasElements"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbXyEUEeWTaKSAPRBN6w" name="hasKeyValues" views="__UbbiCEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//Element/hasKeyValues"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbYCEUEeWTaKSAPRBN6w" name="name" views="__UbbiSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Element/name"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbYSEUEeWTaKSAPRBN6w" name="value" views="__UbbiiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Element/value"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//Element"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbYiEUEeWTaKSAPRBN6w" name="KeyValue" views="__UbbiyEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbYyEUEeWTaKSAPRBN6w" name="key" views="__UbbjSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//KeyValue/key"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbZCEUEeWTaKSAPRBN6w" name="value" views="__UbbjiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//KeyValue/value"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//KeyValue"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbZSEUEeWTaKSAPRBN6w" name="NodeMachine" views="__UbbjyEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbZiEUEeWTaKSAPRBN6w" name="IP" views="__UbbkSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//NodeMachine/IP"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbZyEUEeWTaKSAPRBN6w" name="Port" views="__UbbkiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//NodeMachine/Port"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbaCEUEeWTaKSAPRBN6w" name="name" views="__UbbkyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//NodeMachine/name"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//NodeMachine"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbaSEUEeWTaKSAPRBN6w" name="Model" views="__UbblCEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbaiEUEeWTaKSAPRBN6w" name="frequency" views="__UbbliEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Model/frequency"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbayEUEeWTaKSAPRBN6w" name="availableDbTypes" views="__UbblyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//Model/availableDbTypes"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//Model"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbbCEUEeWTaKSAPRBN6w" name="BaseMetric" views="__UbbmCEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbbSEUEeWTaKSAPRBN6w" name="unit" views="__UbbmiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/unit"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbbiEUEeWTaKSAPRBN6w" name="name" views="__UbbmyEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/name"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbbyEUEeWTaKSAPRBN6w" name="description" views="__UbbnCEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/description"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbcCEUEeWTaKSAPRBN6w" name="databaseCluster" views="__UbbnSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EReference" href="platform:/resource/observability/model/observability.ecore#//BaseMetric/databaseCluster"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//BaseMetric"/>
+      </bindings>
+      <bindings xsi:type="eef-components:PropertiesEditionComponent" xmi:id="__UbbcSEUEeWTaKSAPRBN6w" name="DerivedMetric" views="__UbbniEUEeWTaKSAPRBN6w">
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbciEUEeWTaKSAPRBN6w" name="unit" views="__UbboCEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/unit"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbcyEUEeWTaKSAPRBN6w" name="name" views="__UbboSEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/name"/>
+        </properties>
+        <properties xsi:type="eef-components:PropertiesEditionElement" xmi:id="__UbbdCEUEeWTaKSAPRBN6w" name="description" views="__UbboiEUEeWTaKSAPRBN6w">
+          <model xsi:type="ecore:EAttribute" href="platform:/resource/observability/model/observability.ecore#//Metric/description"/>
+        </properties>
+        <model xsi:type="ecore:EClass" href="platform:/resource/observability/model/observability.ecore#//DerivedMetric"/>
+      </bindings>
+    </categories>
+    <model href="platform:/resource/observability/model/observability.genmodel#//emf"/>
+  </eef-components:PropertiesEditionContext>
+  <eef-views:ViewsRepository xmi:id="__UbbdSEUEeWTaKSAPRBN6w" documentation="Views repository for emf GenPackage" name="emf">
+    <RepositoryKind>SWT</RepositoryKind>
+    <RepositoryKind>Form</RepositoryKind>
+    <categories xmi:id="__UbbdiEUEeWTaKSAPRBN6w" name="emf">
+      <views xmi:id="__UbbdyEUEeWTaKSAPRBN6w" name="DatabaseCluster">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbeCEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbeSEUEeWTaKSAPRBN6w" name="machines">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.7"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbeiEUEeWTaKSAPRBN6w" name="collectedBaseMetric">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.8"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbeyEUEeWTaKSAPRBN6w" name="associatedDbType">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbfCEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbfSEUEeWTaKSAPRBN6w" name="noOfMachines">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbfiEUEeWTaKSAPRBN6w" name="collectedDerivedMetrics">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.8"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbfyEUEeWTaKSAPRBN6w" name="DbType">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbgCEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbgSEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbgiEUEeWTaKSAPRBN6w" name="probeLocation">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbgyEUEeWTaKSAPRBN6w" name="collectionFrequency">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbhCEUEeWTaKSAPRBN6w" name="availableMetrics">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.7"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbhSEUEeWTaKSAPRBN6w" name="Element">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbhiEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbhyEUEeWTaKSAPRBN6w" name="hasElements">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.7"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbiCEUEeWTaKSAPRBN6w" name="hasKeyValues">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.7"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbiSEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbiiEUEeWTaKSAPRBN6w" name="value">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbiyEUEeWTaKSAPRBN6w" name="KeyValue">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbjCEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbjSEUEeWTaKSAPRBN6w" name="key">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbjiEUEeWTaKSAPRBN6w" name="value">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbjyEUEeWTaKSAPRBN6w" name="NodeMachine">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbkCEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbkSEUEeWTaKSAPRBN6w" name="IP">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbkiEUEeWTaKSAPRBN6w" name="Port">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbkyEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbblCEUEeWTaKSAPRBN6w" name="Model">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbblSEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbliEUEeWTaKSAPRBN6w" name="frequency">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbblyEUEeWTaKSAPRBN6w" name="availableDbTypes">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.7"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbmCEUEeWTaKSAPRBN6w" name="BaseMetric">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbmSEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbmiEUEeWTaKSAPRBN6w" name="unit">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbmyEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbnCEUEeWTaKSAPRBN6w" name="description">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbbnSEUEeWTaKSAPRBN6w" name="databaseCluster">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/EMFProperties.toolkits#//@widgets.8"/>
+          </elements>
+        </elements>
+      </views>
+      <views xmi:id="__UbbniEUEeWTaKSAPRBN6w" name="DerivedMetric">
+        <elements xsi:type="eef-views:Container" xmi:id="__UbbnyEUEeWTaKSAPRBN6w" name="properties">
+          <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.4"/>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbboCEUEeWTaKSAPRBN6w" name="unit">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbboSEUEeWTaKSAPRBN6w" name="name">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+          <elements xsi:type="eef-views:ElementEditor" xmi:id="__UbboiEUEeWTaKSAPRBN6w" name="description">
+            <representation href="platform:/plugin/org.eclipse.emf.eef.views/std/SWT.toolkits#//@widgets.0"/>
+          </elements>
+        </elements>
+      </views>
+    </categories>
+  </eef-views:ViewsRepository>
+</xmi:XMI>

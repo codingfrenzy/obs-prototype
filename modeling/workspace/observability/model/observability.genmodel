@@ -9,22 +9,21 @@
       ecorePackage="observability.ecore#/">
     <genClasses ecoreClass="observability.ecore#//DatabaseCluster">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/machines"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/collectedBaseMetric"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/collectedMetrics"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/associatedDbType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DatabaseCluster/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DatabaseCluster/noOfMachines"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/collectedDerivedMetrics"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/associatedNotifications"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//DbType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DbType/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DbType/collectionFrequency"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DbType/availableMetrics"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DbType/hasParentElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DbType/elements"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Element">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Element/hasElements"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Element/hasKeyValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Element/elements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Element/keyValues"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Element/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Element/value"/>
     </genClasses>
@@ -36,7 +35,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//NodeMachine/IP"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//NodeMachine/Port"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//NodeMachine/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//NodeMachine/hasParentElement"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//NodeMachine/elements"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Model/interval"/>
@@ -47,15 +46,22 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Model/notifications"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//BaseMetric">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//BaseMetric/databaseCluster"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//BaseMetric/hasParentElement"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//BaseMetric/type"/>
     </genClasses>
-    <genClasses ecoreClass="observability.ecore#//DerivedMetric">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DerivedMetric/hasParentElement"/>
+    <genClasses ecoreClass="observability.ecore#//AggregatedMetric">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateSum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateNum"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateAvg"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateMin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateMax"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//AggregatedMetric/calculateStddev"/>
     </genClasses>
     <genClasses image="false" ecoreClass="observability.ecore#//Metric">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Metric/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Metric/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/keyValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/elements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/databaseCluster"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Notification">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Notification/type"/>

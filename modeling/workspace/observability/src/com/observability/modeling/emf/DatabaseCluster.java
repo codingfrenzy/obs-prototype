@@ -15,11 +15,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getMachines <em>Machines</em>}</li>
- *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedBaseMetric <em>Collected Base Metric</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}</li>
- *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedDerivedMetrics <em>Collected Derived Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  * </ul>
  * </p>
@@ -46,22 +45,22 @@ public interface DatabaseCluster extends EObject {
 	EList<NodeMachine> getMachines();
 
 	/**
-	 * Returns the value of the '<em><b>Collected Base Metric</b></em>' reference list.
-	 * The list contents are of type {@link com.observability.modeling.emf.BaseMetric}.
-	 * It is bidirectional and its opposite is '{@link com.observability.modeling.emf.BaseMetric#getDatabaseCluster <em>Database Cluster</em>}'.
+	 * Returns the value of the '<em><b>Collected Metrics</b></em>' reference list.
+	 * The list contents are of type {@link com.observability.modeling.emf.Metric}.
+	 * It is bidirectional and its opposite is '{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Collected Base Metric</em>' reference list isn't clear,
+	 * If the meaning of the '<em>Collected Metrics</em>' reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Collected Base Metric</em>' reference list.
-	 * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster_CollectedBaseMetric()
-	 * @see com.observability.modeling.emf.BaseMetric#getDatabaseCluster
+	 * @return the value of the '<em>Collected Metrics</em>' reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster_CollectedMetrics()
+	 * @see com.observability.modeling.emf.Metric#getDatabaseCluster
 	 * @model opposite="databaseCluster"
 	 * @generated
 	 */
-	EList<BaseMetric> getCollectedBaseMetric();
+	EList<Metric> getCollectedMetrics();
 
 	/**
 	 * Returns the value of the '<em><b>Associated Db Type</b></em>' reference.
@@ -140,22 +139,6 @@ public interface DatabaseCluster extends EObject {
 	 * @generated
 	 */
 	void setNoOfMachines(int value);
-
-	/**
-	 * Returns the value of the '<em><b>Collected Derived Metrics</b></em>' reference list.
-	 * The list contents are of type {@link com.observability.modeling.emf.DerivedMetric}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Collected Derived Metrics</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Collected Derived Metrics</em>' reference list.
-	 * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster_CollectedDerivedMetrics()
-	 * @model
-	 * @generated
-	 */
-	EList<DerivedMetric> getCollectedDerivedMetrics();
 
 	/**
 	 * Returns the value of the '<em><b>Associated Notifications</b></em>' reference list.

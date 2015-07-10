@@ -4,7 +4,6 @@ package com.observability.modeling.emf.provider;
 
 
 import com.observability.modeling.emf.BaseMetric;
-import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 
 import java.util.Collection;
@@ -13,10 +12,9 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
@@ -47,61 +45,31 @@ public class BaseMetricItemProvider extends MetricItemProvider {
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addDatabaseClusterPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Database Cluster feature.
+	 * This adds a property descriptor for the Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addDatabaseClusterPropertyDescriptor(Object object) {
+	protected void addTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_BaseMetric_databaseCluster_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_BaseMetric_databaseCluster_feature", "_UI_BaseMetric_type"),
-				 EmfPackage.Literals.BASE_METRIC__DATABASE_CLUSTER,
+				 getString("_UI_BaseMetric_type_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BaseMetric_type_feature", "_UI_BaseMetric_type"),
+				 EmfPackage.Literals.BASE_METRIC__TYPE,
 				 true,
 				 false,
-				 true,
-				 null,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
-	}
-
-	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-		if (childrenFeatures == null) {
-			super.getChildrenFeatures(object);
-			childrenFeatures.add(EmfPackage.Literals.BASE_METRIC__HAS_PARENT_ELEMENT);
-		}
-		return childrenFeatures;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
-		// adding (see {@link AddCommand}) it as a child.
-
-		return super.getChildFeature(object, child);
 	}
 
 	/**
@@ -142,8 +110,8 @@ public class BaseMetricItemProvider extends MetricItemProvider {
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(BaseMetric.class)) {
-			case EmfPackage.BASE_METRIC__HAS_PARENT_ELEMENT:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			case EmfPackage.BASE_METRIC__TYPE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -159,11 +127,6 @@ public class BaseMetricItemProvider extends MetricItemProvider {
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add
-			(createChildParameter
-				(EmfPackage.Literals.BASE_METRIC__HAS_PARENT_ELEMENT,
-				 EmfFactory.eINSTANCE.createElement()));
 	}
 
 }

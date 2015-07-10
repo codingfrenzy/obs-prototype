@@ -125,8 +125,8 @@ public class ElementItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(EmfPackage.Literals.ELEMENT__HAS_ELEMENTS);
-			childrenFeatures.add(EmfPackage.Literals.ELEMENT__HAS_KEY_VALUES);
+			childrenFeatures.add(EmfPackage.Literals.ELEMENT__ELEMENTS);
+			childrenFeatures.add(EmfPackage.Literals.ELEMENT__KEY_VALUES);
 		}
 		return childrenFeatures;
 	}
@@ -186,8 +186,8 @@ public class ElementItemProvider
 			case EmfPackage.ELEMENT__VALUE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case EmfPackage.ELEMENT__HAS_ELEMENTS:
-			case EmfPackage.ELEMENT__HAS_KEY_VALUES:
+			case EmfPackage.ELEMENT__ELEMENTS:
+			case EmfPackage.ELEMENT__KEY_VALUES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -207,12 +207,12 @@ public class ElementItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.ELEMENT__HAS_ELEMENTS,
+				(EmfPackage.Literals.ELEMENT__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.ELEMENT__HAS_KEY_VALUES,
+				(EmfPackage.Literals.ELEMENT__KEY_VALUES,
 				 EmfFactory.eINSTANCE.createKeyValue()));
 	}
 

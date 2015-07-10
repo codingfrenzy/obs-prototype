@@ -6,14 +6,18 @@ import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.NodeMachine;
 
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +29,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getIP <em>IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getName <em>Name</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getHasParentElement <em>Has Parent Element</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,14 +97,14 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getHasParentElement() <em>Has Parent Element</em>}' containment reference.
+	 * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getHasParentElement()
+	 * @see #getElements()
 	 * @generated
 	 * @ordered
 	 */
-	protected Element hasParentElement;
+	protected EList<Element> elements;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -189,42 +193,11 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Element getHasParentElement() {
-		return hasParentElement;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetHasParentElement(Element newHasParentElement, NotificationChain msgs) {
-		Element oldHasParentElement = hasParentElement;
-		hasParentElement = newHasParentElement;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT, oldHasParentElement, newHasParentElement);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+	public EList<Element> getElements() {
+		if (elements == null) {
+			elements = new EObjectContainmentEList<Element>(Element.class, this, EmfPackage.NODE_MACHINE__ELEMENTS);
 		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setHasParentElement(Element newHasParentElement) {
-		if (newHasParentElement != hasParentElement) {
-			NotificationChain msgs = null;
-			if (hasParentElement != null)
-				msgs = ((InternalEObject)hasParentElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT, null, msgs);
-			if (newHasParentElement != null)
-				msgs = ((InternalEObject)newHasParentElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT, null, msgs);
-			msgs = basicSetHasParentElement(newHasParentElement, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT, newHasParentElement, newHasParentElement));
+		return elements;
 	}
 
 	/**
@@ -235,8 +208,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
-				return basicSetHasParentElement(null, msgs);
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
+				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -255,8 +228,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return getPort();
 			case EmfPackage.NODE_MACHINE__NAME:
 				return getName();
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
-				return getHasParentElement();
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
+				return getElements();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -266,6 +239,7 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -278,8 +252,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case EmfPackage.NODE_MACHINE__NAME:
 				setName((String)newValue);
 				return;
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
-				setHasParentElement((Element)newValue);
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
+				getElements().clear();
+				getElements().addAll((Collection<? extends Element>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -302,8 +277,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case EmfPackage.NODE_MACHINE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
-				setHasParentElement((Element)null);
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
+				getElements().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -323,8 +298,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return port != PORT_EDEFAULT;
 			case EmfPackage.NODE_MACHINE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
-				return hasParentElement != null;
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
+				return elements != null && !elements.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

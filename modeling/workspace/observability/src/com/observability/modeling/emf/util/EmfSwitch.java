@@ -109,10 +109,10 @@ public class EmfSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case EmfPackage.DERIVED_METRIC: {
-				DerivedMetric derivedMetric = (DerivedMetric)theEObject;
-				T result = caseDerivedMetric(derivedMetric);
-				if (result == null) result = caseMetric(derivedMetric);
+			case EmfPackage.AGGREGATED_METRIC: {
+				AggregatedMetric aggregatedMetric = (AggregatedMetric)theEObject;
+				T result = caseAggregatedMetric(aggregatedMetric);
+				if (result == null) result = caseMetric(aggregatedMetric);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -238,17 +238,17 @@ public class EmfSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Derived Metric</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Aggregated Metric</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Derived Metric</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Aggregated Metric</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseDerivedMetric(DerivedMetric object) {
+	public T caseAggregatedMetric(AggregatedMetric object) {
 		return null;
 	}
 

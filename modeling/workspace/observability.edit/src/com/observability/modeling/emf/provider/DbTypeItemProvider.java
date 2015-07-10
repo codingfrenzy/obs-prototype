@@ -126,7 +126,7 @@ public class DbTypeItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(EmfPackage.Literals.DB_TYPE__AVAILABLE_METRICS);
-			childrenFeatures.add(EmfPackage.Literals.DB_TYPE__HAS_PARENT_ELEMENT);
+			childrenFeatures.add(EmfPackage.Literals.DB_TYPE__ELEMENTS);
 		}
 		return childrenFeatures;
 	}
@@ -187,7 +187,7 @@ public class DbTypeItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
+			case EmfPackage.DB_TYPE__ELEMENTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -213,11 +213,11 @@ public class DbTypeItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.DB_TYPE__AVAILABLE_METRICS,
-				 EmfFactory.eINSTANCE.createDerivedMetric()));
+				 EmfFactory.eINSTANCE.createAggregatedMetric()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.DB_TYPE__HAS_PARENT_ELEMENT,
+				(EmfPackage.Literals.DB_TYPE__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
 	}
 

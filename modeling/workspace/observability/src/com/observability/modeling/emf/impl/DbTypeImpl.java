@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getCollectionFrequency <em>Collection Frequency</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getAvailableMetrics <em>Available Metrics</em>}</li>
- *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getHasParentElement <em>Has Parent Element</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,14 +91,14 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	protected EList<Metric> availableMetrics;
 
 	/**
-	 * The cached value of the '{@link #getHasParentElement() <em>Has Parent Element</em>}' containment reference.
+	 * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getHasParentElement()
+	 * @see #getElements()
 	 * @generated
 	 * @ordered
 	 */
-	protected Element hasParentElement;
+	protected EList<Element> elements;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -178,42 +178,11 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Element getHasParentElement() {
-		return hasParentElement;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetHasParentElement(Element newHasParentElement, NotificationChain msgs) {
-		Element oldHasParentElement = hasParentElement;
-		hasParentElement = newHasParentElement;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT, oldHasParentElement, newHasParentElement);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+	public EList<Element> getElements() {
+		if (elements == null) {
+			elements = new EObjectContainmentEList<Element>(Element.class, this, EmfPackage.DB_TYPE__ELEMENTS);
 		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setHasParentElement(Element newHasParentElement) {
-		if (newHasParentElement != hasParentElement) {
-			NotificationChain msgs = null;
-			if (hasParentElement != null)
-				msgs = ((InternalEObject)hasParentElement).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT, null, msgs);
-			if (newHasParentElement != null)
-				msgs = ((InternalEObject)newHasParentElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT, null, msgs);
-			msgs = basicSetHasParentElement(newHasParentElement, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT, newHasParentElement, newHasParentElement));
+		return elements;
 	}
 
 	/**
@@ -226,8 +195,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 		switch (featureID) {
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
 				return ((InternalEList<?>)getAvailableMetrics()).basicRemove(otherEnd, msgs);
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
-				return basicSetHasParentElement(null, msgs);
+			case EmfPackage.DB_TYPE__ELEMENTS:
+				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -246,8 +215,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				return getCollectionFrequency();
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
 				return getAvailableMetrics();
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
-				return getHasParentElement();
+			case EmfPackage.DB_TYPE__ELEMENTS:
+				return getElements();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -271,8 +240,9 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				getAvailableMetrics().clear();
 				getAvailableMetrics().addAll((Collection<? extends Metric>)newValue);
 				return;
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
-				setHasParentElement((Element)newValue);
+			case EmfPackage.DB_TYPE__ELEMENTS:
+				getElements().clear();
+				getElements().addAll((Collection<? extends Element>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -295,8 +265,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
 				getAvailableMetrics().clear();
 				return;
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
-				setHasParentElement((Element)null);
+			case EmfPackage.DB_TYPE__ELEMENTS:
+				getElements().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -316,8 +286,8 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 				return collectionFrequency != COLLECTION_FREQUENCY_EDEFAULT;
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:
 				return availableMetrics != null && !availableMetrics.isEmpty();
-			case EmfPackage.DB_TYPE__HAS_PARENT_ELEMENT:
-				return hasParentElement != null;
+			case EmfPackage.DB_TYPE__ELEMENTS:
+				return elements != null && !elements.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

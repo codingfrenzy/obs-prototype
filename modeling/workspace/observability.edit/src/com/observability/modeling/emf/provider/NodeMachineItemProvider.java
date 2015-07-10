@@ -148,7 +148,7 @@ public class NodeMachineItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(EmfPackage.Literals.NODE_MACHINE__HAS_PARENT_ELEMENT);
+			childrenFeatures.add(EmfPackage.Literals.NODE_MACHINE__ELEMENTS);
 		}
 		return childrenFeatures;
 	}
@@ -209,7 +209,7 @@ public class NodeMachineItemProvider
 			case EmfPackage.NODE_MACHINE__NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case EmfPackage.NODE_MACHINE__HAS_PARENT_ELEMENT:
+			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -229,7 +229,7 @@ public class NodeMachineItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.NODE_MACHINE__HAS_PARENT_ELEMENT,
+				(EmfPackage.Literals.NODE_MACHINE__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
 	}
 

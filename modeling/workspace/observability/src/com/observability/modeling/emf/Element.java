@@ -14,8 +14,8 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link com.observability.modeling.emf.Element#getHasElements <em>Has Elements</em>}</li>
- *   <li>{@link com.observability.modeling.emf.Element#getHasKeyValues <em>Has Key Values</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.Element#getElements <em>Elements</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.Element#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Element#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Element#getValue <em>Value</em>}</li>
  * </ul>
@@ -27,36 +27,36 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Element extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Has Elements</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
 	 * The list contents are of type {@link com.observability.modeling.emf.Element}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Has Elements</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Has Elements</em>' containment reference list.
-	 * @see com.observability.modeling.emf.EmfPackage#getElement_HasElements()
+	 * @return the value of the '<em>Elements</em>' containment reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getElement_Elements()
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<Element> getHasElements();
+	EList<Element> getElements();
 
 	/**
-	 * Returns the value of the '<em><b>Has Key Values</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Key Values</b></em>' containment reference list.
 	 * The list contents are of type {@link com.observability.modeling.emf.KeyValue}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Has Key Values</em>' containment reference list isn't clear,
+	 * If the meaning of the '<em>Key Values</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Has Key Values</em>' containment reference list.
-	 * @see com.observability.modeling.emf.EmfPackage#getElement_HasKeyValues()
-	 * @model containment="true" required="true"
+	 * @return the value of the '<em>Key Values</em>' containment reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getElement_KeyValues()
+	 * @model containment="true"
 	 * @generated
 	 */
-	EList<KeyValue> getHasKeyValues();
+	EList<KeyValue> getKeyValues();
 
 	/**
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.

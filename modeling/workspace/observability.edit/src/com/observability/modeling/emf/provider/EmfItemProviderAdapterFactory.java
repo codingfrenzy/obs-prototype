@@ -233,26 +233,26 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link com.observability.modeling.emf.DerivedMetric} instances.
+	 * This keeps track of the one adapter used for all {@link com.observability.modeling.emf.AggregatedMetric} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DerivedMetricItemProvider derivedMetricItemProvider;
+	protected AggregatedMetricItemProvider aggregatedMetricItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link com.observability.modeling.emf.DerivedMetric}.
+	 * This creates an adapter for a {@link com.observability.modeling.emf.AggregatedMetric}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createDerivedMetricAdapter() {
-		if (derivedMetricItemProvider == null) {
-			derivedMetricItemProvider = new DerivedMetricItemProvider(this);
+	public Adapter createAggregatedMetricAdapter() {
+		if (aggregatedMetricItemProvider == null) {
+			aggregatedMetricItemProvider = new AggregatedMetricItemProvider(this);
 		}
 
-		return derivedMetricItemProvider;
+		return aggregatedMetricItemProvider;
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 		if (nodeMachineItemProvider != null) nodeMachineItemProvider.dispose();
 		if (modelItemProvider != null) modelItemProvider.dispose();
 		if (baseMetricItemProvider != null) baseMetricItemProvider.dispose();
-		if (derivedMetricItemProvider != null) derivedMetricItemProvider.dispose();
+		if (aggregatedMetricItemProvider != null) aggregatedMetricItemProvider.dispose();
 		if (notificationItemProvider != null) notificationItemProvider.dispose();
 	}
 

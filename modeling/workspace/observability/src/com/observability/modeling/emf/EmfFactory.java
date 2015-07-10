@@ -85,13 +85,13 @@ public interface EmfFactory extends EFactory {
 	BaseMetric createBaseMetric();
 
 	/**
-	 * Returns a new object of class '<em>Derived Metric</em>'.
+	 * Returns a new object of class '<em>Aggregated Metric</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Derived Metric</em>'.
+	 * @return a new object of class '<em>Aggregated Metric</em>'.
 	 * @generated
 	 */
-	DerivedMetric createDerivedMetric();
+	AggregatedMetric createAggregatedMetric();
 
 	/**
 	 * Returns a new object of class '<em>Notification</em>'.

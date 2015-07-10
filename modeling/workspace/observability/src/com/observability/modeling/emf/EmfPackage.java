@@ -76,13 +76,13 @@ public interface EmfPackage extends EPackage {
 	int DATABASE_CLUSTER__MACHINES = 0;
 
 	/**
-	 * The feature id for the '<em><b>Collected Base Metric</b></em>' reference list.
+	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__COLLECTED_BASE_METRIC = 1;
+	int DATABASE_CLUSTER__COLLECTED_METRICS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Associated Db Type</b></em>' reference.
@@ -112,22 +112,13 @@ public interface EmfPackage extends EPackage {
 	int DATABASE_CLUSTER__NO_OF_MACHINES = 4;
 
 	/**
-	 * The feature id for the '<em><b>Collected Derived Metrics</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS = 5;
-
-	/**
 	 * The feature id for the '<em><b>Associated Notifications</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = 6;
+	int DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = 5;
 
 	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
@@ -136,7 +127,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER_FEATURE_COUNT = 7;
+	int DATABASE_CLUSTER_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Database Cluster</em>' class.
@@ -185,13 +176,13 @@ public interface EmfPackage extends EPackage {
 	int DB_TYPE__AVAILABLE_METRICS = 2;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DB_TYPE__HAS_PARENT_ELEMENT = 3;
+	int DB_TYPE__ELEMENTS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Db Type</em>' class.
@@ -222,22 +213,22 @@ public interface EmfPackage extends EPackage {
 	int ELEMENT = 2;
 
 	/**
-	 * The feature id for the '<em><b>Has Elements</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ELEMENT__HAS_ELEMENTS = 0;
+	int ELEMENT__ELEMENTS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Has Key Values</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ELEMENT__HAS_KEY_VALUES = 1;
+	int ELEMENT__KEY_VALUES = 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -359,13 +350,13 @@ public interface EmfPackage extends EPackage {
 	int NODE_MACHINE__NAME = 2;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_MACHINE__HAS_PARENT_ELEMENT = 3;
+	int NODE_MACHINE__ELEMENTS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Node Machine</em>' class.
@@ -496,13 +487,40 @@ public interface EmfPackage extends EPackage {
 	int METRIC__DESCRIPTION = 1;
 
 	/**
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int METRIC__KEY_VALUES = 2;
+
+	/**
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int METRIC__ELEMENTS = 3;
+
+	/**
+	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int METRIC__DATABASE_CLUSTER = 4;
+
+	/**
 	 * The number of structural features of the '<em>Metric</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC_FEATURE_COUNT = 2;
+	int METRIC_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Metric</em>' class.
@@ -542,22 +560,40 @@ public interface EmfPackage extends EPackage {
 	int BASE_METRIC__DESCRIPTION = METRIC__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Database Cluster</b></em>' reference list.
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC__DATABASE_CLUSTER = METRIC_FEATURE_COUNT + 0;
+	int BASE_METRIC__KEY_VALUES = METRIC__KEY_VALUES;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC__HAS_PARENT_ELEMENT = METRIC_FEATURE_COUNT + 1;
+	int BASE_METRIC__ELEMENTS = METRIC__ELEMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BASE_METRIC__DATABASE_CLUSTER = METRIC__DATABASE_CLUSTER;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BASE_METRIC__TYPE = METRIC_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Base Metric</em>' class.
@@ -566,7 +602,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 2;
+	int BASE_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Base Metric</em>' class.
@@ -578,14 +614,14 @@ public interface EmfPackage extends EPackage {
 	int BASE_METRIC_OPERATION_COUNT = METRIC_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link com.observability.modeling.emf.impl.DerivedMetricImpl <em>Derived Metric</em>}' class.
+	 * The meta object id for the '{@link com.observability.modeling.emf.impl.AggregatedMetricImpl <em>Aggregated Metric</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.observability.modeling.emf.impl.DerivedMetricImpl
-	 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getDerivedMetric()
+	 * @see com.observability.modeling.emf.impl.AggregatedMetricImpl
+	 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getAggregatedMetric()
 	 * @generated
 	 */
-	int DERIVED_METRIC = 7;
+	int AGGREGATED_METRIC = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -594,7 +630,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVED_METRIC__NAME = METRIC__NAME;
+	int AGGREGATED_METRIC__NAME = METRIC__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -603,35 +639,106 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVED_METRIC__DESCRIPTION = METRIC__DESCRIPTION;
+	int AGGREGATED_METRIC__DESCRIPTION = METRIC__DESCRIPTION;
 
 	/**
-	 * The feature id for the '<em><b>Has Parent Element</b></em>' containment reference.
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVED_METRIC__HAS_PARENT_ELEMENT = METRIC_FEATURE_COUNT + 0;
+	int AGGREGATED_METRIC__KEY_VALUES = METRIC__KEY_VALUES;
 
 	/**
-	 * The number of structural features of the '<em>Derived Metric</em>' class.
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVED_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 1;
+	int AGGREGATED_METRIC__ELEMENTS = METRIC__ELEMENTS;
 
 	/**
-	 * The number of operations of the '<em>Derived Metric</em>' class.
+	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DERIVED_METRIC_OPERATION_COUNT = METRIC_OPERATION_COUNT + 0;
+	int AGGREGATED_METRIC__DATABASE_CLUSTER = METRIC__DATABASE_CLUSTER;
 
+	/**
+	 * The feature id for the '<em><b>Calculate Sum</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_SUM = METRIC_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Calculate Num</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_NUM = METRIC_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Calculate Avg</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_AVG = METRIC_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Calculate Min</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_MIN = METRIC_FEATURE_COUNT + 3;
+
+	/**
+	 * The feature id for the '<em><b>Calculate Max</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_MAX = METRIC_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>Calculate Stddev</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC__CALCULATE_STDDEV = METRIC_FEATURE_COUNT + 5;
+
+	/**
+	 * The number of structural features of the '<em>Aggregated Metric</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC_FEATURE_COUNT = METRIC_FEATURE_COUNT + 6;
+
+	/**
+	 * The number of operations of the '<em>Aggregated Metric</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AGGREGATED_METRIC_OPERATION_COUNT = METRIC_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link com.observability.modeling.emf.impl.NotificationImpl <em>Notification</em>}' class.
@@ -810,15 +917,15 @@ public interface EmfPackage extends EPackage {
 	EReference getDatabaseCluster_Machines();
 
 	/**
-	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.DatabaseCluster#getCollectedBaseMetric <em>Collected Base Metric</em>}'.
+	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Collected Base Metric</em>'.
-	 * @see com.observability.modeling.emf.DatabaseCluster#getCollectedBaseMetric()
+	 * @return the meta object for the reference list '<em>Collected Metrics</em>'.
+	 * @see com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics()
 	 * @see #getDatabaseCluster()
 	 * @generated
 	 */
-	EReference getDatabaseCluster_CollectedBaseMetric();
+	EReference getDatabaseCluster_CollectedMetrics();
 
 	/**
 	 * Returns the meta object for the reference '{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}'.
@@ -852,17 +959,6 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDatabaseCluster_NoOfMachines();
-
-	/**
-	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.DatabaseCluster#getCollectedDerivedMetrics <em>Collected Derived Metrics</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Collected Derived Metrics</em>'.
-	 * @see com.observability.modeling.emf.DatabaseCluster#getCollectedDerivedMetrics()
-	 * @see #getDatabaseCluster()
-	 * @generated
-	 */
-	EReference getDatabaseCluster_CollectedDerivedMetrics();
 
 	/**
 	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}'.
@@ -919,15 +1015,15 @@ public interface EmfPackage extends EPackage {
 	EReference getDbType_AvailableMetrics();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link com.observability.modeling.emf.DbType#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.DbType#getElements <em>Elements</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
-	 * @see com.observability.modeling.emf.DbType#getHasParentElement()
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see com.observability.modeling.emf.DbType#getElements()
 	 * @see #getDbType()
 	 * @generated
 	 */
-	EReference getDbType_HasParentElement();
+	EReference getDbType_Elements();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Element <em>Element</em>}'.
@@ -940,26 +1036,26 @@ public interface EmfPackage extends EPackage {
 	EClass getElement();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Element#getHasElements <em>Has Elements</em>}'.
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Element#getElements <em>Elements</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Has Elements</em>'.
-	 * @see com.observability.modeling.emf.Element#getHasElements()
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see com.observability.modeling.emf.Element#getElements()
 	 * @see #getElement()
 	 * @generated
 	 */
-	EReference getElement_HasElements();
+	EReference getElement_Elements();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Element#getHasKeyValues <em>Has Key Values</em>}'.
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Element#getKeyValues <em>Key Values</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Has Key Values</em>'.
-	 * @see com.observability.modeling.emf.Element#getHasKeyValues()
+	 * @return the meta object for the containment reference list '<em>Key Values</em>'.
+	 * @see com.observability.modeling.emf.Element#getKeyValues()
 	 * @see #getElement()
 	 * @generated
 	 */
-	EReference getElement_HasKeyValues();
+	EReference getElement_KeyValues();
 
 	/**
 	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Element#getName <em>Name</em>}'.
@@ -1059,15 +1155,15 @@ public interface EmfPackage extends EPackage {
 	EAttribute getNodeMachine_Name();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link com.observability.modeling.emf.NodeMachine#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.NodeMachine#getElements <em>Elements</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
-	 * @see com.observability.modeling.emf.NodeMachine#getHasParentElement()
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see com.observability.modeling.emf.NodeMachine#getElements()
 	 * @see #getNodeMachine()
 	 * @generated
 	 */
-	EReference getNodeMachine_HasParentElement();
+	EReference getNodeMachine_Elements();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Model <em>Model</em>}'.
@@ -1156,47 +1252,91 @@ public interface EmfPackage extends EPackage {
 	EClass getBaseMetric();
 
 	/**
-	 * Returns the meta object for the reference list '{@link com.observability.modeling.emf.BaseMetric#getDatabaseCluster <em>Database Cluster</em>}'.
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.BaseMetric#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Database Cluster</em>'.
-	 * @see com.observability.modeling.emf.BaseMetric#getDatabaseCluster()
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see com.observability.modeling.emf.BaseMetric#getType()
 	 * @see #getBaseMetric()
 	 * @generated
 	 */
-	EReference getBaseMetric_DatabaseCluster();
+	EAttribute getBaseMetric_Type();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link com.observability.modeling.emf.BaseMetric#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for class '{@link com.observability.modeling.emf.AggregatedMetric <em>Aggregated Metric</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
-	 * @see com.observability.modeling.emf.BaseMetric#getHasParentElement()
-	 * @see #getBaseMetric()
+	 * @return the meta object for class '<em>Aggregated Metric</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric
 	 * @generated
 	 */
-	EReference getBaseMetric_HasParentElement();
+	EClass getAggregatedMetric();
 
 	/**
-	 * Returns the meta object for class '{@link com.observability.modeling.emf.DerivedMetric <em>Derived Metric</em>}'.
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateSum <em>Calculate Sum</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Derived Metric</em>'.
-	 * @see com.observability.modeling.emf.DerivedMetric
+	 * @return the meta object for the attribute '<em>Calculate Sum</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateSum()
+	 * @see #getAggregatedMetric()
 	 * @generated
 	 */
-	EClass getDerivedMetric();
+	EAttribute getAggregatedMetric_CalculateSum();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link com.observability.modeling.emf.DerivedMetric#getHasParentElement <em>Has Parent Element</em>}'.
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateNum <em>Calculate Num</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Has Parent Element</em>'.
-	 * @see com.observability.modeling.emf.DerivedMetric#getHasParentElement()
-	 * @see #getDerivedMetric()
+	 * @return the meta object for the attribute '<em>Calculate Num</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateNum()
+	 * @see #getAggregatedMetric()
 	 * @generated
 	 */
-	EReference getDerivedMetric_HasParentElement();
+	EAttribute getAggregatedMetric_CalculateNum();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateAvg <em>Calculate Avg</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Calculate Avg</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateAvg()
+	 * @see #getAggregatedMetric()
+	 * @generated
+	 */
+	EAttribute getAggregatedMetric_CalculateAvg();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateMin <em>Calculate Min</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Calculate Min</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateMin()
+	 * @see #getAggregatedMetric()
+	 * @generated
+	 */
+	EAttribute getAggregatedMetric_CalculateMin();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateMax <em>Calculate Max</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Calculate Max</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateMax()
+	 * @see #getAggregatedMetric()
+	 * @generated
+	 */
+	EAttribute getAggregatedMetric_CalculateMax();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.AggregatedMetric#isCalculateStddev <em>Calculate Stddev</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Calculate Stddev</em>'.
+	 * @see com.observability.modeling.emf.AggregatedMetric#isCalculateStddev()
+	 * @see #getAggregatedMetric()
+	 * @generated
+	 */
+	EAttribute getAggregatedMetric_CalculateStddev();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Metric <em>Metric</em>}'.
@@ -1229,6 +1369,39 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getMetric_Description();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Metric#getKeyValues <em>Key Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Key Values</em>'.
+	 * @see com.observability.modeling.emf.Metric#getKeyValues()
+	 * @see #getMetric()
+	 * @generated
+	 */
+	EReference getMetric_KeyValues();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Metric#getElements <em>Elements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see com.observability.modeling.emf.Metric#getElements()
+	 * @see #getMetric()
+	 * @generated
+	 */
+	EReference getMetric_Elements();
+
+	/**
+	 * Returns the meta object for the reference '{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Database Cluster</em>'.
+	 * @see com.observability.modeling.emf.Metric#getDatabaseCluster()
+	 * @see #getMetric()
+	 * @generated
+	 */
+	EReference getMetric_DatabaseCluster();
 
 	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Notification <em>Notification</em>}'.
@@ -1436,12 +1609,12 @@ public interface EmfPackage extends EPackage {
 		EReference DATABASE_CLUSTER__MACHINES = eINSTANCE.getDatabaseCluster_Machines();
 
 		/**
-		 * The meta object literal for the '<em><b>Collected Base Metric</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Collected Metrics</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DATABASE_CLUSTER__COLLECTED_BASE_METRIC = eINSTANCE.getDatabaseCluster_CollectedBaseMetric();
+		EReference DATABASE_CLUSTER__COLLECTED_METRICS = eINSTANCE.getDatabaseCluster_CollectedMetrics();
 
 		/**
 		 * The meta object literal for the '<em><b>Associated Db Type</b></em>' reference feature.
@@ -1466,14 +1639,6 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DATABASE_CLUSTER__NO_OF_MACHINES = eINSTANCE.getDatabaseCluster_NoOfMachines();
-
-		/**
-		 * The meta object literal for the '<em><b>Collected Derived Metrics</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference DATABASE_CLUSTER__COLLECTED_DERIVED_METRICS = eINSTANCE.getDatabaseCluster_CollectedDerivedMetrics();
 
 		/**
 		 * The meta object literal for the '<em><b>Associated Notifications</b></em>' reference list feature.
@@ -1518,12 +1683,12 @@ public interface EmfPackage extends EPackage {
 		EReference DB_TYPE__AVAILABLE_METRICS = eINSTANCE.getDbType_AvailableMetrics();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DB_TYPE__HAS_PARENT_ELEMENT = eINSTANCE.getDbType_HasParentElement();
+		EReference DB_TYPE__ELEMENTS = eINSTANCE.getDbType_Elements();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.ElementImpl <em>Element</em>}' class.
@@ -1536,20 +1701,20 @@ public interface EmfPackage extends EPackage {
 		EClass ELEMENT = eINSTANCE.getElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Elements</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ELEMENT__HAS_ELEMENTS = eINSTANCE.getElement_HasElements();
+		EReference ELEMENT__ELEMENTS = eINSTANCE.getElement_Elements();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Key Values</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Key Values</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference ELEMENT__HAS_KEY_VALUES = eINSTANCE.getElement_HasKeyValues();
+		EReference ELEMENT__KEY_VALUES = eINSTANCE.getElement_KeyValues();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -1628,12 +1793,12 @@ public interface EmfPackage extends EPackage {
 		EAttribute NODE_MACHINE__NAME = eINSTANCE.getNodeMachine_Name();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference NODE_MACHINE__HAS_PARENT_ELEMENT = eINSTANCE.getNodeMachine_HasParentElement();
+		EReference NODE_MACHINE__ELEMENTS = eINSTANCE.getNodeMachine_Elements();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.ModelImpl <em>Model</em>}' class.
@@ -1704,38 +1869,70 @@ public interface EmfPackage extends EPackage {
 		EClass BASE_METRIC = eINSTANCE.getBaseMetric();
 
 		/**
-		 * The meta object literal for the '<em><b>Database Cluster</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference BASE_METRIC__DATABASE_CLUSTER = eINSTANCE.getBaseMetric_DatabaseCluster();
+		EAttribute BASE_METRIC__TYPE = eINSTANCE.getBaseMetric_Type();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
+		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.AggregatedMetricImpl <em>Aggregated Metric</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
+		 * @see com.observability.modeling.emf.impl.AggregatedMetricImpl
+		 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getAggregatedMetric()
 		 * @generated
 		 */
-		EReference BASE_METRIC__HAS_PARENT_ELEMENT = eINSTANCE.getBaseMetric_HasParentElement();
+		EClass AGGREGATED_METRIC = eINSTANCE.getAggregatedMetric();
 
 		/**
-		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.DerivedMetricImpl <em>Derived Metric</em>}' class.
+		 * The meta object literal for the '<em><b>Calculate Sum</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.observability.modeling.emf.impl.DerivedMetricImpl
-		 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getDerivedMetric()
 		 * @generated
 		 */
-		EClass DERIVED_METRIC = eINSTANCE.getDerivedMetric();
+		EAttribute AGGREGATED_METRIC__CALCULATE_SUM = eINSTANCE.getAggregatedMetric_CalculateSum();
 
 		/**
-		 * The meta object literal for the '<em><b>Has Parent Element</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Calculate Num</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DERIVED_METRIC__HAS_PARENT_ELEMENT = eINSTANCE.getDerivedMetric_HasParentElement();
+		EAttribute AGGREGATED_METRIC__CALCULATE_NUM = eINSTANCE.getAggregatedMetric_CalculateNum();
+
+		/**
+		 * The meta object literal for the '<em><b>Calculate Avg</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute AGGREGATED_METRIC__CALCULATE_AVG = eINSTANCE.getAggregatedMetric_CalculateAvg();
+
+		/**
+		 * The meta object literal for the '<em><b>Calculate Min</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute AGGREGATED_METRIC__CALCULATE_MIN = eINSTANCE.getAggregatedMetric_CalculateMin();
+
+		/**
+		 * The meta object literal for the '<em><b>Calculate Max</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute AGGREGATED_METRIC__CALCULATE_MAX = eINSTANCE.getAggregatedMetric_CalculateMax();
+
+		/**
+		 * The meta object literal for the '<em><b>Calculate Stddev</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute AGGREGATED_METRIC__CALCULATE_STDDEV = eINSTANCE.getAggregatedMetric_CalculateStddev();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.MetricImpl <em>Metric</em>}' class.
@@ -1762,6 +1959,30 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute METRIC__DESCRIPTION = eINSTANCE.getMetric_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Key Values</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference METRIC__KEY_VALUES = eINSTANCE.getMetric_KeyValues();
+
+		/**
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference METRIC__ELEMENTS = eINSTANCE.getMetric_Elements();
+
+		/**
+		 * The meta object literal for the '<em><b>Database Cluster</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference METRIC__DATABASE_CLUSTER = eINSTANCE.getMetric_DatabaseCluster();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.NotificationImpl <em>Notification</em>}' class.
