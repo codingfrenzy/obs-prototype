@@ -3,6 +3,7 @@
 package com.observability.modeling.emf.presentation;
 
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.util.ArrayList;
@@ -187,10 +188,14 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 	 * Create a new model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	protected EObject createInitialModel() {
-		EClass eClass = (EClass)emfPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
+		/**
+		 * Select "Model" entity as the root class. If EMF metamodel changes
+		 * this might need to change.
+		 */
+		EClass eClass = (EClass)emfPackage.getEClassifier("Model");
 		EObject rootObject = emfFactory.create(eClass);
 		return rootObject;
 	}
@@ -247,14 +252,19 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							// get the absolute path of the model file
 							IPath filePath = modelFile.getLocation();
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
-							CustomServices.initializeDbTypes((Model)rootObject, dirPath);
+							try{
+								CustomServices.initializeDbTypes((Model)rootObject, dirPath);
+							}catch (Exception e) {
+								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
+										"Descriptors not found", 
+										"Could not find descriptors in <workspace directory>"+ File.separatorChar + "descriptors");
+								throw e;
+							}
 							resource.save(options);
 						}
 						catch (Exception exception) {
 							ObservabilityEditorPlugin.INSTANCE.log(exception);
-							MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
-									"Descriptors not found", 
-									exception.getMessage());
+							
 						}
 						finally {
 							progressMonitor.done();

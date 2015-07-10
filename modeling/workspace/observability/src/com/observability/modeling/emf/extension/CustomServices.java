@@ -25,13 +25,20 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import com.observability.modeling.emf.*;
-
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
 
+import com.observability.modeling.emf.DatabaseCluster;
+import com.observability.modeling.emf.DbType;
+import com.observability.modeling.emf.Element;
+import com.observability.modeling.emf.EmfFactory;
+import com.observability.modeling.emf.KeyValue;
+import com.observability.modeling.emf.Metric;
+import com.observability.modeling.emf.Model;
+import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
@@ -53,7 +60,7 @@ public class CustomServices {
 	 * In memory representation of the descriptor files. One dbType is created
 	 * per descriptor file
 	 */
-	private static List<com.observability.modeling.probe.descriptor.entities.DbType> dbTypes;
+	private static List<com.observability.modeling.probe.descriptor.entities.DbType> dbTypes = null;
 	
 	/*
 	 * Factory class to manipulate the EMF model instance.
@@ -61,28 +68,48 @@ public class CustomServices {
 	private static EmfFactory factory = EmfFactory.eINSTANCE;
     
 	
-    /*
+    /**
      * Parse the descriptors and bring the info into entities at class loading
-     * 
-     * TODO Change the absolute path to relative path. Ideally use resource locator
-     * TODO We are probably parsing 2 times. One per method call. Ideally this should not be happening.But it seems the 
-     * 		class gets destroyed between the calls to initializeDbTypes and initializeMachine
+     * This will search through all the projects in the current workspace for the descriptors dir.
      */
 	
-	private static void getParser(Path dirPath) throws Exception{
-		// get the descriptor directory
-		String descriptorPath = dirPath.toString() + File.separatorChar + PROBE_DESCRIPTOR_DIR_PATH;
-		
-		if(Files.exists(Paths.get(descriptorPath), LinkOption.NOFOLLOW_LINKS)){
+	private static void parseDescriptors(){
+		 
+		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		File descriptorDir = null;
+		boolean descriptorDirFound = false;
+		for (int i = 0; i < projects.length; i++) {
+			descriptorDir = projects[i].getLocation().append(PROBE_DESCRIPTOR_DIR_PATH).toFile();
+			if(Files.exists(descriptorDir.toPath() , LinkOption.NOFOLLOW_LINKS)){
+				descriptorDirFound = true;
+				break;
+			}
+		}
+		if(descriptorDirFound)
+			parseDescriptors(descriptorDir.toPath());
+		else
+			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
+					+ "directory in the root of the project and create the file again."); 
+			
+    }
+	
+	 /**
+     * Parse the descriptors and bring the info into entities at class loading
+     * 
+     * @param descriptorsPath the path to the dir where the descriptor files are located inside the project
+     * TODO remove duplicate code.
+     */
+	private static void parseDescriptors(Path descriptorsPath){
+		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
 			// if descriptors exist, get the parsed descriptors
-			DescriptorParserImpl parser = new DescriptorParserImpl(Paths.get(descriptorPath));
+			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
 			dbTypes = parser.parseDescriptors();
 		}
 		else {
 			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
 					+ "directory in the root of the project and create the file again."); 
 		}
-    }
+	}
 	
 	
 	/**
@@ -94,11 +121,11 @@ public class CustomServices {
 	 * @param model the root element to fill in the new entities
 	 * @param dirPath 
 	 */
-	public static void initializeDbTypes( Model model, Path dirPath) throws Exception{
+	public static void initializeDbTypes( Model model, Path dirPath) {
 		
 		//Get the parsers
-		getParser(dirPath);
-					
+		parseDescriptors(dirPath.resolve(PROBE_DESCRIPTOR_DIR_PATH));
+		
 		//Create dbTypes for each descriptor file
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			DbType newDbType = factory.createDbType();
@@ -134,6 +161,9 @@ public class CustomServices {
 	 */
 	public static boolean initializeMachine(EObject containerCluster){
 		
+		//parse only one time
+		if(dbTypes == null)
+			parseDescriptors();
 		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
 		
 		//If the cluster is not associated with a dbType do nothing
