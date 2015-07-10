@@ -4,6 +4,7 @@ package com.observability.modeling.emf.impl;
 
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.KeyValue;
 import com.observability.modeling.emf.NodeMachine;
 
 import java.util.Collection;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getElements <em>Elements</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getKeyValues <em>Key Values</em>}</li>
  * </ul>
  * </p>
  *
@@ -105,6 +107,16 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * @ordered
 	 */
 	protected EList<Element> elements;
+
+	/**
+	 * The cached value of the '{@link #getKeyValues() <em>Key Values</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKeyValues()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<KeyValue> keyValues;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -205,11 +217,25 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<KeyValue> getKeyValues() {
+		if (keyValues == null) {
+			keyValues = new EObjectContainmentEList<KeyValue>(KeyValue.class, this, EmfPackage.NODE_MACHINE__KEY_VALUES);
+		}
+		return keyValues;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
+				return ((InternalEList<?>)getKeyValues()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -230,6 +256,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return getName();
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				return getElements();
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
+				return getKeyValues();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -256,6 +284,10 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				getElements().clear();
 				getElements().addAll((Collection<? extends Element>)newValue);
 				return;
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
+				getKeyValues().clear();
+				getKeyValues().addAll((Collection<? extends KeyValue>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -280,6 +312,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				getElements().clear();
 				return;
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
+				getKeyValues().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -300,6 +335,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
+				return keyValues != null && !keyValues.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getPort <em>Port</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getElements <em>Elements</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.NodeMachine#getKeyValues <em>Key Values</em>}</li>
  * </ul>
  * </p>
  *
@@ -118,5 +119,21 @@ public interface NodeMachine extends EObject {
 	 * @generated
 	 */
 	EList<Element> getElements();
+
+	/**
+	 * Returns the value of the '<em><b>Key Values</b></em>' containment reference list.
+	 * The list contents are of type {@link com.observability.modeling.emf.KeyValue}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Key Values</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Key Values</em>' containment reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getNodeMachine_KeyValues()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<KeyValue> getKeyValues();
 
 } // NodeMachine

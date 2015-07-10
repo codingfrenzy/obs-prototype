@@ -36,6 +36,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//NodeMachine/Port"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//NodeMachine/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//NodeMachine/elements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//NodeMachine/keyValues"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Model">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Model/interval"/>

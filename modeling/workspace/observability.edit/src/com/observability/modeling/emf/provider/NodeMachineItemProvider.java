@@ -149,6 +149,7 @@ public class NodeMachineItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(EmfPackage.Literals.NODE_MACHINE__ELEMENTS);
+			childrenFeatures.add(EmfPackage.Literals.NODE_MACHINE__KEY_VALUES);
 		}
 		return childrenFeatures;
 	}
@@ -210,6 +211,7 @@ public class NodeMachineItemProvider
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
+			case EmfPackage.NODE_MACHINE__KEY_VALUES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -231,6 +233,11 @@ public class NodeMachineItemProvider
 			(createChildParameter
 				(EmfPackage.Literals.NODE_MACHINE__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(EmfPackage.Literals.NODE_MACHINE__KEY_VALUES,
+				 EmfFactory.eINSTANCE.createKeyValue()));
 	}
 
 	/**

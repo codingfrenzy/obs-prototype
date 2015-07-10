@@ -359,13 +359,22 @@ public interface EmfPackage extends EPackage {
 	int NODE_MACHINE__ELEMENTS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_MACHINE__KEY_VALUES = 4;
+
+	/**
 	 * The number of structural features of the '<em>Node Machine</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_MACHINE_FEATURE_COUNT = 4;
+	int NODE_MACHINE_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Node Machine</em>' class.
@@ -1184,6 +1193,17 @@ public interface EmfPackage extends EPackage {
 	EReference getNodeMachine_Elements();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.NodeMachine#getKeyValues <em>Key Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Key Values</em>'.
+	 * @see com.observability.modeling.emf.NodeMachine#getKeyValues()
+	 * @see #getNodeMachine()
+	 * @generated
+	 */
+	EReference getNodeMachine_KeyValues();
+
+	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Model <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1817,6 +1837,14 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference NODE_MACHINE__ELEMENTS = eINSTANCE.getNodeMachine_Elements();
+
+		/**
+		 * The meta object literal for the '<em><b>Key Values</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE_MACHINE__KEY_VALUES = eINSTANCE.getNodeMachine_KeyValues();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.ModelImpl <em>Model</em>}' class.
