@@ -29,6 +29,7 @@ import java.util.List;
 
 
 
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 
@@ -45,6 +46,7 @@ import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.Model;
 import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
+import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
 import com.observability.modeling.probe.descriptor.entities.SystemMetric;
@@ -137,40 +139,80 @@ public class CustomServices {
 			DbType newDbType = factory.createDbType();
 			newDbType.setName(dbType.getName());
 			
-			createSystemMetricParameters(newDbType);
-			createDbMetricParameters(newDbType);
-			createAggregatedMetricParameters(newDbType);
-//			//Create Metrics for each @metric annotation
-//			com.observability.modeling.probe.descriptor.entities.SystemMetric metrics =  dbType.getDbMetrics()();
-//			for (ElementTag elementTag : metrics.getElements()) {
-//				Metric newMetric = factory.createBaseMetric();
-//				
-//				//If the metric name is not in the element, check keyValue for 
-//				//the name. Assumptions: elementTag will have exactly one keyValues
-//				if(elementTag.getValue() == null)
-//					newMetric.setName(elementTag.getKeyValues().get(0).getValue());
-//				else 
-//					//else take the name from the elementTag
-//					newMetric.setName(elementTag.getValue());
-//
-//				newDbType.getAvailableMetrics().add(newMetric);
-//			}
+			createSystemMetricParameters(newDbType, dbType);
+			createDbMetricParameters(newDbType, dbType);
+			createAggregatedMetricParameters(newDbType, dbType);
+
 			model.getAvailableDbTypes().add(newDbType);
 		}
 				    
 		
 	}
-	
+	/**
+	 * Fill the Emf semantic instance with aggregatedMetric information from the parser.
+	 * @param newDbType The emf dbType entity
+	 * @param parsedDbType The parser generated dbType entity
+	 */
 	private static void createAggregatedMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
-		// TODO Auto-generated method stub
+		List<com.observability.modeling.probe.descriptor.entities.AggregatedMetric> aggMetrics  = parsedDbType.getAggregatedMetrics();
+		for (com.observability.modeling.probe.descriptor.entities.AggregatedMetric aggMetric : aggMetrics) {
+			
+			//Create a db metric entry in semantic model
+			AggregatedMetric metric = factory.createAggregatedMetric();
+			
+			metric.setName(aggMetric.getName());
+			
+			//Copy the element and sub elements and keyValues
+			for(ElementTag element :aggMetric.getElements()){
+				Element semanticElement = factory.createElement();
+				semanticElement.setName(element.getName());
+				semanticElement.setValue(element.getValue());
+				fillElements(element, semanticElement);
+				metric.getElements().add(semanticElement);
+
+			}
+			newDbType.getAvailableMetrics().add(metric);
+			
+
+		}
 		
 	}
 
+	/**
+	 * Fill the Emf semantic instance with database metric information from the parser.
+	 * @param newDbType The emf dbType entity
+	 * @param parsedDbType The parser generated dbType entity
+	 */
 	private static void createDbMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
-		// TODO Auto-generated method stub
+		List<DbMetric> dbMetrics  = parsedDbType.getDbMetrics();
+		for (DbMetric dbMetric : dbMetrics) {
+			
+			//Create a db metric entry in semantic model
+			BaseMetric metric = factory.createBaseMetric();
+			metric.setType(dbMetric.getType().toString());
+			metric.setName(dbMetric.getName());
+			
+			//Copy the element and sub elements and keyValues
+			for(ElementTag element :dbMetric.getElements()){
+				Element semanticElement = factory.createElement();
+				semanticElement.setName(element.getName());
+				semanticElement.setValue(element.getValue());
+				fillElements(element, semanticElement);
+				metric.getElements().add(semanticElement);
+
+			}
+			newDbType.getAvailableMetrics().add(metric);
+			
+
+		}
 		
 	}
 
+	/**
+	 * Fill the Emf semantic instance with system metric information from the parser.
+	 * @param newDbType The emf dbType entity
+	 * @param parsedDbType The parser generated dbType entity
+	 */
 	private static void createSystemMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
 		List<SystemMetric> systemMetrics  = parsedDbType.getSystemMetrics();
 		for (SystemMetric systemMetric : systemMetrics) {
@@ -178,7 +220,20 @@ public class CustomServices {
 			//Create a system metric entry in semantic model
 			BaseMetric metric = factory.createBaseMetric();
 			metric.setType(systemMetric.getType().toString());
-			systemMetric.getElements()
+			metric.setName(systemMetric.getName());
+			
+			//Copy the element and sub elements and keyValues
+			for(ElementTag element :systemMetric.getElements()){
+				Element semanticElement = factory.createElement();
+				semanticElement.setName(element.getName());
+				semanticElement.setValue(element.getValue());
+				
+				fillElements(element, semanticElement);
+				metric.getElements().add(semanticElement);
+			}
+			
+			newDbType.getAvailableMetrics().add(metric);
+
 		}
 		
 	}
@@ -193,41 +248,41 @@ public class CustomServices {
 	 */
 	public static boolean initializeMachine(EObject containerCluster){
 		
-		//parse only one time
-		if(dbTypes == null)
-			parseDescriptors();
-		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
-		
-		//If the cluster is not associated with a dbType do nothing
-		DbType associatedDbType = cluster.getAssociatedDbType();
-		if(associatedDbType == null)
-			return false;
-		
-		
-		NodeMachine machine = factory.createNodeMachine();
-		
-		//Copy elements from the entities filled from descriptor to EMF semantic instance
-		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
-			if(dbType.getName().equals(associatedDbType.getName())){
-				Machine machineParam = dbType.getMachineParams();
-				
-				
-				//TODO get rid of the root element
-				//create placeholder root element 
-				Element rootElement = factory.createElement();
-				rootElement.setName("root");
-				
-				
-				fillElements( machineParam, rootElement);
-				
-				machine.getElements().add(rootElement);
-				
-				
-				break;
-			}
-		}
-		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
-		cluster.getMachines().add(machine);
+//		//parse only one time
+//		if(dbTypes == null)
+//			parseDescriptors();
+//		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
+//		
+//		//If the cluster is not associated with a dbType do nothing
+//		DbType associatedDbType = cluster.getAssociatedDbType();
+//		if(associatedDbType == null)
+//			return false;
+//		
+//		
+//		NodeMachine machine = factory.createNodeMachine();
+//		
+//		//Copy elements from the entities filled from descriptor to EMF semantic instance
+//		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
+//			if(dbType.getName().equals(associatedDbType.getName())){
+//				Machine machineParam = dbType.getMachineParams();
+//				
+//				
+//				//TODO get rid of the root element
+//				//create placeholder root element 
+//				Element rootElement = factory.createElement();
+//				rootElement.setName("root");
+//				
+//				
+//				fillElements( machineParam, rootElement);
+//				
+//				machine.getElements().add(rootElement);
+//				
+//				
+//				break;
+//			}
+//		}
+//		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
+//		cluster.getMachines().add(machine);
 		return true;
 		
 		
@@ -275,9 +330,9 @@ public class CustomServices {
 		}
 		
 		//For each keyValue element copy them as well
-		List<ElementTag.KeyValue> keyValues =  element.getKeyValues();
+		List<com.observability.modeling.probe.descriptor.entities.KeyValue> keyValues =  element.getKeyValues();
 		if(keyValues.size() != 0){
-			for (ElementTag.KeyValue keyValue : keyValues) {
+			for (com.observability.modeling.probe.descriptor.entities.KeyValue keyValue : keyValues) {
 				KeyValue newKey = factory.createKeyValue();
 				newKey.setKey(keyValue.getName());
 				newKey.setValue(keyValue.getValue());
