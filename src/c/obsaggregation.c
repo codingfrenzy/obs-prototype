@@ -1220,6 +1220,11 @@ static int obsaggr_read (void)
 		} else {
 			cdtime_t now = cdtime();
 			cdtime_t delta = now - gFirstRead;
+			// Fix the time interval drifting problem
+			if((delta % 1073741824) != 0)
+			{
+				delta = (delta / 1073741824 + 1) * 1073741824;
+			}
 
 			// init the timestamps of aggregation rounds
 			pthread_mutex_lock (&agg_cache_lock);
@@ -1240,7 +1245,7 @@ static int obsaggr_read (void)
 			// it's safer here considering concurrent behavior with write 
 			gAggInterval = delta;
 			pthread_mutex_unlock (&agg_cache_lock);
-			INFO("Obsaggregation: set aggregation interval to be: %ld seconds", CDTIME_T_TO_TIME_T(delta));
+			INFO("Obsaggregation: set aggregation interval to be: %ld - %ld seconds", delta, CDTIME_T_TO_TIME_T(delta));
 		}
 		return (0);
 	}
@@ -1320,17 +1325,20 @@ static int obsaggr_read (void)
 	obs_agg_rawdata[0]->end_t   = obs_agg_rawdata[0]->start_t + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
 
-	/* log - should be removed later
+	// log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
 			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->start_t),
 			CDTIME_T_TO_TIME_T(obs_agg_rawdata[i]->end_t));
-		//INFO("Obsaggr: round %i : %ld - %ld", i, 
-		//	obs_agg_rawdata[i]->start_t,
-		//	obs_agg_rawdata[i]->end_t);
 	}
-	*/
+	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
+	{
+		INFO("Obsaggr: round %i : %ld - %ld", i, 
+			obs_agg_rawdata[i]->start_t,
+			obs_agg_rawdata[i]->end_t);
+	}
+	
 	pthread_mutex_unlock (&agg_cache_lock);
 	//INFO ("agg_cache_lock: released");
 
