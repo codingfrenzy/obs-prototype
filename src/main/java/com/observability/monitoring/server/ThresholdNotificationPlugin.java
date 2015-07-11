@@ -224,9 +224,9 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 			//String commandString = "curl -X POST --data \"" + encodedParameter + "\" " + urlDashboardNotification;
 			String commandString = "curl -X POST --data " + encodedParameter + " " + urlDashboardNotification;
 			//Collectd.logInfo(commandString);
-			Process p;			// initialize a process class
-			BufferedReader outReader = null;
-			p = Runtime.getRuntime().exec(commandString);
+			//Process p;			// initialize a process class
+			//BufferedReader outReader = null;
+			Runtime.getRuntime().exec(commandString);
 			//p.waitFor();		// wait for it to finish execution
 		    //if (p.exitValue() != 0){		// if there is an error
 		    //	p.getErrorStream()
