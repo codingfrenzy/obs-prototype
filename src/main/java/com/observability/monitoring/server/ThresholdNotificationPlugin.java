@@ -195,7 +195,7 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		// sample:
 		/*
 		 * timestamp=Sat Jul 04 23:34:35 EDT 2015&metricpath=joel-ThinkPad-T440s/cpu/3/cpu/system&type=FAILURE&host=joel-ThinkPad-T440s
-		 * &plugin=cpu (instance 3)&type=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
+		 * &plugin=cpu (instance 3)&pluginInstance=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
 		 * 
 		 */
 		// 1. get time string
@@ -218,7 +218,7 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 							   "&type=" + arg0.getSeverityString() +
 							   "&host=" + arg0.getHost() +
 							   "&plugin=" + arg0.getPlugin() + " (instance " + arg0.getPluginInstance() + ")" +
-							   "&type=" + arg0.getType() + " (instance " + arg0.getTypeInstance() + ")" +
+							   "&pluginInstance=" + arg0.getType() + " (instance " + arg0.getTypeInstance() + ")" +
 							   "&message=" + arg0.getMessage();
  
 		String encodedParameter = null;
