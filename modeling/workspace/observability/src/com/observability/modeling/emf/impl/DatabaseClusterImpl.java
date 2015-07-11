@@ -141,12 +141,17 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 *
 	 */
 	public EList<NodeMachine> getMachines() {
 		if (machines == null) {
 			machines = new EObjectContainmentEList<NodeMachine>(NodeMachine.class, this, EmfPackage.DATABASE_CLUSTER__MACHINES);
 		}
+		/**
+		* Syncronize the cluster noOfMachines attribute 
+		* with the actual machines inside it.
+		*/
+		noOfMachines = machines.size();
 		return machines;
 	}
 
