@@ -44,29 +44,45 @@
 #define AGG_FUNC_PLACEHOLDER "%{obsaggregation}"
 
 #define MAX_KEY_LENGTH 		6 * DATA_MAX_NAME_LEN
-#define AGG_RETENTION_ROUND	5	/*NOTE! at least 2*/
+// The number of rounds for aggregation
+// Should be an odd number, at least 3
+// The bigger the number, the better for fault tolerance of network latency
+#define AGG_RETENTION_ROUND	5	/*NOTE! at least 3*/
 
 // Measurements hash table
+// During one aggregation round, a metric will have only one value
 struct obs_val_hash_s {
-	char 		metric_name[MAX_KEY_LENGTH];
-	data_set_t	*ds;
-	value_list_t 	*vl; 
-	UT_hash_handle  hh;         /* makes this structure hashable */
+	char 		metric_name[MAX_KEY_LENGTH];	// name: host + plugin + plugin instance + type + type instance
+	data_set_t	*ds;				// dataset
+	value_list_t 	*vl; 				// value list
+	UT_hash_handle  hh;         			/* makes this structure hashable */
 };
 
 typedef struct obs_val_hash_s obs_val_hash_t;
 
 // Aggregation round
 struct obs_round_s {
-	cdtime_t 	start_t;
-	cdtime_t	end_t;
-	obs_val_hash_t 	*val_hash;
+	cdtime_t 	start_t;			// start time
+	cdtime_t	end_t;				// end time
+	obs_val_hash_t 	*val_hash;			// measurement value hash table
 };
 
 typedef struct obs_round_s obs_round_t;
 
-static obs_round_t * obs_agg_rawdata[AGG_RETENTION_ROUND];
+static obs_round_t * obs_agg_rawdata[AGG_RETENTION_ROUND];	// all aggregation round
 
+// Value to rate state hash table
+struct obs_val_to_rate_hash_s {
+	char 			metric_name[MAX_KEY_LENGTH];	// name: host + plugin + plugin instance + type + type instance
+	value_to_rate_state_t	*state;				// state
+	UT_hash_handle  	hh;         			/* makes this structure hashable */
+};
+
+typedef struct obs_val_to_rate_hash_s obs_val_to_rate_hash_t;
+
+static obs_val_to_rate_hash_t *val_rate_states;
+
+// Aggregation structure
 struct aggregation_s /* {{{ */
 {
   identifier_t ident;
@@ -110,6 +126,17 @@ struct agg_instance_s /* {{{ */
   rate_to_value_state_t *state_min;
   rate_to_value_state_t *state_max;
   rate_to_value_state_t *state_stddev;
+
+  /*
+  // Added by Joel Gao Jly 10 2015
+  value_to_rate_state_t *state_num_v2r;
+  value_to_rate_state_t *state_sum_v2r;
+  value_to_rate_state_t *state_average_v2r;
+  value_to_rate_state_t *state_min_v2r;
+  value_to_rate_state_t *state_max_v2r;
+  value_to_rate_state_t *state_stddev_v2r;
+  */
+  //value_to_rate_state_t *state_value;
 
   agg_instance_t *next;
 }; /* }}} */
@@ -171,6 +198,8 @@ static void agg_instance_destroy (agg_instance_t *inst) /* {{{ */
   sfree (inst->state_min);
   sfree (inst->state_max);
   sfree (inst->state_stddev);
+  // Added by Joel Gao Jly 10 2015
+  //sfree (inst->state_value);
 
   memset (inst, 0, sizeof (*inst));
   inst->ds_type = -1;
@@ -307,6 +336,14 @@ static agg_instance_t *agg_instance_create (data_set_t const *ds, /* {{{ */
   INIT_STATE (min);
   INIT_STATE (max);
   INIT_STATE (stddev);
+  // Added by Joel Gao Jly 10 2015
+  //inst->state_value = malloc(sizeof(*inst->state_value));
+  //memset (inst->state_value, 0, sizeof (*inst->state_value));
+
+  /*/ DEBUG log, should be removed later
+  INFO ("agg_instance_create: inst %s-%s-%s-%s-%s", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
+  inst->ident.type, inst->ident.type_instance);
+  /*/
 
 #undef INIT_STATE
 
@@ -322,7 +359,9 @@ static agg_instance_t *agg_instance_create (data_set_t const *ds, /* {{{ */
  * the rate of the value list is available. Value lists with more than one data
  * source are not supported and will return an error. Returns zero on success
  * and non-zero otherwise. */
-static int agg_instance_update (agg_instance_t *inst, /* {{{ */
+// Deleted by Joel Gao Jly 10 2015
+/*
+static int agg_instance_update (agg_instance_t *inst, 
     data_set_t const *ds, value_list_t const *vl)
 {
   gauge_t *rate;
@@ -335,6 +374,9 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
     return (EINVAL);
   }
 
+  // Modified by Joel Gao Jly 10 2015
+  // The code below will get latest value from collectd cache.
+  // It is NOT what we want.
   rate = uc_get_rate (ds, vl);
   if (rate == NULL)
   {
@@ -353,13 +395,6 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
 
   pthread_mutex_lock (&inst->lock);
 
-  // DEBUG log, should be removed later
-  gauge_t outputval = 0;
-  memcpy(&outputval, vl->values, sizeof(outputval));
-  INFO ("agg_instance_update: inst %s-%s-%s-%s-%s - value time:%ld - value: %f.", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
-  inst->ident.type, inst->ident.type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
-  //
-
   inst->num++;
   inst->sum += rate[0];
   inst->squares_sum += (rate[0] * rate[0]);
@@ -369,11 +404,153 @@ static int agg_instance_update (agg_instance_t *inst, /* {{{ */
   if (isnan (inst->max) || (inst->max < rate[0]))
     inst->max = rate[0];
 
+  // DEBUG log, should be removed later
+  gauge_t outputval = 0;
+  memcpy(&outputval, vl->values, sizeof(outputval));
+  INFO ("agg_instance_update: inst %s-%s-%s-%s-%s - value time:%ld - value: %f. Instance sum: %f", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
+  inst->ident.type, inst->ident.type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval, inst->sum);
+  //
+
   pthread_mutex_unlock (&inst->lock);
 
   sfree (rate);
   return (0);
-} /* }}} int agg_instance_update */
+} */
+
+// This function is added here (but not in common.c) for compatiblility with current system version
+int value_to_rate_agg (gauge_t *ret_rate, /* {{{ */
+		value_t value, int ds_type, cdtime_t t, value_to_rate_state_t *state)
+{
+	gauge_t interval;
+	//INFO("value_to_rate_agg: 1");
+	/* Another invalid state: The time is not increasing. */
+	if (t <= state->last_time)
+	{
+		memset (state, 0, sizeof (*state));
+		return (EINVAL);
+	}
+
+	//INFO("value_to_rate_agg: 2");
+	interval = CDTIME_T_TO_DOUBLE(t - state->last_time);
+
+	/* Previous value is invalid. */
+	if (state->last_time == 0)
+	{
+		state->last_value = value;
+		state->last_time = t;
+		return (EAGAIN);
+	}
+	//INFO("value_to_rate_agg: 3");
+	switch (ds_type) {
+	case DS_TYPE_DERIVE: {
+		derive_t diff = value.derive - state->last_value.derive;
+		*ret_rate = ((gauge_t) diff) / ((gauge_t) interval);
+		break;
+	}
+	case DS_TYPE_GAUGE: {
+		*ret_rate = value.gauge;
+		break;
+	}
+	case DS_TYPE_COUNTER: {
+		counter_t diff = counter_diff (state->last_value.counter, value.counter);
+		*ret_rate = ((gauge_t) diff) / ((gauge_t) interval);
+		break;
+	}
+	case DS_TYPE_ABSOLUTE: {
+		absolute_t diff = value.absolute;
+		*ret_rate = ((gauge_t) diff) / ((gauge_t) interval);
+		break;
+	}
+	default:
+		return EINVAL;
+	}
+	//INFO("value_to_rate_agg: 4");
+	state->last_value = value;
+	state->last_time = t;
+	return (0);
+} /* }}} value_t rate_to_value */
+
+static int agg_instance_update (agg_instance_t *inst, 
+    data_set_t const *ds, value_list_t const *vl)
+{
+  if (ds->ds_num != 1)
+  {
+    ERROR ("obsaggregation plugin: The \"%s\" type (data set) has more than one "
+        "data source. This is currently not supported by this plugin. "
+        "Sorry.", ds->type);
+    return (EINVAL);
+  }
+
+  gauge_t rate;
+  // Convert the value to rate
+  //INFO("agg_instance_update: starting value_to_rate");
+  // Find the state
+  // get the key
+  char name[MAX_KEY_LENGTH];
+  if (FORMAT_VL (name, sizeof (name), vl) != 0)
+  {
+    ERROR ("agg_instance_update: FORMAT_VL failed.");
+    return (0);
+  }
+  obs_val_to_rate_hash_t *s = NULL;
+  //INFO("agg_instance_update: 1");
+  HASH_FIND_STR( val_rate_states, name, s );
+  //INFO("agg_instance_update: 2");
+  if(s == NULL)
+  {// no such key
+     // add it
+     s = (obs_val_to_rate_hash_t *)malloc(sizeof(obs_val_to_rate_hash_t));
+     if(s == NULL)
+     {
+        return (0);
+     }
+      //INFO("agg_instance_update: 3");
+     s->state = (value_to_rate_state_t *)malloc(sizeof(value_to_rate_state_t));
+     if(s->state == NULL)
+     {
+        return (0);
+     }
+     // copy the key
+     strncpy(s->metric_name, name, MAX_KEY_LENGTH);
+     memset(s->state, 0, sizeof(*(s->state)));
+     HASH_ADD_STR( val_rate_states, metric_name, s );
+     //INFO("agg_instance_update: 4");
+  }
+  int ret = value_to_rate_agg(&rate, vl->values[0], inst->ds_type, vl->time, s->state);
+  if(ret != 0)
+  {
+    //INFO("agg_instance_update: value_to_rate not successful");
+    return (0);
+  }
+  //INFO("agg_instance_update: value_to_rate was successful. Rate value: %f", rate);
+
+  if (isnan (rate))
+  {
+    return (0);
+  }
+
+  pthread_mutex_lock (&inst->lock);
+
+  inst->num++;
+  inst->sum += rate;
+  inst->squares_sum += (rate * rate);
+
+  if (isnan (inst->min) || (inst->min > rate))
+    inst->min = rate;
+  if (isnan (inst->max) || (inst->max < rate))
+    inst->max = rate;
+
+  /*/ DEBUG log, should be removed later
+  gauge_t outputval = 0;
+  memcpy(&outputval, vl->values, sizeof(outputval));
+  INFO ("agg_instance_update: inst %s-%s-%s-%s-%s - value time:%ld - value: %f. Instance sum: %f", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
+  inst->ident.type, inst->ident.type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval, inst->sum);
+  /*/
+
+  pthread_mutex_unlock (&inst->lock);
+
+  return (0);
+}
 
 static void plugin_value_list_free (value_list_t *vl) 
 {
@@ -452,6 +629,8 @@ static void init_datastructure()
 		obs_agg_rawdata[i]->end_t   = 0;
 		obs_agg_rawdata[i]->val_hash = NULL;
 	}
+        // value to rate states
+	val_rate_states = NULL;//(obs_val_to_rate_hash_t *) malloc (sizeof(obs_val_to_rate_hash_t));
 }
 
 static void hash_table_delete_all(obs_val_hash_t * hash_val) 
@@ -497,6 +676,24 @@ static void free_round(obs_round_t * round)
 	round = NULL;
 }
 
+static void free_value_to_rate_states()
+{
+	obs_val_to_rate_hash_t *current_item, *tmp;
+
+  	HASH_ITER(hh, val_rate_states, current_item, tmp) 
+	{
+		//INFO("delete hash entry");
+	    	HASH_DEL(val_rate_states,current_item);  	/* delete; users advances to next */
+		if(current_item->state != NULL)
+		{
+			
+			//INFO("delete ds2");
+			sfree(current_item->state);
+		}
+	    	sfree(current_item);            		/* optional- if you want to free  */
+  	}
+}
+
 static void free_datastructure()
 {
 	int i = 0;
@@ -504,6 +701,9 @@ static void free_datastructure()
 	{
 		free_round(obs_agg_rawdata[i]);		
 	}
+	
+	// free value to rate hash
+	free_value_to_rate_states();
 }
 
 
@@ -521,6 +721,12 @@ static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
     sstrncpy (vl->plugin_instance, func, sizeof (vl->plugin_instance));
 
   memset (&v, 0, sizeof (v));
+
+  // DEBUG log, should be removed later 
+  //gauge_t outputval = 0;
+  //memcpy(&outputval, vl->values, sizeof(outputval));
+  //INFO ("obsagg_write: Final Submit before rate - plugin: %s - type: %s-%s - time:%ld - value: %f.", vl->plugin, vl->type, vl->type_instance, CDTIME_T_TO_TIME_T(vl->time), rate);
+  //
   status = rate_to_value (&v, rate, state, inst->ds_type, t);
   if (status != 0)
   {
@@ -540,11 +746,11 @@ static int agg_instance_read_func (agg_instance_t *inst, /* {{{ */
 
   plugin_dispatch_values (vl);
 
-  // DEBUG log, should be removed later 
+  /*/ DEBUG log, should be removed later 
   gauge_t outputval = 0;
   memcpy(&outputval, vl->values, sizeof(outputval));
-  INFO ("obsagg_write: Final Submit - plugin: %s - type: %s-%s - time:%ld - value: %f.", vl->plugin, vl->type, vl->type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
-  //
+  INFO ("obsagg_write: Final Submit after rate - plugin: %s - type: %s-%s - time:%ld - value: %f.", vl->plugin, vl->type, vl->type_instance, CDTIME_T_TO_TIME_T(vl->time), outputval);
+  /*/
 
   vl->values = NULL;
   vl->values_len = 0;
@@ -615,6 +821,10 @@ static int agg_instance_read (agg_instance_t *inst, cdtime_t t) /* {{{ */
     READ_FUNC (max, inst->max);
     READ_FUNC (stddev, sqrt((((gauge_t) inst->num) * inst->squares_sum)
           - (inst->sum * inst->sum)) / ((gauge_t) inst->num));
+    /*/ DEBUG log, should be removed later
+    INFO ("agg_instance_read: inst %s-%s-%s-%s-%s - value time:%ld - value: %f.", inst->ident.host, inst->ident.plugin, inst->ident.plugin_instance, 
+    inst->ident.type, inst->ident.type_instance, CDTIME_T_TO_TIME_T(vl.time), inst->sum);
+    /*/
   }
 
   /* Reset internal state. */
@@ -1030,7 +1240,7 @@ static int obsaggr_read (void)
 			// it's safer here considering concurrent behavior with write 
 			gAggInterval = delta;
 			pthread_mutex_unlock (&agg_cache_lock);
-			INFO("Obsaggr: interval: %ld", CDTIME_T_TO_TIME_T(delta));
+			INFO("Obsaggregation: set aggregation interval to be: %ld seconds", CDTIME_T_TO_TIME_T(delta));
 		}
 		return (0);
 	}
@@ -1039,6 +1249,10 @@ static int obsaggr_read (void)
 	if(ret != 0)
 	{
 		ERROR("Get lock error: %s", strerror(ret));
+	}
+	else
+	{
+		//INFO ("agg_cache_lock: acquired");
 	}
 	// process the round of (AGG_RETENTION_ROUND - 1)
 	// init the instances
@@ -1050,10 +1264,11 @@ static int obsaggr_read (void)
 	// iterate through the hash table
 	obs_val_hash_t * de;
 	
-	// log - should be deleted later
+	/*/ log - should be deleted later
 	INFO("Start obsaggr round %d: %ld - %ld", AGG_RETENTION_ROUND - 1,
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t));
+	*/
 	cdtime_t lastt = 0;
 	long count = 0;
 	for(de = obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->val_hash; de != NULL; de = de->hh.next) 
@@ -1067,26 +1282,28 @@ static int obsaggr_read (void)
 			lastt = de->vl->time;
 		}
 		count++;
-		// Log
+		/*/ Log
 		gauge_t outputval = 0;
 		memcpy(&outputval, de->vl->values, sizeof(outputval));
 		INFO("Obsaggr: Read: key: %s - time - %ld - value: %f", de->metric_name, CDTIME_T_TO_TIME_T(de->vl->time), outputval);
-		//
+		/*/
 	}
+	/*
 	INFO("End obsaggr round %d: %ld - %ld, total number:%ld", AGG_RETENTION_ROUND - 1,
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->start_t), 
 		CDTIME_T_TO_TIME_T(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t),
 		count);
+	*/
 	// submit the values
 	//agg_read(lastt + gAggInterval/*obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t*/);
-	INFO("Starting calculation...");
+	//INFO("Starting calculation...");
 	
 	agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t);
 	//agg_read(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]->end_t + (double)(AGG_RETENTION_ROUND) * gAggInterval / 2);
-	INFO("Done, free the mem");
+	//INFO("Done, free the mem");
 	// free it
 	free_round(obs_agg_rawdata[AGG_RETENTION_ROUND - 1]);
-	INFO("Done");
+	//INFO("Done");
 	// copy all the rounds before to their next
 	int i = AGG_RETENTION_ROUND - 1;
 	for ( ; i > 0 ; i--)
@@ -1103,7 +1320,7 @@ static int obsaggr_read (void)
 	obs_agg_rawdata[0]->end_t   = obs_agg_rawdata[0]->start_t + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
 
-	// log - should be removed later
+	/* log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
@@ -1113,7 +1330,9 @@ static int obsaggr_read (void)
 		//	obs_agg_rawdata[i]->start_t,
 		//	obs_agg_rawdata[i]->end_t);
 	}
+	*/
 	pthread_mutex_unlock (&agg_cache_lock);
+	//INFO ("agg_cache_lock: released");
 
 	return (0);
 }
@@ -1139,6 +1358,10 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 	if(ret != 0)
 	{
 		ERROR("Get lock error: %s", strerror(ret));
+	}
+        else
+        {
+		//INFO ("agg_cache_lock: acquired");
 	}
 
 	int iround = 0;
@@ -1194,9 +1417,11 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 				}
 			}
 			inserted = 1;
+			/*
 			gauge_t outputval = 0;
 			memcpy(&outputval, vl->values, sizeof(outputval));
 			INFO ("obsagg_write: plugin: %s - value inserted in round %d : %s - time:%ld - value: %f.", vl->plugin, iround, name, CDTIME_T_TO_TIME_T(vl->time), outputval);
+			*/
 			break;
 		}
 	}
@@ -1210,6 +1435,7 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 		}
 	}
 	pthread_mutex_unlock (&agg_cache_lock);
+	//INFO ("agg_cache_lock: released");
 
 	return (0);
 } /* }}} int agg_write */
