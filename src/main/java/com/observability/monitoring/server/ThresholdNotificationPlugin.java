@@ -20,8 +20,10 @@
 //**************************************************************************************************//
 package com.observability.monitoring.server;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -60,6 +62,8 @@ import org.collectd.api.OConfigValue;
  * 1. Created					Jun 09 2015<br>
  * 2. Modified					Jun 14 2015<br>
  * 3. Modified 					Jly 04 2015<br>
+ * 4. Modified 					Jly 10 2015<br>
+ * 5. Modified 					Jly 11 2015<br>
  */
 
 public class ThresholdNotificationPlugin implements CollectdConfigInterface,
@@ -137,22 +141,22 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		if(recipientNum == 0) // no recipients defined
 			return 0;
 		
-		// 1. send to dashboard
-		sendNotificationToDashboard(arg0);
-		
-		// 2. send email
+		// 1. send email
 		// email body
 		final String body = arg0.toString();
 		// email header
 		final String header = "Observability Notification: " + arg0.getSeverityString() + " From node: " + arg0.getHost();
 		// for debug purpose
-		Collectd.logInfo("ThresholdNotificationPlugin sending notification: " + body);
+		//Collectd.logInfo("ThresholdNotificationPlugin sending notification: " + body);
 		//sendEMail(emailRecipients, header, body, false);
 		// send out email in plain text
 		boolean ret = emailSender.sendEMail(emailRecipients, header, body, false);
 		if(!ret){
 			Collectd.logInfo("ThresholdNotificationPlugin sending notification failed.");
 		}
+		
+		// 2. send to dashboard
+		sendNotificationToDashboard(arg0);
 		
 		return 0;
 	}
@@ -164,40 +168,117 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
      */
 	private void sendNotificationToDashboard(Notification arg0) {
 		// prepare for connection
-		URL obj = null;
-		try {
-			obj = new URL(urlDashboardNotification);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		HttpsURLConnection con = null;
-		try {
-			con = (HttpsURLConnection) obj.openConnection();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return;
-		}
- 
-		//add reuqest header
-		try {
-			con.setRequestMethod("POST");
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		con.setRequestProperty("User-Agent", USER_AGENT);
-		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+		//Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 1 - " + urlDashboardNotification);
  
 		// prepare the parameters
 		// sample:
-		/*
-		 * timestamp=Sat Jul 04 23:34:35 EDT 2015&metricpath=joel-ThinkPad-T440s/cpu/3/cpu/system&type=FAILURE&host=joel-ThinkPad-T440s
-		 * &plugin=cpu (instance 3)&pluginInstance=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
-		 * 
-		 */
+		//timestamp=Sat Jul 04 23:34:35 EDT 2015&metricpath=joel-ThinkPad-T440s/cpu/3/cpu/system&type=FAILURE&host=joel-ThinkPad-T440s
+		//&plugin=cpu (instance 3)&pluginInstance=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
+		 
+		// 1. get time string
+		Date date = new Date(arg0.getTime());
+		//Date date = new Date();
+		DateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
+		//format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+		String timeFormatted = format.format(date);
+		// 2. get metric path
+		String metricPath = arg0.getHost() + "/" + 
+							arg0.getPlugin() + "/" +
+							arg0.getPluginInstance() + "/" +
+							arg0.getType() + "/" +
+							arg0.getTypeInstance();
+		// 3. get message
+		String message = arg0.getMessage();
+		// rip off everything before :
+		int ndx = message.indexOf(":");
+		if(ndx != -1) {
+			message = message.substring(ndx + 1, message.length() - 1);
+		}
+		
+		// the full parameter
+		String urlParameters = "timestamp=" + timeFormatted +
+							   "&metricpath=" + metricPath +
+							   "&type=" + arg0.getSeverityString() +
+							   "&host=" + arg0.getHost() +
+							   "&plugin=" + arg0.getPlugin() + " (instance " + arg0.getPluginInstance() + ")" +
+							   "&pluginInstance=" + arg0.getType() + " (instance " + arg0.getTypeInstance() + ")" +
+							   "&message=" + message;
+ 
+		//Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 4 " + urlParameters);
+		
+		String encodedParameter = null;
+		try {
+			encodedParameter = URLEncoder.encode(urlParameters, "UTF-8");
+			String s1 = encodedParameter.replace("%3D", "=");
+			encodedParameter = s1.replace("%26", "&");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			Collectd.logError("sendNotificationToDashboard - Encode url failed");
+			return;
+		}
+		
+		// Send post request - using curl
+		try {
+			// start process with sudo (required by collectd)
+			//String commandString = "curl -X POST --data \"" + encodedParameter + "\" " + urlDashboardNotification;
+			String commandString = "curl -X POST --data " + encodedParameter + " " + urlDashboardNotification;
+			//Collectd.logInfo(commandString);
+			Process p;			// initialize a process class
+			BufferedReader outReader = null;
+			p = Runtime.getRuntime().exec(commandString);
+			//p.waitFor();		// wait for it to finish execution
+		    //if (p.exitValue() != 0){		// if there is an error
+		    //	p.getErrorStream()
+		    // fetch the result:
+			/*
+		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
+		    String serr = "";
+		    while((serr = outReader.readLine()) != null){
+		    	Collectd.logInfo("Error executing curl:" + serr);
+		    }
+		    //String output = outReader.readLine();
+		    */
+		    
+		} catch (Exception e) {
+	        e.printStackTrace();
+	        Collectd.logError("Cannot run curl to dispatch notification");
+	    }
+	}
+	/*
+	private void sendNotificationToDashboard(Notification arg0) {
+		// prepare for connection
+		Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 1 - " + urlDashboardNotification);
+		URL obj = null;
+		HttpsURLConnection con = null;
+		try {
+			obj = new URL(urlDashboardNotification);
+			
+			Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 2");
+			System.setProperty("http.keepAlive", "false");
+			con = (HttpsURLConnection) obj.openConnection();
+			
+			Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 3");
+			con.setRequestMethod("POST");
+			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Collectd.logError("sendNotificationToDashboard - Create url failed");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Collectd.logError("sendNotificationToDashboard - Create connection failed");
+		}
+		
+		
+ 
+		// prepare the parameters
+		// sample:
+		//timestamp=Sat Jul 04 23:34:35 EDT 2015&metricpath=joel-ThinkPad-T440s/cpu/3/cpu/system&type=FAILURE&host=joel-ThinkPad-T440s
+		//&plugin=cpu (instance 3)&pluginInstance=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
+		 
 		// 1. get time string
 		Date date = new Date(arg0.getTime() * 1000L);
 		DateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSS");
@@ -221,14 +302,18 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 							   "&pluginInstance=" + arg0.getType() + " (instance " + arg0.getTypeInstance() + ")" +
 							   "&message=" + arg0.getMessage();
  
+		Collectd.logInfo("ThresholdNotificationPlugin - sendNotificationToDashboard: 4 " + urlParameters);
+		
 		String encodedParameter = null;
 		try {
 			encodedParameter = URLEncoder.encode(urlParameters, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			Collectd.logError("sendNotificationToDashboard - Encode url failed");
 			return;
 		}
+		Collectd.logInfo(urlDashboardNotification + encodedParameter);
 		// Send post request
 		con.setDoOutput(true);
 		DataOutputStream wr;
@@ -242,8 +327,9 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Collectd.logError("sendNotificationToDashboard - POST request failed");
 		}
-	}
+	}*/
 	
 	/**
      * Add email recipient from configuration file
