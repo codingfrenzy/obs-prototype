@@ -20,8 +20,20 @@
 //**************************************************************************************************//
 package com.observability.monitoring.server;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.collectd.api.Collectd;
 import org.collectd.api.CollectdConfigInterface;
@@ -65,7 +77,17 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 	/**
      * Email sending class
      */
-	NotificationEMail emailSender = new NotificationEMail();
+	private NotificationEMail emailSender = new NotificationEMail();
+	
+	/**
+	 * URL for dashboard alert notification
+	 */
+	private String urlDashboardNotification = null;
+	
+	/**
+	 * URL user agent
+	 */
+	private final static String USER_AGENT = "Mozilla/5.0";
 
     /**
      * Constructor
@@ -115,6 +137,10 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		if(recipientNum == 0) // no recipients defined
 			return 0;
 		
+		// 1. send to dashboard
+		sendNotificationToDashboard(arg0);
+		
+		// 2. send email
 		// email body
 		final String body = arg0.toString();
 		// email header
@@ -132,6 +158,94 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 	}
 	
 	/**
+     * Send notification message to grafana dashboard
+     * @param arg0 the notification structure
+     * 
+     */
+	private void sendNotificationToDashboard(Notification arg0) {
+		// prepare for connection
+		URL obj = null;
+		try {
+			obj = new URL(urlDashboardNotification);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		HttpsURLConnection con = null;
+		try {
+			con = (HttpsURLConnection) obj.openConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return;
+		}
+ 
+		//add reuqest header
+		try {
+			con.setRequestMethod("POST");
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+ 
+		// prepare the parameters
+		// sample:
+		/*
+		 * timestamp=Sat Jul 04 23:34:35 EDT 2015&metricpath=joel-ThinkPad-T440s/cpu/3/cpu/system&type=FAILURE&host=joel-ThinkPad-T440s
+		 * &plugin=cpu (instance 3)&type=cpu (instance system)&message=Data source "value" is currently 1.100000. That is above the failure threshold of 0.900000.
+		 * 
+		 */
+		// 1. get time string
+		Date date = new Date(arg0.getTime() * 1000L);
+		DateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:MM:ss.SSS");
+		//format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+		String timeFormatted = format.format(date);
+		// 2. get metric path
+		String metricPath = arg0.getHost() + "/" + 
+							arg0.getPlugin() + "/" +
+							arg0.getPluginInstance() + "/" +
+							arg0.getType() + "/" +
+							arg0.getTypeInstance();
+		// 3. get the value and threshold
+		//String message = arg0.getMessage();
+		
+		// the full parameter
+		String urlParameters = "timestamp=" + timeFormatted +
+							   "&metricpath=" + metricPath +
+							   "&type=" + arg0.getSeverityString() +
+							   "&host=" + arg0.getHost() +
+							   "&plugin=" + arg0.getPlugin() + " (instance " + arg0.getPluginInstance() + ")" +
+							   "&type=" + arg0.getType() + " (instance " + arg0.getTypeInstance() + ")" +
+							   "&message=" + arg0.getMessage();
+ 
+		String encodedParameter = null;
+		try {
+			encodedParameter = URLEncoder.encode(urlParameters, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return;
+		}
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr;
+		try {
+			wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(encodedParameter);
+			wr.flush();
+			wr.close();
+			// get response in case it is reuqired by server
+			//int responseCode = con.getResponseCode();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
      * Add email recipient from configuration file
      * @param ci configuration item
      */
@@ -146,6 +260,18 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
   	  			emailRecipients.add(cv.toString());
   	  		}
   	  	}
+	}
+	
+	private void getNotificationURL(OConfigItem ci) {
+		// Get values of the configuration item
+		List<OConfigValue> values = ci.getValues();
+		if(values != null && values.size() > 0) {
+			OConfigValue cv = values.get(0);
+		  	//Collectd.logInfo("ObsAggregationPlugin plugin: config: cv = " + cv.toString() + ";");
+		  	if (cv.getType () == OConfigValue.OCONFIG_TYPE_STRING) {
+		  		urlDashboardNotification = cv.toString();
+		  	}
+		}
 	}
 
 	/**
@@ -179,6 +305,10 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 	      else if (key.equalsIgnoreCase ("recpt3"))
 	      {
 	    	  addEMailRecipient(child);
+	      }// httpip - url for dashboard
+	      else if (key.equalsIgnoreCase ("httpip"))
+	      {
+	    	  getNotificationURL(child);
 	      }
 	    }
 	    // write to collectd.log
