@@ -186,6 +186,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 					}
 					else {
 						// the line is a key-value pair
+						String name = ParserUtility.getNameFromAnnotated(annotatedString);
 						String[] keyValueDetails = ParserUtility.getKeyValueDetails(line);
 						String keyName = keyValueDetails[0];
 						String keyValue = keyValueDetails[1];
@@ -202,7 +203,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 							// if the parent stack is empty, then this key-value is independent
 							// and can be added as a key-value to the annotated parameter class 
 							if(parentElementStack.isEmpty()){
-								addKeyValueToDb(annotation, new KeyValue(keyName, keyValue), dbType);
+								addKeyValueToDb(annotation, new KeyValue(keyName, keyValue), dbType, name);
 							}
 							else {
 								// the parent stack is not empty and the annotation differs from the parent
@@ -305,7 +306,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 		
 	}
 	
-	private void addKeyValueToDb(String annotation, KeyValue keyValue, DbType dbType){
+	private void addKeyValueToDb(String annotation, KeyValue keyValue, DbType dbType, String name){
 		switch(annotation){
 			case MACHINE:
 				dbType.getMachine().addKeyValue(keyValue);
@@ -313,6 +314,9 @@ public class DescriptorParserImpl implements DescriptorParser {
 			case SYSTEM_METRIC:
 				break;
 			case DB_METRIC:
+				DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
+				dbMetric.addKeyValue(keyValue);
+				dbType.getDbMetrics().add(dbMetric);
 				break;
 			case AGGREGATED_METRIC:
 				break;

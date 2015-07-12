@@ -3,6 +3,8 @@
  * The documentation of the module cassandra.
  */]
 [module mongodb('http://www.observability.com/emf')]
+[import com::observability::modeling::generation::files::systemMetrics/]
+[import com::observability::modeling::generation::files::notifications/]
 [**
  * The documentation of the template generateCassandra.
  * @param aNodeMachine
@@ -13,6 +15,10 @@
 
 [file ( machine.IP +  '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
+
+[machine.generateSystemMetrics(aCluster)/]
+
+[aCluster.generateNotifications()/]
 
 <Plugin python>
     ModulePath "/opt/collectd/lib/collectd"

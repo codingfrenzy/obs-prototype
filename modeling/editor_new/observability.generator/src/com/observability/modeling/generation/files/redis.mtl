@@ -1,0 +1,72 @@
+
+[comment encoding = UTF-8 /]
+[**
+ * The documentation of the module cassandra.
+ */]
+[module redis('http://www.observability.com/emf')]
+[import com::observability::modeling::generation::files::systemMetrics]
+[import com::observability::modeling::generation::files::notifications /]
+[**
+ * The documentation of the template generateCassandra.
+ * @param aNodeMachine
+ */]
+[template public generateRedis(aCluster : DatabaseCluster, frequency : Integer)]
+
+[for (machine : NodeMachine | aCluster.machines)]
+
+	[file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
+Interval [frequency/]
+
+		[machine.generateSystemMetrics(aCluster)/]
+
+		[aCluster.generateNotifications()/]
+
+
+<Plugin python>
+  	ModulePath "/opt/collectd/lib/collectd/plugins/python"
+  	Import "redis_info"
+	
+	<Module redis_info>
+	  	[for (keyValue : KeyValue | machine.keyValues)]
+		[keyValue.key/] "[keyValue.value/]"
+	 	[/for]
+	
+		[for (metric : Metric | aCluster.collectedMetrics)]
+			[if metric.type.strcmp('DATABASE') = 0]
+	
+				[for (keyValue : KeyValue | metric.keyValues)]
+		[keyValue.key/] "[keyValue.value/]"
+	 			[/for]
+
+				[let element : Element = metric.elements->at(0)]
+<[element.name/] "[element.value/]">
+					[for (kv : KeyValue | element.keyValues)]
+	[kv.key/] [kv.value/]
+					[/for]
+				
+					[for (e : Element | element.elements)]
+	<[e.name/] [e.value/]>
+						[for (kv : KeyValue | e.keyValues)]
+		[kv.key/] [kv.value/]
+						[/for]
+	</[e.name/]>
+					[/for]
+
+					[for (e:Element | machine.elements)]
+						[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
+							[for (kv : KeyValue | e.keyValues)]
+	[kv.key/] [kv.value/]
+							[/for]		
+						[/if]
+					[/for]
+</[element.name/]>
+				[/let]
+
+			[/if]
+		[/for]
+	</Module>
+    
+  </Plugin>
+	[/file]
+[/for]
+[/template]

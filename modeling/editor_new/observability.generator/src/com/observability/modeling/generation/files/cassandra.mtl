@@ -3,8 +3,8 @@
  * The documentation of the module cassandra.
  */]
 [module cassandra('http://www.observability.com/emf')]
-
-
+[import com::observability::modeling::generation::files::systemMetrics/]
+[import com::observability::modeling::generation::files::notifications/]
 [**
  * The documentation of the template generateCassandra.
  * @param aNodeMachine
@@ -13,66 +13,18 @@
 
 [for (machine : NodeMachine | aCluster.machines)]
 
-[file ( machine.IP +  '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
+	[file ( machine.IP +  '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
+
 Interval [frequency/]
 Hostname [machine.IP/]
 
-[for (metric : BaseMetric | aCluster.collectedBaseMetric)]
-[if metric.type == 'system']
-LoadPlugin "[metric.name/]"
-<Plugin "[metric.name/]">
-[for (kv : KeyValue | metric.keyValues)/]
-keyValue.name keyValue.value
-[/for]
-
-#Loop at elements inside the machine. Find the element with the unique id
-and display its key-values
-
-</Plugin>
-[/if]
-[/for]
-
+[machine.generateSystemMetrics(aCluster)/]
 
 <Plugin "network">
   Server "[aCluster.eContainer(Model).serverIP/]"
 </Plugin>
 
-[for (noti : Notification | aCluster.associatedNotifications)]
-LoadPlugin "threshold"
-<Plugin "threshold">
-  <Host "[aCluster.eContainer(Model).serverIP/]">
-    <Type "[noti.type/]">
-	[if noti.warningMin <> 0.0]
-     WarningMin    [noti.warningMin/]
-	[/if]
-	[if noti.warningMax <> 0.0]
-     WarningMax    [noti.warningMax/]
-	[/if]
-	[if noti.failureMin <> 0.0]
-     FailureMin    [noti.failureMin/]
-	[/if]
-	[if noti.failureMax <> 0.0]
-     FailureMax    [noti.failureMax/]
-	[/if]
-     Invert [noti.invert/]
-	[if noti.dataSource.strcmp('') <> 0]
-	 DataSource [noti.dataSource/]
-	[/if]
-	Persist [noti.persist/]
-	Percentage [noti.percentage/]
-	[if noti.hits <> 0]
-	 Hits [noti.hits/]
-	[/if]	
-	[if noti.hysteresis <> 0]
-	 Hysteresis [noti.hysteresis/]
-	[/if]
-	 PersistOK [noti.persistOk/]
-	 Interesting [noti.interesting/]
-     Instance "[noti.instance/]"
-    </Type>
-   </Host>
- </Plugin>
-[/for]
+[aCluster.generateNotifications()/]
 
 <Plugin "java">
 
@@ -80,43 +32,47 @@ LoadPlugin "threshold"
     LoadPlugin "org.collectd.java.GenericJMX"
 <Plugin "GenericJMX">
 	
-	[for dbMetric : BaseMetric | aCluster.collectedBaseMetric]
-	[if dbMetric.type = 'database']
-    <MBean dbMetric.name>
-        [for keyValue : KeyValue | dbMetric.keyValues]
-        [keyValue.name/] "[keyValue.value/]"
-        [/for]
-        
-        [for element : Element | dbMetric.elements]
-        <Value>
-        [for keyValue : KeyValue | element.keyValues]
-        [keyValue.name/] "[keyValue.value/]"
-        [/for]
-        [/for]
-    </MBean>        
-        
-    
-  [for (element : Element | machine.elements)]
-	[if element.name.strcmp('Connection') = 0]
-    <Connection>
-	  [for (keyValue : KeyValue | element.keyValues)]
-	  [keyValue.key/] "[keyValue.value/]"
-	  [/for]
-<<<<<<< Updated upstream
-	  [for (m : Metric | aCluster.collectedMetrics) ]
-		[if m.oclIsKindOf(BaseMetric)]
-	  		Collect "[m.name/]"		
+
+	[for (metric : Metric | aCluster.collectedMetrics)]
+		[if metric.type.strcmp('DATABASE') = 0]
+			[let element : Element = metric.elements->at(0)]
+<MBean "[element.value/]">
+				[for (kv : KeyValue | element.keyValues)]
+	[kv.key/] [kv.value/]
+				[/for]
+				
+				[for (e : Element | element.elements)]
+	<[e.name/] [e.value/]>
+					[for (kv : KeyValue | e.keyValues)]
+		[kv.key/] [kv.value/]
+					[/for]
+	</[e.name/]>
+				[/for]
+
+				[for (e:Element | machine.elements)]
+					[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
+						[for (kv : KeyValue | e.keyValues)]
+	[kv.key/] [kv.value/]
+						[/for]		
+					[/if]
+				[/for]
+			[/let]
+</MBean>
 		[/if]
-=======
-	  [for (m : BaseMetric | aCluster.collectedBaseMetric) ]
-	  [if m.type = 'database']
-	  Collect "[m.name/]"		
-	  [/if]
->>>>>>> Stashed changes
-	  [/for]	  	
+	[/for]
+
+
+    <Connection>
+	  		[for (keyValue : KeyValue | machine.keyValues)]
+	  [keyValue.key/] "[keyValue.value/]"
+	 	 	[/for]
+
+	  		[for (m : Metric | aCluster.collectedMetrics) ]
+	  			[if m.type.strcmp('DATABASE')=0]
+	  Collect "[m.elements->at(0).value/]"		
+	  			[/if]
+	  		[/for]	  	
     </Connection>
-	[/if]
-  [/for]
   </Plugin>
 </Plugin>
 [/file]

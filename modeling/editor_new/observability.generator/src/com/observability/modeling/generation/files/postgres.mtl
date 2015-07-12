@@ -4,8 +4,8 @@
  * The documentation of the module cassandra.
  */]
 [module postgres('http://www.observability.com/emf')]
-
-
+[import com::observability::modeling::generation::files::systemMetrics]
+[import com::observability::modeling::generation::files::notifications /]
 [**
  * The documentation of the template generateCassandra.
  * @param aNodeMachine
@@ -17,37 +17,42 @@
 [file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
 
-<Plugin postgresql>
-    <Query magic>
-      Statement "SELECT magic FROM wizard WHERE host = $1;"
-      Param hostname
-      <Result>
-        Type gauge
-        InstancePrefix "magic"
-        ValuesFrom magic
-      </Result>
-    </Query>
-    <Query rt36_tickets>
-      Statement "SELECT COUNT(type) AS count, type \
-                        FROM (SELECT CASE \
-                                     WHEN resolved = 'epoch' THEN 'open' \
-                                     ELSE 'resolved' END AS type \
-                                     FROM tickets) type \
-                        GROUP BY type;"
-      <Result>
-        Type counter
-        InstancePrefix "rt36_tickets"
-        InstancesFrom "type"
-        ValuesFrom "count"
-      </Result>
-    </Query>
+[machine.generateSystemMetrics(aCluster)/]
 
-    <Writer sqlstore>
-      Statement "SELECT collectd_insert($1, $2, $3, $4, $5, $6, $7, $8, $9);"
-      StoreRates true
-    </Writer>
-	
-	
+[aCluster.generateNotifications()/]
+
+LoadPlugin postgresql
+
+<Plugin postgresql>
+
+	[for (metric : Metric | aCluster.collectedMetrics)]
+		[if metric.type.strcmp('DATABASE') = 0]
+			[let element : Element = metric.elements->at(0)]
+<Query "[element.value/]">
+				[for (kv : KeyValue | element.keyValues)]
+	[kv.key/] [kv.value/]
+				[/for]
+				
+				[for (e : Element | element.elements)]
+	<[e.name/] [e.value/]>
+					[for (kv : KeyValue | e.keyValues)]
+		[kv.key/] [kv.value/]
+					[/for]
+	</[e.name/]>
+				[/for]
+
+				[for (e:Element | machine.elements)]
+					[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
+						[for (kv : KeyValue | e.keyValues)]
+	[kv.key/] [kv.value/]
+						[/for]		
+					[/if]
+				[/for]
+			[/let]
+</Query>
+		[/if]
+	[/for]
+
 	
   [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Database') = 0]
@@ -56,8 +61,8 @@ Interval [frequency/]
 	  [keyValue.key/] "[keyValue.value/]"
 	  [/for]
 	  [for (m : Metric | aCluster.collectedMetrics) ]
-	  	[if m.oclIsKindOf(BaseMetric)]
-	  		Query "[m.name/]"		
+	  	[if m.type.strcmp('DATABASE')=0]
+	  		Query "[m.elements->at(0).value/]"		
 		[/if]
 	
 	  [/for]	  	
