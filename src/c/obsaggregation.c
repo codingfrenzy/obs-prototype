@@ -417,7 +417,7 @@ static int agg_instance_update (agg_instance_t *inst,
   return (0);
 } */
 
-// This function is added here (but not in common.c) for compatiblility with current system version
+// This function is added here (but not in common.c) for compatiblility with current system version 5.5.0 stable
 int value_to_rate_agg (gauge_t *ret_rate, /* {{{ */
 		value_t value, int ds_type, cdtime_t t, value_to_rate_state_t *state)
 {
@@ -481,9 +481,8 @@ static int agg_instance_update (agg_instance_t *inst,
     return (EINVAL);
   }
 
-  gauge_t rate;
   // Convert the value to rate
-  //INFO("agg_instance_update: starting value_to_rate");
+  gauge_t rate;
   // Find the state
   // get the key
   char name[MAX_KEY_LENGTH];
@@ -493,9 +492,8 @@ static int agg_instance_update (agg_instance_t *inst,
     return (0);
   }
   obs_val_to_rate_hash_t *s = NULL;
-  //INFO("agg_instance_update: 1");
+  // get state from hash table
   HASH_FIND_STR( val_rate_states, name, s );
-  //INFO("agg_instance_update: 2");
   if(s == NULL)
   {// no such key
      // add it
@@ -504,7 +502,7 @@ static int agg_instance_update (agg_instance_t *inst,
      {
         return (0);
      }
-      //INFO("agg_instance_update: 3");
+
      s->state = (value_to_rate_state_t *)malloc(sizeof(value_to_rate_state_t));
      if(s->state == NULL)
      {
@@ -514,8 +512,8 @@ static int agg_instance_update (agg_instance_t *inst,
      strncpy(s->metric_name, name, MAX_KEY_LENGTH);
      memset(s->state, 0, sizeof(*(s->state)));
      HASH_ADD_STR( val_rate_states, metric_name, s );
-     //INFO("agg_instance_update: 4");
   }
+  // get rate from value
   int ret = value_to_rate_agg(&rate, vl->values[0], inst->ds_type, vl->time, s->state);
   if(ret != 0)
   {
@@ -552,16 +550,20 @@ static int agg_instance_update (agg_instance_t *inst,
   return (0);
 }
 
+// Free a value list object
 static void plugin_value_list_free (value_list_t *vl) 
 {
 	if (vl == NULL)
 		return;
-
+	// free meta data
 	meta_data_destroy (vl->meta);
+	// free value array 
 	sfree (vl->values);
+	// free the value list struct
 	sfree (vl);
 }
 
+// Clone a value list
 static value_list_t *plugin_value_list_clone (value_list_t const *vl_orig) 
 {
 	value_list_t *vl;
@@ -573,16 +575,17 @@ static value_list_t *plugin_value_list_clone (value_list_t const *vl_orig)
 	if (vl == NULL)
 		return (NULL);
 	memcpy (vl, vl_orig, sizeof (*vl));
-
+	// value array
 	vl->values = calloc (vl_orig->values_len, sizeof (*vl->values));
 	if (vl->values == NULL)
 	{
 		plugin_value_list_free (vl);
 		return (NULL);
 	}
+	// copy all the values
 	memcpy (vl->values, vl_orig->values,
 			vl_orig->values_len * sizeof (*vl->values));
-
+	// copy meta data
 	vl->meta = meta_data_clone (vl->meta);
 	if ((vl_orig->meta != NULL) && (vl->meta == NULL))
 	{
@@ -618,6 +621,7 @@ static value_list_t *plugin_value_list_clone (value_list_t const *vl_orig)
 	return (vl);
 } 
 
+// Initialize the data structure
 static void init_datastructure()
 {
 	pthread_mutex_init(&agg_cache_lock, NULL);
@@ -629,21 +633,22 @@ static void init_datastructure()
 		obs_agg_rawdata[i]->end_t   = 0;
 		obs_agg_rawdata[i]->val_hash = NULL;
 	}
-        // value to rate states
+        // value to rate states hash table
 	val_rate_states = NULL;//(obs_val_to_rate_hash_t *) malloc (sizeof(obs_val_to_rate_hash_t));
 }
 
+// Delete all values in cached hash table
 static void hash_table_delete_all(obs_val_hash_t * hash_val) 
 {
 	obs_val_hash_t *current_item, *tmp;
 
   	HASH_ITER(hh, hash_val, current_item, tmp) 
 	{
-		//INFO("delete hash entry");
+		// delete hash entry
 	    	HASH_DEL(hash_val,current_item);  	/* delete; users advances to next */
 		if(current_item->ds != NULL)
 		{
-			//INFO("delete ds");
+			// delete ds
 			//int i = 0;
 			//for (; i < current_item->ds->ds_num; i++)
 			//	free(current_item->ds->ds + i);
@@ -651,49 +656,51 @@ static void hash_table_delete_all(obs_val_hash_t * hash_val)
 			{
 				sfree(current_item->ds->ds);
 			}
-			//INFO("delete ds2");
+
 			sfree(current_item->ds);
 		}
 		if(current_item->vl != NULL)
 		{
-			//free(current_item->vl);
-			//INFO("delete vl");
+			// delete vl
 			plugin_value_list_free (current_item->vl);
 		}
 		//INFO("delete whole item");
-	    	sfree(current_item);            		/* optional- if you want to free  */
+	    	sfree(current_item);
   	}
 }
 
+// Free a entire aggregation round
 static void free_round(obs_round_t * round) 
 {
 	if(round == NULL)
 		return;
-	// delete hash table
+	// free the hash table
 	hash_table_delete_all(round->val_hash);
 	round->val_hash = NULL;
 	sfree(round);
 	round = NULL;
 }
 
+// Free the value to rate hash table
 static void free_value_to_rate_states()
 {
 	obs_val_to_rate_hash_t *current_item, *tmp;
 
   	HASH_ITER(hh, val_rate_states, current_item, tmp) 
 	{
-		//INFO("delete hash entry");
+		// delete hash entry
 	    	HASH_DEL(val_rate_states,current_item);  	/* delete; users advances to next */
 		if(current_item->state != NULL)
 		{
 			
-			//INFO("delete ds2");
+			// delete state
 			sfree(current_item->state);
 		}
-	    	sfree(current_item);            		/* optional- if you want to free  */
+	    	sfree(current_item);
   	}
 }
 
+// Free everything needed for aggregation
 static void free_datastructure()
 {
 	int i = 0;
@@ -1129,6 +1136,7 @@ static int obsagg_shutdown (void)
 	return (0);
 }
 
+// This read is only called for dispatching values after aggregation is done for a round
 //static int agg_read (void) /* {{{ */
 static int agg_read (cdtime_t tmval) /* {{{ */
 {
@@ -1171,6 +1179,7 @@ static int agg_read (cdtime_t tmval) /* {{{ */
   return ((success > 0) ? 0 : -1);
 } /* }}} int agg_read */
 
+// This function is called for inserting data before aggregation
 static int agg_write (data_set_t const *ds, value_list_t const *vl)
 {
 	int status;
@@ -1207,7 +1216,7 @@ static void obsaggr_submit (gauge_t aggr_val, counter_t num_total_nodes, counter
 }
 */
 
-
+// Read callback
 static int obsaggr_read (void)
 {
 	// First two read is used to decide the interval of aggregation
@@ -1229,11 +1238,14 @@ static int obsaggr_read (void)
 			// init the timestamps of aggregation rounds
 			pthread_mutex_lock (&agg_cache_lock);
 			int i = 0;
-			// 3 retention rounds, each is delta long
+			// at least 3 retention rounds, each is delta long
 			// --- 2 ---|---> 1 ---|---> 0
 			//                |
 			//          time Now
-			cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
+			//cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
+			// use 1/4 so it will be aligned with correct collecting round, not next round 
+			//cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2 - delta / 4;
+			cdtime_t futurepoint = now + 1.20 * delta;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
 				obs_agg_rawdata[i]->end_t   = futurepoint - i * delta;
@@ -1242,7 +1254,7 @@ static int obsaggr_read (void)
 				//obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
 				//obs_agg_rawdata[i].val_hash = NULL;
 			}
-			// it's safer here considering concurrent behavior with write 
+			// use lock here considering concurrent behavior with write 
 			gAggInterval = delta;
 			pthread_mutex_unlock (&agg_cache_lock);
 			INFO("Obsaggregation: set aggregation interval to be: %ld - %ld seconds", delta, CDTIME_T_TO_TIME_T(delta));
@@ -1325,7 +1337,7 @@ static int obsaggr_read (void)
 	obs_agg_rawdata[0]->end_t   = obs_agg_rawdata[0]->start_t + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
 
-	// log - should be removed later
+	/*/ log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
@@ -1338,6 +1350,7 @@ static int obsaggr_read (void)
 			obs_agg_rawdata[i]->start_t,
 			obs_agg_rawdata[i]->end_t);
 	}
+	*/
 	
 	pthread_mutex_unlock (&agg_cache_lock);
 	//INFO ("agg_cache_lock: released");
@@ -1345,6 +1358,7 @@ static int obsaggr_read (void)
 	return (0);
 }
 
+// Write callback
 static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
     __attribute__((unused)) user_data_t *user_data)
 {
@@ -1417,9 +1431,9 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 				HASH_REPLACE_STR(obs_agg_rawdata[iround]->val_hash, metric_name, s, r);
 				if(r != NULL)
 				{// no need to keep the replaced entry
-					ERROR ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
+					WARNING ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
 						name, CDTIME_T_TO_TIME_T(r->vl->time), CDTIME_T_TO_TIME_T(vl->time));
-					ERROR ("Round: %d - from: %ld to: %ld", 
+					WARNING ("Round: %d - from: %ld to: %ld", 
 						iround, CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->start_t), CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->end_t));
 					sfree(r);
 				}

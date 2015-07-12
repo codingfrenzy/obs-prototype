@@ -221,126 +221,138 @@ LoadPlugin postgresql
 			InstancesFrom "schemaname" "relname" @Attribute
 			ValuesFrom "ins" @Attribute
 		</Result>
-		<Result> @MetricDB
-			Type "pg_n_tup_c" @Attribute
-			InstancePrefix "upd" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "upd" @Attribute
+		<Result>
+			Type "pg_n_tup_c"
+			InstancePrefix "upd"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "upd"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_n_tup_c" @Attribute
-			InstancePrefix "del" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "del" @Attribute
+		<Result>
+			Type "pg_n_tup_c"
+			InstancePrefix "del"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "del"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_n_tup_c" @Attribute
-			InstancePrefix "hot_upd" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "hot_upd" @Attribute
+		<Result>
+			Type "pg_n_tup_c"
+			InstancePrefix "hot_upd"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "hot_upd"
 		</Result>
 
-		MinVersion 80300 @Attribute
+		MinVersion 80300
 	</Query>
 
-	<Query query_plans> @MetricDB
-		Statement "SELECT sum(seq_scan) AS seq, sum(seq_tup_read) AS seq_tup_read, sum(idx_scan) AS idx, sum(idx_tup_fetch) AS idx_tup_fetch FROM pg_stat_user_tables;" @Attribute
+	<Query query_plans>
+		Statement "SELECT sum(seq_scan) AS seq, \
+				sum(seq_tup_read) AS seq_tup_read, \
+				sum(idx_scan) AS idx, \
+				sum(idx_tup_fetch) AS idx_tup_fetch \
+			FROM pg_stat_user_tables;"
 
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "seq" @Attribute
-			ValuesFrom "seq" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "seq"
+			ValuesFrom "seq"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "seq_tup_read" @Attribute
-			ValuesFrom "seq_tup_read" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "seq_tup_read"
+			ValuesFrom "seq_tup_read"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "idx" @Attribute
-			ValuesFrom "idx" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "idx"
+			ValuesFrom "idx"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "idx_tup_fetch" @Attribute
-			ValuesFrom "idx_tup_fetch" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "idx_tup_fetch"
+			ValuesFrom "idx_tup_fetch"
 		</Result>
 	</Query>
 
-	<Query table_states> @MetricDB
-		Statement "SELECT sum(n_live_tup) AS live, sum(n_dead_tup) AS dead FROM pg_stat_user_tables;" @Attribute
+	<Query table_states>
+		Statement "SELECT sum(n_live_tup) AS live, sum(n_dead_tup) AS dead \
+			FROM pg_stat_user_tables;"
 
-		<Result> @MetricDB
-			Type "pg_n_tup_g" @Attribute
-			InstancePrefix "live" @Attribute
-			ValuesFrom "live" @Attribute
+		<Result>
+			Type "pg_n_tup_g"
+			InstancePrefix "live"
+			ValuesFrom "live"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_n_tup_g" @Attribute
-			InstancePrefix "dead" @Attribute
-			ValuesFrom "dead" @Attribute
+		<Result>
+			Type "pg_n_tup_g"
+			InstancePrefix "dead"
+			ValuesFrom "dead"
 		</Result>
 
-		MinVersion 80300 @Attribute
+		MinVersion 80300
 	</Query>
 
-	<Query query_plans_by_table> @MetricDB
-		Statement "SELECT schemaname, relname, seq_scan AS seq, seq_tup_read AS seq_tup_read, idx_scan AS idx, idx_tup_fetch AS idx_tup_fetch FROM pg_stat_user_tables;" @Attribute
+	<Query query_plans_by_table>
+		Statement "SELECT schemaname, relname, \
+				seq_scan AS seq, \
+				seq_tup_read AS seq_tup_read, \
+				idx_scan AS idx, \
+				idx_tup_fetch AS idx_tup_fetch \
+			FROM pg_stat_user_tables;"
 	
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "seq" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "seq" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "seq"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "seq"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "seq_tup_read" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "seq_tup_read" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "seq_tup_read"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "seq_tup_read"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "idx" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "idx" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "idx"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "idx"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_scan" @Attribute
-			InstancePrefix "idx_tup_fetch" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "idx_tup_fetch" @Attribute
+		<Result>
+			Type "pg_scan"
+			InstancePrefix "idx_tup_fetch"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "idx_tup_fetch"
 		</Result>
 	</Query>
 
-	<Query table_states_by_table> @MetricDB
-		Statement "SELECT schemaname, relname, n_live_tup AS live, n_dead_tup AS dead FROM pg_stat_user_tables;" @Attribute
+	<Query table_states_by_table>
+		Statement "SELECT schemaname, relname, \
+				n_live_tup AS live, n_dead_tup AS dead \
+			FROM pg_stat_user_tables;"
 
-		<Result> @MetricDB
-			Type "pg_n_tup_g" @Attribute
-			InstancePrefix "live" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "live" @Attribute
+		<Result>
+			Type "pg_n_tup_g"
+			InstancePrefix "live"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "live"
 		</Result>
-		<Result> @MetricDB
-			Type "pg_n_tup_g" @Attribute
-			InstancePrefix "dead" @Attribute
-			InstancesFrom "schemaname" "relname" @Attribute
-			ValuesFrom "dead" @Attribute
+		<Result>
+			Type "pg_n_tup_g"
+			InstancePrefix "dead"
+			InstancesFrom "schemaname" "relname"
+			ValuesFrom "dead"
 		</Result>
 
-		MinVersion 80300 @Attribute
+		MinVersion 80300
 	</Query>
 
 # Database Block
-	<Database testdb> @Machine
-		Host "localhost" @Attribute
-		Port "5432" @Attribute
-		User "testuser" @Attribute
-		Password "testuser" @Attribute
-#		SSLMode "enabled" @Attribute
-#		KRBSrvName "kerberos_service_name" @Attribute
+	<Database testdb>
+		Host "localhost" #variable
+		Port "5432"
+		User "testuser"
+		Password "testuser"
+#		SSLMode "enabled"
+#		KRBSrvName "kerberos_service_name"
 		Query disk_io
 		Query disk_usage
 		Query backends
@@ -358,14 +370,14 @@ LoadPlugin postgresql
 
 LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "45.55.197.112"> 
-    <Type "cpu"> 
-     WarningMin    0.2 
-     WarningMax    0.8 
-     FailureMin    0.1 
-     FailureMax    0.9 
-     Invert false 
-     Instance "system" 
+  <Host "45.55.197.112"> #variable
+    <Type "cpu"> #variable
+     WarningMin    0.2 #variable
+     WarningMax    0.8 #variable
+     FailureMin    0.1 #variable
+     FailureMax    0.9 #variable
+     Invert false #variable
+     Instance "system" #variable
     </Type>
    </Host>
  </Plugin>

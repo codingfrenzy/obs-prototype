@@ -42,8 +42,8 @@ LoadPlugin load
 
 LoadPlugin "logfile" 
 <Plugin "logfile"> @MetricSystem
+  LogLevel "info" @Attribute
   File "/home/owls/collectd/log/collectd.log" @Machine
-  LogLevel "info" @Attribute  
   Timestamp true @Attribute
   PrintSeverity true @Attribute
 </Plugin>

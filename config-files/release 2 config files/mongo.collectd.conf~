@@ -8,18 +8,18 @@ LoadPlugin "interface"
 LoadPlugin "disk"
 LoadPlugin load
 
-<Plugin "cpu"> @MetricSystem
+<Plugin "cpu"> @MetricDB
 	ReportByState true @Attribute
 	ReportByCpu true @Attribute
 	ValuesPercentage true @Attribute
 </Plugin>
 
-<Plugin "memory"> @MetricSystem
+<Plugin "memory"> @MetricDB
 	ValuesAbsolute true @Attribute
 	ValuesPercentage false @Attribute
 </Plugin>
 
-<Plugin "df"> @MetricSystem
+<Plugin "df"> @MetricDB
 	Device "/dev/hda1" @Machine
 	MountPoint "/home" @Machine
 	FSType "ext3" @Machine
@@ -28,20 +28,20 @@ LoadPlugin load
 	ReportReserved false @Attribute
 </Plugin>
 
-<Plugin "interface"> @MetricSystem
+<Plugin "interface"> @MetricDB
 	Interface "lo" @Machine
 	Interface "sit0" @Machine
 	IgnoreSelected true @Attribute
 </Plugin>
 
-<Plugin "disk"> @MetricSystem
+<Plugin "disk"> @MetricDB
   Disk "sda" @Machine
   Disk "/^hd/" @Machine
   IgnoreSelected false @Attribute
 </Plugin>
 
 LoadPlugin "logfile" 
-<Plugin "logfile"> @MetricSystem
+<Plugin "logfile"> @MetricDB
   File "/home/owls/collectd/log/collectd.log" @Machine
   LogLevel "info" @Attribute
   Timestamp true @Attribute
@@ -49,12 +49,12 @@ LoadPlugin "logfile"
 </Plugin>
 
 LoadPlugin "csv"
-<Plugin "csv"> @MetricSystem
+<Plugin "csv"> @MetricDB
   DataDir "/home/owls/collectd/csv" @Machine
   StoreRates true @Attribute
 </Plugin>
 
-<LoadPlugin python> @MetricSystem
+<LoadPlugin python> @MetricDB
     Globals true @Attribute
 </LoadPlugin>
 
