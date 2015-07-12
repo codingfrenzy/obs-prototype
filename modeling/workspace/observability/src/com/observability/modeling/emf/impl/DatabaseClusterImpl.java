@@ -7,7 +7,10 @@ import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.NodeMachine;
+import com.observability.modeling.emf.extension.CustomServices;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -141,12 +144,17 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 *
 	 */
 	public EList<NodeMachine> getMachines() {
 		if (machines == null) {
 			machines = new EObjectContainmentEList<NodeMachine>(NodeMachine.class, this, EmfPackage.DATABASE_CLUSTER__MACHINES);
 		}
+		/**
+		* Syncronize the cluster noOfMachines attribute 
+		* with the actual machines inside it.
+		*/
+		noOfMachines = machines.size();
 		return machines;
 	}
 
@@ -233,11 +241,16 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	public void setNoOfMachines(int newNoOfMachines) {
 		int oldNoOfMachines = noOfMachines;
 		noOfMachines = newNoOfMachines;
+		/**
+		 * Custom code to create the actual instances when this
+		 * attribute changes
+		 */
+		CustomServices.createNodes(this,noOfMachines);
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
 	}

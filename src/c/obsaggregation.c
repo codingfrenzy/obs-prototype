@@ -1233,7 +1233,9 @@ static int obsaggr_read (void)
 			// --- 2 ---|---> 1 ---|---> 0
 			//                |
 			//          time Now
-			cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
+			//cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
+			// minus 1/4 so it will be aligned with current round, not next round 
+			cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2 - delta / 4;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
 				obs_agg_rawdata[i]->end_t   = futurepoint - i * delta;
@@ -1325,7 +1327,7 @@ static int obsaggr_read (void)
 	obs_agg_rawdata[0]->end_t   = obs_agg_rawdata[0]->start_t + gAggInterval;
 	obs_agg_rawdata[0]->val_hash = NULL;
 
-	// log - should be removed later
+	/*/ log - should be removed later
 	for (i = 0 ; i < AGG_RETENTION_ROUND ; i++)
 	{
 		INFO("Obsaggr: round %i : %ld - %ld", i, 
@@ -1338,6 +1340,7 @@ static int obsaggr_read (void)
 			obs_agg_rawdata[i]->start_t,
 			obs_agg_rawdata[i]->end_t);
 	}
+	*/
 	
 	pthread_mutex_unlock (&agg_cache_lock);
 	//INFO ("agg_cache_lock: released");
@@ -1417,9 +1420,9 @@ static int obsagg_write (data_set_t const *ds, value_list_t const *vl, /* {{{ */
 				HASH_REPLACE_STR(obs_agg_rawdata[iround]->val_hash, metric_name, s, r);
 				if(r != NULL)
 				{// no need to keep the replaced entry
-					ERROR ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
+					WARNING ("Hash entry replaced: key: %s - old time: %ld, new time %ld", 
 						name, CDTIME_T_TO_TIME_T(r->vl->time), CDTIME_T_TO_TIME_T(vl->time));
-					ERROR ("Round: %d - from: %ld to: %ld", 
+					WARNING ("Round: %d - from: %ld to: %ld", 
 						iround, CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->start_t), CDTIME_T_TO_TIME_T(obs_agg_rawdata[iround]->end_t));
 					sfree(r);
 				}
