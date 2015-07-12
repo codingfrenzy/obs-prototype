@@ -1,17 +1,17 @@
-Interval 30 #variable
-Hostname 45.55.197.112 #variable
+Interval 30 
+Hostname 45.55.197.112 
 
 LoadPlugin "cpu"
-<Plugin "cpu">
-	ReportByState true 
-	ReportByCpu true 
-	ValuesPercentage true 
+<Plugin "cpu"> @MetricSystem
+	ReportByState true @Attribute
+	ReportByCpu true @Attribute
+	ValuesPercentage true @Attribute
 </Plugin>
 
 LoadPlugin "memory"
-<Plugin "memory">
-	ValuesAbsolute true 
-	ValuesPercentage false 
+<Plugin "memory"> @MetricSystem
+	ValuesAbsolute true @Attribute 
+	ValuesPercentage false @Attribute
 </Plugin>
 
 
