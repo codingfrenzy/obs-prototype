@@ -1229,13 +1229,14 @@ static int obsaggr_read (void)
 			// init the timestamps of aggregation rounds
 			pthread_mutex_lock (&agg_cache_lock);
 			int i = 0;
-			// 3 retention rounds, each is delta long
+			// at least 3 retention rounds, each is delta long
 			// --- 2 ---|---> 1 ---|---> 0
 			//                |
 			//          time Now
 			//cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2;
-			// minus 1/4 so it will be aligned with current round, not next round 
-			cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2 - delta / 4;
+			// use 1/4 so it will be aligned with correct collecting round, not next round 
+			//cdtime_t futurepoint = now + (double)(AGG_RETENTION_ROUND) * delta / 2 - delta / 4;
+			cdtime_t futurepoint = now + 1.20 * delta;
 			for ( ; i < AGG_RETENTION_ROUND	; i++)
 			{
 				obs_agg_rawdata[i]->end_t   = futurepoint - i * delta;
@@ -1244,7 +1245,7 @@ static int obsaggr_read (void)
 				//obs_agg_rawdata[i]->end_t   = obs_agg_rawdata[i]->start_t + delta;
 				//obs_agg_rawdata[i].val_hash = NULL;
 			}
-			// it's safer here considering concurrent behavior with write 
+			// use lock here considering concurrent behavior with write 
 			gAggInterval = delta;
 			pthread_mutex_unlock (&agg_cache_lock);
 			INFO("Obsaggregation: set aggregation interval to be: %ld - %ld seconds", delta, CDTIME_T_TO_TIME_T(delta));
