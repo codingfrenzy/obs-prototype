@@ -70,21 +70,6 @@ LoadPlugin "csv"
 </Plugin>
 
 
-<Aggregation> @MetricAggregated(Memory)
-	Plugin "mongo" @Attribute
-	Type "memory" @Attribute
-	TypeInstance "/.*/" @Attribute
-	GroupBy "TypeInstance" @Attribute
-
-	CalculateNum true 
-	CalculateSum true 
-	CalculateAverage true 
-	CalculateMinimum true 
-	CalculateMaximum true 
-	CalculateStddev true 
-</Aggregation>
-
-
 LoadPlugin "threshold"
 <Plugin "threshold">
   <Host "45.55.197.112"> 
