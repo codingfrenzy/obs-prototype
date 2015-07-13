@@ -408,6 +408,8 @@ public class CustomServices {
 		List<NodeMachine> machinesInClustes = cluster.getMachines();
 		for (NodeMachine nodeMachine : machinesInClustes) {
 			
+			//TODO speed optimization: check for the matchingElements only for the first machine
+			// 
 			for (Element element : getMatchingElements(associatedMetric, associatedDbType)) {
 				nodeMachine.getElements().add(element);
 			}
@@ -425,7 +427,10 @@ public class CustomServices {
 			//We assume the id is <key>_<value>
 			String id = metric.getElements().get(0).getName() + "_" + metric.getElements().get(0).getValue();
 			Element elementToBeAdded = externalElements.get(associatedDbType.getName()).get(id);
-			elementsToAddToMachine.add(elementToBeAdded);
+			if(elementToBeAdded != null){
+				//There are externalElements, so add.
+				elementsToAddToMachine.add(elementToBeAdded);
+			}
 		}
 		return elementsToAddToMachine;
 	}
