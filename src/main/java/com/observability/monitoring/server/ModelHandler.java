@@ -20,16 +20,15 @@
 //**************************************************************************************************//
 package com.observability.monitoring.server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
@@ -70,7 +69,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 	protected ModelHandler() throws RemoteException {
 		super();
 	}
-	
+
+	private ArrayList<String> ipList = null;
+
+	private String dashboardURL = "http://45.55.197.112:8888/modelchange.db/modelchange/1";
 	/**
 	 * Get the target directory by the target name
 	 * @param target the target name
@@ -286,14 +288,18 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 		System.out.println("---Start deploying configuration files of totally: " + files.length);
 		// loop through file list
 		int totalSent = 0;
+
+		//Initialize array list of IPs
+		ipList = new ArrayList<String>();
 		for (int i = 0 ; i < files.length ; i++) {
 	        if (files[i] != null && files[i].isFile()) {
 	        	String fn = files[i].getName();
 	        	String[] items = pattern.split(fn);
-	           
-	            System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
-	            // send the files
-	            String canonicalPath = null;
+				ipList.add(items[0]);
+
+				System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
+				// send the files
+				String canonicalPath = null;
 				try {
 					canonicalPath = files[i].getCanonicalPath();
 				} catch (IOException e) {
@@ -301,16 +307,37 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 					e.printStackTrace();
 					continue;
 				}
-	            if(propagateConfig(items[0], items[1], canonicalPath)){//sent ok
-	            	totalSent++;
+				if(propagateConfig(items[0], items[1], canonicalPath)){//sent ok
+					totalSent++;
 	            	System.out.println("---Successful");
 	            } else {
 	            	System.out.println("---Failed");
 	            }
 	        }
 	    }
+
 		System.out.println("----------End deploying model, " + totalSent + " out of " + files.length + " were successful");
+		updateDashboard();
+		ObservabilityCollectdFileOperations.updateIPList(ipList);
+		ipList = null;
 		return totalSent;
+	}
+
+	private void updateDashboard(){
+		System.out.println("Updating Dashboard");
+		try {
+			Long epoch = System.currentTimeMillis() / 1000;
+			String rawData = "changed=true&timestamp=" + epoch;
+			String curl = "curl -X POST --data " + rawData + " " + dashboardURL;
+			Runtime.getRuntime().exec(curl);
+
+		} catch (MalformedURLException e) {
+			System.out.println("Error: URL is malformed. Could not update dashboard");
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Success: Dashboard updated");
 	}
 
 	/**
