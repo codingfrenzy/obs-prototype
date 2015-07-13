@@ -135,7 +135,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		        // loop through to kill all of them
 		        for (String pid : strs) {
 		            // kill the pid
-		            Process kill = Runtime.getRuntime().exec("sudo kill " + pid);
+		            Process kill = Runtime.getRuntime().exec("kill " + pid);
 		            kill.waitFor();
 		            System.out.println("Killing pid: " + pid);
 		            // get the output and print
@@ -163,7 +163,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public static void startProcess(String process) {
 		try {
 			// start process with sudo (required by collectd)
-			Runtime.getRuntime().exec("sudo " + process);
+			Runtime.getRuntime().exec(process);
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    }
