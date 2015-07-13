@@ -6,3 +6,4 @@ build/*
 bin/
 .metadata/
 /build/
+modeling/workspace/observability/.settings/edu.umd.cs.findbugs.core.prefs
