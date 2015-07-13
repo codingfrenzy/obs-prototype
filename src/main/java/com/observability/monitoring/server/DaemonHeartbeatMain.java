@@ -67,11 +67,6 @@ public class DaemonHeartbeatMain implements Runnable {
     int samplingRate = 30;
 
     /**
-     * Filepath string where the log will be stored.
-     */
-    String filePath = "/home/owls/collectd/missingDaemonLog/";
-
-    /**
      * List of daemons that has send heartbeat for each interval. <br>
      * There are 2 HashMaps so as to avoid editing information of one while it is being reset.<br>
      * Allows stable data transfer between 2 threads.<br>
@@ -83,13 +78,16 @@ public class DaemonHeartbeatMain implements Runnable {
     /**
      * At every interval (minutes), an email will be sent with list of daemons not respodning/collecting
      */
-    int emailInterval = 3;
+    int emailInterval = 1;
 
     /**
      * Last email sent at.<br>
      * Initialized with current timestamp when starting so that the first email will be sent exactly after the interval.
      */
     long lastEmailTimestamp = System.currentTimeMillis() / 1000;
+
+
+    long confLastModifed = 0;
 
     /**
      * Constructor<br>
@@ -118,9 +116,17 @@ public class DaemonHeartbeatMain implements Runnable {
      * Currently hard coded.
      */
     private void initListofConfiguredDaemons() {
-        listOfConfiguredDaemons.add("45.55.240.162");
-        listOfConfiguredDaemons.add("128.2.204.246");
+
+        HashSet<String> list = ObservabilityCollectdFileOperations.getIPList();
+
+        if (list != null) {
+            listOfConfiguredDaemons.clear();
+            listOfConfiguredDaemons = ObservabilityCollectdFileOperations.getIPList();
+//        listOfConfiguredDaemons.add("45.55.240.162");
+//        listOfConfiguredDaemons.add("128.2.204.246");
 //        listOfConfiguredDaemons.add("123.2.204.246");
+        }
+
     }
 
     /**
@@ -130,7 +136,7 @@ public class DaemonHeartbeatMain implements Runnable {
      * @return int threshold
      */
     private int getThreshold() {
-        return samplingRate * 4;
+        return samplingRate * 1;
     }
 
     /**
@@ -200,9 +206,18 @@ public class DaemonHeartbeatMain implements Runnable {
      *
      * @param ip
      */
-    private void logDaemonNotResponding(String ip, long time) {
+    private void logMissingDaemon(String ip, long time, boolean notResponding) {
         // File write or email can be done here
-        writeToFile(ip, time, true);
+        // create the line to be written in the log file
+        String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
+        String line = "IP: " + ip + " since " + date + " (" + time + ")";
+
+        if (notResponding){
+            ObservabilityCollectdFileOperations.logMessageMissingDaemonNotResponding(line);
+        } else {
+            ObservabilityCollectdFileOperations.logMessageMissingDaemonNotCollecting(line);
+        }
+        System.out.println(notResponding + " Writing to log: " + line);
 
     }
 
@@ -222,16 +237,6 @@ public class DaemonHeartbeatMain implements Runnable {
     }
 
     /**
-     * Method to log/notify daemon having trouble collecting metrics.
-     *
-     * @param ip
-     */
-    private void logDaemonNotCollecting(String ip, long time) {
-        // File write or email can be done here
-        writeToFile(ip, time, false);
-    }
-
-    /**
      * Saves the IP of the daemon that is not collecting into the corresponding stack.
      *
      * @param ip - IP of the daemon that is not responding
@@ -242,66 +247,6 @@ public class DaemonHeartbeatMain implements Runnable {
             Long systemEpoch = System.currentTimeMillis() / 1000;
             listOfNotCollectingDaemons.put(ip, systemEpoch);
 //            System.out.println("Daemon not collecting: " + ip + systemEpoch.toString());
-        }
-    }
-
-    /**
-     * Method to get the current date. Used for metric collection CSV file
-     * name.<br>
-     *
-     * @return String current date in format yyyy-MM-dd
-     */
-    public String getTodayDate() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
-
-    /**
-     * Get the absolute file path for the log file.
-     *
-     * @param responding boolean - Are you calling this method for daemons not-responding or not-collecting?
-     * @return
-     */
-    public String getFullFilePath(boolean responding) {
-        String fileName;
-        if (responding) {
-            fileName = "NotResponding";
-        } else {
-            fileName = "NotCollecting";
-        }
-        return filePath + fileName + "-" + getTodayDate();
-    }
-
-    /**
-     * Write the IP, time of the daemon to the corresponding log file.
-     *
-     * @param ip
-     * @param time
-     * @param responding boolean - Are you calling this method for daemons not-responding or not-collecting?
-     */
-    private void writeToFile(String ip, long time, boolean responding) {
-
-        // create the line to be written in the log file
-        String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
-        String line = "IP: " + ip + " since " + date + " (" + time + ")";
-
-        // get file path
-        String fullFile = getFullFilePath(responding);
-        System.out.println(fullFile + " Writing to log: " + line);
-
-        try {
-            // append to file
-            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fullFile, true), "UTF-8");
-            BufferedWriter fbw = new BufferedWriter(writer);
-            fbw.write(line);
-            fbw.newLine();
-            fbw.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -326,7 +271,7 @@ public class DaemonHeartbeatMain implements Runnable {
 
             // if the timestamp at which it was saved is greater than
             if (systemEpoch - value.longValue() > getThreshold()) {
-                logDaemonNotResponding(key, value.longValue());
+                logMissingDaemon(key, value.longValue(), true);
                 // After saving to log, remove the entry
                 entries.remove();
             }
@@ -343,7 +288,7 @@ public class DaemonHeartbeatMain implements Runnable {
 
             // if the timestamp at which it was saved is greater than
             if (systemEpoch - value.longValue() > getThreshold()) {
-                logDaemonNotCollecting(key, value.longValue());
+                logMissingDaemon(key, value.longValue(), false);
                 // After saving to log, remove the entry
                 entries.remove();
             }
@@ -358,10 +303,7 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     public boolean sendEMail() {
 
-//        System.out.println("Last email timestamp " + lastEmailTimestamp);
-//        System.out.println("Next email timestamp " + ( lastEmailTimestamp + (emailInterval * 60)));
         long systemEpoch = System.currentTimeMillis() / 1000;
-//        System.out.println("Current timestamp " + systemEpoch);
 
         // Return if enough time, as per emailInterval, has not passed
         if (systemEpoch - lastEmailTimestamp < (long) emailInterval * 60) {
@@ -375,17 +317,18 @@ public class DaemonHeartbeatMain implements Runnable {
 
         // get both file paths
         String[] filePaths = {
-                getFullFilePath(true),
-                getFullFilePath(false)
+                ObservabilityCollectdFileOperations.MISSING_DAEMON_NOT_RESPONDING_LOG,
+                ObservabilityCollectdFileOperations.MISSING_DAEMON_NOT_COLLECTING_LOG
         };
 
         // make email bodies
         String[] emailBodies = new String[2];
         ArrayList<String> ips = new ArrayList<String>();
         ArrayList<String> dates = new ArrayList<String>();
+        HashSet<String> alreadyIncluded = new HashSet<String>();
 
-//        filePath = "/Users/prasanthnair/obs-prototype-intellij/src/main/java/com/observability/monitoring/server/NotResponding-2015-06-12";
-//        System.out.println(filePath);
+        // email flags
+        boolean nr = false, nc = false;
 
         // iterate through both types of non-responsiveness log filfes
         for (int i = 0; i < filePaths.length; i++) {
@@ -431,10 +374,13 @@ public class DaemonHeartbeatMain implements Runnable {
                     }
 
                     // if the entry is newer than last email sent, then add it. This means that this entry is a new daemon that failed that did not appaer in the last email.
-                    if (timestamp != null && !timestamp.isEmpty() && lastEmailTimestamp < Long.parseLong(timestamp)){
+                    if (timestamp != null && !timestamp.isEmpty() && lastEmailTimestamp < Long.parseLong(timestamp)) {
 //                        System.out.format("Last email timestamp %s | daemon time : %s | ip %s | date %s %n", lastEmailTimestamp, timestamp, ip, date);
-                        ips.add(ip);
-                        dates.add(date);
+
+                        if (!alreadyIncluded.contains(ip)) {
+                            ips.add(ip);
+                            dates.add(date);
+                        }
                     }
                 }
                 in.close();
@@ -442,17 +388,21 @@ public class DaemonHeartbeatMain implements Runnable {
                 e.printStackTrace();
             }
 
-            if(ips.size() == 0){
+            if (ips.size() == 0) {
                 continue;
             }
 
             // Not responding email
-            if (i == 0) {
-                emailBodies[i] = ne.makeNotRespondingEmailBody(ips, dates);
-            }
-            // Not collecting email
-            else {
-                emailBodies[i] = ne.makeNotCollectingEmailBody(ips, dates);
+            if (emailBodies[i] != null) {
+                if (i == 0) {
+                    emailBodies[i] = ne.makeNotRespondingEmailBody(ips, dates);
+                    nr = ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[i], false);
+                }
+                // Not collecting email
+                else {
+                    emailBodies[i] = ne.makeNotCollectingEmailBody(ips, dates);
+                    nc = ne.sendEMail(recipients, "Observability: Daemons not collecting", emailBodies[i], false);
+                }
             }
 
             // clear the array list
@@ -460,12 +410,6 @@ public class DaemonHeartbeatMain implements Runnable {
             dates.clear();
         }
 
-        boolean nr = false, nc = false;
-        if(emailBodies[0] != null)
-            nr = ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[0], false);
-
-        if(emailBodies[1] != null)
-            nc = ne.sendEMail(recipients, "Observability: Daemons not collecting", emailBodies[1], false);
 
         // If both emails are sent, then return true
         if (nr || nc) {
@@ -481,9 +425,15 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     public void run() {
         boolean first = true;
+
         while (true) {
+
+            if (confLastModifed < ObservabilityCollectdFileOperations.lastModifiedCollectdConf()) {
+                confLastModifed = ObservabilityCollectdFileOperations.lastModifiedCollectdConf();
+                initListofConfiguredDaemons();
+            }
             try {
-                if (!first) {
+                if (!first && !listOfConfiguredDaemons.isEmpty()) {
 
                     // verify the heartbeats of clients
                     verifyDaemonHeartbeat();
