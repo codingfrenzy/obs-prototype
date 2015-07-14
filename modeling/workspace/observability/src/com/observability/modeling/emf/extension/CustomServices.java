@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
+import com.observability.modeling.probe.descriptor.entities.Parameter;
 import com.observability.modeling.probe.descriptor.entities.Scope;
 import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
@@ -151,106 +153,67 @@ public class CustomServices {
 			DbType newDbType = factory.createDbType();
 			newDbType.setName(dbType.getName());
 			
-			createSystemMetricParameters(newDbType, dbType);
-			createDbMetricParameters(newDbType, dbType);
-			createAggregatedMetricParameters(newDbType, dbType);
-
+			
+			createMetrics(newDbType, dbType);
+			
 			model.getAvailableDbTypes().add(newDbType);
 		}
 				    
 		
 	}
 	/**
-	 * Fill the Emf semantic instance with aggregatedMetric information from the parser.
-	 * @param newDbType The emf dbType entity
-	 * @param parsedDbType The parser generated dbType entity
+	 * Create EMF semantic Metric entities and children corresponding to those on the parser entities.
+	 * @param newDbType the newly created database type to be populated
+	 * @param dbType the dbType entity read from the parser
 	 */
-	private static void createAggregatedMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
-		List<com.observability.modeling.probe.descriptor.entities.AggregatedMetric> aggMetrics  = parsedDbType.getAggregatedMetrics();
-		for (com.observability.modeling.probe.descriptor.entities.AggregatedMetric aggMetric : aggMetrics) {
+	private static void createMetrics(DbType newDbType,
+			com.observability.modeling.probe.descriptor.entities.DbType dbType) {
+		
+		List<Parameter> allMetrics  = new ArrayList<>();
+		
+		Collections.addAll(allMetrics, dbType.getAggregatedMetrics().toArray( new Parameter[0]));
+		Collections.addAll(allMetrics, dbType.getSystemMetrics().toArray(new Parameter[0]));
+		Collections.addAll(allMetrics, dbType.getDbMetrics().toArray(new Parameter[0]));
+		
+		for (com.observability.modeling.probe.descriptor.entities.Parameter metric : allMetrics) {
 			
 			//Create a db metric entry in semantic model
-			AggregatedMetric metric = factory.createAggregatedMetric();
+			Metric semanticMetric = null;
 			
-			metric.setName(aggMetric.getName());
+			//System and db Metrics are represented as base metrics in EMF model 
+			if(metric instanceof com.observability.modeling.probe.descriptor.entities.AggregatedMetric)
+				 semanticMetric = factory.createAggregatedMetric();
+			else
+				semanticMetric = factory.createBaseMetric();
+			
+			semanticMetric.setName(metric.getName());
+			
+			//Will be used when parser supports adding descriptions to metrics
+			//semanticMetric.setDescription()
 			
 			//Copy the element and sub elements and keyValues
-			for(ElementTag element :aggMetric.getElements()){
+			for(ElementTag element :metric.getElements()){
 				Element semanticElement = factory.createElement();
 				semanticElement.setName(element.getName());
 				semanticElement.setValue(element.getValue());
 				fillElements(element, semanticElement);
-				metric.getElements().add(semanticElement);
+				semanticMetric.getElements().add(semanticElement);
 
 			}
-			newDbType.getAvailableMetrics().add(metric);
+			for (com.observability.modeling.probe.descriptor.entities.KeyValue keyValue: metric.getKeyValues()){
+				KeyValue semanticKeyValue = factory.createKeyValue();
+				semanticKeyValue.setKey(keyValue.getName());
+				semanticKeyValue.setValue(keyValue.getValue());
+				semanticMetric.getKeyValues().add(semanticKeyValue);
+			}
+			newDbType.getAvailableMetrics().add(semanticMetric);
 			
 
 		}
 		
 	}
 
-	/**
-	 * Fill the Emf semantic instance with database metric information from the parser.
-	 * @param newDbType The emf dbType entity
-	 * @param parsedDbType The parser generated dbType entity
-	 */
-	private static void createDbMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
-		List<DbMetric> dbMetrics  = parsedDbType.getDbMetrics();
-		for (DbMetric dbMetric : dbMetrics) {
-			
-			//Create a db metric entry in semantic model
-			BaseMetric metric = factory.createBaseMetric();
-			metric.setType(dbMetric.getType().toString());
-			metric.setName(dbMetric.getName());
-			
-			//Copy the element and sub elements and keyValues
-			for(ElementTag element :dbMetric.getElements()){
-				Element semanticElement = factory.createElement();
-				semanticElement.setName(element.getName());
-				semanticElement.setValue(element.getValue());
-				fillElements(element, semanticElement);
-				metric.getElements().add(semanticElement);
-
-
-			}
-			newDbType.getAvailableMetrics().add(metric);
-			
-
-		}
-		
-	}
-
-	/**
-	 * Fill the Emf semantic instance with system metric information from the parser.
-	 * @param newDbType The emf dbType entity
-	 * @param parsedDbType The parser generated dbType entity
-	 */
-	private static void createSystemMetricParameters(DbType newDbType, com.observability.modeling.probe.descriptor.entities.DbType  parsedDbType) {
-		List<SystemMetric> systemMetrics  = parsedDbType.getSystemMetrics();
-		for (SystemMetric systemMetric : systemMetrics) {
-			
-			//Create a system metric entry in semantic model
-			BaseMetric metric = factory.createBaseMetric();
-			metric.setType(systemMetric.getType().toString());
-			metric.setName(systemMetric.getName());
-			
-			//Copy the element and sub elements and keyValues
-			for(ElementTag element :systemMetric.getElements()){
-				Element semanticElement = factory.createElement();
-				semanticElement.setName(element.getName());
-				semanticElement.setValue(element.getValue());
-				
-				fillElements(element, semanticElement);
-				metric.getElements().add(semanticElement);
-
-			}
-			
-			newDbType.getAvailableMetrics().add(metric);
-
-		}
-		
-	}
+	
 
 	/**
 	 * This method creates a new machine instance in the given cluster.
@@ -333,7 +296,8 @@ public class CustomServices {
 							
 				//Add this to the temporary storage. 
 				//These elements will be added to the machines inside a cluster
-				//only when a cluster is associated with a metric.
+				//only when a cluster is associated with a metric or a machine is 
+				// added to an already associated cluster
 				externalElements.get(associatedDbType.getName()).put(element.getId() ,newElement);
 			}
 			
