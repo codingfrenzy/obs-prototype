@@ -45,6 +45,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Model/serverIP"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Model/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Model/notifications"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Model/features"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//BaseMetric"/>
     <genClasses ecoreClass="observability.ecore#//AggregatedMetric">
@@ -77,6 +78,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Notification/persistOk"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Notification/interesting"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Notification/instance"/>
+    </genClasses>
+    <genClasses ecoreClass="observability.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Feature/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Feature/elements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Feature/keyValues"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

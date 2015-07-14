@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.AggregatedMetricImpl#isCalculateSum <em>Calculate Sum</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.AggregatedMetricImpl#isCalculateNum <em>Calculate Num</em>}</li>
@@ -26,6 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link com.observability.modeling.emf.impl.AggregatedMetricImpl#isCalculateMax <em>Calculate Max</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.AggregatedMetricImpl#isCalculateStddev <em>Calculate Stddev</em>}</li>
  * </ul>
+ * </p>
  *
  * @generated
  */

@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getType <em>Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getFailureMax <em>Failure Max</em>}</li>
@@ -33,6 +32,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#isInteresting <em>Interesting</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getInstance <em>Instance</em>}</li>
  * </ul>
+ * </p>
  *
  * @generated
  */

@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.Notification#getType <em>Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Notification#getFailureMax <em>Failure Max</em>}</li>
@@ -28,6 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.Notification#isInteresting <em>Interesting</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Notification#getInstance <em>Instance</em>}</li>
  * </ul>
+ * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getNotification()
  * @model

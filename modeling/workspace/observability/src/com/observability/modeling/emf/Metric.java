@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.Metric#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getDescription <em>Description</em>}</li>
@@ -20,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.Metric#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}</li>
  * </ul>
+ * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getMetric()
  * @model abstract="true"

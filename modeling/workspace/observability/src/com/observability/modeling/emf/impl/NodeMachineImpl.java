@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getIP <em>IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
@@ -34,6 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getKeyValues <em>Key Values</em>}</li>
  * </ul>
+ * </p>
  *
  * @generated
  */

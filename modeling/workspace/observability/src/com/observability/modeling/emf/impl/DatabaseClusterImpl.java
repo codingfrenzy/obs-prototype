@@ -28,7 +28,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getMachines <em>Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
@@ -37,6 +36,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
+ * </p>
  *
  * @generated
  */

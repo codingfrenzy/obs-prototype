@@ -450,13 +450,22 @@ public interface EmfPackage extends EPackage {
 	int MODEL__NOTIFICATIONS = 5;
 
 	/**
+	 * The feature id for the '<em><b>Features</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__FEATURES = 6;
+
+	/**
 	 * The number of structural features of the '<em>Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_FEATURE_COUNT = 6;
+	int MODEL_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -896,6 +905,62 @@ public interface EmfPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link com.observability.modeling.emf.impl.FeatureImpl <em>Feature</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see com.observability.modeling.emf.impl.FeatureImpl
+	 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getFeature()
+	 * @generated
+	 */
+	int FEATURE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE__ELEMENTS = 1;
+
+	/**
+	 * The feature id for the '<em><b>Key Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE__KEY_VALUES = 2;
+
+	/**
+	 * The number of structural features of the '<em>Feature</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_FEATURE_COUNT = 3;
+
+	/**
+	 * The number of operations of the '<em>Feature</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_OPERATION_COUNT = 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.DatabaseCluster <em>Database Cluster</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1253,6 +1318,17 @@ public interface EmfPackage extends EPackage {
 	EReference getModel_Notifications();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Model#getFeatures <em>Features</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Features</em>'.
+	 * @see com.observability.modeling.emf.Model#getFeatures()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EReference getModel_Features();
+
+	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.BaseMetric <em>Base Metric</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1568,6 +1644,49 @@ public interface EmfPackage extends EPackage {
 	EAttribute getNotification_Instance();
 
 	/**
+	 * Returns the meta object for class '{@link com.observability.modeling.emf.Feature <em>Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Feature</em>'.
+	 * @see com.observability.modeling.emf.Feature
+	 * @generated
+	 */
+	EClass getFeature();
+
+	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Feature#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see com.observability.modeling.emf.Feature#getName()
+	 * @see #getFeature()
+	 * @generated
+	 */
+	EAttribute getFeature_Name();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Feature#getElements <em>Elements</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Elements</em>'.
+	 * @see com.observability.modeling.emf.Feature#getElements()
+	 * @see #getFeature()
+	 * @generated
+	 */
+	EReference getFeature_Elements();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link com.observability.modeling.emf.Feature#getKeyValues <em>Key Values</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Key Values</em>'.
+	 * @see com.observability.modeling.emf.Feature#getKeyValues()
+	 * @see #getFeature()
+	 * @generated
+	 */
+	EReference getFeature_KeyValues();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1867,6 +1986,14 @@ public interface EmfPackage extends EPackage {
 		EReference MODEL__NOTIFICATIONS = eINSTANCE.getModel_Notifications();
 
 		/**
+		 * The meta object literal for the '<em><b>Features</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODEL__FEATURES = eINSTANCE.getModel_Features();
+
+		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.BaseMetricImpl <em>Base Metric</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2105,6 +2232,40 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute NOTIFICATION__INSTANCE = eINSTANCE.getNotification_Instance();
+
+		/**
+		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.FeatureImpl <em>Feature</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see com.observability.modeling.emf.impl.FeatureImpl
+		 * @see com.observability.modeling.emf.impl.EmfPackageImpl#getFeature()
+		 * @generated
+		 */
+		EClass FEATURE = eINSTANCE.getFeature();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FEATURE__NAME = eINSTANCE.getFeature_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FEATURE__ELEMENTS = eINSTANCE.getFeature_Elements();
+
+		/**
+		 * The meta object literal for the '<em><b>Key Values</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference FEATURE__KEY_VALUES = eINSTANCE.getFeature_KeyValues();
 
 	}
 
