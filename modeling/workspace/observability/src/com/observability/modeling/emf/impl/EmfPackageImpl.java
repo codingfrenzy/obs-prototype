@@ -9,6 +9,7 @@ import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.Feature;
 import com.observability.modeling.emf.KeyValue;
 import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.Model;
@@ -96,6 +97,13 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	private EClass notificationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass featureEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -460,6 +468,15 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getModel_Features() {
+		return (EReference)modelEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getBaseMetric() {
 		return baseMetricEClass;
 	}
@@ -721,6 +738,42 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getFeature() {
+		return featureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFeature_Name() {
+		return (EAttribute)featureEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getFeature_Elements() {
+		return (EReference)featureEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getFeature_KeyValues() {
+		return (EReference)featureEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EmfFactory getEmfFactory() {
 		return (EmfFactory)getEFactoryInstance();
 	}
@@ -782,6 +835,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEAttribute(modelEClass, MODEL__SERVER_IP);
 		createEAttribute(modelEClass, MODEL__NAME);
 		createEReference(modelEClass, MODEL__NOTIFICATIONS);
+		createEReference(modelEClass, MODEL__FEATURES);
 
 		baseMetricEClass = createEClass(BASE_METRIC);
 
@@ -815,6 +869,11 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEAttribute(notificationEClass, NOTIFICATION__PERSIST_OK);
 		createEAttribute(notificationEClass, NOTIFICATION__INTERESTING);
 		createEAttribute(notificationEClass, NOTIFICATION__INSTANCE);
+
+		featureEClass = createEClass(FEATURE);
+		createEAttribute(featureEClass, FEATURE__NAME);
+		createEReference(featureEClass, FEATURE__ELEMENTS);
+		createEReference(featureEClass, FEATURE__KEY_VALUES);
 	}
 
 	/**
@@ -887,6 +946,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEAttribute(getModel_ServerIP(), ecorePackage.getEString(), "serverIP", null, 1, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getModel_Name(), ecorePackage.getEString(), "name", null, 1, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getModel_Notifications(), this.getNotification(), null, "notifications", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getModel_Features(), this.getFeature(), null, "features", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(baseMetricEClass, BaseMetric.class, "BaseMetric", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -920,6 +980,11 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEAttribute(getNotification_PersistOk(), ecorePackage.getEBoolean(), "persistOk", "false", 0, 1, Notification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNotification_Interesting(), ecorePackage.getEBoolean(), "interesting", "true", 0, 1, Notification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNotification_Instance(), ecorePackage.getEString(), "instance", null, 0, 1, Notification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(featureEClass, Feature.class, "Feature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getFeature_Name(), ecorePackage.getEString(), "name", null, 0, 1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFeature_Elements(), this.getElement(), null, "elements", null, 0, -1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getFeature_KeyValues(), this.getKeyValue(), null, "keyValues", null, 0, -1, Feature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

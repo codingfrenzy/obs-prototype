@@ -977,11 +977,10 @@ public class EmfEditor
 	 * @generated
 	 */
 	public Diagnostic analyzeResourceProblems(Resource resource, Exception exception) {
-		boolean hasErrors = !resource.getErrors().isEmpty();
-		if (hasErrors || !resource.getWarnings().isEmpty()) {
+		if (!resource.getErrors().isEmpty() || !resource.getWarnings().isEmpty()) {
 			BasicDiagnostic basicDiagnostic =
 				new BasicDiagnostic
-					(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
+					(Diagnostic.ERROR,
 					 "observability.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),

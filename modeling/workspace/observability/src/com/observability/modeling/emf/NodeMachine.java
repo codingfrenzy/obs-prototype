@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getIP <em>IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getPort <em>Port</em>}</li>
@@ -20,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getKeyValues <em>Key Values</em>}</li>
  * </ul>
+ * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getNodeMachine()
  * @model

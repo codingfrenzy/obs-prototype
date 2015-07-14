@@ -279,6 +279,29 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link com.observability.modeling.emf.Feature} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected FeatureItemProvider featureItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link com.observability.modeling.emf.Feature}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createFeatureAdapter() {
+		if (featureItemProvider == null) {
+			featureItemProvider = new FeatureItemProvider(this);
+		}
+
+		return featureItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -386,6 +409,7 @@ public class EmfItemProviderAdapterFactory extends EmfAdapterFactory implements 
 		if (baseMetricItemProvider != null) baseMetricItemProvider.dispose();
 		if (aggregatedMetricItemProvider != null) aggregatedMetricItemProvider.dispose();
 		if (notificationItemProvider != null) notificationItemProvider.dispose();
+		if (featureItemProvider != null) featureItemProvider.dispose();
 	}
 
 }

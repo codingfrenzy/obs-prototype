@@ -5,7 +5,7 @@ package com.observability.modeling.emf.provider;
 
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
-import com.observability.modeling.emf.Model;
+import com.observability.modeling.emf.Feature;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link com.observability.modeling.emf.Model} object.
+ * This is the item provider adapter for a {@link com.observability.modeling.emf.Feature} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ModelItemProvider 
+public class FeatureItemProvider 
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -48,7 +48,7 @@ public class ModelItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ModelItemProvider(AdapterFactory adapterFactory) {
+	public FeatureItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -63,55 +63,9 @@ public class ModelItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addIntervalPropertyDescriptor(object);
-			addServerIPPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Interval feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addIntervalPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Model_interval_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Model_interval_feature", "_UI_Model_type"),
-				 EmfPackage.Literals.MODEL__INTERVAL,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Server IP feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addServerIPPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Model_serverIP_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Model_serverIP_feature", "_UI_Model_type"),
-				 EmfPackage.Literals.MODEL__SERVER_IP,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -125,9 +79,9 @@ public class ModelItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Model_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Model_name_feature", "_UI_Model_type"),
-				 EmfPackage.Literals.MODEL__NAME,
+				 getString("_UI_Feature_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Feature_name_feature", "_UI_Feature_type"),
+				 EmfPackage.Literals.FEATURE__NAME,
 				 true,
 				 false,
 				 false,
@@ -148,10 +102,8 @@ public class ModelItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(EmfPackage.Literals.MODEL__CLUSTERS);
-			childrenFeatures.add(EmfPackage.Literals.MODEL__AVAILABLE_DB_TYPES);
-			childrenFeatures.add(EmfPackage.Literals.MODEL__NOTIFICATIONS);
-			childrenFeatures.add(EmfPackage.Literals.MODEL__FEATURES);
+			childrenFeatures.add(EmfPackage.Literals.FEATURE__ELEMENTS);
+			childrenFeatures.add(EmfPackage.Literals.FEATURE__KEY_VALUES);
 		}
 		return childrenFeatures;
 	}
@@ -170,14 +122,14 @@ public class ModelItemProvider
 	}
 
 	/**
-	 * This returns Model.gif.
+	 * This returns Feature.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Model"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Feature"));
 	}
 
 	/**
@@ -188,10 +140,10 @@ public class ModelItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Model)object).getName();
+		String label = ((Feature)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Model_type") :
-			getString("_UI_Model_type") + " " + label;
+			getString("_UI_Feature_type") :
+			getString("_UI_Feature_type") + " " + label;
 	}
 	
 
@@ -206,16 +158,12 @@ public class ModelItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(Model.class)) {
-			case EmfPackage.MODEL__INTERVAL:
-			case EmfPackage.MODEL__SERVER_IP:
-			case EmfPackage.MODEL__NAME:
+		switch (notification.getFeatureID(Feature.class)) {
+			case EmfPackage.FEATURE__NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case EmfPackage.MODEL__CLUSTERS:
-			case EmfPackage.MODEL__AVAILABLE_DB_TYPES:
-			case EmfPackage.MODEL__NOTIFICATIONS:
-			case EmfPackage.MODEL__FEATURES:
+			case EmfPackage.FEATURE__ELEMENTS:
+			case EmfPackage.FEATURE__KEY_VALUES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -235,23 +183,13 @@ public class ModelItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.MODEL__CLUSTERS,
-				 EmfFactory.eINSTANCE.createDatabaseCluster()));
+				(EmfPackage.Literals.FEATURE__ELEMENTS,
+				 EmfFactory.eINSTANCE.createElement()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
-				 EmfFactory.eINSTANCE.createDbType()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(EmfPackage.Literals.MODEL__NOTIFICATIONS,
-				 EmfFactory.eINSTANCE.createNotification()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(EmfPackage.Literals.MODEL__FEATURES,
-				 EmfFactory.eINSTANCE.createFeature()));
+				(EmfPackage.Literals.FEATURE__KEY_VALUES,
+				 EmfFactory.eINSTANCE.createKeyValue()));
 	}
 
 	/**

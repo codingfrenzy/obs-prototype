@@ -13,13 +13,13 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.Element#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Element#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Element#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Element#getValue <em>Value</em>}</li>
  * </ul>
+ * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getElement()
  * @model

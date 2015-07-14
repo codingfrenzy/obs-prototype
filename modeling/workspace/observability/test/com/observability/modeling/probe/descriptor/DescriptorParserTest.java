@@ -60,7 +60,7 @@ public class DescriptorParserTest {
 		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
 		
 		DbType dbType = new DbType("basic");
-		parser.parseFile(new File(path.getFile()), dbType);
+		parser.parseFile(new File(path.getFile()), dbType, false);
 		System.out.println(dbType.toString());	
 	}
 
@@ -71,7 +71,7 @@ public class DescriptorParserTest {
 		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
 		
 		DbType dbType = new DbType("basic");
-		parser.parseFile(new File(path.getFile()), dbType);
+		parser.parseFile(new File(path.getFile()), dbType, false);
 		System.out.println(dbType.toString());	
 	}
 	
@@ -83,7 +83,7 @@ public class DescriptorParserTest {
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("cassandra");
 		
-		parser.parseFile(path.toFile(), dbType);
+		parser.parseFile(path.toFile(), dbType, false);
 		System.out.println(dbType.toString());	
 	}
 	
@@ -94,7 +94,7 @@ public class DescriptorParserTest {
 		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
 		
 		DbType dbType = new DbType("postgres");
-		parser.parseFile(new File(path.getFile()), dbType);
+		parser.parseFile(new File(path.getFile()), dbType, false);
 		System.out.println(dbType.toString());	
 	}
 	
@@ -105,8 +105,20 @@ public class DescriptorParserTest {
 		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
 		
 		DbType dbType = new DbType("mongo");
-		parser.parseFile(new File(path.getFile()), dbType);
+		parser.parseFile(new File(path.getFile()), dbType, false);
 		System.out.println(dbType.toString());	
+	}
+	
+	@Test
+	public void testFeatureParseDescriptors() {
+		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
+				+ "/workspace/observability/src/com/observability/modeling/"
+				+ "probe/descriptor/resources/features.descriptor"); 
+		DescriptorParserImpl parser = new DescriptorParserImpl(path);
+		DbType dbType = new DbType("");
+		
+		parser.parseFile(path.toFile(), dbType, true);
+		System.out.println(parser.getFeatures());		
 	}
 	
 	@Test

@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getDescription <em>Description</em>}</li>
@@ -31,6 +30,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getType <em>Type</em>}</li>
  * </ul>
+ * </p>
  *
  * @generated
  */

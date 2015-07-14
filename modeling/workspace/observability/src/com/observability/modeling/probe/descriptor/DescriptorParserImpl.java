@@ -33,6 +33,7 @@ import com.observability.modeling.probe.descriptor.entities.AggregatedMetric;
 import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.Feature;
 import com.observability.modeling.probe.descriptor.entities.KeyValue;
 import com.observability.modeling.probe.descriptor.entities.MetricType;
 import com.observability.modeling.probe.descriptor.entities.Scope;
@@ -59,7 +60,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * */
 
 	private static final String DESCRIPTOR_EXTENSION = "descriptor";
-	
+	private static final String FEATUREFILENAME = "features";
 	private static final String ELEMENT_ID_SEPARATOR = "_";
 	
 	/**
@@ -78,7 +79,9 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * The path where the descriptor files are stored
 	 */
 	private Path descriptorDirectory;
-
+	
+	private List<DbType> plugins = new ArrayList<DbType>();
+	private List<Feature> features = new ArrayList<Feature>();
 	/**
 	 * Constructor
 	 * 
@@ -89,6 +92,13 @@ public class DescriptorParserImpl implements DescriptorParser {
 		this.descriptorDirectory = descriptorDirPath;
 	}
 	
+	public List<DbType> getPlugins(){
+		return plugins;
+	}
+	
+	public List<Feature> getFeatures(){
+		return features;
+	}
 	/**
 	 * {@inheritDoc}
 	 */
@@ -102,18 +112,17 @@ public class DescriptorParserImpl implements DescriptorParser {
 			}
 		});
 
-		List<DbType> plugins = new ArrayList<DbType>();
-
 		// For each file generate a PluginDefinition
 		if (files != null) {
 			try {
 				for (File file : files) {
 					//get the file name and create a DbType instance with the name
-					String dbName = file.getName().toLowerCase().split("\\.")[0];
-					DbType dbType = new DbType(dbName);
+					String name = file.getName().toLowerCase().split("\\.")[0];
 					
+					DbType dbType = new DbType(name);
+
 					//parse the file and populate the dbType
-					parseFile(file, dbType);
+					parseFile(file, dbType, name.equals(FEATUREFILENAME));
 					//add the parsed structure to the plugins list
 					plugins.add(dbType);
 
@@ -135,14 +144,17 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * @param dbType the parsed contents of the file as an instance
 	 * 	of {@link DbType} class.
 	 */
-	public void parseFile(File file, DbType dbType) {
+	public void parseFile(File file, DbType dbType, boolean isFeatureFile) {
+		
 		
 		ElementTag parentElement = null;
+		Feature feature = null;
 		Stack<ElementTag> parentElementStack = new Stack<ElementTag>();
 		Stack<ElementTag> secondaryElementStack = new Stack<ElementTag>();
 		Stack<String> elementNameStack = new Stack<String>();
 		String parentAnnotation = null,
 			   secondaryAnnotation = null;
+		
 		
 		try (Scanner scanner = new Scanner(file, "UTF-8")){
 			while(scanner.hasNextLine()){
@@ -180,6 +192,9 @@ public class DescriptorParserImpl implements DescriptorParser {
 							
 							parentAnnotation = annotation;
 							parentElement = element;
+							if(isFeatureFile){
+								feature = new Feature(name);	
+							}
 
 						}
 						parentElementStack.push(element);						
@@ -203,7 +218,13 @@ public class DescriptorParserImpl implements DescriptorParser {
 							// if the parent stack is empty, then this key-value is independent
 							// and can be added as a key-value to the annotated parameter class 
 							if(parentElementStack.isEmpty()){
-								addKeyValueToDb(annotation, new KeyValue(keyName, keyValue), dbType, name);
+								if(isFeatureFile){
+									addKeyValueToFeature(feature, new KeyValue(keyName, keyValue));
+								}
+								else{
+									addKeyValueToDb(annotation, new KeyValue(keyName, keyValue), dbType, name);
+								}
+									
 							}
 							else {
 								// the parent stack is not empty and the annotation differs from the parent
@@ -248,12 +269,21 @@ public class DescriptorParserImpl implements DescriptorParser {
 							elementNameStack.pop();
 						}
 						else {
-							// the stack is empty. Add the element to the DbType parameter as per 
-							// the current annotation 
-							addElementToDb(parentAnnotation, element, dbType, elementNameStack.pop());
-							if(!secondaryElementStack.isEmpty()){
-								addElementToDb(secondaryAnnotation, secondaryElementStack.pop(), 
-										dbType, elementNameStack.pop());
+							if(isFeatureFile){
+								// add element to feature class. A feature would not have secondary elements
+								addElementToFeature(feature, element);
+								// add the feature to the features list
+								features.add(feature);
+								feature = null;
+							}
+							else{
+								// the stack is empty. Add the element to the DbType parameter as per 
+								// the current annotation 
+								addElementToDb(parentAnnotation, element, dbType, elementNameStack.pop());
+								if(!secondaryElementStack.isEmpty()){
+									addElementToDb(secondaryAnnotation, secondaryElementStack.pop(), 
+											dbType, elementNameStack.pop());
+								}	
 							}							
 							parentAnnotation = null;
 							secondaryAnnotation = null;
@@ -322,4 +352,19 @@ public class DescriptorParserImpl implements DescriptorParser {
 				break;
 		}
 	}
+	
+	private void addKeyValueToFeature(Feature feature, KeyValue keyValue){
+		feature.getKeyValues().add(keyValue);
+	}
+	
+	/**
+	 * This method adds the given element to the Feature instance.<br>
+	 * @param element the element to be added
+	 */
+	private void addElementToFeature(Feature feature, ElementTag element) {
+		if(element == null)
+			return;
+		feature.getElements().add(element);
+	}
+	
 }

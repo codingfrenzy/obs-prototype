@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.Feature;
 
 /**
  * Parses the descriptors in a given directory and converts them to a manageable
@@ -63,6 +64,6 @@ public interface DescriptorParser {
 	 * @return root plugin entity that holds all the information about the
 	 *         content in a hierarchical format.
 	 */
-	public void parseFile(File file, DbType dbType);
+	public void parseFile(File file, DbType dbType, boolean isFeatureFile);
 
 }

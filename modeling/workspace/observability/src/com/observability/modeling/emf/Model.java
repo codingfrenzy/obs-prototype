@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
- * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.Model#getInterval <em>Interval</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Model#getClusters <em>Clusters</em>}</li>
@@ -21,7 +20,9 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.Model#getServerIP <em>Server IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Model#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Model#getNotifications <em>Notifications</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.Model#getFeatures <em>Features</em>}</li>
  * </ul>
+ * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getModel()
  * @model
@@ -154,5 +155,21 @@ public interface Model extends EObject {
 	 * @generated
 	 */
 	EList<Notification> getNotifications();
+
+	/**
+	 * Returns the value of the '<em><b>Features</b></em>' containment reference list.
+	 * The list contents are of type {@link com.observability.modeling.emf.Feature}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Features</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Features</em>' containment reference list.
+	 * @see com.observability.modeling.emf.EmfPackage#getModel_Features()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Feature> getFeatures();
 
 } // Model
