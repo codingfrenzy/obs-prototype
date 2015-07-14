@@ -3,6 +3,7 @@
 [import com::observability::modeling::generation::files::cassandra/]
 [import com::observability::modeling::generation::files::mongodb/]
 [import com::observability::modeling::generation::files::postgres/]
+[import com::observability::modeling::generation::files::redis/]
 
 
 [template public mainModel(aModel : Model)]
@@ -17,6 +18,8 @@
 			[aDatabaseCluster.generateMongodb(aModel.interval)/]
 		[elseif dbType.name.toLower().strcmp('postgres') = 0]
 			[aDatabaseCluster.generatePostgres(aModel.interval)/]
+		[elseif dbType.name.toLower().strcmp('redis') = 0]
+			[aDatabaseCluster.generateRedis(aModel.interval)/]
 		[/if]
 	[/if]
 	[/let]

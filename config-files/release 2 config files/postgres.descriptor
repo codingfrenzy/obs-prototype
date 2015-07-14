@@ -265,7 +265,7 @@ LoadPlugin postgresql
 
   <Aggregation> @MetricAggregated(RollBack)
     #Host "unspecified"
-    Plugin "postgresql" @Attribtue
+    Plugin "postgresql" @Attribute
     #PluginInstance "unspecified"
     Type "pg_xact" @Attribute
     TypeInstance "rollback" @Attribute
@@ -435,42 +435,42 @@ LoadPlugin postgresql
 	<Query disk_io> @MetricDB
 		Statement "SELECT coalesce(sum(heap_blks_read), 0) AS heap_read, coalesce(sum(heap_blks_hit), 0) AS heap_hit, coalesce(sum(idx_blks_read), 0) AS idx_read, coalesce(sum(idx_blks_hit), 0) AS idx_hit, coalesce(sum(toast_blks_read), 0) AS toast_read, coalesce(sum(toast_blks_hit), 0) AS toast_hit, coalesce(sum(tidx_blks_read), 0) AS tidx_read, coalesce(sum(tidx_blks_hit), 0) AS tidx_hit FROM pg_statio_user_tables;" @Attribute
 
-		<Result> @MetricDB
+		<Result> @MetricDB(HeapRead)
 			Type "pg_blks" @Attribute
 			InstancePrefix "heap_read" @Attribute
 			ValuesFrom "heap_read" @Attribute
 		</Result> 
-		<Result> @MetricDB
+		<Result> @MetricDB(HeapHit)
 			Type "pg_blks" @Attribute
 			InstancePrefix "heap_hit" @Attribute
 			ValuesFrom "heap_hit" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(IdxRead)
 			Type "pg_blks" @Attribute
 			InstancePrefix "idx_read" @Attribute
 			ValuesFrom "idx_read" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(IdxHit)
 			Type "pg_blks" @Attribute
 			InstancePrefix "idx_hit" @Attribute
 			ValuesFrom "idx_hit" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(ToastRead)
 			Type "pg_blks" @Attribute
 			InstancePrefix "toast_read" @Attribute
 			ValuesFrom "toast_read" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(ToastHit)
 			Type "pg_blks" @Attribute
 			InstancePrefix "toast_hit" @Attribute
 			ValuesFrom "toast_hit" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(TidxRead)
 			Type "pg_blks" @Attribute
 			InstancePrefix "tidx_read" @Attribute
 			ValuesFrom "tidx_read" @Attribute
 		</Result>
-		<Result> @MetricDB
+		<Result> @MetricDB(TidxHit)
 			Type "pg_blks" @Attribute
 			InstancePrefix "tidx_hit" @Attribute
 			ValuesFrom "tidx_hit" @Attribute

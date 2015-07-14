@@ -38,7 +38,7 @@ Interval [frequency/]
 		[keyValue.key/] "[keyValue.value/]"
 	 			[/for]
 
-				[let element : Element = metric.elements->at(0)]
+				[let element : Element = metric.elements->at(1)]
 <[element.name/] "[element.value/]">
 					[for (kv : KeyValue | element.keyValues)]
 	[kv.key/] [kv.value/]
