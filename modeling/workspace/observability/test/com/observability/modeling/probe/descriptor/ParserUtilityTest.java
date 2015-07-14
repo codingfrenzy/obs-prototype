@@ -69,8 +69,7 @@ public class ParserUtilityTest {
 		assertFalse(ParserUtility.isAnnotated(line));
 		
 		// Test annotation on null string
-		line = null;
-		assertFalse(ParserUtility.isAnnotated(line));
+		assertFalse(ParserUtility.isAnnotated(null));
 		
 		line = "<Mbean \"abcdef\"> @Metric(someName)";
 		assertTrue(ParserUtility.isAnnotated(line));
@@ -101,8 +100,7 @@ public class ParserUtilityTest {
 		assertFalse(ParserUtility.isElementStart(line));
 		
 		// Test element start on a null string
-		line = null;
-		assertFalse(ParserUtility.isElementStart(line));
+		assertFalse(ParserUtility.isElementStart(null));
 		
 	}
 
@@ -128,8 +126,7 @@ public class ParserUtilityTest {
 		assertFalse(ParserUtility.isElementEnd(line));
 		
 		// Test element end on a null string
-		line = null;
-		assertFalse(ParserUtility.isElementEnd(line));
+		assertFalse(ParserUtility.isElementEnd(null));
 	}
 
 	/**
@@ -155,8 +152,7 @@ public class ParserUtilityTest {
 		System.out.println(Arrays.toString(ParserUtility.getElementDetails(line)));
 		
 		// Get element details from null string
-		line = null;
-		System.out.println(Arrays.toString(ParserUtility.getElementDetails(line)));
+		System.out.println(Arrays.toString(ParserUtility.getElementDetails(null)));
 	}
 
 	/**
@@ -182,8 +178,7 @@ public class ParserUtilityTest {
 		System.out.println(Arrays.toString(ParserUtility.getKeyValueDetails(line)));
 		
 		// Get element details from null string
-		line = null;
-		System.out.println(Arrays.toString(ParserUtility.getKeyValueDetails(line)));
+		System.out.println(Arrays.toString(ParserUtility.getKeyValueDetails(null)));
 		
 	}
 
@@ -210,8 +205,7 @@ public class ParserUtilityTest {
 		System.out.println(ParserUtility.getAnnotation(line));		
 		
 		// Get annotation from null string
-		line = null;
-		System.out.println(ParserUtility.getAnnotation(line));
+		System.out.println(ParserUtility.getAnnotation(null));
 		
 		line = "<Mbean \"abcdef\"> @Metric(someName)";
 		System.out.println(ParserUtility.getAnnotation(line));

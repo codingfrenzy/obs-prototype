@@ -26,6 +26,7 @@ import java.io.FilenameFilter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -59,7 +60,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * "cassandra.descriptor"
 	 * */
 
-	private static final String DESCRIPTOR_EXTENSION = "descriptor";
+	private static final String DESCRIPTOR_EXTENSION = ".descriptor";
 	private static final String FEATUREFILENAME = "features";
 	private static final String ELEMENT_ID_SEPARATOR = "_";
 	
@@ -106,18 +107,14 @@ public class DescriptorParserImpl implements DescriptorParser {
 
 		// Filter the files with correct extension
 		File dir = descriptorDirectory.toFile();
-		File[] files = dir.listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.toLowerCase().endsWith("." + DESCRIPTOR_EXTENSION);
-			}
-		});
+		File[] files = dir.listFiles(new DescriptorFilter());
 
 		// For each file generate a PluginDefinition
 		if (files != null) {
 			try {
 				for (File file : files) {
 					//get the file name and create a DbType instance with the name
-					String name = file.getName().toLowerCase().split("\\.")[0];
+					String name = file.getName().toLowerCase(Locale.ENGLISH).split("\\.")[0];
 					
 					DbType dbType = new DbType(name);
 					boolean isFeatureFile = name.equals(FEATUREFILENAME);
@@ -217,7 +214,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 							// it's a different annotation
 							
 							// if the parent stack is empty, then this key-value is independent
-							// and can be added as a key-value to the annotated parameter class 
+							// and can be implements FilenameFilter added as a key-value to the annotated parameter class 
 							if(parentElementStack.isEmpty()){
 								if(isFeatureFile){
 									addKeyValueToFeature(feature, new KeyValue(keyName, keyValue));
@@ -368,4 +365,10 @@ public class DescriptorParserImpl implements DescriptorParser {
 		feature.getElements().add(element);
 	}
 	
+	private static class DescriptorFilter implements FilenameFilter
+	{
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase(Locale.ENGLISH).endsWith(DESCRIPTOR_EXTENSION);
+		}
+	}
 }

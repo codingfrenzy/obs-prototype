@@ -11,11 +11,6 @@ import java.util.ArrayList;
  */
 public class Feature extends Parameter {
 	
-	public Feature(){
-		this.elements = new ArrayList<ElementTag>();
-		this.keyValues = new ArrayList<KeyValue>();
-	}
-	
 	public Feature(String name){
 		if(name!=null){
 			this.name = name;

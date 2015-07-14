@@ -71,12 +71,7 @@ public abstract class Parameter {
 	public ArrayList<ElementTag> getElements() {
 		return elements;
 	}
-	/**
-	 * @param elements the elements to set
-	 */
-	public void setElements(ArrayList<ElementTag> elements) {
-		this.elements = elements;
-	}
+
 	
 	public void addKeyValue(KeyValue keyValue){
 		if(keyValue != null){

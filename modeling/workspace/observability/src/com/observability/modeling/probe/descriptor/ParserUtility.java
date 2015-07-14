@@ -74,7 +74,8 @@ public class ParserUtility {
 	 */
 	public static String[] getElementDetails(String line){
 		if(line == null){
-			return null;
+			String[] result = null;
+			return result;
 		}
 		String[] result = new String[2];
 		String regex = "(^</|^<)(.*)>.*$"; // the regex would group the string inside < >
@@ -114,7 +115,8 @@ public class ParserUtility {
 	 */
 	public static String[] getKeyValueDetails(String line){
 		if(line == null){
-			return null;
+			String[] result = null;
+			return result;
 		}
 		String[] result = new String[2];
 		String regex = "([^<].*)[^>]@.*$"; //the regex would group the string before the annotation

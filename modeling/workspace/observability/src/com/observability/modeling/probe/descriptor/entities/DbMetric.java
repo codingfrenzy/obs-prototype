@@ -33,12 +33,7 @@ import java.util.ArrayList;
 public class DbMetric extends Parameter {
 	
 	private MetricType type;
-	
-	public DbMetric(){
-		this.elements = new ArrayList<ElementTag>();
-		this.keyValues = new ArrayList<KeyValue>();
-	}
-	
+
 	public DbMetric(String name, MetricType type){
 		if(name!=null){
 			this.name = name;
