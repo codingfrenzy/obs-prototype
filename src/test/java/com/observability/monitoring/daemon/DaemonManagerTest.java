@@ -42,6 +42,7 @@ import org.junit.Test;
  * History:<br>
  * 1. Created					Jun 02 2015<br>
  * 2. Modified 					Jun 19 2015<br>
+ * 3. Modified					Jly 14 2015<br>
  *
  */
 public class DaemonManagerTest {
@@ -93,7 +94,8 @@ public class DaemonManagerTest {
 	@Test
 	public void testStartProcess() {
 		System.out.println("Start testing for starting collectd");
-		String processmame = "collectd"; 
+		//String processmame = "collectd"; 
+		String processmame = "/opt/collectd/sbin/collectd";
 		// Start collectd monitor
 		DaemonManager.startProcess(processmame);
 	}
@@ -154,6 +156,18 @@ public class DaemonManagerTest {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testChangeConfiguration1() {
+		try{
+			// change interval from 30 to 20
+			dm.changeConfiguration("Interval 30", "Interval 20");
+			// comment out LoadPlugin "logfile"
+			dm.changeConfiguration("Interval 31", "Interval 21");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#replaceWholeConfiguration(java.lang.String)}.
@@ -201,6 +215,20 @@ public class DaemonManagerTest {
 		}
 	}
 	
+	@Test
+	public void testStopConfigurationModification1() {
+		try {
+			DaemonManager dm1 = new DaemonManager();
+			DaemonManager.setConfigurationFilePath("collectd.conf");
+			DaemonManager.initializeService("1.2.3.4", "8101");
+			boolean ret = dm1.stopConfigurationModification();
+			Assert.assertTrue(ret);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#startConfigurationModification()}.
 	 * Test method for {@link com.observability.monitoring.daemon.DaemonManager#changeConfiguration(java.lang.String, java.lang.String)}.
@@ -218,6 +246,47 @@ public class DaemonManagerTest {
 	@Test
 	public void testInitializeService() {
 		DaemonManager.initializeService("127.0.0.1", "22345");
+	}
+	
+	@Test
+	public void testmain0() {
+		String[] args = new String[1];
+		args[0] = "10.20.30.40";
+
+		DaemonManager.main(args);
+	}
+	
+	@Test
+	public void testmain1() {
+		String[] args = new String[2];
+		args[0] = "10.20.30.40";
+		args[1] = "21323";
+		DaemonManager.main(args);
+	}
+	
+	@Test
+	public void testmain3() {
+		String[] args = new String[3];
+		args[0] = "10.20.30.40";
+		args[1] = "21323";
+		args[2] = "aqsdd";
+		DaemonManager.main(args);
+	}
+	
+	@Test
+	public void testmain4() {
+		String[] args = new String[4];
+		args[0] = "10.20.30.40";
+		args[1] = "21323";
+		args[2] = "aqsdd";
+		args[3] = "aqaaaaq";
+		DaemonManager.main(args);
+	}
+	
+	@Test
+	public void testgetConfigurationFilePath() {
+		String s1 = DaemonManager.getConfigurationFilePath();
+		System.out.println(s1);
 	}
 /*
 	public static void main(String[] args) {

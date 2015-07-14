@@ -35,8 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import org.collectd.api.Collectd;
 import org.collectd.api.CollectdConfigInterface;
 import org.collectd.api.CollectdInitInterface;
@@ -64,6 +62,7 @@ import org.collectd.api.OConfigValue;
  * 3. Modified 					Jly 04 2015<br>
  * 4. Modified 					Jly 10 2015<br>
  * 5. Modified 					Jly 11 2015<br>
+ * 6. Modified 					Jly 14 2015<br>
  */
 
 public class ThresholdNotificationPlugin implements CollectdConfigInterface,
@@ -91,7 +90,7 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 	/**
 	 * URL user agent
 	 */
-	private final static String USER_AGENT = "Mozilla/5.0";
+	//private final static String USER_AGENT = "Mozilla/5.0";
 
     /**
      * Constructor

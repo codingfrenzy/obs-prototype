@@ -250,7 +250,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							IPath filePath = modelFile.getLocation();
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
 							try{
-								CustomServices.initializeDbTypes((Model)rootObject, dirPath);
+								CustomServices.initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
 										"Error while creating the model instance", 
