@@ -1,5 +1,5 @@
 #Missing Deamon
-<Plugin "MissingDaemon"> @Feature
+<Plugin "MissingDaemon"> @Feature(Missing Daemon)
     # Number of times a heartbeat has to miss before declaring dead.
     # This is a multiple of Interval
     Threshold 4 @Attribute

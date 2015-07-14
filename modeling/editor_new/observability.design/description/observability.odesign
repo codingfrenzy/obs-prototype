@@ -10,6 +10,13 @@
             <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_yellow']"/>
           </style>
         </nodeMappings>
+        <nodeMappings name="feature" label="Feature" domainClass="emf.Feature">
+          <style xsi:type="style:SquareDescription" sizeComputationExpression="" labelPosition="node" width="10" height="5">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+          </style>
+        </nodeMappings>
         <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric'] //@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='aggregatedMatric']" targetFinderExpression="feature:collectedMetrics">
           <style lineStyle="dash" sizeComputationExpression="2">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>

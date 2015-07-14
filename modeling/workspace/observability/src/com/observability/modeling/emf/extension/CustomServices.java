@@ -45,6 +45,7 @@ import com.observability.modeling.emf.Model;
 import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
+import com.observability.modeling.probe.descriptor.entities.Feature;
 import com.observability.modeling.probe.descriptor.entities.Machine;
 import com.observability.modeling.probe.descriptor.entities.Parameter;
 import com.observability.modeling.probe.descriptor.entities.Scope;
@@ -77,6 +78,12 @@ public class CustomServices {
     
 	
 	private static Map<String, HashMap<String,Element>> externalElements = new HashMap<String,HashMap<String,Element>>();
+
+	/*
+	 * The configuration of features that this model have.
+	 * For now features are missing deamon and thresholds notifications
+	 */
+	private static List<Feature> features = null;
     /**
      * Parse the descriptors and bring the info into entities at class loading
      * This will search through all the projects in the current workspace for the descriptors dir.
@@ -112,7 +119,9 @@ public class CustomServices {
 		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
 			// if descriptors exist, get the parsed descriptors
 			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
-			dbTypes = parser.parseDescriptors();
+			parser.parseDescriptors();
+			dbTypes = parser.getPlugins();
+			features = parser.getFeatures();
 		}
 		else {
 			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
@@ -139,7 +148,7 @@ public class CustomServices {
 	 * @param model the root element to fill in the new entities
 	 * @param dirPath 
 	 */
-	public static void initializeDbTypes( Model model, Path dirPath) {
+	private static void initializeDbTypes( Model model, Path dirPath) {
 		
 		//Get the parsers
 		parseDescriptors(dirPath.resolve(PROBE_DESCRIPTOR_DIR_PATH));
@@ -153,9 +162,40 @@ public class CustomServices {
 			
 			model.getAvailableDbTypes().add(newDbType);
 		}
-				    
+	
+	}
+	
+	public static void initializeModel (Model model, Path dirPath){
+		initializeDbTypes(model, dirPath);
+		initializeFeatures(model);
+	}
+	
+	
+	private static void initializeFeatures(Model model) {
+		for(Feature feature: features){
+			com.observability.modeling.emf.Feature semanticFeature = factory.createFeature();
+			
+			semanticFeature.setName(feature.getName());
+			//Copy the element and sub elements and keyValues
+			for(ElementTag element :feature.getElements()){
+				Element semanticElement = factory.createElement();
+				semanticElement.setName(element.getName());
+				semanticElement.setValue(element.getValue());
+				fillElements(element, semanticElement);
+				semanticFeature.getElements().add(semanticElement);
+
+			}
+			for (com.observability.modeling.probe.descriptor.entities.KeyValue keyValue: feature.getKeyValues()){
+				KeyValue semanticKeyValue = factory.createKeyValue();
+				semanticKeyValue.setKey(keyValue.getName());
+				semanticKeyValue.setValue(keyValue.getValue());
+				semanticFeature.getKeyValues().add(semanticKeyValue);
+			}
+			model.getFeatures().add(semanticFeature);
+		}
 		
 	}
+
 	/**
 	 * Create EMF semantic Metric entities and children corresponding to those on the parser entities.
 	 * @param newDbType the newly created database type to be populated
