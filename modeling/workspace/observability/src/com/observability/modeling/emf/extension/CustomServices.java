@@ -230,7 +230,17 @@ public class CustomServices {
 			//Copy the element and sub elements and keyValues
 			for(ElementTag element :metric.getElements()){
 				Element semanticElement = factory.createElement();
-				semanticElement.setName(element.getName());
+				
+				//We are setting the id instead of name to 
+				// display a more descriptive text to the user.
+				// We should come up with a better design
+				// Also we are assuming a metric can have at most one Element as the child
+				// 
+				if(element.getId().endsWith("null")){
+					semanticElement.setName(element.getName());
+				}else{
+					semanticElement.setName(element.getId());
+				}
 				semanticElement.setValue(element.getValue());
 				fillElements(element, semanticElement);
 				semanticMetric.getElements().add(semanticElement);
