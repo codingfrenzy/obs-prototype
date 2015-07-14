@@ -63,11 +63,11 @@ public class DatabaseClusterItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addCollectedMetricsPropertyDescriptor(object);
 			addAssociatedDbTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addNoOfMachinesPropertyDescriptor(object);
 			addAssociatedNotificationsPropertyDescriptor(object);
+			addCollectedMetricsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}

@@ -9,11 +9,11 @@
       ecorePackage="observability.ecore#/">
     <genClasses ecoreClass="observability.ecore#//DatabaseCluster">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/machines"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/collectedMetrics"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/associatedDbType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DatabaseCluster/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DatabaseCluster/noOfMachines"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/associatedNotifications"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//DatabaseCluster/collectedMetrics"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//DbType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//DbType/name"/>
@@ -60,7 +60,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Metric/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/keyValues"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/elements"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference observability.ecore#//Metric/databaseCluster"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute observability.ecore#//Metric/type"/>
     </genClasses>
     <genClasses ecoreClass="observability.ecore#//Notification">

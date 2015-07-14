@@ -182,7 +182,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	public EReference getDatabaseCluster_CollectedMetrics() {
-		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(1);
+		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	public EReference getDatabaseCluster_AssociatedDbType() {
-		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(2);
+		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -200,7 +200,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	public EAttribute getDatabaseCluster_Name() {
-		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(3);
+		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	public EAttribute getDatabaseCluster_NoOfMachines() {
-		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)databaseClusterEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * @generated
 	 */
 	public EReference getDatabaseCluster_AssociatedNotifications() {
-		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(5);
+		return (EReference)databaseClusterEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -577,17 +577,8 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getMetric_DatabaseCluster() {
-		return (EReference)metricEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EAttribute getMetric_Type() {
-		return (EAttribute)metricEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)metricEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -755,11 +746,11 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		// Create classes and their features
 		databaseClusterEClass = createEClass(DATABASE_CLUSTER);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__MACHINES);
-		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_METRICS);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__ASSOCIATED_DB_TYPE);
 		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NAME);
 		createEAttribute(databaseClusterEClass, DATABASE_CLUSTER__NO_OF_MACHINES);
 		createEReference(databaseClusterEClass, DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS);
+		createEReference(databaseClusterEClass, DATABASE_CLUSTER__COLLECTED_METRICS);
 
 		dbTypeEClass = createEClass(DB_TYPE);
 		createEAttribute(dbTypeEClass, DB_TYPE__NAME);
@@ -807,7 +798,6 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEAttribute(metricEClass, METRIC__DESCRIPTION);
 		createEReference(metricEClass, METRIC__KEY_VALUES);
 		createEReference(metricEClass, METRIC__ELEMENTS);
-		createEReference(metricEClass, METRIC__DATABASE_CLUSTER);
 		createEAttribute(metricEClass, METRIC__TYPE);
 
 		notificationEClass = createEClass(NOTIFICATION);
@@ -861,11 +851,11 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(databaseClusterEClass, DatabaseCluster.class, "DatabaseCluster", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getDatabaseCluster_Machines(), this.getNodeMachine(), null, "machines", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDatabaseCluster_CollectedMetrics(), this.getMetric(), this.getMetric_DatabaseCluster(), "collectedMetrics", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_AssociatedDbType(), this.getDbType(), null, "associatedDbType", null, 1, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDatabaseCluster_Name(), ecorePackage.getEString(), "name", null, 0, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDatabaseCluster_NoOfMachines(), ecorePackage.getEInt(), "noOfMachines", null, 0, 1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getDatabaseCluster_AssociatedNotifications(), this.getNotification(), null, "associatedNotifications", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDatabaseCluster_CollectedMetrics(), this.getMetric(), null, "collectedMetrics", null, 0, -1, DatabaseCluster.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(dbTypeEClass, DbType.class, "DbType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDbType_Name(), ecorePackage.getEString(), "name", null, 0, 1, DbType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -913,7 +903,6 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEAttribute(getMetric_Description(), ecorePackage.getEString(), "description", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMetric_KeyValues(), this.getKeyValue(), null, "keyValues", null, 0, -1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMetric_Elements(), this.getElement(), null, "elements", null, 0, -1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getMetric_DatabaseCluster(), this.getDatabaseCluster(), this.getDatabaseCluster_CollectedMetrics(), "databaseCluster", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMetric_Type(), ecorePackage.getEString(), "type", null, 0, 1, Metric.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(notificationEClass, Notification.class, "Notification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

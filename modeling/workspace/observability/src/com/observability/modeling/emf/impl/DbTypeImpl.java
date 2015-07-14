@@ -29,13 +29,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getCollectionFrequency <em>Collection Frequency</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getAvailableMetrics <em>Available Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DbTypeImpl#getElements <em>Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

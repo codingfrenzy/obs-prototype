@@ -12,15 +12,14 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.Metric#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getDescription <em>Description</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getElements <em>Elements</em>}</li>
- *   <li>{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}</li>
  *   <li>{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getMetric()
  * @model abstract="true"
@@ -110,34 +109,6 @@ public interface Metric extends EObject {
 	 * @generated
 	 */
 	EList<Element> getElements();
-
-	/**
-	 * Returns the value of the '<em><b>Database Cluster</b></em>' reference.
-	 * It is bidirectional and its opposite is '{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Database Cluster</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Database Cluster</em>' reference.
-	 * @see #setDatabaseCluster(DatabaseCluster)
-	 * @see com.observability.modeling.emf.EmfPackage#getMetric_DatabaseCluster()
-	 * @see com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics
-	 * @model opposite="collectedMetrics"
-	 * @generated
-	 */
-	DatabaseCluster getDatabaseCluster();
-
-	/**
-	 * Sets the value of the '{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Database Cluster</em>' reference.
-	 * @see #getDatabaseCluster()
-	 * @generated
-	 */
-	void setDatabaseCluster(DatabaseCluster value);
 
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' attribute.

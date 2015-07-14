@@ -4,14 +4,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="DatabaseCluster">
     <eStructuralFeatures xsi:type="ecore:EReference" name="machines" upperBound="-1"
         eType="#//NodeMachine" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="collectedMetrics" upperBound="-1"
-        eType="#//Metric" eOpposite="#//Metric/databaseCluster"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="associatedDbType" lowerBound="1"
         eType="#//DbType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="noOfMachines" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="associatedNotifications"
         upperBound="-1" eType="#//Notification"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="collectedMetrics" upperBound="-1"
+        eType="#//Metric"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DbType">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -74,8 +74,6 @@
         eType="#//KeyValue" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//Element" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="databaseCluster" eType="#//DatabaseCluster"
-        eOpposite="#//DatabaseCluster/collectedMetrics"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Notification">

@@ -13,15 +13,15 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getMachines <em>Machines</em>}</li>
- *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getNoOfMachines <em>No Of Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
- * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster()
  * @model
@@ -47,7 +47,6 @@ public interface DatabaseCluster extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Collected Metrics</b></em>' reference list.
 	 * The list contents are of type {@link com.observability.modeling.emf.Metric}.
-	 * It is bidirectional and its opposite is '{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Collected Metrics</em>' reference list isn't clear,
@@ -56,8 +55,7 @@ public interface DatabaseCluster extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Collected Metrics</em>' reference list.
 	 * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster_CollectedMetrics()
-	 * @see com.observability.modeling.emf.Metric#getDatabaseCluster
-	 * @model opposite="databaseCluster"
+	 * @model
 	 * @generated
 	 */
 	EList<Metric> getCollectedMetrics();

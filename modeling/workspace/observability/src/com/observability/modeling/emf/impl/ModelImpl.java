@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getInterval <em>Interval</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getClusters <em>Clusters</em>}</li>
@@ -37,7 +38,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getNotifications <em>Notifications</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

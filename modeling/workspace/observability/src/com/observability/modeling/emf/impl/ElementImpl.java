@@ -28,13 +28,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

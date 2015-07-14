@@ -76,22 +76,13 @@ public interface EmfPackage extends EPackage {
 	int DATABASE_CLUSTER__MACHINES = 0;
 
 	/**
-	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATABASE_CLUSTER__COLLECTED_METRICS = 1;
-
-	/**
 	 * The feature id for the '<em><b>Associated Db Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__ASSOCIATED_DB_TYPE = 2;
+	int DATABASE_CLUSTER__ASSOCIATED_DB_TYPE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -100,7 +91,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__NAME = 3;
+	int DATABASE_CLUSTER__NAME = 2;
 
 	/**
 	 * The feature id for the '<em><b>No Of Machines</b></em>' attribute.
@@ -109,7 +100,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__NO_OF_MACHINES = 4;
+	int DATABASE_CLUSTER__NO_OF_MACHINES = 3;
 
 	/**
 	 * The feature id for the '<em><b>Associated Notifications</b></em>' reference list.
@@ -118,7 +109,16 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = 5;
+	int DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS = 4;
+
+	/**
+	 * The feature id for the '<em><b>Collected Metrics</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATABASE_CLUSTER__COLLECTED_METRICS = 5;
 
 	/**
 	 * The number of structural features of the '<em>Database Cluster</em>' class.
@@ -514,22 +514,13 @@ public interface EmfPackage extends EPackage {
 	int METRIC__ELEMENTS = 3;
 
 	/**
-	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int METRIC__DATABASE_CLUSTER = 4;
-
-	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC__TYPE = 5;
+	int METRIC__TYPE = 4;
 
 	/**
 	 * The number of structural features of the '<em>Metric</em>' class.
@@ -538,7 +529,7 @@ public interface EmfPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int METRIC_FEATURE_COUNT = 6;
+	int METRIC_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Metric</em>' class.
@@ -594,15 +585,6 @@ public interface EmfPackage extends EPackage {
 	 * @ordered
 	 */
 	int BASE_METRIC__ELEMENTS = METRIC__ELEMENTS;
-
-	/**
-	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BASE_METRIC__DATABASE_CLUSTER = METRIC__DATABASE_CLUSTER;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -676,15 +658,6 @@ public interface EmfPackage extends EPackage {
 	 * @ordered
 	 */
 	int AGGREGATED_METRIC__ELEMENTS = METRIC__ELEMENTS;
-
-	/**
-	 * The feature id for the '<em><b>Database Cluster</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AGGREGATED_METRIC__DATABASE_CLUSTER = METRIC__DATABASE_CLUSTER;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -1420,17 +1393,6 @@ public interface EmfPackage extends EPackage {
 	EReference getMetric_Elements();
 
 	/**
-	 * Returns the meta object for the reference '{@link com.observability.modeling.emf.Metric#getDatabaseCluster <em>Database Cluster</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Database Cluster</em>'.
-	 * @see com.observability.modeling.emf.Metric#getDatabaseCluster()
-	 * @see #getMetric()
-	 * @generated
-	 */
-	EReference getMetric_DatabaseCluster();
-
-	/**
 	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.Metric#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2013,14 +1975,6 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference METRIC__ELEMENTS = eINSTANCE.getMetric_Elements();
-
-		/**
-		 * The meta object literal for the '<em><b>Database Cluster</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference METRIC__DATABASE_CLUSTER = eINSTANCE.getMetric_DatabaseCluster();
 
 		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
