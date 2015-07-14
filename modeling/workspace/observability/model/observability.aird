@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_UfoQgAuaEeWBUsk2XRUqsw" selectedViews="_UgjdkAuaEeWBUsk2XRUqsw" version="10.0.0.201505222000">
-  <models xmi:type="ecore:EPackage" href="observability.ecore#/"/>
-  <models xmi:type="ecore:EPackage" href="http://www.eclipse.org/emf/2002/Ecore#/"/>
-  <models xmi:type="genmodel:GenModel" href="observability.genmodel#/"/>
+<semanticResources>observability.ecore</semanticResources>
+  <semanticResources>observability.genmodel</semanticResources>
   <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_UgjdkAuaEeWBUsk2XRUqsw">
     <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_UkN1kAuaEeWBUsk2XRUqsw" name="observability class diagram">
       <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_UkQ44AuaEeWBUsk2XRUqsw" source="GMF_DIAGRAMS">
