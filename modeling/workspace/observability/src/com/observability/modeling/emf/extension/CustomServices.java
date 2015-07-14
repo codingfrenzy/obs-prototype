@@ -152,7 +152,10 @@ public class CustomServices {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			DbType newDbType = factory.createDbType();
 			newDbType.setName(dbType.getName());
+		
+			createMetrics(newDbType, dbType);
 			
+
 			
 			createMetrics(newDbType, dbType);
 			

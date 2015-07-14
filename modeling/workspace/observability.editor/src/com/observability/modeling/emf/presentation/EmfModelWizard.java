@@ -253,8 +253,8 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 								CustomServices.initializeDbTypes((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
-										"Descriptors not found", 
-										"Could not find descriptors in <workspace directory>"+ File.separatorChar + "descriptors");
+										"Error while creating the model instance", 
+										e.getMessage());
 								throw e;
 							}
 							resource.save(options);
