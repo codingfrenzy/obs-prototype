@@ -120,11 +120,12 @@ public class DescriptorParserImpl implements DescriptorParser {
 					String name = file.getName().toLowerCase().split("\\.")[0];
 					
 					DbType dbType = new DbType(name);
-
+					boolean isFeatureFile = name.equals(FEATUREFILENAME);
 					//parse the file and populate the dbType
-					parseFile(file, dbType, name.equals(FEATUREFILENAME));
+					parseFile(file, dbType, isFeatureFile);
 					//add the parsed structure to the plugins list
-					plugins.add(dbType);
+					if(!isFeatureFile)
+						plugins.add(dbType);
 
 				}
 			} catch (Exception ex) {
