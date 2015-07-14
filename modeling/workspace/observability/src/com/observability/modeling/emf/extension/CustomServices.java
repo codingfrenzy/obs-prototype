@@ -35,8 +35,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
 
-import com.observability.modeling.emf.AggregatedMetric;
-import com.observability.modeling.emf.BaseMetric;
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
@@ -46,12 +44,10 @@ import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.Model;
 import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
-import com.observability.modeling.probe.descriptor.entities.DbMetric;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Machine;
 import com.observability.modeling.probe.descriptor.entities.Parameter;
 import com.observability.modeling.probe.descriptor.entities.Scope;
-import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
 /**
  * @author gemici
@@ -153,10 +149,6 @@ public class CustomServices {
 			DbType newDbType = factory.createDbType();
 			newDbType.setName(dbType.getName());
 		
-			createMetrics(newDbType, dbType);
-			
-
-			
 			createMetrics(newDbType, dbType);
 			
 			model.getAvailableDbTypes().add(newDbType);
@@ -329,6 +321,8 @@ public class CustomServices {
 		if(elements.size() != 0){
 			for (ElementTag elementTag : elements) {
 				Element newSubElement = factory.createElement();
+				newSubElement.setName(elementTag.getName());
+				newSubElement.setValue(elementTag.getValue());
 				fillElements(elementTag, newSubElement);
 				newElement.getElements().add(newSubElement);
 			}
