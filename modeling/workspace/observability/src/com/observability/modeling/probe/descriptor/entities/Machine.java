@@ -37,14 +37,6 @@ public class Machine extends Parameter {
 		this.keyValues = new ArrayList<KeyValue>();
 	}
 	
-	public Machine(String name, String value){
-		if(name!=null){
-			this.name = name;
-			this.value = value;
-			this.elements = new ArrayList<ElementTag>();
-			this.keyValues = new ArrayList<KeyValue>();
-		}
-	}
 	
 	@Override
 	public String toString() {

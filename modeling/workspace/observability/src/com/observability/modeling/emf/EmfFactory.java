@@ -103,6 +103,15 @@ public interface EmfFactory extends EFactory {
 	Notification createNotification();
 
 	/**
+	 * Returns a new object of class '<em>Feature</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Feature</em>'.
+	 * @generated
+	 */
+	Feature createFeature();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

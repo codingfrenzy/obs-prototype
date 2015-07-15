@@ -250,11 +250,11 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							IPath filePath = modelFile.getLocation();
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
 							try{
-								CustomServices.initializeDbTypes((Model)rootObject, dirPath);
+								CustomServices.initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
-										"Descriptors not found", 
-										"Could not find descriptors in <workspace directory>"+ File.separatorChar + "descriptors");
+										"Error while creating the model instance", 
+										e.getMessage());
 								throw e;
 							}
 							resource.save(options);

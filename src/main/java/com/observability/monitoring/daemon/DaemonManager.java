@@ -50,6 +50,7 @@ import java.util.Vector;
  * 5. Modified					Jun 07 2015<br>
  * 6. Modified					Jun 19 2015<br>
  * 7. Modified					Jun 23 2015<br>
+ * 8. Modified					Jly 14 2015<br>
  */
 
 public class DaemonManager extends UnicastRemoteObject implements IDaemonManagerServer{
@@ -77,6 +78,12 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * DaemonHeartbeatClient object
 	 */
 	public DaemonHeartbeatClient dhc = null;
+	
+	/**
+	 * Strong reference to the server son it will not be GCed.
+	 */
+	private static DaemonManager server = null;
+	
 	/**
 	 * Default constructor
 	 * 
@@ -267,8 +274,8 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			// 2. stop collect process
 			killProcess("collectd");
 			// Update heartbeat client
-			if(dhc != null)
-				dhc.updateInterval();
+			if(server.dhc != null)
+				server.dhc.updateInterval();
 			// 3. start collect process
 			//startProcess("collectd");
 			startProcess(collectdPath);
@@ -288,7 +295,9 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 */
 	public static void initializeService(String rmiIP, String rmiPort) {
 		try {
-			DaemonManager server = new DaemonManager();
+			// Modified by Joel Gao Jly 14 2015
+			//DaemonManager server = new DaemonManager();
+			server = new DaemonManager();
 			IDaemonManagerServer idms = server;//new DaemonManager();
             UnicastRemoteObject.unexportObject(idms, true);
             IDaemonManagerServer stub = (IDaemonManagerServer) UnicastRemoteObject.exportObject(idms, 0);

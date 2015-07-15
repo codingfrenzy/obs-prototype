@@ -32,10 +32,6 @@ import java.util.ArrayList;
  */
 public class AggregatedMetric extends Parameter {
 	
-	public AggregatedMetric(){
-		this.elements = new ArrayList<ElementTag>();
-		this.keyValues = new ArrayList<KeyValue>();
-	}
 	
 	public AggregatedMetric(String name, String value){
 		if(name!=null){

@@ -151,6 +151,7 @@ public class ModelItemProvider
 			childrenFeatures.add(EmfPackage.Literals.MODEL__CLUSTERS);
 			childrenFeatures.add(EmfPackage.Literals.MODEL__AVAILABLE_DB_TYPES);
 			childrenFeatures.add(EmfPackage.Literals.MODEL__NOTIFICATIONS);
+			childrenFeatures.add(EmfPackage.Literals.MODEL__FEATURES);
 		}
 		return childrenFeatures;
 	}
@@ -214,6 +215,7 @@ public class ModelItemProvider
 			case EmfPackage.MODEL__CLUSTERS:
 			case EmfPackage.MODEL__AVAILABLE_DB_TYPES:
 			case EmfPackage.MODEL__NOTIFICATIONS:
+			case EmfPackage.MODEL__FEATURES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -245,6 +247,11 @@ public class ModelItemProvider
 			(createChildParameter
 				(EmfPackage.Literals.MODEL__NOTIFICATIONS,
 				 EmfFactory.eINSTANCE.createNotification()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(EmfPackage.Literals.MODEL__FEATURES,
+				 EmfFactory.eINSTANCE.createFeature()));
 	}
 
 	/**

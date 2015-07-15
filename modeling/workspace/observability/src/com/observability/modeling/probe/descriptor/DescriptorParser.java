@@ -63,6 +63,6 @@ public interface DescriptorParser {
 	 * @return root plugin entity that holds all the information about the
 	 *         content in a hierarchical format.
 	 */
-	public void parseFile(File file, DbType dbType);
+	public void parseFile(File file, DbType dbType, boolean isFeatureFile);
 
 }

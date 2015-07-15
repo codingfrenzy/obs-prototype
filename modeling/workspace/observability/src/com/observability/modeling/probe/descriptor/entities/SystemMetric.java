@@ -33,12 +33,7 @@ import java.util.ArrayList;
 public class SystemMetric extends Parameter {
 	
 	private MetricType type;
-	
-	public SystemMetric(){
-		this.elements = new ArrayList<ElementTag>();
-		this.keyValues = new ArrayList<KeyValue>();
-	}
-	
+
 	public SystemMetric(String name, MetricType type){
 		if(name!=null){
 			this.name = name;

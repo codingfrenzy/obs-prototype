@@ -5,6 +5,7 @@ package com.observability.modeling.emf.impl;
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.Feature;
 import com.observability.modeling.emf.Model;
 
 import java.util.Collection;
@@ -36,6 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getServerIP <em>Server IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getNotifications <em>Notifications</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getFeatures <em>Features</em>}</li>
  * </ul>
  * </p>
  *
@@ -131,6 +133,16 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 * @ordered
 	 */
 	protected EList<com.observability.modeling.emf.Notification> notifications;
+
+	/**
+	 * The cached value of the '{@link #getFeatures() <em>Features</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFeatures()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Feature> features;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -255,6 +267,18 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Feature> getFeatures() {
+		if (features == null) {
+			features = new EObjectContainmentEList<Feature>(Feature.class, this, EmfPackage.MODEL__FEATURES);
+		}
+		return features;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -264,6 +288,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return ((InternalEList<?>)getAvailableDbTypes()).basicRemove(otherEnd, msgs);
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				return ((InternalEList<?>)getNotifications()).basicRemove(otherEnd, msgs);
+			case EmfPackage.MODEL__FEATURES:
+				return ((InternalEList<?>)getFeatures()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -288,6 +314,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return getName();
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				return getNotifications();
+			case EmfPackage.MODEL__FEATURES:
+				return getFeatures();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -322,6 +350,10 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				getNotifications().clear();
 				getNotifications().addAll((Collection<? extends com.observability.modeling.emf.Notification>)newValue);
 				return;
+			case EmfPackage.MODEL__FEATURES:
+				getFeatures().clear();
+				getFeatures().addAll((Collection<? extends Feature>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -352,6 +384,9 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				getNotifications().clear();
 				return;
+			case EmfPackage.MODEL__FEATURES:
+				getFeatures().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -376,6 +411,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				return notifications != null && !notifications.isEmpty();
+			case EmfPackage.MODEL__FEATURES:
+				return features != null && !features.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

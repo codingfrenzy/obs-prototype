@@ -3,9 +3,9 @@
 package com.observability.modeling.emf.provider;
 
 
-import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.Feature;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +29,12 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link com.observability.modeling.emf.DatabaseCluster} object.
+ * This is the item provider adapter for a {@link com.observability.modeling.emf.Feature} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class DatabaseClusterItemProvider 
+public class FeatureItemProvider 
 	extends ItemProviderAdapter
 	implements
 		IEditingDomainItemProvider,
@@ -48,7 +48,7 @@ public class DatabaseClusterItemProvider
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DatabaseClusterItemProvider(AdapterFactory adapterFactory) {
+	public FeatureItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -63,57 +63,9 @@ public class DatabaseClusterItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addAssociatedDbTypePropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addNoOfMachinesPropertyDescriptor(object);
-			addAssociatedNotificationsPropertyDescriptor(object);
-			addCollectedMetricsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Collected Metrics feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addCollectedMetricsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_collectedMetrics_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_collectedMetrics_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__COLLECTED_METRICS,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Associated Db Type feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addAssociatedDbTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_associatedDbType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_associatedDbType_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
 	}
 
 	/**
@@ -127,57 +79,13 @@ public class DatabaseClusterItemProvider
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_name_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__NAME,
+				 getString("_UI_Feature_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Feature_name_feature", "_UI_Feature_type"),
+				 EmfPackage.Literals.FEATURE__NAME,
 				 true,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the No Of Machines feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addNoOfMachinesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_noOfMachines_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_noOfMachines_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__NO_OF_MACHINES,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Associated Notifications feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addAssociatedNotificationsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DatabaseCluster_associatedNotifications_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DatabaseCluster_associatedNotifications_feature", "_UI_DatabaseCluster_type"),
-				 EmfPackage.Literals.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}
@@ -194,7 +102,8 @@ public class DatabaseClusterItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(EmfPackage.Literals.DATABASE_CLUSTER__MACHINES);
+			childrenFeatures.add(EmfPackage.Literals.FEATURE__ELEMENTS);
+			childrenFeatures.add(EmfPackage.Literals.FEATURE__KEY_VALUES);
 		}
 		return childrenFeatures;
 	}
@@ -213,14 +122,14 @@ public class DatabaseClusterItemProvider
 	}
 
 	/**
-	 * This returns DatabaseCluster.gif.
+	 * This returns Feature.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/DatabaseCluster"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Feature"));
 	}
 
 	/**
@@ -231,10 +140,10 @@ public class DatabaseClusterItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((DatabaseCluster)object).getName();
+		String label = ((Feature)object).getName();
 		return label == null || label.length() == 0 ?
-			getString("_UI_DatabaseCluster_type") :
-			getString("_UI_DatabaseCluster_type") + " " + label;
+			getString("_UI_Feature_type") :
+			getString("_UI_Feature_type") + " " + label;
 	}
 	
 
@@ -249,12 +158,12 @@ public class DatabaseClusterItemProvider
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(DatabaseCluster.class)) {
-			case EmfPackage.DATABASE_CLUSTER__NAME:
-			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
+		switch (notification.getFeatureID(Feature.class)) {
+			case EmfPackage.FEATURE__NAME:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case EmfPackage.DATABASE_CLUSTER__MACHINES:
+			case EmfPackage.FEATURE__ELEMENTS:
+			case EmfPackage.FEATURE__KEY_VALUES:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -274,8 +183,13 @@ public class DatabaseClusterItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(EmfPackage.Literals.DATABASE_CLUSTER__MACHINES,
-				 EmfFactory.eINSTANCE.createNodeMachine()));
+				(EmfPackage.Literals.FEATURE__ELEMENTS,
+				 EmfFactory.eINSTANCE.createElement()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(EmfPackage.Literals.FEATURE__KEY_VALUES,
+				 EmfFactory.eINSTANCE.createKeyValue()));
 	}
 
 	/**

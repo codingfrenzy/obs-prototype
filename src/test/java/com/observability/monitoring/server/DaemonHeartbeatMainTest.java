@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Test;
 
@@ -47,4 +48,22 @@ public class DaemonHeartbeatMainTest {
             assertTrue(true);
         }
 	}
+	/*
+	@Test
+	public void testinitListofConfiguredDaemons() {
+		DaemonHeartbeatMain dhm = new DaemonHeartbeatMain();
+		assertTrue(dhm != null);
+		System.out.println(dhm.toString());
+	}
+	
+	@Test
+	public void testinitListofConfiguredDaemons1() {
+		HashMap<String, DaemonInfo> list1 = new HashMap<String, DaemonInfo>();
+		HashMap<String, DaemonInfo> list2 = new HashMap<String, DaemonInfo>();
+		AtomicBoolean daemonHeartbeatCollectionToggle = new AtomicBoolean();
+		
+		DaemonHeartbeatMain dhm = new DaemonHeartbeatMain(list1, list2, daemonHeartbeatCollectionToggle);
+		assertTrue(dhm != null);
+		System.out.println(dhm.toString());
+	}*/
 }

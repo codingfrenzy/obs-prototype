@@ -9,6 +9,8 @@ import java.rmi.RemoteException;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.observability.monitoring.daemon.IDaemonManagerServer;
+
 public class ModelHandlerTest {
 
 	private String dirName = "/home/joel/dummy";
@@ -94,6 +96,9 @@ public class ModelHandlerTest {
 			int ret = modelhandler.endFileUpload(null);
 			assertTrue(ret < 0);
 			
+			ret = modelhandler.endFileUpload("");
+			assertTrue(ret < 0);
+			
 			boolean b1 = modelhandler.beginFileUpload("5678");
 			assertTrue(b1);
 			byte [] buf = new byte[100];
@@ -130,4 +135,39 @@ public class ModelHandlerTest {
 		ModelHandler.initializeService("127.0.0.1", "12348");
 	}
 
+	@Test
+	public void testmain() {
+		String []args = new String[2];
+		args[0] = "1.2.3.4";
+		args[1] = "12321";
+		ModelHandler.main(args);
+	}
+	
+	@Test
+	public void testmain1() {
+		String []args = new String[1];
+		args[0] = "1.2.3.4";
+		ModelHandler.main(args);
+	}
+	
+	@Test
+	public void testdeployModel() {
+		ModelHandler mh = null;
+		try {
+			mh = new ModelHandler();
+			mh.deployModel("target");
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testDaemonManagerClient() {
+		IDaemonManagerServer si = DaemonManagerClient.getServerInstance("52.6.202.212", "8101");
+		if(si == null)
+			System.out.println("null pointer");
+		else
+			System.out.println(si.toString());
+	}
 }

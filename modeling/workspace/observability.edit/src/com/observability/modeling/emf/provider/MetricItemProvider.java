@@ -65,7 +65,6 @@ public class MetricItemProvider
 
 			addNamePropertyDescriptor(object);
 			addDescriptionPropertyDescriptor(object);
-			addDatabaseClusterPropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -111,28 +110,6 @@ public class MetricItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Database Cluster feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addDatabaseClusterPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Metric_databaseCluster_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Metric_databaseCluster_feature", "_UI_Metric_type"),
-				 EmfPackage.Literals.METRIC__DATABASE_CLUSTER,
-				 true,
-				 false,
-				 true,
-				 null,
 				 null,
 				 null));
 	}
