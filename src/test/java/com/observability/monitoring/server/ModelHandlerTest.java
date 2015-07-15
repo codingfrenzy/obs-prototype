@@ -3,7 +3,10 @@ package com.observability.monitoring.server;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
 
 import org.junit.Before;
@@ -32,6 +35,36 @@ public class ModelHandlerTest {
 		//deleteDirectoryContents
 		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
 		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+	}
+	
+	@Test
+	public void testFileOperationHelpers2() {
+		//IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		IModelHandlerServer.FileOperationHelper.unzipFile("foo", "bar");
+		
+	}
+	
+	@Test
+	public void testFileOperationHelpers3() {
+		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		IModelHandlerServer.FileOperationHelper.createDirectory(subFilePath);
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(dirName + "/1.txt", "UTF-8");
+			writer.println("The first line");
+			writer.println("The second line");
+			writer.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//deleteDirectoryContents
+		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+		//IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
 	}
 	
 	private ModelHandler modelhandler = null;
