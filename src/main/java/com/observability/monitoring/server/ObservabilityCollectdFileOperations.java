@@ -90,13 +90,15 @@ public class ObservabilityCollectdFileOperations {
             e.printStackTrace();
         } finally {
             try {
-                lock.release();
+                if (lock != null)
+                    lock.release();
             } catch (IOException e) {
                 System.out.println("----------Error: Releasing lock");
                 e.printStackTrace();
             }
             try {
-                fbw.close();
+                if (fbw != null)
+                    fbw.close();
             } catch (IOException e) {
                 System.out.println("----------Error: Closing file");
                 e.printStackTrace();
@@ -154,19 +156,17 @@ public class ObservabilityCollectdFileOperations {
             e.printStackTrace();
         } finally {
             try {
-                lock.release();
+                if (lock != null)
+                    lock.release();
             } catch (IOException e) {
                 System.out.println("ERROR: Releasing lock");
                 e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
             try {
-                fbr.close();
+                if (fbr != null)
+                    fbr.close();
             } catch (IOException e) {
                 System.out.println("ERROR: Closing file");
-                e.printStackTrace();
-            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
