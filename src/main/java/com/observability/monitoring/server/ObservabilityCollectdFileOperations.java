@@ -158,11 +158,15 @@ public class ObservabilityCollectdFileOperations {
             } catch (IOException e) {
                 System.out.println("ERROR: Releasing lock");
                 e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
             try {
                 fbr.close();
             } catch (IOException e) {
                 System.out.println("ERROR: Closing file");
+                e.printStackTrace();
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }
