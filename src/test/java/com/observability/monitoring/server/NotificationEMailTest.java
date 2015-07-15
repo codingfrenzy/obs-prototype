@@ -21,8 +21,11 @@
 
 package com.observability.monitoring.server;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -78,6 +81,18 @@ public class NotificationEMailTest {
 		Assert.assertFalse(ret);
 	}
 	
+	@Test
+	public void testSendEMailNullRecipient1() {
+		NotificationEMail sm = new NotificationEMail();
+		List<String> recipients = new ArrayList<String>();
+		recipients.add(null);
+		recipients.add("");
+		
+		boolean ret = sm.sendEMail(recipients, "Test", "This is a testing email.", false);
+		Assert.assertFalse(ret);
+	}
+	
+	
 	/**
 	 * Test method for {@link com.observability.monitoring.server.NotificationEMail#sendEMail(java.util.List, java.lang.String, java.lang.String)}.
 	 */
@@ -90,5 +105,37 @@ public class NotificationEMailTest {
 		
 		boolean ret = sm.sendEMail(recipients, "Test", "<h1>This is a <br>testing email.</h1>", true);
 		Assert.assertTrue(ret);
+	}
+	
+	@Test
+	public void testinitRecipients() {
+		NotificationEMail sm = new NotificationEMail();
+		List<String> rs = sm.initRecipients();
+		assertTrue(rs != null);
+		System.out.println(sm.toString());
+	}
+	
+	@Test 
+	public void testmakeNotRespondingEmailBody() {
+		NotificationEMail sm = new NotificationEMail();
+		ArrayList<String> ips = new ArrayList<String>();
+		ArrayList<String> dateTime = new ArrayList<String>();
+		ips.add("1.2.3.4");
+		dateTime.add("FooBar");
+		String s1 = sm.makeNotRespondingEmailBody(ips, dateTime);
+		assertTrue(s1 != null);
+		System.out.println(s1);
+	}
+	
+	@Test 
+	public void testmakeNotCollectingEmailBody() {
+		NotificationEMail sm = new NotificationEMail();
+		ArrayList<String> ips = new ArrayList<String>();
+		ArrayList<String> dateTime = new ArrayList<String>();
+		ips.add("1.2.3.4");
+		dateTime.add("FooBar");
+		String s1 = sm.makeNotCollectingEmailBody(ips, dateTime);
+		assertTrue(s1 != null);
+		System.out.println(s1);
 	}
 }
