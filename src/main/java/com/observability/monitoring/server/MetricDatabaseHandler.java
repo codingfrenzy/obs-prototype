@@ -112,12 +112,16 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
-			br = new BufferedReader(new InputStreamReader (conn.getInputStream()));
+			br = new BufferedReader(new InputStreamReader (conn.getInputStream(),"UTF-8"));
 			String value = br.readLine();
-			value = value.substring(value.indexOf('|')+1);	// only get the metric values
+			if(value!=null){
+				value = value.substring(value.indexOf('|')+1);	// only get the metric values
+				returnStr = actualEpoch + "\t" + value;		// return result
+			}
+			else
+				returnStr = null;
 			conn.disconnect();
 			br.close();
-			returnStr = actualEpoch + "\t" + value;		// return result
 		} catch (Exception e) {		// if there is an Exception, log it and 
 			if(conn!=null)			// return null
 				conn.disconnect();
@@ -167,20 +171,22 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			url = new URL(urlString.toString());
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
-			br = new BufferedReader(new InputStreamReader (conn.getInputStream()));
+			br = new BufferedReader(new InputStreamReader (conn.getInputStream(),"UTF-8"));
 			String value = br.readLine();
-			value = value.substring(value.indexOf('|')+1);	// get metric values only
-			conn.disconnect();
-			br.close();
-			String[] split = value.split(",");		// get each metric vale
-			String listElements;
-			long fromEpochCopy = fromEpochLong;
-			if(split.length > 0){					// create the final list
-				for(int i=1;i<=datapoints;i++){
-					listElements = (fromEpochCopy + i * lowestInterval) + "\t" + split[i-1];
-					outputList.add(listElements);
+			if(value!=null) {
+				value = value.substring(value.indexOf('|')+1);	// get metric values only
+				String[] split = value.split(",");		// get each metric vale
+				String listElements;
+				long fromEpochCopy = fromEpochLong;
+				if(split.length > 0){					// create the final list
+					for(int i=1;i<=datapoints;i++){
+						listElements = (fromEpochCopy + i * lowestInterval) + "\t" + split[i-1];
+						outputList.add(listElements);
+					}
 				}
 			}
+			conn.disconnect();
+			br.close();
 		} catch (Exception e) {
 			if(conn!=null)		// if the connection is still open and there is 
 				conn.disconnect();	// an exception, then close connection
