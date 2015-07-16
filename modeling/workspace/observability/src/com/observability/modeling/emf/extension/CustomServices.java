@@ -136,6 +136,7 @@ public class CustomServices {
 	private static void fillExternalElements() {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			externalElements.put(dbType.getName(), new HashMap<String,Element>());
+			
 		}
 		
 	}
@@ -217,11 +218,16 @@ public class CustomServices {
 			Metric semanticMetric = null;
 			
 			//System and db Metrics are represented as base metrics in EMF model 
-			if(metric instanceof com.observability.modeling.probe.descriptor.entities.AggregatedMetric)
+			if(metric instanceof com.observability.modeling.probe.descriptor.entities.AggregatedMetric){
 				 semanticMetric = factory.createAggregatedMetric();
-			else
+			}
+			else{
 				semanticMetric = factory.createBaseMetric();
-			
+				if( metric instanceof com.observability.modeling.probe.descriptor.entities.SystemMetric)
+					semanticMetric.setType(((com.observability.modeling.probe.descriptor.entities.SystemMetric)metric).getType().toString());
+				else
+					semanticMetric.setType(((com.observability.modeling.probe.descriptor.entities.DbMetric)metric).getType().toString());
+			}
 			semanticMetric.setName(metric.getName());
 			
 			//Will be used when parser supports adding descriptions to metrics
