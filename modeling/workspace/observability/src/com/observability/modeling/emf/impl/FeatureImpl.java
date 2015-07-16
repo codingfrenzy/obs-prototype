@@ -231,7 +231,7 @@ public class FeatureImpl extends MinimalEObjectImpl.Container implements Feature
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.FEATURE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.FEATURE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.FEATURE__KEY_VALUES:

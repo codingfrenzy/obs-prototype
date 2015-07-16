@@ -406,9 +406,9 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case EmfPackage.MODEL__AVAILABLE_DB_TYPES:
 				return availableDbTypes != null && !availableDbTypes.isEmpty();
 			case EmfPackage.MODEL__SERVER_IP:
-				return SERVER_IP_EDEFAULT == null ? serverIP != null : !SERVER_IP_EDEFAULT.equals(serverIP);
+				return serverIP != null ? true : false;
 			case EmfPackage.MODEL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				return notifications != null && !notifications.isEmpty();
 			case EmfPackage.MODEL__FEATURES:

@@ -15,7 +15,9 @@ Export-Package: com.observability.modeling.emf,
  com.observability.modeling.probe.descriptor.entities
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.junit
+ org.junit,
+ org.eclipse.emf.ecore.xmi;bundle-version="2.11.0",
+ org.eclipse.emf.ecore.xmi.source;bundle-version="2.11.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources
 

@@ -382,7 +382,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				return associatedDbType != null;
 			case EmfPackage.DATABASE_CLUSTER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:

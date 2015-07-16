@@ -328,11 +328,11 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.NODE_MACHINE__IP:
-				return IP_EDEFAULT == null ? ip != null : !IP_EDEFAULT.equals(ip);
+				return ip != null ? true : false;
 			case EmfPackage.NODE_MACHINE__PORT:
 				return port != PORT_EDEFAULT;
 			case EmfPackage.NODE_MACHINE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return  name != null ? true : false;
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.NODE_MACHINE__KEY_VALUES:

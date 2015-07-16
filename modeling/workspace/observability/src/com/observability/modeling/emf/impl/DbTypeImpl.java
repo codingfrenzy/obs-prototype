@@ -281,7 +281,7 @@ public class DbTypeImpl extends MinimalEObjectImpl.Container implements DbType {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.DB_TYPE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return  name != null ? true : false;
 			case EmfPackage.DB_TYPE__COLLECTION_FREQUENCY:
 				return collectionFrequency != COLLECTION_FREQUENCY_EDEFAULT;
 			case EmfPackage.DB_TYPE__AVAILABLE_METRICS:

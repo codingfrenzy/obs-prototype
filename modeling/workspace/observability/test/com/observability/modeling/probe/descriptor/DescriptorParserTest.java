@@ -113,12 +113,4 @@ public class DescriptorParserTest {
 		System.out.println(parser.getFeatures());		
 	}
 	
-	@Test
-	public void testDirectoryDescriptor(){
-		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
-		URL path = classLoader.getResource("mongodb.descriptor");
-		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
-		
-		parser.parseDescriptors();
-	}
 }
