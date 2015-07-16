@@ -46,16 +46,16 @@ public class MetricDatabaseHandlerTest {
 	static final String rmiIp = "45.55.197.112";		// Server IP
 	static final String rmiPort = "8100";		// Server port
 	// testGetMetricValueAtEpoch variables to be set:
-	static final String epoch1 = "1436368170.507";
+	static final String epoch1 = "1436973780";
 	static final String metricPath1 = "collectd/45_55_197_112/memory/memory-used";
 	// testGetMetricsBtwEpochRange variables to be set:
-	static final String fromEpoch2 = "1436367990.507";
-	static final String toEpoch2 = "1436368080.508";
-	static final String metricPath2 = "collectd/observabilityCassandra1/memory/memory-used";
+	static final String fromEpoch2 = "1436973780";
+	static final String toEpoch2 = "1436973900";
+	static final String metricPath2 = "collectd/45_55_197_112/memory/memory-used";
 	// testUpdateMetrics variables to be set:
-	static final String[] epoch3 = new String[]{"1433641326.507", "1433641416.508"};
-	static final String[] values3 = new String[]{"242106369.000000", "242126849.000000"};
-	static final String metricPath3 = "collectd/observabilityCassandra1/memory/memory-used";
+	static final String[] epoch3 = new String[]{"1436973780", "1436973900"};
+	static final String[] values3 = new String[]{"356024320.0", "356024320.0"};
+	static final String metricPath3 = "collectd/45_55_197_112/memory/memory-used";
 	
 	private static IMetricDatabaseHandlerServer imdhs;
 	
@@ -79,9 +79,37 @@ public class MetricDatabaseHandlerTest {
 	@Test
 	public void testGetMetricValueAtEpoch() throws RemoteException {
 		assertNotNull(imdhs.getMetricValueAtEpoch(epoch1, metricPath1));	// positive TC
+	}
+	
+	@Test
+	public void testGetMetricValueAtEpochEmptyEpoch() throws RemoteException {
 		assertNull(imdhs.getMetricValueAtEpoch("", metricPath1));			// negative TC
 	}
-
+	
+	@Test
+	public void testGetMetricValueAtEpochNullEpoch() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch(null, metricPath1));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricValueAtEpochNullMetricpath() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch(epoch1, null));				// negative TC
+	}
+	
+	@Test
+	public void testGetMetricValueAtEpochEmptyMetricPath() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch(epoch1, ""));				// negative TC
+	}
+	
+	@Test
+	public void testGetMetricValueAtEpochNaNEpoch() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch("abcd", metricPath1));				// negative TC
+	}
+	
+	@Test
+	public void testGetMetricValueAtEpochInvalidURL() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch(epoch1, "http://gibberish"));		// negative TC
+	}
 	/**
 	 * Test method for {@link com.observability.monitoring.server.MetricDatabaseHandler#getMetricsBtwEpochRange(java.lang.String, java.lang.String, java.lang.String)}.
 	 * @throws RemoteException 
@@ -89,7 +117,56 @@ public class MetricDatabaseHandlerTest {
 	@Test
 	public void testGetMetricsBtwEpochRange() throws RemoteException {
 		assertNotNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, toEpoch2, metricPath2));	// positive TC
-		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, null, metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeFromEpochNull() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(null, toEpoch2, metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeEmptyFromEpoch() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange("", toEpoch2, metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeToEpochNull() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, null, metricPath2));		// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeEmptyToEpoch() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, "", metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeMetricpathNull() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, toEpoch2, null));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeEmptyMetricPath() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, toEpoch2, ""));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeNaNFromEpoch() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange("abcd", toEpoch2, metricPath2));		// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeDatapointsLessThanZero() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, "0", metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeSameEpochs() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, fromEpoch2, metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeInvalidURL() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, toEpoch2, "http://gibberish"));	// negative TC
 	}
 
 	/**
@@ -99,7 +176,36 @@ public class MetricDatabaseHandlerTest {
 	@Test
 	public void testUpdateMetrics() throws RemoteException {
 		assertTrue(imdhs.updateMetrics(epoch3, values3, metricPath3));	// positive TC
-		assertFalse(imdhs.updateMetrics(epoch3, values3, " "));			// negative TC
-	}	
+	}
+	
+	@Test
+	public void testUpdateMetricsNullEpoch() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(null, values3, metricPath3));			// negative TC
+	}
+	
+	@Test
+	public void testUpdateMetricsNullValues() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(epoch3, null, metricPath3));			// negative TC
+	}
+	
+	@Test
+	public void testUpdateMetricsNullMetricPath() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(epoch3, values3, null));			// negative TC
+	}
+	
+	@Test
+	public void testUpdateMetricsEmptyMetricpath() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(epoch3, values3, ""));			// negative TC
+	}
+	
+	@Test
+	public void testUpdateMetricsLengthMismatch() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(epoch3, new String[]{"356024320.0"}, metricPath3));		// negative TC
+	}
+	
+	@Test
+	public void testUpdateMetricsBadEpochs() throws RemoteException {
+		assertFalse(imdhs.updateMetrics(new String[]{"abcd", "efgh"}, values3, metricPath3));	// negative TC
+	}
 	
 }

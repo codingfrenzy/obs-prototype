@@ -24,6 +24,8 @@ package com.observability.monitoring.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -76,7 +78,10 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 	 * The lowest frequency in seconds of metric collection
 	 */
 	private int lowestInterval = 30;
-	
+	/*
+	 * The IP of the server
+	 */
+	private static String serverIP = "45.55.197.112";	// should be set to localhost later
 	/**
 	 * @see com.observability.monitoring.server.IMetricDatabaseHandlerServer
 	 */
@@ -84,49 +89,47 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			throws RemoteException {
 		if(epoch == null || "".equals(epoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
 			return null;	// for any invalid input, return null
-		StringBuilder command = new StringBuilder();	// used to build command string
+		StringBuilder urlString = new StringBuilder();	// used to build url  string
 		long actualEpoch = 0;
+		String returnStr = null;
+		URL url;
+		HttpURLConnection conn = null;
+		BufferedReader br;
 		try{
 			actualEpoch = (long)Double.parseDouble(epoch);	// convert epoch to long
-		} catch(NumberFormatException e){
+		} catch(NumberFormatException e){	// if it is not a number return null
 			LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
 			e.printStackTrace();
 			return null;
 		}
 		actualEpoch = actualEpoch - (actualEpoch % lowestInterval);	// round down
-		// whisper-fetch utility needs a range of epoch so to get the result
+		// The HTTP API needs a range of epoch so to get the result
 		// for a specific epoch find metric value b/w epoch-1 and epoch+1 
 		long from = actualEpoch-1;
 		long to = actualEpoch+1;
-		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+from+" --until="+to);
-		Process p;			// initialize a process class
-		BufferedReader outReader = null;	// used to hold result from command executed
-		String returnStr = null;			// used to hold result from command executed
 		try {
-			p = Runtime.getRuntime().exec(command.toString());	// run the UNIX command
-			p.waitFor();		// wait for it to finish execution
-		    if (p.exitValue() != 0)		// if there is an error
-		    	return null;			// return null
-		    // else fetch the result:
-		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
-		    String output = outReader.readLine();
-		    if(output!=null && !"".equals(output) && output.contains("\t")){
-		    	String[] value = output.split("\t");	// returned result contains two values
-		    	returnStr =  actualEpoch+"\t"+value[1];	// separated by a tab
-		    }
-		} catch (Exception e) {
+			urlString.append("http://"+serverIP+"/render?target="+metricPath.replace('/', '.')+"&format=raw&from="+from+"&until="+to);
+			url = new URL(urlString.toString());
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			br = new BufferedReader(new InputStreamReader (conn.getInputStream(),"UTF-8"));
+			String value = br.readLine();
+			if(value!=null){
+				value = value.substring(value.indexOf('|')+1);	// only get the metric values
+				returnStr = actualEpoch + "\t" + value;		// return result
+			}
+			else
+				returnStr = null;
+			conn.disconnect();
+			br.close();
+		} catch (Exception e) {		// if there is an Exception, log it and 
+			if(conn!=null)			// return null
+				conn.disconnect();
 			LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
 			e.printStackTrace();
 			return null;
-		} finally{
-			try {
-				if(outReader!=null)
-					outReader.close();		// close the BufferedReader stream at the end
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "Exception in getMetricValueAtEpoch::", e);
-				e.printStackTrace();
-			}
 		}
+		
        return returnStr;
 	}
 	
@@ -137,49 +140,61 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 			String toEpoch, String metricPath) throws RemoteException {
 		if(fromEpoch == null || "".equals(fromEpoch.trim()) || toEpoch == null || "".equals(toEpoch.trim()) || metricPath == null || "".equals(metricPath.trim()))
 			return null;	// return null if an invalid input is given
-		StringBuilder command = new StringBuilder();	// used to store the command
+		StringBuilder urlString = new StringBuilder();	// used to store the command
+		URL url;
+		HttpURLConnection conn = null;
+		BufferedReader br;
+		
 		// convert the from and to epoch values to long from String and
 		// round them down to the nearest 'lowestInterval'
 		long fromEpochLong, toEpochLong;
+		int datapoints = 0;
 		try{
 			fromEpochLong = (long)Double.parseDouble(fromEpoch);
 			fromEpochLong = fromEpochLong - (fromEpochLong % lowestInterval);
 			toEpochLong = (long)Double.parseDouble(toEpoch);
 			toEpochLong = toEpochLong - (toEpochLong % lowestInterval);
-		} catch(NumberFormatException e){
+			datapoints = (int)((toEpochLong-fromEpochLong)/lowestInterval);
+		} catch(NumberFormatException e){	// if it is not a number, return null
 			LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
 			e.printStackTrace();
 			return null;
 		}
-		command.append("whisper-fetch.py "+whisperPath+metricPath+".wsp --from="+(fromEpochLong-1)+" --until="+(toEpochLong+1));
-		Process p;
-		BufferedReader outReader = null;
-		// the result returned will be multi-line so use an arraylist to store it: 
-		ArrayList<String> outputList = new ArrayList<String>();
+		
+		ArrayList<String> outputList = null;	// this stores the final result
+		if(datapoints > 0)						// if there are some datapoints
+			outputList = new ArrayList<String>(datapoints);	// create list
+		else
+			return null;						// else return null 
 		try {
-			p = Runtime.getRuntime().exec(command.toString());	// execute the command
-			p.waitFor();		// wait for it to execute
-		    if (p.exitValue() != 0)		// if there is an error
-		    	return null;			// return null
-		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
-		    String output = null;
-		    while( (output = outReader.readLine())!=null ){	// while the returned result contains more lines
-		    if(!"".equals(output) && output.contains("\t")){// check that the line is valid
-		    	outputList.add(output);						// add it to arraylist
-		     }
-		    }
+			urlString.append("http://"+serverIP+"/render?target="+metricPath.replace('/', '.')+"&format=raw&from="+(fromEpochLong-1)+"&until="+(toEpochLong-1));
+			url = new URL(urlString.toString());
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			br = new BufferedReader(new InputStreamReader (conn.getInputStream(),"UTF-8"));
+			String value = br.readLine();
+			if(value!=null) {
+				value = value.substring(value.indexOf('|')+1);	// get metric values only
+				String[] split = value.split(",");		// get each metric vale
+				String listElements;
+				long fromEpochCopy = fromEpochLong;
+				if(split.length > 0){					// create the final list
+					for(int i=1;i<=datapoints;i++){
+						listElements = (fromEpochCopy + i * lowestInterval) + "\t" + split[i-1];
+						outputList.add(listElements);
+					}
+				}
+			}
+			else
+				outputList = null;
+			conn.disconnect();
+			br.close();
 		} catch (Exception e) {
+			if(conn!=null)		// if the connection is still open and there is 
+				conn.disconnect();	// an exception, then close connection
 			LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
 			e.printStackTrace();
 			return null;
-		} finally{
-			try {
-				if(outReader!=null)		// close the BufferedReader
-					outReader.close();
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "Exception in getMetricsBtwEpochRange::", e);
-				e.printStackTrace();
-			}
 		}
 		return outputList;
 	}
@@ -194,7 +209,7 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 		Process p;
 		int noOfBadEpochs = 0;
 		StringBuilder command = new StringBuilder();		// holds the command to execute
-		command.append("whisper-update.py "+whisperPath+metricPath+".wsp ");
+		command.append("whisper-update "+whisperPath+metricPath+".wsp ");
 		long currentEpoch = 0;	// holds the currentEpoch when epoch[] is iterated
 		for(int i=0;i<epoch.length;i++){
 			try{
