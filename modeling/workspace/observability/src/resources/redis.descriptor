@@ -55,8 +55,8 @@ LoadPlugin "csv"
 </Plugin>
 
 
-<LoadPlugin python> @MetricSystem
-      Globals true @Machine
+<LoadPlugin python> 
+      Globals true 
 </LoadPlugin>
 
 

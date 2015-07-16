@@ -125,6 +125,7 @@ LoadPlugin aggregation
 				[/for]
 	</[e.name/]>
 			[/for]
+</[element.name/]
 		[/let]
 	[/for]
 

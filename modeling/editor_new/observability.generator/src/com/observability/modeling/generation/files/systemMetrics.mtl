@@ -5,7 +5,7 @@
 [template public generateSystemMetrics(aNodeMachine : NodeMachine, aCluster : DatabaseCluster)]
 	
 	[for (metric : Metric | aCluster.collectedMetrics)]
-		[if metric.type.strcmp('SYSTEM') = 0]
+		[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('SYSTEM') = 0]
 			[let element : Element = metric.elements->at(1)]
 LoadPlugin "[element.value/]"
 			

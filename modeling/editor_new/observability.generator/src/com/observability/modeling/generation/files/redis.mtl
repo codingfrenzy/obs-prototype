@@ -36,7 +36,7 @@ Interval [frequency/]
 	 	[/for]
 	
 		[for (metric : Metric | aCluster.collectedMetrics)]
-			[if metric.type.strcmp('DATABASE') = 0]
+			[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('DATABASE') = 0]
 	
 				[for (keyValue : KeyValue | metric.keyValues)]
 		[keyValue.key/] "[keyValue.value/]"

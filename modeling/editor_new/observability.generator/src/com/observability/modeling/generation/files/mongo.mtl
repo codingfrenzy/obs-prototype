@@ -2,7 +2,7 @@
 [**
  * The documentation of the module cassandra.
  */]
-[module mongodb('http://www.observability.com/emf')]
+[module mongo('http://www.observability.com/emf')]
 [import com::observability::modeling::generation::files::systemMetrics/]
 [import com::observability::modeling::generation::files::notifications/]
 [**

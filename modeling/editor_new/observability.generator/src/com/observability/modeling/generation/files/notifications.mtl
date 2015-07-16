@@ -29,7 +29,7 @@ LoadPlugin "threshold"
      FailureMax    [noti.failureMax/]
 		[/if]
      Invert [noti.invert/]
-		[if noti.dataSource.strcmp('') <> 0]
+		[if noti.dataSource <> null]
 	 DataSource [noti.dataSource/]
 		[/if]
 	Persist [noti.persist/]

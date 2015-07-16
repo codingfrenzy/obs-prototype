@@ -440,7 +440,12 @@ public class CustomServices {
 		//We assume the metric id is on the first element
 		if(metric.getElements().size()> 0){
 			//We assume the id is <key>_<value>
-			String id = metric.getElements().get(0).getName() + "_" + metric.getElements().get(0).getValue();
+			
+			String id = "";
+			if (metric.getElements().get(0).getName().indexOf("_") == -1)
+				id = metric.getElements().get(0).getName() + "_" + metric.getElements().get(0).getValue();
+			else
+				id = metric.getElements().get(0).getName();
 			Element elementToBeAdded = externalElements.get(associatedDbType.getName()).get(id);
 			if(elementToBeAdded != null){
 				//There are externalElements, so add.

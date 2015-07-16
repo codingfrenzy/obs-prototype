@@ -34,7 +34,7 @@ Hostname [machine.IP/]
 	
 
 	[for (metric : Metric | aCluster.collectedMetrics)]
-		[if metric.type.strcmp('DATABASE') = 0]
+		[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('DATABASE') = 0]
 			[let element : Element = metric.elements->at(1)]
 <MBean "[element.value/]">
 				[for (kv : KeyValue | element.keyValues)]
@@ -68,8 +68,8 @@ Hostname [machine.IP/]
 	 	 	[/for]
 
 	  		[for (m : Metric | aCluster.collectedMetrics) ]
-	  			[if m.type.strcmp('DATABASE')=0]
-	  Collect "[m.elements->at(0).value/]"		
+	  			[if m.oclIsKindOf(BaseMetric) and m.type.strcmp('DATABASE')=0]
+	  Collect "[m.elements->at(1).value/]"		
 	  			[/if]
 	  		[/for]	  	
     </Connection>
