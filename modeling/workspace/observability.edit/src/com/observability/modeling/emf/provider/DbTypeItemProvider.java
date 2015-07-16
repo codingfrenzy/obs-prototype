@@ -4,7 +4,6 @@ package com.observability.modeling.emf.provider;
 
 
 import com.observability.modeling.emf.DbType;
-import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 
 import java.util.Collection;
@@ -205,7 +204,7 @@ public class DbTypeItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.DB_TYPE__AVAILABLE_METRICS,
 				 EmfFactory.eINSTANCE.createBaseMetric()));
@@ -219,7 +218,7 @@ public class DbTypeItemProvider
 			(createChildParameter
 				(EmfPackage.Literals.DB_TYPE__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
-	}
+*/	}
 
 	/**
 	 * Return the resource locator for this item provider's resources.

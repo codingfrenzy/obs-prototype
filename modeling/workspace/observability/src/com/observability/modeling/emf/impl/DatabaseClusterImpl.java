@@ -178,7 +178,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		if (associatedDbType != null && associatedDbType.eIsProxy()) {
 			InternalEObject oldAssociatedDbType = (InternalEObject)associatedDbType;
 			associatedDbType = (DbType)eResolveProxy(oldAssociatedDbType);
-			if (associatedDbType != oldAssociatedDbType) {
+			if (associatedDbType != (DbType) oldAssociatedDbType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE, oldAssociatedDbType, associatedDbType));
 			}

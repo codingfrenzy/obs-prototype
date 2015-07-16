@@ -3,7 +3,6 @@
 package com.observability.modeling.emf.presentation;
 
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.util.ArrayList;

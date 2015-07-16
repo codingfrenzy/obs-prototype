@@ -181,7 +181,7 @@ public class FeatureItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.FEATURE__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
@@ -189,7 +189,7 @@ public class FeatureItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.FEATURE__KEY_VALUES,
-				 EmfFactory.eINSTANCE.createKeyValue()));
+				 EmfFactory.eINSTANCE.createKeyValue()));*/
 	}
 
 	/**
