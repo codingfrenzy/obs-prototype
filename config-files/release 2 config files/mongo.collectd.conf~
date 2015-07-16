@@ -54,8 +54,8 @@ LoadPlugin "csv"
   StoreRates true @Attribute
 </Plugin>
 
-<LoadPlugin python>
-    Globals true 
+<LoadPlugin python> @MetricSystem
+    Globals true @Attribute
 </LoadPlugin>
 
 <Plugin python>

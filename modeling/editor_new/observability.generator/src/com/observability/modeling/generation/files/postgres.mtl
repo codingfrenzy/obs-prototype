@@ -4,7 +4,7 @@
  * The documentation of the module cassandra.
  */]
 [module postgres('http://www.observability.com/emf')]
-[import com::observability::modeling::generation::files::systemMetrics]
+[import com::observability::modeling::generation::files::systemMetrics/]
 [import com::observability::modeling::generation::files::notifications /]
 [**
  * The documentation of the template generateCassandra.

@@ -19,6 +19,10 @@ Interval [frequency/]
 
 		[machine.generateSystemMetrics(aCluster)/]
 
+<LoadPlugin python> 
+      Globals true 
+</LoadPlugin>
+
 		[aCluster.generateNotifications()/]
 
 

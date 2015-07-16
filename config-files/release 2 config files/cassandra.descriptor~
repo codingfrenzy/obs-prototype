@@ -278,95 +278,95 @@ LoadPlugin java
    </MBean>
 
    # Read requests per second on a column family.
-   <MBean "cf-read-ops"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=ReadLatency" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-read-ops" @Attribute
-  	   Attribute "MeanRate" @Attribute
+   <MBean "cf-read-ops">
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=ReadLatency"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-read-ops"
+  	   Attribute "MeanRate"
   	 </Value>
    </MBean>
 
    # Cache requests that resulted in a row cache hit.
-   <MBean "cf-rowcache-hit-rate"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=HitRate" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-rowcache-hit-rate" @Attribute
-  	   Attribute "Value" @Attribute
+   <MBean "cf-rowcache-hit-rate">
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=HitRate"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-rowcache-hit-rate"
+  	   Attribute "Value"
   	 </Value>
    </MBean>
 
    # Number of read requests on the row cache.
-   <MBean "cf-rowcache-hits"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Hits" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-rowcache-hits" @Attribute
-  	   Attribute "Count" @Attribute
+   <MBean "cf-rowcache-hits">
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Hits"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-rowcache-hits"
+  	   Attribute "Count"
   	 </Value>
    </MBean>
 
    # Total number of read requests on the row cache.
-   <MBean "cf-rowcache-requests"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Requests" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-rowcache-requests" @Attribute
-  	   Attribute "Count" @Attribute
+   <MBean "cf-rowcache-requests">
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Requests"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-rowcache-requests"
+  	   Attribute "Count"
   	 </Value>
    </MBean>
 
    # Disk space used by a column family for live or old data (not live).
-   <MBean "cf-total-disk-used"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=TotalDiskSpaceUsed" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-total-disk-used" @Attribute
-  	   Attribute "Value" @Attribute
+   <MBean "cf-total-disk-used">
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=TotalDiskSpaceUsed"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-total-disk-used"
+  	   Attribute "Value"
   	 </Value>
    </MBean>
 
    # Internal response time to a successful request to write data to a column
    # family.
-   <MBean "cf-write-latency-op"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-write-latency-op" @Attribute
-  	   Attribute "Mean" @Attribute
+   <MBean "cf-write-latency-op">
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-write-latency-op"
+  	   Attribute "Mean"
   	 </Value>
    </MBean>
 
    # Write requests per second on a column family.
-   <MBean "cf-write-ops"> @MetricDB
-  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency" @Attribute
-  	 <Value> @MetricDB
-  	   Type "gauge" @Attribute
-  	   InstancePrefix "cf-write-ops" @Attribute
-  	   Attribute "MeanRate" @Attribute
+   <MBean "cf-write-ops">
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency"
+  	 <Value>
+  	   Type "gauge"
+  	   InstancePrefix "cf-write-ops"
+  	   Attribute "MeanRate"
   	 </Value>
    </MBean>
 
    # Allocated, init, max and used memory guaranteed for the Java heap.
-   <MBean "heap-mem"> @MetricDB
-  	 ObjectName "java.lang:type=Memory" @Attribute
-  	 <Value> @MetricDB
-  	   Type "memory" @Attribute
-  	   InstancePrefix "heap-mem" @Attribute
-  	   Table true @Attribute
+   <MBean "heap-mem">
+  	 ObjectName "java.lang:type=Memory"
+  	 <Value>
+  	   Type "memory"
+  	   InstancePrefix "heap-mem"
+  	   Table true
   	   Attribute "HeapMemoryUsage"
   	 </Value>
    </MBean>
 
    # Allocated, init, max and used memory guaranteed for the Java nonheap.
-   <MBean "nonheap-mem"> @MetricDB
-  	 ObjectName "java.lang:type=Memory" @Attribute
-  	 <Value> @MetricDB
-  	   Type "memory" @Attribute
-  	   InstancePrefix "nonheap-mem" @Attribute
-  	   Table true @Attribute
-  	   Attribute "NonHeapMemoryUsage" @Attribute
+   <MBean "nonheap-mem">
+  	 ObjectName "java.lang:type=Memory"
+  	 <Value>
+  	   Type "memory"
+  	   InstancePrefix "nonheap-mem"
+  	   Table true
+  	   Attribute "NonHeapMemoryUsage"
   	 </Value>
    </MBean>  
 

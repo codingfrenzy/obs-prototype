@@ -54,8 +54,8 @@ LoadPlugin "csv"
   StoreRates true @Attribute
 </Plugin>
 
-<LoadPlugin python>
-    Globals true 
+<LoadPlugin python> @MetricSystem
+    Globals true @Attribute
 </LoadPlugin>
 
 <Plugin python>
@@ -68,6 +68,21 @@ LoadPlugin "csv"
         Database "admin" "test" @Attribute
     </Module>
 </Plugin>
+
+
+<Aggregation> @MetricAggregated(Memory)
+	Plugin "mongo" @Attribute
+	Type "memory" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance" @Attribute
+
+	CalculateNum true 
+	CalculateSum true 
+	CalculateAverage true 
+	CalculateMinimum true 
+	CalculateMaximum true 
+	CalculateStddev true 
+</Aggregation>
 
 
 LoadPlugin "threshold"

@@ -1,0 +1,30 @@
+#Missing Deamon
+<Plugin "MissingDaemon"> @Feature
+    # Number of times a heartbeat has to miss before declaring dead.
+    # This is a multiple of Interval
+    Threshold 4 @Attribute
+    # This is the interval of the email in MINUTES. This is the measure of how often the email will be sent.
+    EmailInterval 30 @Attribute
+    <Email "MissingDaemon"> @Feature
+	recpt1 "emial1@abc.com" @Attribute
+	recpt2 "emial2@abc.com" @Attribute
+	recpt3 "emial3@abc.com" @Attribute
+    </Email>
+</Plugin>
+
+#The plugin that reacts to all notifications coming from remote nodes
+#and the central server itself.
+
+LoadPlugin "java"
+<Plugin "java"> @Feature
+    JVMARG "-Djava.class.path=/home/owls/collectd-5.5.0/bindings/java/.libs/collectd-api.jar:/home/owls/collectd-5.5.0/bindings/java/.libs/generic-jmx.jar:/home/owls/collectd/thresholdnotification.jar" @Attribute
+   LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin" @Attribute
+  	<Plugin "ThresholdNotificationPlugin"> @Feature
+	recpt1 "emial1@abc.com" @Attribute
+	recpt2 "emial2@abc.com" @Attribute
+	recpt3 "emial3@abc.com" @Attribute
+	httpip 10.10.101.1 @Attribute
+	httpport 8080 @Attribute
+	</Plugin>
+</Plugin>
+

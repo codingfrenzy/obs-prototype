@@ -61,7 +61,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * */
 
 	private static final String DESCRIPTOR_EXTENSION = ".descriptor";
-	private static final String FEATUREFILENAME = "features";
+	private static final String FEATUREFILENAME = "central";
 	private static final String ELEMENT_ID_SEPARATOR = "_";
 	
 	/**
