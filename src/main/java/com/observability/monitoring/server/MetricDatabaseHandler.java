@@ -185,6 +185,8 @@ public class MetricDatabaseHandler extends UnicastRemoteObject implements IMetri
 					}
 				}
 			}
+			else
+				outputList = null;
 			conn.disconnect();
 			br.close();
 		} catch (Exception e) {

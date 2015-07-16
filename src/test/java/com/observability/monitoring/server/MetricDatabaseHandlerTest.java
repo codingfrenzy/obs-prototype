@@ -105,6 +105,11 @@ public class MetricDatabaseHandlerTest {
 	public void testGetMetricValueAtEpochNaNEpoch() throws RemoteException {
 		assertNull(imdhs.getMetricValueAtEpoch("abcd", metricPath1));				// negative TC
 	}
+	
+	@Test
+	public void testGetMetricValueAtEpochInvalidURL() throws RemoteException {
+		assertNull(imdhs.getMetricValueAtEpoch(epoch1, "http://gibberish"));		// negative TC
+	}
 	/**
 	 * Test method for {@link com.observability.monitoring.server.MetricDatabaseHandler#getMetricsBtwEpochRange(java.lang.String, java.lang.String, java.lang.String)}.
 	 * @throws RemoteException 
@@ -157,6 +162,11 @@ public class MetricDatabaseHandlerTest {
 	@Test
 	public void testGetMetricsBtwEpochRangeSameEpochs() throws RemoteException {
 		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, fromEpoch2, metricPath2));			// negative TC
+	}
+	
+	@Test
+	public void testGetMetricsBtwEpochRangeInvalidURL() throws RemoteException {
+		assertNull(imdhs.getMetricsBtwEpochRange(fromEpoch2, toEpoch2, "http://gibberish"));	// negative TC
 	}
 
 	/**
