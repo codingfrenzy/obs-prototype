@@ -39,6 +39,8 @@ public class ObservabilityCollectdFileOperations {
 
     private static String daemonIPList = "etc/daemoniplist";
 
+    private static String failedIPList = "etc/failediplist";
+
     private static String aggregationLog = "log/aggregation";
 
     public static final String MISSING_DAEMON_NOT_RESPONDING_LOG = "log/missingdaemon-notresponding";
@@ -96,6 +98,43 @@ public class ObservabilityCollectdFileOperations {
                 System.out.println("----------Error: Releasing lock");
                 e.printStackTrace();
             }
+            try {
+                if (fbw != null)
+                    fbw.close();
+            } catch (IOException e) {
+                System.out.println("----------Error: Closing file");
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Success: IP List file updated");
+    }
+
+    public static void updateFailedPropogation(ArrayList<String> ipList) {
+
+        System.out.println("Updating Failed propogation Daemon IP List");
+
+        String filename = collectdPath + failedIPList;
+
+        FileLock lock = null;
+        BufferedWriter fbw = null;
+        try {
+            FileOutputStream out = new FileOutputStream(filename);
+
+            // write to file
+            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+            fbw = new BufferedWriter(writer);
+
+            for (int i = 0; i < ipList.size(); i++) {
+                fbw.write(ipList.get(i));
+                fbw.newLine();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
                 if (fbw != null)
                     fbw.close();
