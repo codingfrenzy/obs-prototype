@@ -3,6 +3,8 @@
  */
 package com.observability.modeling.probe.descriptor;
 
+import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -50,16 +52,16 @@ public class DescriptorParserTest {
 
 	@Test
 	public void testParseDescriptors(){
-		String descriptorDirPath = "/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources";
-		DescriptorParserImpl desc = new DescriptorParserImpl(Paths.get(descriptorDirPath));
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl desc = new DescriptorParserImpl(path.getParent());
 		desc.parseDescriptors();
 		System.out.println(desc.getPlugins());
 	}
 	@Test
 	public void testCassandraParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/cassandra.descriptor"); 
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("cassandra");
 		
@@ -69,8 +71,8 @@ public class DescriptorParserTest {
 	
 	@Test
 	public void testPostgresParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/postgres.descriptor"); 
+		File descriptor = new File (DescriptorParserTest.class.getResource("postgres.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("postgres");
 		
@@ -80,8 +82,8 @@ public class DescriptorParserTest {
 	
 	@Test
 	public void testMongoParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/mongo.descriptor"); 
+		File descriptor = new File (DescriptorParserTest.class.getResource("mongo.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("mongo");
 		
@@ -91,8 +93,8 @@ public class DescriptorParserTest {
 	
 	@Test
 	public void testRedisParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/redis.descriptor"); 
+		File descriptor = new File (DescriptorParserTest.class.getResource("redis.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("redis");
 		
@@ -102,8 +104,9 @@ public class DescriptorParserTest {
 	
 	@Test
 	public void testFeatureParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/features.descriptor"); 
+		
+		File descriptor = new File (DescriptorParserTest.class.getResource("features.descriptor").getFile());
+		Path path = descriptor.toPath();  
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("");
 		
