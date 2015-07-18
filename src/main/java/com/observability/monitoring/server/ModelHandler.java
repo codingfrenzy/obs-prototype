@@ -393,11 +393,8 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             return;
         }
 
-        String rmiIP = null;
+        String rmiIP =  args[0];
         String rmiPort = "8101";
-        if (args.length >= 1) {
-            rmiIP = args[0];
-        }
         if (args.length == 2) {
             rmiPort = args[1];
         }
