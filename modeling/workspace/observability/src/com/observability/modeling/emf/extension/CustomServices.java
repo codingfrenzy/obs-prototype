@@ -22,14 +22,18 @@
 package com.observability.modeling.emf.extension;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.RuntimeErrorException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -98,15 +102,29 @@ public class CustomServices {
 		for (int i = 0; i < projects.length; i++) {
 			descriptorDir = projects[i].getLocation().append(PROBE_DESCRIPTOR_DIR_PATH).toFile();
 			if(Files.exists(descriptorDir.toPath() , LinkOption.NOFOLLOW_LINKS)){
+				File[] descriptorFiles = descriptorDir.toPath().toFile().listFiles();
+				if(descriptorFiles==null || descriptorFiles.length ==0){
+					throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+				}
 				descriptorDirFound = true;
 				break;
 			}
 		}
 		if(descriptorDirFound)
 			parseDescriptors(descriptorDir.toPath());
-		else
+		else{
+			try{
+				Files.createDirectory(descriptorDir.toPath());	
+			}
+			catch (IOException e){
+				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
+						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
+						+ "before attempting to create the model again.");
+			}
 			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again."); 
+					+ "directory in the root of the project and create the file again.");
+		}
+			 
 			
     }
 	
@@ -119,12 +137,25 @@ public class CustomServices {
 	public static void parseDescriptors(Path descriptorsPath){
 		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
 			// if descriptors exist, get the parsed descriptors
+			File[] descriptorFiles = descriptorsPath.toFile().listFiles();
+			if(descriptorFiles==null || descriptorFiles.length ==0){
+				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+			}
 			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
 			parser.parseDescriptors();
 			dbTypes = parser.getPlugins();
 			features = parser.getFeatures();
 		}
 		else {
+			try{
+				Files.createDirectory(descriptorsPath);	
+			}
+			catch (IOException e){
+				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
+						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
+						+ "before attempting to create the model again.");
+			}
+			
 			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
 					+ "directory in the root of the project and create the file again."); 
 		}
