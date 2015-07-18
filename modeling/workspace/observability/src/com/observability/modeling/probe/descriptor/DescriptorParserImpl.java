@@ -22,7 +22,6 @@ package com.observability.modeling.probe.descriptor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * "cassandra.descriptor"
 	 * */
 
-	private static final String DESCRIPTOR_EXTENSION = ".descriptor";
 	private static final String FEATUREFILENAME = "central";
 	private static final String ELEMENT_ID_SEPARATOR = "_";
 	
@@ -103,7 +101,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<DbType> parseDescriptors() {
+	public void parseDescriptors() {
 
 		// Filter the files with correct extension
 		File dir = descriptorDirectory.toFile();
@@ -130,7 +128,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 				throw new RuntimeException();
 			}
 		}
-		return plugins;
 
 	}
 
@@ -365,10 +362,5 @@ public class DescriptorParserImpl implements DescriptorParser {
 		feature.getElements().add(element);
 	}
 	
-	private static class DescriptorFilter implements FilenameFilter
-	{
-		public boolean accept(File dir, String name) {
-			return name.toLowerCase(Locale.ENGLISH).endsWith(DESCRIPTOR_EXTENSION);
-		}
-	}
+	
 }

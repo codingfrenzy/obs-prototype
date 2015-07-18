@@ -22,14 +22,18 @@
 package com.observability.modeling.emf.extension;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.RuntimeErrorException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -43,6 +47,7 @@ import com.observability.modeling.emf.KeyValue;
 import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.Model;
 import com.observability.modeling.emf.NodeMachine;
+import com.observability.modeling.probe.descriptor.DescriptorFilter;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Feature;
@@ -58,55 +63,73 @@ import com.observability.modeling.probe.descriptor.entities.Scope;
 
 
 
-public class CustomServices {
+public class SiriusServices {
 	
 	/*
 	 * The relative path to where the probe descriptors are stored
 	 */
-	private static String PROBE_DESCRIPTOR_DIR_PATH = "descriptors";
+	public  static String PROBE_DESCRIPTOR_DIR_PATH = "descriptors";
 	
 	/*
 	 * In memory representation of the descriptor files. One dbType is created
 	 * per descriptor file
 	 */
-	private static List<com.observability.modeling.probe.descriptor.entities.DbType> dbTypes = null;
+	private List<com.observability.modeling.probe.descriptor.entities.DbType> dbTypes = null;
 	
 	/*
 	 * Factory class to manipulate the EMF model instance.
 	 */
-	private static EmfFactory factory = EmfFactory.eINSTANCE;
+	private EmfFactory factory = EmfFactory.eINSTANCE;
     
 	
-	private static Map<String, HashMap<String,Element>> externalElements = new HashMap<String,HashMap<String,Element>>();
+	private Map<String, HashMap<String,Element>> externalElements = new HashMap<String,HashMap<String,Element>>();
 
 	/*
 	 * The configuration of features that this model have.
 	 * For now features are missing deamon and thresholds notifications
 	 */
-	private static List<Feature> features = null;
+	private List<Feature> features = null;
     /**
      * Parse the descriptors and bring the info into entities at class loading
      * This will search through all the projects in the current workspace for the descriptors dir.
      */
 	
-	
-	public static void parseDescriptors(){
-		 
-		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		File descriptorDir = null;
-		boolean descriptorDirFound = false;
-		for (int i = 0; i < projects.length; i++) {
-			descriptorDir = projects[i].getLocation().append(PROBE_DESCRIPTOR_DIR_PATH).toFile();
-			if(Files.exists(descriptorDir.toPath() , LinkOption.NOFOLLOW_LINKS)){
-				descriptorDirFound = true;
-				break;
-			}
+	private static SiriusServices instance = null;
+
+	private EclipseResourceDelegate eclipse = null;
+	  
+	private SiriusServices() {
+	      // Exists only to defeat instantiation.
+	}
+
+	public static SiriusServices getInstance(EclipseResourceDelegate eclipse) {
+		if (instance == null) {
+			instance = new SiriusServices();
+			instance.eclipse = eclipse;
 		}
-		if(descriptorDirFound)
+		return instance;
+	}
+	
+	public static SiriusServices getInstance() {
+		return getInstance(new EclipseResourceDelegate());
+	}
+	
+	
+	public void parseDescriptors(){
+	
+		File descriptorDir = eclipse.getDescriptorPath();
+		if(descriptorDir != null)	{
+			File[] descriptorFiles = descriptorDir.listFiles(new DescriptorFilter());
+			if(descriptorFiles==null || descriptorFiles.length ==0){
+				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+			}
 			parseDescriptors(descriptorDir.toPath());
-		else
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again."); 
+		}
+		else{
+			
+			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
+		}
+			 
 			
     }
 	
@@ -116,24 +139,28 @@ public class CustomServices {
      * @param descriptorsPath the path to the dir where the descriptor files are located inside the project
      * TODO remove duplicate code.
      */
-	public static void parseDescriptors(Path descriptorsPath){
+	public void parseDescriptors(Path descriptorsPath){
 		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
 			// if descriptors exist, get the parsed descriptors
+			File[] descriptorFiles = descriptorsPath.toFile().listFiles();
+			if(descriptorFiles==null || descriptorFiles.length ==0){
+				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+			}
 			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
 			parser.parseDescriptors();
 			dbTypes = parser.getPlugins();
 			features = parser.getFeatures();
 		}
 		else {
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again."); 
+			
+			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
 		}
 		
 		fillExternalElements();
 	}
 	
 	
-	private static void fillExternalElements() {
+	private void fillExternalElements() {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			externalElements.put(dbType.getName(), new HashMap<String,Element>());
 			
@@ -142,7 +169,7 @@ public class CustomServices {
 	}
 
 	
-	private static void initializeDbTypes( Model model, Path dirPath) {
+	private void initializeDbTypes( Model model, Path dirPath) {
 		
 		//Get the parsers
 		parseDescriptors(dirPath.resolve(PROBE_DESCRIPTOR_DIR_PATH));
@@ -167,13 +194,13 @@ public class CustomServices {
 	 * @param model the root element to fill in the new entities
 	 * @param dirPath 
 	 */
-	public static void initializeModel (Model model, Path dirPath){
+	public void initializeModel (Model model, Path dirPath){
 		initializeDbTypes(model, dirPath);
 		initializeFeatures(model);
 	}
 	
 	
-	private static void initializeFeatures(Model model) {
+	private void initializeFeatures(Model model) {
 		for(Feature feature: features){
 			com.observability.modeling.emf.Feature semanticFeature = factory.createFeature();
 			
@@ -203,7 +230,7 @@ public class CustomServices {
 	 * @param newDbType the newly created database type to be populated
 	 * @param dbType the dbType entity read from the parser
 	 */
-	private static void createMetrics(DbType newDbType,
+	private void createMetrics(DbType newDbType,
 			com.observability.modeling.probe.descriptor.entities.DbType dbType) {
 		
 		List<Parameter> allMetrics  = new ArrayList<>();
@@ -275,7 +302,7 @@ public class CustomServices {
 	 * @param containerCluster the cluster the new machine is to be added
 	 * @return false if operation fails,true otherwise
 	 */
-	public static boolean initializeMachine(EObject containerCluster){
+	public boolean initializeMachine(EObject containerCluster){
 		
 		//parse only one time
 		if(dbTypes == null)
@@ -311,7 +338,7 @@ public class CustomServices {
 		
 	}
 	
-	private static void addMetricSpecificParamsToMachine(NodeMachine machine, Metric collectedMetric,DbType associatedDbType) {
+	private void addMetricSpecificParamsToMachine(NodeMachine machine, Metric collectedMetric,DbType associatedDbType) {
 		for (Element element : getMatchingElements(collectedMetric, associatedDbType)) {
 				machine.getElements().add(element);
 			}
@@ -323,7 +350,7 @@ public class CustomServices {
 	 * @param associatedDbType 
 	 * @param rootElement
 	 */
-	private static void fillElements(Machine machineParam, NodeMachine semanticMachine, DbType associatedDbType) {
+	private void fillElements(Machine machineParam, NodeMachine semanticMachine, DbType associatedDbType) {
 		List<ElementTag> elementTags = machineParam.getElements();
 		List<com.observability.modeling.probe.descriptor.entities.KeyValue> keyValues = machineParam.getKeyValues();
 		
@@ -371,7 +398,7 @@ public class CustomServices {
 	 * @param element  point to start copying from the descriptor entities 
 	 * @param newElement point to start copying to the EMF semantic model
 	 */
-	private static void fillElements(ElementTag element, Element newElement) {
+	private void fillElements(ElementTag element, Element newElement) {
 		
 		//For each sub element copy them as well
 		List<ElementTag> elements = element.getElements();
@@ -405,7 +432,7 @@ public class CustomServices {
 	 * @param databaseCluster cluster that new node machines will be added to
 	 * @param noOfMachines number of machines to be created
 	 */
-	public static void createNodes(DatabaseCluster databaseCluster,
+	public void createNodes(DatabaseCluster databaseCluster,
 			int noOfMachines) {
 		databaseCluster.getMachines().clear();
 		for (int i = 0; i < noOfMachines; i++) {
@@ -415,7 +442,7 @@ public class CustomServices {
 		
 	}
 	
-	public static boolean addMetricSpecificParamsToMachinesInCluster(DatabaseCluster containerCluster , Metric associatedMetric){
+	public boolean addMetricSpecificParamsToMachinesInCluster(DatabaseCluster containerCluster , Metric associatedMetric){
 		if(dbTypes == null)
 			parseDescriptors();
 		
@@ -440,7 +467,7 @@ public class CustomServices {
 	}
 	
 	
-	public static List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
+	public List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
 		List<Element> elementsToAddToMachine = new ArrayList<Element>();
 		
 		//We assume the metric id is on the first element
@@ -460,11 +487,16 @@ public class CustomServices {
 		}
 		return elementsToAddToMachine;
 	}
-
-	public CustomServices(){
-		System.out.println("CustomServices ready!");
+	public void setEclipseResource(EclipseResourceDelegate eclipseResource) {
+		eclipse = eclipseResource;
 	}
+
+	
 	
 	
 
 }
+
+	
+	
+	
