@@ -272,10 +272,11 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 
 					private void createDescriptorDir(java.nio.file.Path dirPath) {
 						try{
-							Files.createDirectory(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));	
+							if(Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS))
+								Files.createDirectory(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));	
 						}
 						catch (Exception e){
-							throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
+							throw new RuntimeException("Unable to create descriptors directory in the project. Please manually create"
 									+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
 									+ "before attempting to create the model again.");
 						}
