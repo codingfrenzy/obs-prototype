@@ -19,7 +19,13 @@ Interval [frequency/]
 
 [machine.generateSystemMetrics(aCluster)/]
 
-[aCluster.generateNotifications()/]
+LoadPlugin "network"
+<Plugin "network">
+  Server "[aCluster.eContainer(Model).serverIP/]"
+</Plugin>
+
+
+[aCluster.generateNotifications(machine)/]
 
 LoadPlugin postgresql
 

@@ -54,7 +54,7 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Model;
-import com.observability.modeling.emf.extension.CustomServices;
+import com.observability.modeling.emf.extension.SiriusServices;
 import com.observability.modeling.emf.provider.ObservabilityEditPlugin;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -249,7 +249,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							IPath filePath = modelFile.getLocation();
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
 							try{
-								CustomServices.initializeModel((Model)rootObject, dirPath);
+								SiriusServices.getInstance().initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
 										"Error while creating the model instance", 

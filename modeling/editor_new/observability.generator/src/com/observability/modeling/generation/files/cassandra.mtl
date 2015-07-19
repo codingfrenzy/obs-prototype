@@ -20,11 +20,12 @@ Hostname [machine.IP/]
 
 [machine.generateSystemMetrics(aCluster)/]
 
+LoadPlugin "network"
 <Plugin "network">
   Server "[aCluster.eContainer(Model).serverIP/]"
 </Plugin>
 
-[aCluster.generateNotifications()/]
+[aCluster.generateNotifications(machine)/]
 
 <Plugin "java">
 
