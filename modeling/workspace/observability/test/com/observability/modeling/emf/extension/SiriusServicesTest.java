@@ -21,9 +21,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.observability.modeling.emf.BaseMetric;
 import com.observability.modeling.emf.DatabaseCluster;
+import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.Model;
+import com.observability.modeling.emf.NodeMachine;
 import com.observability.modeling.probe.descriptor.DescriptorFilter;
 import com.observability.modeling.probe.descriptor.DescriptorParser;
 import com.observability.modeling.probe.descriptor.DescriptorParserImpl;
@@ -94,7 +97,17 @@ public class SiriusServicesTest {
 
 	private static void deleteDescriptorsPath() throws IOException {
 		Path targetPath = descriptorPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH);
-		Files.delete(targetPath);
+		
+		// does nothing if non-existent
+		if (Files.exists(targetPath)) {
+			Runtime rt = Runtime.getRuntime();
+			if (isWindows())
+				rt.exec("cmd /c RD /S /Q \"" + targetPath + '"');
+			else if (isUnix() || isMac())
+				rt.exec("/bin/rm  -rf \"" + targetPath.toString() + "\"");
+
+		}
+		
 		
 	}
 	/**
@@ -111,13 +124,7 @@ public class SiriusServicesTest {
 	public void tearDown() throws Exception {
 	}
 
-	/**
-	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#parseDescriptors()}.
-	 */
-	@Test
-	public void testParseDescriptors() {
-		fail("Not yet implemented");
-	}
+	
 
 	/**
 	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#parseDescriptors(java.nio.file.Path)}.
@@ -165,8 +172,21 @@ public class SiriusServicesTest {
 		com.observability.modeling.emf.DbType dbType = factory.createDbType();
 		dbType.setName("cassandra");
 		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_df");
+		metric.getElements().add(metricElement);
+		
+		cluster.getCollectedMetrics().add(metric);
+		
 		services.initializeMachine((EObject)cluster);
 		assertTrue(cluster.getMachines().size() == 1);
+		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
+		assertTrue(cluster.getMachines().get(0).getElements().size() == 1);
+		
 	}
 
 	/**
@@ -191,23 +211,46 @@ public class SiriusServicesTest {
 	 */
 	@Test
 	public void testAddMetricSpecificParamsToMachinesInCluster() {
-		fail("Not yet implemented");
-	}
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("cassandra");
+		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_df");
+		metric.getElements().add(metricElement);
+		cluster.getCollectedMetrics().add(metric);
 
-	/**
-	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#getMatchingElements(com.observability.modeling.emf.Metric, com.observability.modeling.emf.DbType)}.
-	 */
-	@Test
-	public void testGetMatchingElements() {
-		fail("Not yet implemented");
+		NodeMachine machine = factory.createNodeMachine();
+		machine.setName("machine 1");
+		cluster.getMachines().add(machine);
+		services.addMetricSpecificParamsToMachinesInCluster(cluster, metric);
+		assertTrue(machine.getElements().size() == 1);
+		
 	}
+	
+	private static String OS = System.getProperty("os.name").toLowerCase();
 
-	/**
-	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#CustomServices()}.
-	 */
-	@Test
-	public void testCustomServices() {
-		fail("Not yet implemented");
-	}
+    
+
+    private static boolean isWindows() {
+        return (OS.indexOf("win") >= 0);
+    }
+
+    private static boolean isMac() {
+        return (OS.indexOf("mac") >= 0);
+    }
+
+    private static boolean isUnix() {
+        return (OS.indexOf("nux") >= 0);
+    }
+
+	
+
+	
 
 }

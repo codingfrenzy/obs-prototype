@@ -96,7 +96,8 @@ public class SiriusServices {
 			SiriusServices services = new SiriusServices();
 			services.eclipse = eclipse;
 			instance = services;
-		}
+		}else
+			instance.eclipse = eclipse;
 		return instance;
 	}
 	
