@@ -50,6 +50,8 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      */
     int collectdServerPort;
 
+    String collectdMetricPath = "/home/ubuntu/collectd/csv/";
+
     /**
      * This daemon's IP. (IP of this machine)
      */
@@ -76,7 +78,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * configuration, it can be taken from there. For now its hard coded.
      */
     public void initCollectdServerIP() {
-        collectdServerIP = "45.55.197.112";
+        collectdServerIP = "52.6.202.212";
     }
 
     /*
@@ -84,7 +86,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * the configuration, it can be taken from there. For now its hard coded.
      */
     public void initCollectdServerPort() {
-        collectdServerPort = 52740;
+        collectdServerPort = 8102;
     }
 
     /*
@@ -123,7 +125,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      */
     public String getMetricFileName() {
         String date = "-" + getTodayDate();
-        String metricNameAbsolutePath = "/home/owls/collectd/csv/" + currentDaemonIP + "/cpu-0/" + metricName + date;
+        String metricNameAbsolutePath = collectdMetricPath + currentDaemonIP + "/cpu-0/" + metricName + date;
         // metricPath =
         // "/home/owls/collectd_data_20150604/csv/observabilityCassandra1/cpu-0/cpu-idle-2015-06-02";
         return metricNameAbsolutePath;
