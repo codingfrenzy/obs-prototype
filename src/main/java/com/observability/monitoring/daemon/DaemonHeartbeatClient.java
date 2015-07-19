@@ -76,7 +76,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * configuration, it can be taken from there. For now its hard coded.
      */
     public void initCollectdServerIP() {
-        collectdServerIP = "45.55.197.112";
+        collectdServerIP = "52.6.202.212";
     }
 
     /*
@@ -84,7 +84,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * the configuration, it can be taken from there. For now its hard coded.
      */
     public void initCollectdServerPort() {
-        collectdServerPort = 52740;
+        collectdServerPort = 8102;
     }
 
     /*
