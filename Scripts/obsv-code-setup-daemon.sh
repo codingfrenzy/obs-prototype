@@ -1,5 +1,5 @@
 # To download this script:
-# https://raw.githubusercontent.com/observability/obs-prototype/master/Scripts/obsv-code-setup-daemon.sh
+# wget https://raw.githubusercontent.com/observability/obs-prototype/master/Scripts/obsv-code-setup-daemon.sh
 
 cd /home/ubuntu
 sudo apt-get update
