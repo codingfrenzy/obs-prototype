@@ -342,6 +342,7 @@ public class SiriusServices {
 				fillElements( machineParam, machine,associatedDbType);
 				break;
 			}
+			throw new RuntimeException("Unknown database type: " + dbType.getName());
 		}
 		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
 		
@@ -498,9 +499,7 @@ public class SiriusServices {
 		}
 		return elementsToAddToMachine;
 	}
-	public void setEclipseResource(EclipseResourceDelegate eclipseResource) {
-		eclipse = eclipseResource;
-	}
+	
 
 	
 	

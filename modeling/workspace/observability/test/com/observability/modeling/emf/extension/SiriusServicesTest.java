@@ -143,9 +143,28 @@ public class SiriusServicesTest {
 	}
 	/**
 	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#parseDescriptors(java.nio.file.Path)}.
+	 * @throws IOException 
 	 */
 	@Test(expected=RuntimeException.class)
-	public void testParseDescriptorsFilesNotThere() {
+	public void testParseDescriptorsFilesNotThere() throws IOException {
+		
+		
+		Path targetPath = descriptorPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH).resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH);
+		
+		if(!Files.exists(targetPath))
+			Files.createDirectory(targetPath);
+		EclipseResourceDelegate mockEclipseLocal = mock(EclipseResourceDelegate.class);
+		when(mockEclipseLocal.getDescriptorPath()).thenReturn(new File (targetPath.toString()));
+		
+		SiriusServices services = SiriusServices.getInstance(mockEclipseLocal);
+		services.parseDescriptors();
+	}
+	
+	/**
+	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#parseDescriptors(java.nio.file.Path)}.
+	 */
+	@Test(expected=RuntimeException.class)
+	public void testParseDescriptorsDirNotThere() {
 		
 		SiriusServices services = SiriusServices.getInstance(mockEclipse);
 		services.parseDescriptors(Paths.get("notexists"));
@@ -186,6 +205,109 @@ public class SiriusServicesTest {
 		assertTrue(cluster.getMachines().size() == 1);
 		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
 		assertTrue(cluster.getMachines().get(0).getElements().size() == 1);
+		
+	}
+	
+	@Test
+	public void testInitializeMachineWithAlternativePluginName() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+				
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("cassandra");
+		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_null");
+		metric.getElements().add(metricElement);
+		
+		cluster.getCollectedMetrics().add(metric);
+		
+		services.initializeMachine((EObject)cluster);
+		assertTrue(cluster.getMachines().size() == 1);
+		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
+		assertTrue(cluster.getMachines().get(0).getElements().size() == 1);
+		
+	}
+	
+	@Test (expected=RuntimeException.class)
+	public void testInitializeMachineWithNotExistentDbType() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+				
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("notexistent");
+		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_df");
+		metric.getElements().add(metricElement);
+		
+		cluster.getCollectedMetrics().add(metric);
+		
+		services.initializeMachine((EObject)cluster);
+		
+		
+	}
+	
+	/**
+	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#initializeMachine(org.eclipse.emf.ecore.EObject)}.
+	 */
+	@Test
+	public void testInitializeMachineWithNoAssociatedDb() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+				
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("cassandra");
+		//cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_df");
+		
+		metric.getElements().add(metricElement);
+		
+		cluster.getCollectedMetrics().add(metric);
+		
+		assertFalse(services.initializeMachine((EObject)cluster));
+		
+		
+	}
+
+	/**
+	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#initializeMachine(org.eclipse.emf.ecore.EObject)}.
+	 */
+	@Test
+	public void testInitializeMachineWithMetricsHavingNoElementsInside() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+				
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("cassandra");
+		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+//		Element metricElement = factory.createElement();
+//		metricElement.setName("Plugin_df");
+//		metric.getElements().add(metricElement);
+//		
+//		cluster.getCollectedMetrics().add(metric);
+		
+		services.initializeMachine((EObject)cluster);
+		assertTrue(cluster.getMachines().size() == 1);
+		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
+		assertTrue(cluster.getMachines().get(0).getElements().size() == 0);
 		
 	}
 
@@ -230,6 +352,16 @@ public class SiriusServicesTest {
 		cluster.getMachines().add(machine);
 		services.addMetricSpecificParamsToMachinesInCluster(cluster, metric);
 		assertTrue(machine.getElements().size() == 1);
+		
+	}
+	
+	@Test (expected=RuntimeException.class)
+	public void testEclipsePluginGivesNullPath() {
+		EclipseResourceDelegate mockEclipseLocal = mock(EclipseResourceDelegate.class);
+		when(mockEclipseLocal.getDescriptorPath()).thenReturn(null);
+		
+		SiriusServices services = SiriusServices.getInstance(mockEclipseLocal);
+		services.parseDescriptors();
 		
 	}
 	
