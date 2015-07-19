@@ -17,13 +17,18 @@
 	[file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
 
-		[machine.generateSystemMetrics(aCluster)/]
+[machine.generateSystemMetrics(aCluster)/]
 
 <LoadPlugin python> 
       Globals true 
 </LoadPlugin>
 
-		[aCluster.generateNotifications()/]
+LoadPlugin "network"
+<Plugin "network">
+  Server "[aCluster.eContainer(Model).serverIP/]"
+</Plugin>
+
+[aCluster.generateNotifications(machine)/]
 
 
 <Plugin python>

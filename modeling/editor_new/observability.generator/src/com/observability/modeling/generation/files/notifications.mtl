@@ -9,12 +9,12 @@
  * The documentation of the template generateNotifications.
  * @param aModel
  */]
-[template public generateNotifications(aCluster : DatabaseCluster)]
+[template public generateNotifications(aCluster : DatabaseCluster, aMachine : NodeMachine)]
 
 	[for (noti : Notification | aCluster.associatedNotifications)]
 LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "[aCluster.eContainer(Model).serverIP/]">
+  <Host "[aMachine.IP/]">
     <Type "[noti.type/]">
 		[if noti.warningMin <> 0.0]
      WarningMin    [noti.warningMin/]
