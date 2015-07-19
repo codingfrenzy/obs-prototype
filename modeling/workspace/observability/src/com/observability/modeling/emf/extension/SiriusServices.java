@@ -22,21 +22,15 @@
 package com.observability.modeling.emf.extension;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
 
 import com.observability.modeling.emf.DatabaseCluster;
@@ -64,11 +58,6 @@ import com.observability.modeling.probe.descriptor.entities.Scope;
 
 
 public class SiriusServices {
-	
-	/*
-	 * The relative path to where the probe descriptors are stored
-	 */
-	public  static String PROBE_DESCRIPTOR_DIR_PATH = "descriptors";
 	
 	/*
 	 * In memory representation of the descriptor files. One dbType is created
@@ -104,9 +93,11 @@ public class SiriusServices {
 
 	public static SiriusServices getInstance(EclipseResourceDelegate eclipse) {
 		if (instance == null) {
-			instance = new SiriusServices();
+			SiriusServices services = new SiriusServices();
+			services.eclipse = eclipse;
+			instance = services;
+		}else
 			instance.eclipse = eclipse;
-		}
 		return instance;
 	}
 	
@@ -114,22 +105,7 @@ public class SiriusServices {
 		return getInstance(new EclipseResourceDelegate());
 	}
 	
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-	public static void parseDescriptors(){
-		 
-		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		File descriptorDir = null;
-		boolean descriptorDirFound = false;
-		for (int i = 0; i < projects.length; i++) {
-			descriptorDir = projects[i].getLocation().append(PROBE_DESCRIPTOR_DIR_PATH).toFile();
-			if(Files.exists(descriptorDir.toPath() , LinkOption.NOFOLLOW_LINKS)){
-				File[] descriptorFiles = descriptorDir.toPath().toFile().listFiles();
-				if(descriptorFiles==null || descriptorFiles.length ==0){
-					throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
-				}
-				descriptorDirFound = true;
-				break;
-=======
+	
 	
 	public void parseDescriptors(){
 	
@@ -138,27 +114,13 @@ public class SiriusServices {
 			File[] descriptorFiles = descriptorDir.listFiles(new DescriptorFilter());
 			if(descriptorFiles==null || descriptorFiles.length ==0){
 				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 			}
 			parseDescriptors(descriptorDir.toPath());
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-		else{
-			try{
-				Files.createDirectory(descriptorDir.toPath());	
-			}
-			catch (IOException e){
-				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
-						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
-						+ "before attempting to create the model again.");
-			}
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again.");
-=======
+
 		}
 		else{
 			
 			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 		}
 			 
 			
@@ -182,23 +144,8 @@ public class SiriusServices {
 			dbTypes = parser.getPlugins();
 			features = parser.getFeatures();
 		}
-		else {
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-			try{
-				Files.createDirectory(descriptorsPath);	
-			}
-			catch (IOException e){
-				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
-						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
-						+ "before attempting to create the model again.");
-			}
-			
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again."); 
-=======
-			
+		else {				
 			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 		}
 		
 		fillExternalElements();
@@ -207,17 +154,43 @@ public class SiriusServices {
 	
 	private void fillExternalElements() {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
-			externalElements.put(dbType.getName(), new HashMap<String,Element>());
-			
+			externalElements.put(dbType.getName(), new HashMap<String, Element>());
+			Machine machine = dbType.getMachine();
+
+			List<ElementTag> elementTags = machine.getElements();
+
+			for (ElementTag element : elementTags) {
+
+				if (element.getScope().equals(Scope.EXTERNAL)) {
+					// Fill external elements
+					Element newElement = factory.createElement();
+
+					// copy name and value
+					newElement.setName(element.getName());
+					newElement.setValue(element.getValue());
+
+					// fill sub elements and key values
+					fillElements(element, newElement);
+					// Add this to the temporary storage.
+					// These elements will be added to the machines inside a
+					// cluster
+					// only when a cluster is associated with a metric or a
+					// machine is
+					// added to an already associated cluster
+					externalElements.get(dbType.getName()).put(element.getId(), newElement);
+				}
+
+			}
+
 		}
-		
+
 	}
 
 	
 	private void initializeDbTypes( Model model, Path dirPath) {
 		
 		//Get the parsers
-		parseDescriptors(dirPath.resolve(PROBE_DESCRIPTOR_DIR_PATH));
+		parseDescriptors(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));
 		
 		//Create dbTypes for each descriptor file
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
@@ -416,13 +389,6 @@ public class SiriusServices {
 				
 				
 				semanticMachine.getElements().add(newElement);
-			}else if(element.getScope().equals(Scope.EXTERNAL)){
-							
-				//Add this to the temporary storage. 
-				//These elements will be added to the machines inside a cluster
-				//only when a cluster is associated with a metric or a machine is 
-				// added to an already associated cluster
-				externalElements.get(associatedDbType.getName()).put(element.getId() ,newElement);
 			}
 			
 		}
@@ -512,7 +478,7 @@ public class SiriusServices {
 	}
 	
 	
-	public List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
+	private List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
 		List<Element> elementsToAddToMachine = new ArrayList<Element>();
 		
 		//We assume the metric id is on the first element

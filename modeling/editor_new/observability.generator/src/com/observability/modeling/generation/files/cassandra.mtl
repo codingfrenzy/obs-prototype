@@ -27,6 +27,7 @@ LoadPlugin "network"
 
 [aCluster.generateNotifications(machine)/]
 
+LoadPlugin java
 <Plugin "java">
 
     JVMARG "-Djava.class.path=/opt/collectd/java-dep/generic-jmx.jar:/opt/collectd/java-dep/collectd-api.jar"

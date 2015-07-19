@@ -184,6 +184,13 @@ public class ModelHandlerTest {
 	}
 	
 	@Test
+	public void testmain2() {
+		String []args = new String[0];
+		
+		ModelHandler.main(args);
+	}
+	
+	@Test
 	public void testdeployModel() {
 		ModelHandler mh = null;
 		try {
