@@ -110,22 +110,7 @@ public class SiriusServices {
 		return getInstance(new EclipseResourceDelegate());
 	}
 	
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-	public static void parseDescriptors(){
-		 
-		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		File descriptorDir = null;
-		boolean descriptorDirFound = false;
-		for (int i = 0; i < projects.length; i++) {
-			descriptorDir = projects[i].getLocation().append(PROBE_DESCRIPTOR_DIR_PATH).toFile();
-			if(Files.exists(descriptorDir.toPath() , LinkOption.NOFOLLOW_LINKS)){
-				File[] descriptorFiles = descriptorDir.toPath().toFile().listFiles();
-				if(descriptorFiles==null || descriptorFiles.length ==0){
-					throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
-				}
-				descriptorDirFound = true;
-				break;
-=======
+	
 	
 	public void parseDescriptors(){
 	
@@ -134,27 +119,13 @@ public class SiriusServices {
 			File[] descriptorFiles = descriptorDir.listFiles(new DescriptorFilter());
 			if(descriptorFiles==null || descriptorFiles.length ==0){
 				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 			}
 			parseDescriptors(descriptorDir.toPath());
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-		else{
-			try{
-				Files.createDirectory(descriptorDir.toPath());	
-			}
-			catch (IOException e){
-				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
-						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
-						+ "before attempting to create the model again.");
-			}
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again.");
-=======
+
 		}
 		else{
 			
 			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 		}
 			 
 			
@@ -178,23 +149,8 @@ public class SiriusServices {
 			dbTypes = parser.getPlugins();
 			features = parser.getFeatures();
 		}
-		else {
-<<<<<<< HEAD:modeling/workspace/observability/src/com/observability/modeling/emf/extension/CustomServices.java
-			try{
-				Files.createDirectory(descriptorsPath);	
-			}
-			catch (IOException e){
-				throw new RuntimeException("Unable to created descriptors directory in the project. Please manually create"
-						+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
-						+ "before attempting to create the model again.");
-			}
-			
-			throw new RuntimeException("Cannot find descriptors. Please copy the descriptors in the 'descriptor' "
-					+ "directory in the root of the project and create the file again."); 
-=======
-			
+		else {				
 			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
->>>>>>> 78ba0691887a42c2df21fd579099b3edcddb67cc:modeling/workspace/observability/src/com/observability/modeling/emf/extension/SiriusServices.java
 		}
 		
 		fillExternalElements();
