@@ -64,8 +64,8 @@ LoadPlugin "write_graphite"
 </Plugin>
 
 #Aggregation general setting
-LoadPlugin aggregation
-<LoadPlugin aggregation>
+LoadPlugin obsaggregation
+<LoadPlugin obsaggregation>
     Interval [aModel.interval/]
 </LoadPlugin>
 
@@ -109,6 +109,7 @@ LoadPlugin aggregation
 	[/for]
 </Plugin>
 
+LoadPlugin java
 #Missing Deamon
 
 	[for (feature:Feature | aModel.features)]
