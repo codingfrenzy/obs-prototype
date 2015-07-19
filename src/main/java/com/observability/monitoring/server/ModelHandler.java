@@ -28,7 +28,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
@@ -73,18 +77,15 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
     private String dashboardURL = "http://45.55.197.112:8888/modelchange.db/modelchange/1";
 
-    /**
-     * Get the target directory by the target name
-     *
-     * @param target the target name
-     * @return directory path, null for error
-     */
-    private String getTargetFileDirectory(String target) {
-        // get Canonical Path
+    private String currentModelFilePath() {
+        return getModelDirectory() + "/" + "current_model";
+    }
+
+    private String getModelDirectory() {
         String canonicalPath = null;
         try {
             canonicalPath = new File(".").getCanonicalPath();
-            String combinedPath = canonicalPath + "/models/" + target;
+            String combinedPath = canonicalPath + "/models/";
             //System.out.println(combinedPath);
             return combinedPath;
         } catch (IOException e) {
@@ -92,6 +93,18 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Get the target directory by the target name
+     *
+     * @param target the target name
+     * @return directory path, null for error
+     */
+    private String getTargetFileDirectory(String target) {
+        String combinedPath = getModelDirectory() + target;
+        //System.out.println(combinedPath);
+        return combinedPath;
     }
 
     /**
@@ -105,11 +118,23 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         return (ret == null) ? null : (ret + ".zip");
     }
 
+    private String makeFileName() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        TimeZone tzInAmerica = TimeZone.getTimeZone("America/New_York");
+        sdf.setTimeZone(tzInAmerica);
+        return sdf.format(date) + "_model";
+    }
+
     /**
      * @see com.observability.monitoring.server.IModelHandlerServer
      */
     @Override
     public boolean beginFileUpload(String target) throws RemoteException {
+
+        target = makeFileName();
+        System.out.println(target);
+
         // check the file object
         if (rafZip != null) {
             try {
@@ -269,6 +294,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      */
     @Override
     public int deployModel(String target) throws RemoteException {
+
+        //updating targetName for rollback function
+        targetName = target;
+
         // directory
         String dir = getTargetFileDirectory(targetName);
         if (dir == null) {
@@ -279,17 +308,40 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         if (!dirFile.isDirectory()) {
             return -3;
         }
-        // File name pattern : xxx.xxx.xxx.xxx_nnnn_collectd.conf
-        Pattern pattern = Pattern.compile("_");
 
         // get file list
         File[] files = dirFile.listFiles();
         if (files == null) {
             return -3;
         }
+
+        System.out.println("--Saving Current model (" + targetName + ") to file.");
+        // save current model name to a file
+        try {
+            // append to file
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(currentModelFilePath()), "UTF-8");
+            BufferedWriter fbw = new BufferedWriter(writer);
+            fbw.write(targetName);
+            fbw.newLine();
+            fbw.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("--Success saving current model (" + targetName + ") to file.");
+
+        return deploySelectedFilesOnly(files);
+    }
+
+    private int deploySelectedFilesOnly(File[] files) {
         System.out.println("---Start deploying configuration files of totally: " + files.length);
         // loop through file list
         int totalSent = 0;
+
+        // File name pattern : xxx.xxx.xxx.xxx_nnnn_collectd.conf
+        Pattern pattern = Pattern.compile("_");
 
         //Initialize array list of IPs
         ipList = new ArrayList<String>();
@@ -327,6 +379,81 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         ObservabilityCollectdFileOperations.updateFailedPropogation(failedIPList);
         ipList = null;
         return totalSent;
+    }
+
+    @Override
+    public String viewCurrentModel() throws RemoteException {
+        System.out.println("Retrieving latest model");
+        String currentModel = null;
+
+        FileInputStream stream = null;
+        String strLine;
+        try {
+            stream = new FileInputStream(currentModelFilePath());
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+            while ((strLine = br1.readLine()) != null) {
+                currentModel = strLine;
+                break;
+            }
+
+            // Close the input stream
+            br1.close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return currentModel;
+    }
+
+    @Override
+    public HashSet<String> viewFailedIP() throws RemoteException {
+        System.out.println("Retrieving failed daemon IPs");
+        HashSet<String> ips = ObservabilityCollectdFileOperations.getFailedIPList();
+        return ips;
+    }
+
+    @Override
+    public int resendFailedModels(String target) throws RemoteException {
+        //updating targetName for rollback function
+        targetName = target;
+
+        // directory
+        String dir = getTargetFileDirectory(targetName);
+        if (dir == null) {
+            return -1;
+        }
+        // traverse through all configuration files
+        File dirFile = new File(dir);
+        if (!dirFile.isDirectory()) {
+            return -3;
+        }
+
+        // get file list
+        File[] files = dirFile.listFiles();
+        if (files == null) {
+            return -3;
+        }
+
+        HashSet<String> failedIPs = ObservabilityCollectdFileOperations.getFailedIPList();
+        File[] failedFiles = new File[failedIPs.size()];
+        int count = 0;
+
+        for (int i = 0; i < files.length; i++) {
+            if (files[i] != null && files[i].isFile()) {
+                for (String ip : failedIPs) {
+                    if (files[i].getAbsolutePath().contains(ip)) {
+                        failedFiles[count++] = files[i];
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        return deploySelectedFilesOnly(failedFiles);
     }
 
     private void updateDashboard() {
@@ -393,7 +520,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             return;
         }
 
-        String rmiIP =  args[0];
+        String rmiIP = args[0];
         String rmiPort = "8101";
         if (args.length == 2) {
             rmiPort = args[1];

@@ -144,7 +144,7 @@ public class ObservabilityCollectdFileOperations {
             }
         }
 
-        System.out.println("Success: IP List file updated");
+        System.out.println("Success: Failed IP List file updated");
     }
 
     public static HashSet<String> getIPList() {
@@ -211,6 +211,29 @@ public class ObservabilityCollectdFileOperations {
         }
 
         System.out.println("Returning Daemon IP List");
+        return ipList;
+    }
+
+    public static HashSet<String> getFailedIPList(){
+        HashSet<String> ipList = new HashSet<String>();
+        FileInputStream stream = null;
+        String strLine;
+        try {
+            stream = new FileInputStream(collectdPath + failedIPList);
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+            while ((strLine = br1.readLine()) != null) {
+                ipList.add(strLine);
+            }
+
+            // Close the input stream
+            br1.close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return ipList;
     }
 
