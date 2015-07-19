@@ -254,6 +254,6 @@
         </popupMenus>
       </subItemMappings>
     </ownedRepresentations>
-    <ownedJavaExtensions qualifiedClassName="com.observability.modeling.emf.extension.CustomServices"/>
+    <ownedJavaExtensions qualifiedClassName="com.observability.modeling.emf.extension.SiriusServicesDelegate"/>
   </ownedViewpoints>
 </description:Group>
