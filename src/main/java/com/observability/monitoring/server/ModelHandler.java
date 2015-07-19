@@ -115,7 +115,8 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      */
     private String getTargetFilePath(String target) {
         String ret = getTargetFileDirectory(target);
-        return (ret == null) ? null : (ret + ".zip");
+        //return (ret == null) ? null : (ret + ".zip");
+        return (ret + ".zip");
     }
 
     private String makeFileName() {
@@ -209,9 +210,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         rafZip = null;
         // 2. check file md5
         String combinedPath = getTargetFilePath(targetName);
-        if (combinedPath == null) {
-            return -1;
-        }
+        //if (combinedPath == null) {
+        //    return -1;
+        //}
         String calcMD5 = FileOperationHelper.getFileMD5(combinedPath);
         if (!calcMD5.equals(md5)) {//MD5 checksum error
             return -2;
@@ -219,9 +220,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
         // 3. unzip the file into the corresponding folder
         String dir = getTargetFileDirectory(targetName);
-        if (dir == null) {
-            return -1;
-        }
+        //if (dir == null) {
+        //    return -1;
+        //}
         // delete the directory contents if any
         FileOperationHelper.deleteDirectoryContents(new File(dir));
 
@@ -300,9 +301,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
         // directory
         String dir = getTargetFileDirectory(targetName);
-        if (dir == null) {
-            return -1;
-        }
+        //if (dir == null) {
+        //    return -1;
+        //}
         // traverse through all configuration files
         File dirFile = new File(dir);
         if (!dirFile.isDirectory()) {
@@ -422,9 +423,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
         // directory
         String dir = getTargetFileDirectory(targetName);
-        if (dir == null) {
-            return -1;
-        }
+        //if (dir == null) {
+        //    return -1;
+        //}
         // traverse through all configuration files
         File dirFile = new File(dir);
         if (!dirFile.isDirectory()) {
