@@ -22,21 +22,15 @@
 package com.observability.modeling.emf.extension;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
 
 import com.observability.modeling.emf.DatabaseCluster;
@@ -159,10 +153,36 @@ public class SiriusServices {
 	
 	private void fillExternalElements() {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
-			externalElements.put(dbType.getName(), new HashMap<String,Element>());
-			
+			externalElements.put(dbType.getName(), new HashMap<String, Element>());
+			Machine machine = dbType.getMachine();
+
+			List<ElementTag> elementTags = machine.getElements();
+
+			for (ElementTag element : elementTags) {
+
+				if (element.getScope().equals(Scope.EXTERNAL)) {
+					// Fill external elements
+					Element newElement = factory.createElement();
+
+					// copy name and value
+					newElement.setName(element.getName());
+					newElement.setValue(element.getValue());
+
+					// fill sub elements and key values
+					fillElements(element, newElement);
+					// Add this to the temporary storage.
+					// These elements will be added to the machines inside a
+					// cluster
+					// only when a cluster is associated with a metric or a
+					// machine is
+					// added to an already associated cluster
+					externalElements.get(dbType.getName()).put(element.getId(), newElement);
+				}
+
+			}
+
 		}
-		
+
 	}
 
 	
@@ -368,13 +388,6 @@ public class SiriusServices {
 				
 				
 				semanticMachine.getElements().add(newElement);
-			}else if(element.getScope().equals(Scope.EXTERNAL)){
-							
-				//Add this to the temporary storage. 
-				//These elements will be added to the machines inside a cluster
-				//only when a cluster is associated with a metric or a machine is 
-				// added to an already associated cluster
-				externalElements.get(associatedDbType.getName()).put(element.getId() ,newElement);
 			}
 			
 		}
@@ -464,7 +477,7 @@ public class SiriusServices {
 	}
 	
 	
-	public List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
+	private List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
 		List<Element> elementsToAddToMachine = new ArrayList<Element>();
 		
 		//We assume the metric id is on the first element
