@@ -14,6 +14,8 @@ LoadPlugin "csv"
 	ReportByState true @Attribute
 	ReportByCpu true @Attribute
 	ValuesPercentage true @Attribute
+	<test>
+	</test>
 </Plugin>
 
 <Plugin "memory"> @MetricSystem

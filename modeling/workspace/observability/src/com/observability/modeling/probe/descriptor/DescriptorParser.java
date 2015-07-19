@@ -21,6 +21,7 @@
 package com.observability.modeling.probe.descriptor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import com.observability.modeling.probe.descriptor.entities.DbType;
@@ -63,8 +64,9 @@ public interface DescriptorParser {
 	 *            The contents of the descriptor file
 	 * @return root plugin entity that holds all the information about the
 	 *         content in a hierarchical format.
+	 * @throws FileNotFoundException 
 	 */
-	public void parseFile(File file, DbType dbType, boolean isFeatureFile);
+	public void parseFile(File file, DbType dbType, boolean isFeatureFile) throws FileNotFoundException;
 	
 	public List<DbType> getPlugins();
 	

@@ -71,6 +71,9 @@ LoadPlugin aggregation
     </Email>
 </Plugin>
 
+#This is not to be included in actual descriptor. This is just to test the code.
+testFeature "test" @Feature
+
 #The plugin that reacts to all notifications coming from remote nodes
 #and the central server itself.
 

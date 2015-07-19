@@ -139,7 +139,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * @param dbType the parsed contents of the file as an instance
 	 * 	of {@link DbType} class.
 	 */
-	public void parseFile(File file, DbType dbType, boolean isFeatureFile) {
+	public void parseFile(File file, DbType dbType, boolean isFeatureFile) throws FileNotFoundException{
 		
 		
 		ElementTag parentElement = null;
@@ -151,7 +151,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 			   secondaryAnnotation = null;
 		
 		
-		try (Scanner scanner = new Scanner(file, "UTF-8")){
+		 Scanner scanner = new Scanner(file, "UTF-8");
 			while(scanner.hasNextLine()){
 				
 				// remove the leading and trailing spaces from the line
@@ -200,7 +200,9 @@ public class DescriptorParserImpl implements DescriptorParser {
 						String[] keyValueDetails = ParserUtility.getKeyValueDetails(line);
 						String keyName = keyValueDetails[0];
 						String keyValue = keyValueDetails[1];
-						
+						if(name == null){
+							name =  keyValue;
+						}
 						// the annotation is Attribute. Add it as a key-value in the parent element
 						// An @Attribute notation cannot exist independent i.e. it would be inside an 
 						// annotated element
@@ -214,6 +216,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 							// and can be implements FilenameFilter added as a key-value to the annotated parameter class 
 							if(parentElementStack.isEmpty()){
 								if(isFeatureFile){
+									feature = new Feature(name);
 									addKeyValueToFeature(feature, new KeyValue(keyName, keyValue));
 								}
 								else{
@@ -289,9 +292,6 @@ public class DescriptorParserImpl implements DescriptorParser {
 				
 			} // end while
 			scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
 		
 	}
 
@@ -305,46 +305,36 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 */
 	private void addElementToDb(String annotation, ElementTag element,
 			DbType dbType, String name) {
-		if(element == null)
-			return;
 		
-		switch(annotation){
-			case MACHINE:
-				dbType.getMachine().addElement(element);
-				break;
-			case SYSTEM_METRIC:
-				SystemMetric systemMetric = new SystemMetric(name, MetricType.SYSTEM);
-				systemMetric.addElement(element);
-				dbType.getSystemMetrics().add(systemMetric);
-				break;
-			case DB_METRIC:
-				DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
-				dbMetric.addElement(element);
-				dbType.getDbMetrics().add(dbMetric);
-				break;
-			case AGGREGATED_METRIC:
-				AggregatedMetric aggMetric = new AggregatedMetric(name, null);
-				aggMetric.addElement(element);
-				dbType.getAggregatedMetrics().add(aggMetric);
-				break;
+		if(annotation.equals(MACHINE)){
+			dbType.getMachine().addElement(element);
+		}
+		if(annotation.equals(SYSTEM_METRIC)){
+			SystemMetric systemMetric = new SystemMetric(name, MetricType.SYSTEM);
+			systemMetric.addElement(element);
+			dbType.getSystemMetrics().add(systemMetric);
+		}
+		if(annotation.equals(DB_METRIC)){
+			DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
+			dbMetric.addElement(element);
+			dbType.getDbMetrics().add(dbMetric);
+		}
+		if(annotation.equals(AGGREGATED_METRIC)){
+			AggregatedMetric aggMetric = new AggregatedMetric(name, null);
+			aggMetric.addElement(element);
+			dbType.getAggregatedMetrics().add(aggMetric);
 		}
 		
 	}
 	
 	private void addKeyValueToDb(String annotation, KeyValue keyValue, DbType dbType, String name){
-		switch(annotation){
-			case MACHINE:
-				dbType.getMachine().addKeyValue(keyValue);
-				break;
-			case SYSTEM_METRIC:
-				break;
-			case DB_METRIC:
-				DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
-				dbMetric.addKeyValue(keyValue);
-				dbType.getDbMetrics().add(dbMetric);
-				break;
-			case AGGREGATED_METRIC:
-				break;
+		if(annotation.equals(MACHINE)){
+			dbType.getMachine().addKeyValue(keyValue);
+		}
+		if(annotation.equals(DB_METRIC)){
+			DbMetric dbMetric = new DbMetric(name, MetricType.DATABASE);
+			dbMetric.addKeyValue(keyValue);
+			dbType.getDbMetrics().add(dbMetric);			
 		}
 	}
 	
@@ -357,8 +347,7 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * @param element the element to be added
 	 */
 	private void addElementToFeature(Feature feature, ElementTag element) {
-		if(element == null)
-			return;
+
 		feature.getElements().add(element);
 	}
 	

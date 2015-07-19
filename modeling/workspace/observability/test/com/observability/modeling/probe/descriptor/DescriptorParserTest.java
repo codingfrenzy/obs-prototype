@@ -3,7 +3,10 @@
  */
 package com.observability.modeling.probe.descriptor;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,8 +61,18 @@ public class DescriptorParserTest {
 		desc.parseDescriptors();
 		System.out.println(desc.getPlugins());
 	}
+	
 	@Test
-	public void testCassandraParseDescriptors() {
+	public void testNegativeParseDescriptors(){
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl desc = new DescriptorParserImpl(path);
+		desc.parseDescriptors();
+		System.out.println(desc.getPlugins());
+	}
+	
+	@Test
+	public void testCassandraParseDescriptors() throws FileNotFoundException {
 		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
 		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
@@ -70,7 +83,7 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testPostgresParseDescriptors() {
+	public void testPostgresParseDescriptors() throws FileNotFoundException {
 		File descriptor = new File (DescriptorParserTest.class.getResource("postgres.descriptor").getFile());
 		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
@@ -81,7 +94,7 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testMongoParseDescriptors() {
+	public void testMongoParseDescriptors() throws FileNotFoundException {
 		File descriptor = new File (DescriptorParserTest.class.getResource("mongo.descriptor").getFile());
 		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
@@ -92,7 +105,7 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testRedisParseDescriptors() {
+	public void testRedisParseDescriptors() throws FileNotFoundException {
 		File descriptor = new File (DescriptorParserTest.class.getResource("redis.descriptor").getFile());
 		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
@@ -103,15 +116,31 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testFeatureParseDescriptors() {
+	public void testFeatureParseDescriptors() throws FileNotFoundException {
 		
-		File descriptor = new File (DescriptorParserTest.class.getResource("features.descriptor").getFile());
+		File descriptor = new File (DescriptorParserTest.class.getResource("central.descriptor").getFile());
 		Path path = descriptor.toPath();  
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("");
 		
 		parser.parseFile(path.toFile(), dbType, true);
 		System.out.println(parser.getFeatures());		
+	}
+	
+	@Test
+	public void testDescriptorDoesNotExist() {
+		Throwable e = null;
+		File descriptor = new File ("");
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl parser = new DescriptorParserImpl(path);
+		DbType dbType = new DbType("redis");
+		try{
+			parser.parseFile(path.toFile(), dbType, false);
+		}
+		catch(Throwable ex){
+			e = ex;
+		}
+		assertTrue(e instanceof FileNotFoundException);
 	}
 	
 }

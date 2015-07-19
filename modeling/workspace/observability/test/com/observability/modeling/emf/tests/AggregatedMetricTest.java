@@ -5,16 +5,12 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Test;
-
 import com.observability.modeling.emf.AggregatedMetric;
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.KeyValue;
 import com.observability.modeling.emf.impl.AggregatedMetricImpl;
-
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
