@@ -66,11 +66,6 @@ import com.observability.modeling.probe.descriptor.entities.Scope;
 public class SiriusServices {
 	
 	/*
-	 * The relative path to where the probe descriptors are stored
-	 */
-	public  static String PROBE_DESCRIPTOR_DIR_PATH = "descriptors";
-	
-	/*
 	 * In memory representation of the descriptor files. One dbType is created
 	 * per descriptor file
 	 */
@@ -104,8 +99,9 @@ public class SiriusServices {
 
 	public static SiriusServices getInstance(EclipseResourceDelegate eclipse) {
 		if (instance == null) {
-			instance = new SiriusServices();
-			instance.eclipse = eclipse;
+			SiriusServices services = new SiriusServices();
+			services.eclipse = eclipse;
+			instance = services;
 		}
 		return instance;
 	}
@@ -217,7 +213,7 @@ public class SiriusServices {
 	private void initializeDbTypes( Model model, Path dirPath) {
 		
 		//Get the parsers
-		parseDescriptors(dirPath.resolve(PROBE_DESCRIPTOR_DIR_PATH));
+		parseDescriptors(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));
 		
 		//Create dbTypes for each descriptor file
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {

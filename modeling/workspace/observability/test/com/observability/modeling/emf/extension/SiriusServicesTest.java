@@ -58,6 +58,8 @@ public class SiriusServicesTest {
 		
 		model = factory.createModel(); 
 		
+		if(descriptorPath == null)
+			fail();
 		copyToDecriptorsPath(descriptorPath);
 		
 		mockEclipse = mock(EclipseResourceDelegate.class);
@@ -66,12 +68,14 @@ public class SiriusServicesTest {
 		
 	}
 	private static void copyToDecriptorsPath(Path descriptorPath) throws IOException {
-		Path targetPath = descriptorPath.resolve(SiriusServices.PROBE_DESCRIPTOR_DIR_PATH);
+		Path targetPath = descriptorPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH);
 		if(!Files.exists(targetPath))
 			Files.createDirectory(targetPath);
 		
 		File descriptorDir = new File(descriptorPath.toString());
 		File[] files = descriptorDir.listFiles(new DescriptorFilter());
+		if(files == null)
+			fail();
 		for(int i = 0; i< files.length;i++){
 			if(!Files.exists(targetPath.resolve(files[i].getName())))
 				Files.copy(descriptorPath.resolve(files[i].getName()), targetPath.resolve(files[i].getName()), StandardCopyOption.COPY_ATTRIBUTES);
@@ -89,7 +93,7 @@ public class SiriusServicesTest {
 	}
 
 	private static void deleteDescriptorsPath() throws IOException {
-		Path targetPath = descriptorPath.resolve(SiriusServices.PROBE_DESCRIPTOR_DIR_PATH);
+		Path targetPath = descriptorPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH);
 		Files.delete(targetPath);
 		
 	}
