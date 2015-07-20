@@ -3,6 +3,7 @@
 
 cd /home/ubuntu
 sudo apt-get update
+sudo apt-get -y install curl
 sudo apt-get -y install git
 git clone https://github.com/observability/obs-prototype.git
 mkdir obsv-code
