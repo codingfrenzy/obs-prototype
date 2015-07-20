@@ -7,9 +7,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
@@ -18,6 +22,30 @@ public class ModelHandlerTest {
 
 	private String dirName = "./dummy";
 	private String subFilePath = "./dummy/100";
+	
+	private static ModelHandler modelhandler = null;
+	/*
+	@Before
+	public void setUp() throws Exception {
+		try {
+			modelhandler = new ModelHandler();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
+	
+	@BeforeClass
+    public static void setUp() {
+		try {
+			modelhandler = new ModelHandler();
+			assertNotNull(modelhandler);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ModelHandler.initializeService("127.0.0.1", "12345");
+	}
 	
 	@Test
 	public void testFileOperationHelpers() {
@@ -75,17 +103,7 @@ public class ModelHandlerTest {
 		//IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
 	}
 	
-	private ModelHandler modelhandler = null;
 	
-	@Before
-	public void setUp() throws Exception {
-		try {
-			modelhandler = new ModelHandler();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@Test
 	public void testModelHandler() {
@@ -217,5 +235,19 @@ public class ModelHandlerTest {
 			System.out.println("null pointer");
 		else
 			System.out.println(si.toString());
+	}
+	
+	@Test
+	public void testWithRealServer() {
+		try {
+			IModelHandlerServer svr = (IModelHandlerServer) Naming.lookup("//127.0.0.1:12345/ModelHandler");
+			assertNotNull(svr);
+			boolean b1 = svr.beginFileUpload("Target");
+			assertTrue(b1);
+			
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
