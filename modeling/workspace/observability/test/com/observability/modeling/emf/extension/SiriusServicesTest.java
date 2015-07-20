@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Locale;
 
 import org.eclipse.emf.ecore.EObject;
 import org.junit.After;
@@ -221,7 +222,7 @@ public class SiriusServicesTest {
 		metric.setName("file");
 		
 		Element metricElement = factory.createElement();
-		metricElement.setName("Plugin_null");
+		metricElement.setName("Plugin");
 		metric.getElements().add(metricElement);
 		
 		cluster.getCollectedMetrics().add(metric);
@@ -229,7 +230,7 @@ public class SiriusServicesTest {
 		services.initializeMachine((EObject)cluster);
 		assertTrue(cluster.getMachines().size() == 1);
 		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
-		assertTrue(cluster.getMachines().get(0).getElements().size() == 1);
+		assertTrue(cluster.getMachines().get(0).getElements().size() == 0);
 		
 	}
 	
@@ -365,9 +366,7 @@ public class SiriusServicesTest {
 		
 	}
 	
-	private static String OS = System.getProperty("os.name").toLowerCase();
-
-    
+	private static String OS = System.getProperty("os.name").toLowerCase(new Locale("US"));
 
     private static boolean isWindows() {
         return (OS.indexOf("win") >= 0);
