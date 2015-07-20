@@ -16,5 +16,6 @@ wget -q https://github.com/observability/obs-prototype/raw/master/libs/mail-1.4.
 cd ..
 sudo rm -r obs-prototype
 ln -s obsv-code/com/observability/monitoring/daemon/ obs
+wget -q https://github.com/observability/obs-prototype/raw/master/Scripts/start_obs.sh
 echo "osbv-code folder is setup"
 echo "obs shortcut to the .java folder is setup"
