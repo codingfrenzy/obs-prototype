@@ -16,8 +16,8 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
 
 public class ModelHandlerTest {
 
-	private String dirName = "/home/joel/dummy";
-	private String subFilePath = "/home/joel/dummy/100";
+	private String dirName = "./dummy";
+	private String subFilePath = "./dummy/100";
 	
 	@Test
 	public void testFileOperationHelpers() {
@@ -39,8 +39,10 @@ public class ModelHandlerTest {
 		//deleteDirectoryContents
 		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
 		assertTrue(b1);
+		//b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(subFilePath));
+		//assertTrue(b1);
 		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
-		assertFalse(b1);
+		assertTrue(b1);
 	}
 	
 	@Test

@@ -155,10 +155,11 @@ public interface IModelHandlerServer extends Remote {
                             deleteDirectoryContents(files[i]);
                         } else {
                             // delete the files
-                            ret = files[i].delete();
+                            files[i].delete();
                         }
                     }
                 }
+                ret = true;
             } catch (Exception e) {
                 e.printStackTrace();
                 ret = false;
