@@ -205,7 +205,7 @@ public class ElementItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.ELEMENT__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
@@ -213,7 +213,7 @@ public class ElementItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.ELEMENT__KEY_VALUES,
-				 EmfFactory.eINSTANCE.createKeyValue()));
+				 EmfFactory.eINSTANCE.createKeyValue()));*/
 	}
 
 	/**

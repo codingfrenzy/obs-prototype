@@ -284,9 +284,9 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 			case EmfPackage.ELEMENT__KEY_VALUES:
 				return keyValues != null && !keyValues.isEmpty();
 			case EmfPackage.ELEMENT__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.ELEMENT__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return value != null ? true : false;
 		}
 		return super.eIsSet(featureID);
 	}

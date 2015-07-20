@@ -3,39 +3,28 @@ package com.observability.monitoring.server;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
 
 public class ModelHandlerTest {
 
-	private String dirName = "/home/joel/dummy";
-	private String subFilePath = "/home/joel/dummy/100";
+	private String dirName = "./dummy";
+	private String subFilePath = "./dummy/100";
 	
-	@Test
-	public void testFileOperationHelpers() {
-		IModelHandlerServer.FileOperationHelper.getFileMD5(null);
-		IModelHandlerServer.FileOperationHelper.getFileMD5(dirName);
-		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
-		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
-		File f = new File(subFilePath);
-		try {
-			f.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//deleteDirectoryContents
-		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
-		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
-	}
-	
-	private ModelHandler modelhandler = null;
-	
+	private static ModelHandler modelhandler = null;
+	/*
 	@Before
 	public void setUp() throws Exception {
 		try {
@@ -44,7 +33,77 @@ public class ModelHandlerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}*/
+	
+	@BeforeClass
+    public static void setUp() {
+		try {
+			modelhandler = new ModelHandler();
+			assertNotNull(modelhandler);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//ModelHandler.initializeService("127.0.0.1", "12345");
 	}
+	
+	@Test
+	public void testFileOperationHelpers() {
+		String s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(null);
+		assertNull(s1);
+		s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(dirName);
+		assertNull(s1);
+		boolean b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		assertTrue(b1);
+		File f = new File(subFilePath);
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//deleteDirectoryContents
+		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
+		assertTrue(b1);
+		//b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(subFilePath));
+		//assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+		assertTrue(b1);
+	}
+	
+	@Test
+	public void testFileOperationHelpers2() {
+		//IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		IModelHandlerServer.FileOperationHelper.unzipFile("foo", "bar");
+		
+	}
+	
+	@Test
+	public void testFileOperationHelpers3() {
+		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		IModelHandlerServer.FileOperationHelper.createDirectory(subFilePath);
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(dirName + "/1.txt", "UTF-8");
+			writer.println("The first line");
+			writer.println("The second line");
+			writer.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//deleteDirectoryContents
+		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+		//IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+	}
+	
+	
 
 	@Test
 	public void testModelHandler() {
@@ -151,6 +210,13 @@ public class ModelHandlerTest {
 	}
 	
 	@Test
+	public void testmain2() {
+		String []args = new String[0];
+		
+		ModelHandler.main(args);
+	}
+	
+	@Test
 	public void testdeployModel() {
 		ModelHandler mh = null;
 		try {
@@ -170,4 +236,19 @@ public class ModelHandlerTest {
 		else
 			System.out.println(si.toString());
 	}
+	
+	/*
+	@Test
+	public void testWithRealServer() {
+		try {
+			IModelHandlerServer svr = (IModelHandlerServer) Naming.lookup("//127.0.0.1:12345/ModelHandler");
+			assertNotNull(svr);
+			boolean b1 = svr.beginFileUpload("Target");
+			assertTrue(b1);
+			
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
 }

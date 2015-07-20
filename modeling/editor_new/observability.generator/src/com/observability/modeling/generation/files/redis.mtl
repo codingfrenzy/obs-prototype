@@ -17,9 +17,18 @@
 	[file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
 
-		[machine.generateSystemMetrics(aCluster)/]
+[machine.generateSystemMetrics(aCluster)/]
 
-		[aCluster.generateNotifications()/]
+<LoadPlugin python> 
+      Globals true 
+</LoadPlugin>
+
+LoadPlugin "network"
+<Plugin "network">
+  Server "[aCluster.eContainer(Model).serverIP/]"
+</Plugin>
+
+[aCluster.generateNotifications(machine)/]
 
 
 <Plugin python>
@@ -32,7 +41,7 @@ Interval [frequency/]
 	 	[/for]
 	
 		[for (metric : Metric | aCluster.collectedMetrics)]
-			[if metric.type.strcmp('DATABASE') = 0]
+			[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('DATABASE') = 0]
 	
 				[for (keyValue : KeyValue | metric.keyValues)]
 		[keyValue.key/] "[keyValue.value/]"

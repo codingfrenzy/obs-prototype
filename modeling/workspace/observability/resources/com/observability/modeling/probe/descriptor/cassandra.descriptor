@@ -1,0 +1,436 @@
+Interval 30 #variable
+Hostname 45.55.197.112 #variable
+
+LoadPlugin "memory"
+LoadPlugin "df"
+LoadPlugin "cpu"
+LoadPlugin "interface"
+LoadPlugin "disk"
+LoadPlugin load
+LoadPlugin "logfile"
+LoadPlugin "csv" 
+
+<Plugin "cpu"> @MetricSystem
+	ReportByState true @Attribute
+	ReportByCpu true @Attribute
+	ValuesPercentage true @Attribute
+	<test>
+	</test>
+</Plugin>
+
+<Plugin "memory"> @MetricSystem
+	ValuesAbsolute true @Attribute
+	ValuesPercentage false @Attribute
+</Plugin>
+
+<Plugin "df"> @MetricSystem(file)
+	Device "/dev/hda1" @Machine
+	MountPoint "/home" @Machine
+	FSType "ext3" @Machine
+	IgnoreSelected false @Attribute
+	ReportInodes false @Attribute
+	ReportReserved false @Attribute
+</Plugin>
+
+<Plugin "interface"> @MetricSystem
+	Interface "lo" @Machine
+	Interface "sit0" @Machine
+	IgnoreSelected true @Attribute
+</Plugin>
+
+<Plugin "disk"> @MetricSystem
+  Disk "sda" @Machine
+  Disk "/^hd/" @Machine
+  IgnoreSelected false @Attribute
+</Plugin>
+
+<Plugin "logfile">  @MetricSystem 
+  LogLevel "info" @Machine
+  File "/home/owls/collectd/log/collectd.log" @Machine
+  Timestamp true @Attribute
+  PrintSeverity true @Attribute
+</Plugin>
+
+<Plugin "csv"> @MetricSystem
+  DataDir "/home/owls/collectd/csv" @Machine
+  StoreRates true @Attribute
+</Plugin>
+
+LoadPlugin java
+<Plugin "java">
+
+	JVMARG "-Djava.class.path=/opt/collectd/java-dep/generic-jmx.jar:/opt/collectd/java-dep/collectd-api.jar"
+	LoadPlugin "org.collectd.java.GenericJMX"
+<Plugin "GenericJMX">
+
+   # Size of the data on the node.
+   <MBean "data-load"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Storage,name=Load" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "data-load" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of compaction operations queued and waiting to run.
+   <MBean "pending-compaction-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.db:type=CompactionManager" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-compaction-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of memtables queued for the flush process.
+   <MBean "pending-flushes"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=FlushWriter" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-flushes" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of gossip messages and acknowledgments queued and waiting to be sent
+   # or received.
+   <MBean "pending-gossip-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=GossipStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-gossip-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of hints in the queue waiting to be delivered after a failed node
+   # comes up.
+   <MBean "pending-hinted-handoff"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=HintedHandoff" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-hinted-handoff" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of read requests received by the cluster and waiting to be handled.
+   <MBean "pending-read-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReadStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-read-ops" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of read repair operations in the queue waiting to run.
+   <MBean "pending-read-repair-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReadRepairStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-read-repair-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Manual repair tasks pending, operations to be completed during anti-entropy
+   # repair of a node.
+   <MBean "pending-repair-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.internal:type=AntiEntropyStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-repair-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Pending tasks related replication of data after an insert or update to a
+   # row.
+   <MBean "pending-repl-on-write-tasks"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=ReplicateOnWriteStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-repl-on-write-tasks" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Progress of streamed rows from the receiving node.
+   <MBean "pending-request-responses"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=RequestResponseStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-request-responses" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of write requests received by the cluster and waiting to be handled.
+   <MBean "pending-write-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.request:type=MutationStage" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "pending-write-ops" @Attribute
+  	   Attribute "PendingTasks" @Attribute
+  	 </Value> 
+   </MBean>
+
+   # Average response time to a client read request.
+   <MBean "read-latency-op"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "read-latency-op" @Attribute
+  	   Attribute "Mean" @Attribute
+  	 </Value> 
+   </MBean>
+
+   # The number of read requests.
+   <MBean "read-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Read,name=Latency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "read-ops" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # The average response time to a client write request.
+   <MBean "write-latency-op"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Write,name=Latency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "write-latency-op" @Attribute
+  	   Attribute "Mean" @Attribute
+  	 </Value>
+   </MBean>
+
+   # The write requests.
+   <MBean "write-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ClientRequest,scope=Write,name=Latency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "write-ops" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Cache requests that resulted in a key cache hit.
+   <MBean "cf-keycache-hit-rate"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=KeyCache,name=HitRate" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-keycache-hit-rate" @Attribute
+  	   Attribute "Value" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of read requests that resulted in the requested row key being found
+   # in the key cache.
+   <MBean "cf-keycache-hits"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=KeyCache,name=Hits" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-keycache-hits" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Total number of read requests on the key cache.
+   <MBean "cf-keycache-requests"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=KeyCache,name=Requests" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-keycache-requests" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Disk space used by a column family for readable data.
+   <MBean "cf-live-disk-used"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=LiveDiskSpaceUsed" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-live-disk-used" @Attribute
+  	   Attribute "Value" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of pending reads and writes on a column family.
+   <MBean "cf-pending-tasks-system-schema_keyspaces"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,keyspace=system,scope=schema_keyspaces,name=PendingTasks" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-pending-tasks-system-schema_keyspaces" @Attribute
+  	   Attribute "Value" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Internal response time to a successful request to read data from a column
+   # family.
+   <MBean "cf-read-latency-op"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=ReadLatency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-read-latency-op" @Attribute
+  	   Attribute "Mean" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Read requests per second on a column family.
+   <MBean "cf-read-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=ReadLatency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-read-ops" @Attribute
+  	   Attribute "MeanRate" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Cache requests that resulted in a row cache hit.
+   <MBean "cf-rowcache-hit-rate"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=HitRate" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-rowcache-hit-rate" @Attribute
+  	   Attribute "Value" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Number of read requests on the row cache.
+   <MBean "cf-rowcache-hits"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Hits" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-rowcache-hits" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Total number of read requests on the row cache.
+   <MBean "cf-rowcache-requests"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=Cache,scope=RowCache,name=Requests" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-rowcache-requests" @Attribute
+  	   Attribute "Count" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Disk space used by a column family for live or old data (not live).
+   <MBean "cf-total-disk-used"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=TotalDiskSpaceUsed" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-total-disk-used" @Attribute
+  	   Attribute "Value" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Internal response time to a successful request to write data to a column
+   # family.
+   <MBean "cf-write-latency-op"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-write-latency-op" @Attribute
+  	   Attribute "Mean" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Write requests per second on a column family.
+   <MBean "cf-write-ops"> @MetricDB
+  	 ObjectName "org.apache.cassandra.metrics:type=ColumnFamily,name=WriteLatency" @Attribute
+  	 <Value> @MetricDB
+  	   Type "gauge" @Attribute
+  	   InstancePrefix "cf-write-ops" @Attribute
+  	   Attribute "MeanRate" @Attribute
+  	 </Value>
+   </MBean>
+
+   # Allocated, init, max and used memory guaranteed for the Java heap.
+   <MBean "heap-mem"> @MetricDB
+  	 ObjectName "java.lang:type=Memory" @Attribute
+  	 <Value> @MetricDB
+  	   Type "memory" @Attribute
+  	   InstancePrefix "heap-mem" @Attribute
+  	   Table true @Attribute
+  	   Attribute "HeapMemoryUsage"
+  	 </Value>
+   </MBean>
+
+   # Allocated, init, max and used memory guaranteed for the Java nonheap.
+   <MBean "nonheap-mem"> @MetricDB
+  	 ObjectName "java.lang:type=Memory" @Attribute
+  	 <Value> @MetricDB
+  	   Type "memory" @Attribute
+  	   InstancePrefix "nonheap-mem" @Attribute
+  	   Table true @Attribute
+  	   Attribute "NonHeapMemoryUsage" @Attribute
+  	 </Value>
+   </MBean>  
+
+
+	<Aggregation> @MetricAggregated(memory)
+		Host "/128.+|45.+/" @Attribute
+		Plugin "GenericJMX" @Attribute
+		Type "memory" @Attribute
+		#TypeInstance "/^heap-mem.*/"
+		GroupBy "TypeInstance" @Attribute
+
+		# Sets the name of the output folder
+		SetHost "global" @Attribute
+		SetPlugin "aggregation" @Attribute
+		SetPluginInstance "heap-mem-%{aggregation}" @Attribute
+
+		CalculateNum true  
+		CalculateSum true 
+		CalculateAverage false 
+		CalculateMinimum false 
+		CalculateMaximum false 
+		CalculateStddev false 
+	</Aggregation>
+
+
+	<Connection>
+      	Host "45.55.240.162" @Machine
+      	ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:7199/jmxrmi" @Machine
+		Collect "data-load"
+		Collect "pending-compaction-tasks"
+		Collect "pending-flushes"
+		Collect "pending-gossip-tasks"
+		Collect "pending-hinted-handoff"
+		Collect "pending-read-ops"
+		Collect "pending-read-repair-tasks"
+		Collect "pending-repair-tasks"
+		Collect "pending-repl-on-write-tasks"
+		Collect "pending-request-responses"
+		Collect "pending-write-ops"
+		Collect "read-latency-op"
+		Collect "read-ops"
+		Collect "write-latency-op"
+		Collect "write-ops"
+		Collect "cf-keycache-hit-rate"
+		Collect "cf-keycache-hits"
+		Collect "cf-keycache-requests"
+		Collect "cf-live-disk-used"
+		Collect "cf-pending-tasks-system-schema_keyspaces"
+		Collect "cf-read-latency-op"
+		Collect "cf-read-ops"
+		Collect "cf-rowcache-hit-rate"
+		Collect "cf-rowcache-hits"
+		Collect "cf-rowcache-requests"
+		Collect "cf-total-disk-used"
+		Collect "cf-write-latency-op"
+		Collect "cf-write-ops"
+		Collect "heap-mem"
+		Collect "nonheap-mem"
+
+	</Connection>
+  </Plugin>
+</Plugin>
+
+
+

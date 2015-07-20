@@ -218,7 +218,7 @@ public class MetricItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.METRIC__KEY_VALUES,
 				 EmfFactory.eINSTANCE.createKeyValue()));
@@ -227,7 +227,7 @@ public class MetricItemProvider
 			(createChildParameter
 				(EmfPackage.Literals.METRIC__ELEMENTS,
 				 EmfFactory.eINSTANCE.createElement()));
-	}
+*/	}
 
 	/**
 	 * Return the resource locator for this item provider's resources.

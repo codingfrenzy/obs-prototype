@@ -3,9 +3,9 @@
 
 
 [template public generateSystemMetrics(aNodeMachine : NodeMachine, aCluster : DatabaseCluster)]
-	
+
 	[for (metric : Metric | aCluster.collectedMetrics)]
-		[if metric.type.strcmp('SYSTEM') = 0]
+		[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('SYSTEM') = 0]
 			[let element : Element = metric.elements->at(1)]
 LoadPlugin "[element.value/]"
 			
@@ -15,7 +15,7 @@ LoadPlugin "[element.value/]"
 				[/for]
 
 				[for (e:Element | aNodeMachine.elements)]
-					[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
+					[if element.name.strcmp(e.name.concat('_').concat(e.value)) = 0]
 						[for (kv : KeyValue | e.keyValues)]
 	[kv.key/] [kv.value/]
 						[/for]		

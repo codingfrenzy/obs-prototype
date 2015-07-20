@@ -80,12 +80,18 @@ public class DaemonHeartbeatMain implements Runnable {
      */
     int emailInterval = 1;
 
+    int threshold = 1;
+
+    List<String> recipients;
+
     /**
      * Last email sent at.<br>
      * Initialized with current timestamp when starting so that the first email will be sent exactly after the interval.
      */
     long lastEmailTimestamp = System.currentTimeMillis() / 1000;
 
+
+    long ipsLastModifed = 0;
 
     long confLastModifed = 0;
 
@@ -101,14 +107,12 @@ public class DaemonHeartbeatMain implements Runnable {
         listOfDaemonHeartbeatReceived1 = list1;
         listOfDaemonHeartbeatReceived2 = list2;
         this.daemonHeartbeatCollectionToggle = daemonHeartbeatCollectionToggle;
-        initListofConfiguredDaemons();
     }
 
     /**
      * Default constructor. Should be used with caution as it severely limits functionality
      */
     DaemonHeartbeatMain() {
-        initListofConfiguredDaemons();
     }
 
     /**
@@ -121,12 +125,26 @@ public class DaemonHeartbeatMain implements Runnable {
 
         if (list != null) {
             listOfConfiguredDaemons.clear();
-            listOfConfiguredDaemons = ObservabilityCollectdFileOperations.getIPList();
+            listOfConfiguredDaemons = list;
 //        listOfConfiguredDaemons.add("45.55.240.162");
 //        listOfConfiguredDaemons.add("128.2.204.246");
 //        listOfConfiguredDaemons.add("123.2.204.246");
         }
 
+    }
+
+    public void updateConfiguration() {
+        HashMap<String, Object> conf = ObservabilityCollectdFileOperations.getMissingDaemonConf();
+        samplingRate = (int) conf.get("Interval");
+        System.out.println(samplingRate);
+        emailInterval = (int) conf.get("EmailInterval");
+        System.out.println(emailInterval);
+        threshold = (int) conf.get("Threshold");
+        System.out.println(threshold);
+        recipients = (List) conf.get("EmailMissingDaemon");
+        for (String re : recipients){
+            System.out.println(re);
+        }
     }
 
     /**
@@ -136,7 +154,7 @@ public class DaemonHeartbeatMain implements Runnable {
      * @return int threshold
      */
     private int getThreshold() {
-        return samplingRate * 1;
+        return samplingRate * threshold;
     }
 
     /**
@@ -212,7 +230,7 @@ public class DaemonHeartbeatMain implements Runnable {
         String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(time * 1000));
         String line = "IP: " + ip + " since " + date + " (" + time + ")";
 
-        if (notResponding){
+        if (notResponding) {
             ObservabilityCollectdFileOperations.logMessageMissingDaemonNotResponding(line);
         } else {
             ObservabilityCollectdFileOperations.logMessageMissingDaemonNotCollecting(line);
@@ -313,7 +331,6 @@ public class DaemonHeartbeatMain implements Runnable {
         System.out.println("Email");
         // initailize email object
         NotificationEMail ne = new NotificationEMail();
-        List<String> recipients = ne.initRecipients();
 
         // get both file paths
         String[] filePaths = {
@@ -428,9 +445,13 @@ public class DaemonHeartbeatMain implements Runnable {
 
         while (true) {
 
+            if (ipsLastModifed < ObservabilityCollectdFileOperations.lastModifiedDaemonIP()) {
+                ipsLastModifed = ObservabilityCollectdFileOperations.lastModifiedDaemonIP();
+                initListofConfiguredDaemons();
+            }
             if (confLastModifed < ObservabilityCollectdFileOperations.lastModifiedCollectdConf()) {
                 confLastModifed = ObservabilityCollectdFileOperations.lastModifiedCollectdConf();
-                initListofConfiguredDaemons();
+                updateConfiguration();
             }
             try {
                 if (!first && !listOfConfiguredDaemons.isEmpty()) {

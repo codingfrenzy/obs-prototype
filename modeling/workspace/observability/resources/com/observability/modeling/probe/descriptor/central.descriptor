@@ -1,0 +1,125 @@
+Interval 30 #variable
+Hostname 45.55.197.112 #variable
+
+LoadPlugin "cpu"
+<Plugin "cpu">
+	ReportByState true 
+	ReportByCpu true 
+	ValuesPercentage true 
+</Plugin>
+
+LoadPlugin "memory"
+<Plugin "memory">
+	ValuesAbsolute true 
+	ValuesPercentage false 
+</Plugin>
+
+
+LoadPlugin "logfile" 
+<Plugin "logfile">
+  LogLevel "info" 
+  File "/home/owls/collectd/log/collectd.log" #variable 
+  Timestamp true 
+  PrintSeverity true 
+</Plugin>
+
+LoadPlugin "csv"
+<Plugin "csv">
+  DataDir "/home/owls/collectd/csv"  #variable
+  StoreRates true 
+</Plugin>
+
+LoadPlugin "network"
+#The Listen parameter in network plugin should have the same hostname as defined in the top part of conf file.
+<Plugin "network">
+  Listen "45.55.197.112" 
+</Plugin>
+
+LoadPlugin "write_graphite"
+<Plugin "write_graphite">
+    <Node "graphing">
+        Host "localhost" 
+        Port "2003" 
+        Protocol "tcp"  
+        LogSendErrors true 
+        Prefix "collectd." 
+        StoreRates true 
+        AlwaysAppendDS false 
+        EscapeCharacter "_" 
+    </Node>
+</Plugin>
+
+#Aggregation general setting
+LoadPlugin aggregation
+<LoadPlugin aggregation>
+    Interval 30 #variable
+</LoadPlugin>
+
+
+
+#Missing Deamon
+<Plugin "MissingDaemon"> @Feature
+    # Number of times a heartbeat has to miss before declaring dead.
+    # This is a multiple of Interval
+    Threshold 4 @Attribute
+    # This is the interval of the email in MINUTES. This is the measure of how often the email will be sent.
+    EmailInterval 30 @Attribute
+    <Email "MissingDaemon"> @Feature
+	recpt1 "emial1@abc.com" @Attribute
+	recpt2 "emial2@abc.com" @Attribute
+	recpt3 "emial3@abc.com" @Attribute
+    </Email>
+</Plugin>
+
+#This is not to be included in actual descriptor. This is just to test the code.
+testFeature "test" @Feature
+
+#The plugin that reacts to all notifications coming from remote nodes
+#and the central server itself.
+
+LoadPlugin "java"
+<Plugin "java"> @Feature(Threshold Notification)
+    JVMARG "-Djava.class.path=/home/owls/collectd-5.5.0/bindings/java/.libs/collectd-api.jar:/home/owls/collectd-5.5.0/bindings/java/.libs/generic-jmx.jar:/home/owls/collectd/thresholdnotification.jar" @Attribute
+   LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin" @Attribute
+  	<Plugin "ThresholdNotificationPlugin"> @Feature
+	recpt1 "emial1@abc.com" @Attribute
+	recpt2 "emial2@abc.com" @Attribute
+	recpt3 "emial3@abc.com" @Attribute
+	httpip 10.10.101.1 @Attribute
+	httpport 8080 @Attribute
+	</Plugin>
+</Plugin>
+
+
+#the plugin that sends notifications about the central server
+#Cpu and memory metrics should be hardcoded
+LoadPlugin "threshold"
+<Plugin "threshold">
+  <Host "45.55.197.112">
+    <Type "cpu"> 
+     WarningMin    0.2 
+     WarningMax    0.8 
+     FailureMin    0.1 
+     FailureMax    0.9 
+     Invert false 
+     Instance "system" 
+    </Type>
+   </Host>
+ </Plugin>
+ 
+ <Plugin "threshold">
+  <Host "45.55.197.112">
+    <Type "memory"> 
+     WarningMin    0.2 
+     WarningMax    0.8 
+     FailureMin    0.1 
+     FailureMax    0.9 
+     Invert false 
+     Instance "?" 
+    </Type>
+   </Host>
+ </Plugin>
+
+
+
+

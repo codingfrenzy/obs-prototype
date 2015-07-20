@@ -46,7 +46,7 @@ LoadPlugin "csv"
 LoadPlugin "network"
 #The Listen parameter in network plugin should have the same hostname as defined in the top part of conf file.
 <Plugin "network">
-  Listen "45.55.197.112" 
+  Listen [aModel.serverIP/]
 </Plugin>
 
 LoadPlugin "write_graphite"
@@ -64,8 +64,8 @@ LoadPlugin "write_graphite"
 </Plugin>
 
 #Aggregation general setting
-LoadPlugin aggregation
-<LoadPlugin aggregation>
+LoadPlugin obsaggregation
+<LoadPlugin obsaggregation>
     Interval [aModel.interval/]
 </LoadPlugin>
 
@@ -109,6 +109,7 @@ LoadPlugin aggregation
 	[/for]
 </Plugin>
 
+LoadPlugin java
 #Missing Deamon
 
 	[for (feature:Feature | aModel.features)]
@@ -125,6 +126,7 @@ LoadPlugin aggregation
 				[/for]
 	</[e.name/]>
 			[/for]
+</[element.name/]
 		[/let]
 	[/for]
 

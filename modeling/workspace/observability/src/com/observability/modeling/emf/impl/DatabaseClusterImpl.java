@@ -2,13 +2,6 @@
  */
 package com.observability.modeling.emf.impl;
 
-import com.observability.modeling.emf.DatabaseCluster;
-import com.observability.modeling.emf.DbType;
-import com.observability.modeling.emf.EmfPackage;
-import com.observability.modeling.emf.Metric;
-import com.observability.modeling.emf.NodeMachine;
-import com.observability.modeling.emf.extension.CustomServices;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,6 +14,13 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import com.observability.modeling.emf.DatabaseCluster;
+import com.observability.modeling.emf.DbType;
+import com.observability.modeling.emf.EmfPackage;
+import com.observability.modeling.emf.Metric;
+import com.observability.modeling.emf.NodeMachine;
+import com.observability.modeling.emf.extension.SiriusServices;
 
 /**
  * <!-- begin-user-doc -->
@@ -178,7 +178,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		if (associatedDbType != null && associatedDbType.eIsProxy()) {
 			InternalEObject oldAssociatedDbType = (InternalEObject)associatedDbType;
 			associatedDbType = (DbType)eResolveProxy(oldAssociatedDbType);
-			if (associatedDbType != oldAssociatedDbType) {
+			if (associatedDbType != (DbType) oldAssociatedDbType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE, oldAssociatedDbType, associatedDbType));
 			}
@@ -249,7 +249,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		 * Custom code to create the actual instances when this
 		 * attribute changes
 		 */
-		CustomServices.createNodes(this,noOfMachines);
+		SiriusServices.getInstance().createNodes(this,noOfMachines);
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES, oldNoOfMachines, noOfMachines));
 	}
@@ -382,7 +382,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				return associatedDbType != null;
 			case EmfPackage.DATABASE_CLUSTER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:

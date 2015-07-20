@@ -3,7 +3,10 @@
  */
 package com.observability.modeling.probe.descriptor;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,16 +55,26 @@ public class DescriptorParserTest {
 
 	@Test
 	public void testParseDescriptors(){
-		String descriptorDirPath = "/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources";
-		DescriptorParserImpl desc = new DescriptorParserImpl(Paths.get(descriptorDirPath));
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl desc = new DescriptorParserImpl(path.getParent());
 		desc.parseDescriptors();
 		System.out.println(desc.getPlugins());
 	}
+	
 	@Test
-	public void testCassandraParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/cassandra.descriptor"); 
+	public void testNegativeParseDescriptors(){
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl desc = new DescriptorParserImpl(path);
+		desc.parseDescriptors();
+		System.out.println(desc.getPlugins());
+	}
+	
+	@Test
+	public void testCassandraParseDescriptors() throws FileNotFoundException {
+		File descriptor = new File (DescriptorParserTest.class.getResource("cassandra.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("cassandra");
 		
@@ -70,9 +83,9 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testPostgresParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/postgres.descriptor"); 
+	public void testPostgresParseDescriptors() throws FileNotFoundException {
+		File descriptor = new File (DescriptorParserTest.class.getResource("postgres.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("postgres");
 		
@@ -81,9 +94,9 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testMongoParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/mongo.descriptor"); 
+	public void testMongoParseDescriptors() throws FileNotFoundException {
+		File descriptor = new File (DescriptorParserTest.class.getResource("mongo.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("mongo");
 		
@@ -92,9 +105,9 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testRedisParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/redis.descriptor"); 
+	public void testRedisParseDescriptors() throws FileNotFoundException {
+		File descriptor = new File (DescriptorParserTest.class.getResource("redis.descriptor").getFile());
+		Path path = descriptor.toPath(); 
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("redis");
 		
@@ -103,9 +116,10 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testFeatureParseDescriptors() {
-		Path path = Paths.get("/home/vsaravag/git/obs-prototype/modeling"
-				+ "/workspace/observability/src/resources/features.descriptor"); 
+	public void testFeatureParseDescriptors() throws FileNotFoundException {
+		
+		File descriptor = new File (DescriptorParserTest.class.getResource("central.descriptor").getFile());
+		Path path = descriptor.toPath();  
 		DescriptorParserImpl parser = new DescriptorParserImpl(path);
 		DbType dbType = new DbType("");
 		
@@ -114,11 +128,19 @@ public class DescriptorParserTest {
 	}
 	
 	@Test
-	public void testDirectoryDescriptor(){
-		ClassLoader classLoader = DescriptorParserImpl.class.getClassLoader();
-		URL path = classLoader.getResource("mongodb.descriptor");
-		DescriptorParserImpl parser = new DescriptorParserImpl( new File (path.getFile()).toPath().getParent());
-		
-		parser.parseDescriptors();
+	public void testDescriptorDoesNotExist() {
+		Throwable e = null;
+		File descriptor = new File ("");
+		Path path = descriptor.toPath(); 
+		DescriptorParserImpl parser = new DescriptorParserImpl(path);
+		DbType dbType = new DbType("redis");
+		try{
+			parser.parseFile(path.toFile(), dbType, false);
+		}
+		catch(Throwable ex){
+			e = ex;
+		}
+		assertTrue(e instanceof FileNotFoundException);
 	}
+	
 }

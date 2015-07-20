@@ -1,0 +1,157 @@
+Interval 30
+Hostname 45.55.197.112
+
+LoadPlugin "memory"
+LoadPlugin "df"
+LoadPlugin "cpu"
+LoadPlugin "interface"
+LoadPlugin "disk"
+LoadPlugin load
+
+<Plugin "cpu"> @MetricSystem
+	ReportByState true @Attribute
+	ReportByCpu true @Attribute
+	ValuesPercentage true @Attribute
+</Plugin>
+
+<Plugin "memory"> @MetricSystem
+	ValuesAbsolute true @Attribute
+	ValuesPercentage false @Attribute
+</Plugin>
+
+<Plugin "df"> @MetricSystem
+	Device "/dev/hda1" @Machine
+	MountPoint "/home" @Machine
+	FSType "ext3" @Machine
+	IgnoreSelected false @Attribute
+	ReportInodes false @Attribute
+	ReportReserved false @Attribute
+</Plugin>
+
+<Plugin "interface"> @MetricSystem
+	Interface "lo" @Machine
+	Interface "sit0" @Machine
+	IgnoreSelected true @Attribute
+</Plugin>
+
+<Plugin "disk"> @MetricSystem
+  Disk "sda" @Machine
+  Disk "/^hd/" @Machine
+  IgnoreSelected false @Attribute
+</Plugin>
+
+LoadPlugin "logfile" 
+<Plugin "logfile"> @MetricSystem
+  LogLevel "info" @
+  Timestamp true @Attribute
+  PrintSeverity true @Attribute
+  File "/home/owls/collectd/log/collectd.log" @Machine  
+</Plugin>
+
+LoadPlugin "csv"
+<Plugin "csv"> @MetricSystem
+  DataDir "/home/owls/collectd/csv" @Machine
+  StoreRates true @Attribute
+</Plugin>
+
+
+<LoadPlugin python> 
+      Globals true 
+</LoadPlugin>
+
+
+<Aggregation> @MetricAggregated(gauge)
+	Plugin "redis_info" @Attribute
+	Type "gauge" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance" @Attribute
+
+	CalculateNum true 
+	CalculateSum true 
+	CalculateAverage true 
+	CalculateMinimum true 
+	CalculateMaximum true 
+	CalculateStddev true 
+</Aggregation>
+
+<Aggregation> @MetricAggregated(derive)
+	Plugin "redis_info" @Attribute
+	Type "derive" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance" @Attribute
+
+	CalculateNum true 
+	CalculateSum true 
+	CalculateAverage true 
+	CalculateMinimum true 
+	CalculateMaximum true 
+	CalculateStddev true 
+</Aggregation>
+
+<Aggregation> @MetricAggregated(counter)
+	Plugin "redis_info" @Attribute
+	Type "counter" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance" @Attribute
+
+	CalculateNum true
+	CalculateSum true
+	CalculateAverage true
+	CalculateMinimum true
+	CalculateMaximum true
+	CalculateStddev true
+</Aggregation>
+
+ <Aggregation> @MetricAggregated(bytes)
+	Plugin "redis_info" @Attribute
+	Type "bytes" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance"@Attribute
+	CalculateNum true
+	CalculateSum true
+	CalculateAverage true
+	CalculateMinimum true
+	CalculateMaximum true
+	CalculateStddev true
+</Aggregation>
+
+<Plugin python>
+  ModulePath "/opt/collectd/lib/collectd/plugins/python"
+  Import "redis_info"
+
+  <Module redis_info> 
+	Host "localhost" @Machine
+	Port 6379 @Machine
+	Verbose false @Machine
+	Redis_uptime_in_seconds "gauge" @MetricDB(uptimeSeconds)
+	Redis_uptime_in_days "gauge" @MetricDB(uptimeDays)
+	Redis_lru_clock "counter" @MetricDB(lruClock)
+	Redis_connected_clients "gauge" @MetricDB(connectedClient)
+	Redis_connected_slaves "gauge" @MetricDB(connectedSlaves)
+	Redis_blocked_clients "gauge" @MetricDB(blockedClients)
+	Redis_evicted_keys "gauge" @MetricDB(evictedKeys)
+	Redis_used_memory "bytes" @MetricDB(usedMemory)
+	Redis_used_memory_peak "bytes" @MetricDB(userMemoryPeak)
+	Redis_changes_since_last_save "gauge" @MetricDB(changesSinceLastSave)
+	Redis_instantaneous_ops_per_sec "gauge" @MetricDb(instantaneousOps)
+	Redis_rdb_bgsave_in_progress "gauge" @MetricDB(rdbBgsave)
+	Redis_total_connections_received "counter" @MetricDB(totalConnections)
+	Redis_total_commands_processed "counter" @MetricDB(totalCommands)
+	Redis_keyspace_hits "derive" @MetricDB(keyspaceHits)
+	Redis_keyspace_misses "derive" @MetricDB(keyspaceMisses)
+  </Module>
+</Plugin>
+
+LoadPlugin "threshold"
+<Plugin "threshold">
+  <Host "45.55.197.112"> 
+    <Type "cpu"> #variable
+     WarningMin    0.2 
+     WarningMax    0.8 
+     FailureMin    0.1 
+     FailureMax    0.9 
+     Invert false 
+     Instance "system"
+    </Type>
+   </Host>
+ </Plugin>

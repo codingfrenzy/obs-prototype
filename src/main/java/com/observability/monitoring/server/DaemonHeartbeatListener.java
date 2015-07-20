@@ -39,7 +39,7 @@ public class DaemonHeartbeatListener implements Runnable {
     /**
      * Port that will be used by the daemons to connect to this server.
      */
-    private int port = 52740;
+    private int port = 8102;
 
     /**
      * List of daemons that has send heartbeat for each interval. <br>

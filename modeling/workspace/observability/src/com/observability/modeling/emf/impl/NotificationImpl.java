@@ -787,7 +787,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.NOTIFICATION__TYPE:
-				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+				return type != null ? true : false;
 			case EmfPackage.NOTIFICATION__FAILURE_MAX:
 				return failureMax != FAILURE_MAX_EDEFAULT;
 			case EmfPackage.NOTIFICATION__FAILURE_MIN:
@@ -797,7 +797,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 			case EmfPackage.NOTIFICATION__WARNING_MIN:
 				return warningMin != WARNING_MIN_EDEFAULT;
 			case EmfPackage.NOTIFICATION__DATA_SOURCE:
-				return DATA_SOURCE_EDEFAULT == null ? dataSource != null : !DATA_SOURCE_EDEFAULT.equals(dataSource);
+				return dataSource != null ? true : false;
 			case EmfPackage.NOTIFICATION__INVERT:
 				return invert != INVERT_EDEFAULT;
 			case EmfPackage.NOTIFICATION__PERSIST:
@@ -813,7 +813,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 			case EmfPackage.NOTIFICATION__INTERESTING:
 				return interesting != INTERESTING_EDEFAULT;
 			case EmfPackage.NOTIFICATION__INSTANCE:
-				return INSTANCE_EDEFAULT == null ? instance != null : !INSTANCE_EDEFAULT.equals(instance);
+				return instance != null ? true : false;
 		}
 		return super.eIsSet(featureID);
 	}

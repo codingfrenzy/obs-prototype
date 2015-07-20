@@ -189,9 +189,9 @@ public class KeyValueImpl extends MinimalEObjectImpl.Container implements KeyVal
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.KEY_VALUE__KEY:
-				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+				return key != null ? true : false;
 			case EmfPackage.KEY_VALUE__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+				return value != null ? true : false;
 		}
 		return super.eIsSet(featureID);
 	}

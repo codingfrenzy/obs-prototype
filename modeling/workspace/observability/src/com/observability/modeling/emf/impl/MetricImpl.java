@@ -325,15 +325,15 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.METRIC__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null ? true : false;
 			case EmfPackage.METRIC__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+				return description != null ? true : false;
 			case EmfPackage.METRIC__KEY_VALUES:
 				return keyValues != null && !keyValues.isEmpty();
 			case EmfPackage.METRIC__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.METRIC__TYPE:
-				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+				return type != null ? true : false;
 		}
 		return super.eIsSet(featureID);
 	}

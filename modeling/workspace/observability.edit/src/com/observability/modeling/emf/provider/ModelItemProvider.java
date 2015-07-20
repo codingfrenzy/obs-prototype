@@ -238,20 +238,20 @@ public class ModelItemProvider
 				(EmfPackage.Literals.MODEL__CLUSTERS,
 				 EmfFactory.eINSTANCE.createDatabaseCluster()));
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.MODEL__AVAILABLE_DB_TYPES,
 				 EmfFactory.eINSTANCE.createDbType()));
-
+*/
 		newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.MODEL__NOTIFICATIONS,
 				 EmfFactory.eINSTANCE.createNotification()));
 
-		newChildDescriptors.add
+		/*newChildDescriptors.add
 			(createChildParameter
 				(EmfPackage.Literals.MODEL__FEATURES,
-				 EmfFactory.eINSTANCE.createFeature()));
+				 EmfFactory.eINSTANCE.createFeature()));*/
 	}
 
 	/**

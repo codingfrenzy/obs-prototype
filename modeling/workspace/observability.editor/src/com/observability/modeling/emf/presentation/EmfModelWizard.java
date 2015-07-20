@@ -3,7 +3,6 @@
 package com.observability.modeling.emf.presentation;
 
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.util.ArrayList;
@@ -55,7 +54,8 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Model;
-import com.observability.modeling.emf.extension.CustomServices;
+import com.observability.modeling.emf.extension.EclipseResourceDelegate;
+import com.observability.modeling.emf.extension.SiriusServices;
 import com.observability.modeling.emf.provider.ObservabilityEditPlugin;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -249,8 +249,10 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							// get the absolute path of the model file
 							IPath filePath = modelFile.getLocation();
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
+							
 							try{
-								CustomServices.initializeModel((Model)rootObject, dirPath);
+								createDescriptorDir(dirPath);
+								SiriusServices.getInstance().initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
 										"Error while creating the model instance", 
@@ -266,6 +268,19 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 						finally {
 							progressMonitor.done();
 						}
+					}
+
+					private void createDescriptorDir(java.nio.file.Path dirPath) {
+						try{
+							if(Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS))
+								Files.createDirectory(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));	
+						}
+						catch (Exception e){
+							throw new RuntimeException("Unable to create descriptors directory in the project. Please manually create"
+									+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
+									+ "before attempting to create the model again.");
+						}
+						
 					}
 				};
 
