@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cd /home/ubuntu/obsv-code/
-apt-get -y install curl
 #vmip=`curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//'`
 vmip=$(curl -s https://api.ipify.org)
 
