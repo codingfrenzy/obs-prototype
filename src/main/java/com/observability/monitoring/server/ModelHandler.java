@@ -29,10 +29,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
@@ -407,6 +404,35 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         }
 
         return currentModel;
+    }
+
+    @Override
+    public ArrayList<String> viewAllModels() throws RemoteException {
+        System.out.println("Retrieving all models in this system");
+        ArrayList<String> models = new ArrayList<String>();
+        String modeDir = getModelDirectory();
+        File dir = new File(modeDir);
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".zip");
+            }
+        });
+
+        for (File zip : files) {
+            int slash = zip.toString().lastIndexOf("/");
+            String fileName = zip.toString().substring(slash + 1);
+//            System.out.println(zip);
+//            System.out.println(fileName);
+            if (fileName.endsWith(".zip")) {
+                fileName = fileName.substring(0, fileName.length() - 4);
+            }
+            models.add(fileName);
+        }
+
+        // sorting the models so that the newest comes first
+        Collections.sort(models, Collections.reverseOrder());
+        return models;
     }
 
     @Override
