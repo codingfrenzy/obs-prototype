@@ -52,6 +52,8 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
     String collectdMetricPath = "/home/ubuntu/collectd/csv/";
 
+    String collectdPath = "/opt/collectd/etc/collectd.conf";
+
     /**
      * This daemon's IP. (IP of this machine)
      */
@@ -243,8 +245,50 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
     /**
      * Update the interval upon change of collectd configuration
      */
-    public void updateInterval() {
-        System.out.println("Daemon Heartbeat interval updated to " + samplingRate);
+    public void readConf() {
+        System.out.println("Daemon Heartbeat: Updating parameters from collectd.conf");
+
+        FileInputStream stream = null;
+        String strLine;
+        String[] temp;
+        int interval = -1;
+        try {
+            stream = new FileInputStream(collectdPath);
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+            while ((strLine = br1.readLine()) != null) {
+                strLine = strLine.trim().replace("\"", "");
+                if (strLine.startsWith("Interval") && interval < 0) {
+                    temp = strLine.split(" ");
+                    samplingRate = Integer.parseInt(temp[1]);
+                }
+
+                // entering MIssing daemon plugin tag
+                if (strLine.startsWith("<Plugin network>")) {
+                    while ((strLine = br1.readLine()) != null) {
+                        strLine = strLine.trim().replace("\"", "");
+
+                        if (strLine.startsWith("</Plugin>")) {
+                            break;
+                        }
+
+                        if (strLine.startsWith("Server")) {
+                            temp = strLine.split(" ");
+                            collectdServerIP = temp[1];
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            // Close the input stream
+            br1.close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
