@@ -382,8 +382,6 @@ public class ObservabilityCollectdFileOperations {
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());
 
-        DaemonHeartbeatMain d = new DaemonHeartbeatMain();
-        d.updateConfiguration();
     }
 }
 
