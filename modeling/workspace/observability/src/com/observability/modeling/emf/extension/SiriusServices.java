@@ -83,22 +83,30 @@ public class SiriusServices {
      * This will search through all the projects in the current workspace for the descriptors dir.
      */
 	
-	private static SiriusServices instance = null;
+	private static volatile SiriusServices instance = null;
 
 	private EclipseResourceDelegate eclipse = null;
 	  
 	private SiriusServices() {
 	      // Exists only to defeat instantiation.
 	}
-
+	
+	//see http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
 	public static SiriusServices getInstance(EclipseResourceDelegate eclipse) {
-		if (instance == null) {
-			SiriusServices services = new SiriusServices();
-			services.eclipse = eclipse;
-			instance = services;
-		}else
+		if (instance != null) {
 			instance.eclipse = eclipse;
+		}else{
+			synchronized(SiriusServices.class){
+				if(instance == null){
+					SiriusServices services = new SiriusServices();
+					services.eclipse = eclipse;
+					instance = services;
+				}
+			}
+		}
 		return instance;
+
+			
 	}
 	
 	public static SiriusServices getInstance() {
@@ -325,7 +333,11 @@ public class SiriusServices {
 		//parse only one time
 		if(dbTypes == null)
 			parseDescriptors();
-		DatabaseCluster cluster = (DatabaseCluster) containerCluster;
+		DatabaseCluster cluster = null;
+		if(containerCluster instanceof DatabaseCluster)
+			 cluster = (DatabaseCluster) containerCluster;
+		else
+			throw new RuntimeException("Container that new machine will be added must be of type DatabaseCluster!");
 		
 		//If the cluster is not associated with a dbType do nothing
 		DbType associatedDbType = cluster.getAssociatedDbType();
