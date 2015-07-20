@@ -25,9 +25,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 public class ObservabilityCollectdFileOperations {
     /**
@@ -37,7 +35,11 @@ public class ObservabilityCollectdFileOperations {
 
     private static String collectdConf = "etc/collectd.conf";
 
+    private static String collectdConfLock = "etc/collectd.conf";
+
     private static String daemonIPList = "etc/daemoniplist";
+
+    private static String daemonIPListLock = "etc/daemoniplist.lock";
 
     private static String failedIPList = "etc/failediplist";
 
@@ -55,24 +57,13 @@ public class ObservabilityCollectdFileOperations {
 
         System.out.println("Updating Daemon IP List");
 
+        putLock(daemonIPListLock);
+
         String filename = collectdPath + daemonIPList;
 
-        FileLock lock = null;
         BufferedWriter fbw = null;
-        FileChannel fc = null;
         try {
             FileOutputStream out = new FileOutputStream(filename);
-            fc = out.getChannel();
-
-            // lock the file channel
-            lock = fc.tryLock();
-
-            // wait to acquire lock
-            while (lock == null) {
-                System.out.println("Waiting for Lock");
-                Thread.sleep(5000);
-                lock = fc.tryLock();
-            }
 
             // write to file
             OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
@@ -87,17 +78,7 @@ public class ObservabilityCollectdFileOperations {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            System.out.println("----------Error: Thread is interrupted. Lock not Acquired. IP LIST NOT UPDATED!");
-            e.printStackTrace();
         } finally {
-            try {
-                if (lock != null)
-                    lock.release();
-            } catch (IOException e) {
-                System.out.println("----------Error: Releasing lock");
-                e.printStackTrace();
-            }
             try {
                 if (fbw != null)
                     fbw.close();
@@ -106,6 +87,8 @@ public class ObservabilityCollectdFileOperations {
                 e.printStackTrace();
             }
         }
+
+        removeLock(daemonIPListLock);
 
         System.out.println("Success: IP List file updated");
     }
@@ -116,7 +99,6 @@ public class ObservabilityCollectdFileOperations {
 
         String filename = collectdPath + failedIPList;
 
-        FileLock lock = null;
         BufferedWriter fbw = null;
         try {
             FileOutputStream out = new FileOutputStream(filename);
@@ -147,74 +129,93 @@ public class ObservabilityCollectdFileOperations {
         System.out.println("Success: Failed IP List file updated");
     }
 
-    public static HashSet<String> getIPList() {
+    private static boolean lockExists(String file) {
+        File f = new File(collectdPath + file);
+        if (f.exists() && !f.isDirectory()) {
+            return true;
+        }
+        return false;
+    }
 
-        System.out.println("Retrieving Daemon IP List");
+    private static void putLock(String file) {
+        System.out.println("Creating lock " + file);
 
-        String filename = collectdPath + daemonIPList;
-
-        FileLock lock = null;
-        BufferedReader fbr = null;
-        FileChannel fc = null;
-        FileInputStream in = null;
-
-        HashSet<String> ipList = null;
-
+        BufferedWriter fbw = null;
         try {
-            in = new FileInputStream(filename);
+            FileOutputStream out = new FileOutputStream(collectdPath + file);
 
-            fc = in.getChannel();
-
-            System.out.println("1");
-            System.out.println(fc.tryLock());
-            System.out.println("2");
-            // lock the file channel
-            lock = fc.tryLock();
-
-            // wait to acquire lock
-            if (lock == null) {
-                return null;
-            }
-
-            // read file
-            fbr = new BufferedReader(new InputStreamReader(in, "UTF8"));
-            String str;
-            ipList = new HashSet<String>();
-
-            // get each line in the file
-            while ((str = fbr.readLine()) != null) {
-                ipList.add(str);
-            }
+            // write to file
+            OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+            fbw = new BufferedWriter(writer);
+            fbw.write("lock");
+            fbw.newLine();
 
         } catch (FileNotFoundException e) {
-            System.out.println("ERROR: Daemon IP List file not found");
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (lock != null)
-                    lock.release();
+                if (fbw != null)
+                    fbw.close();
             } catch (IOException e) {
-                System.out.println("ERROR: Releasing lock");
+                System.out.println("----------Error: Closing file");
                 e.printStackTrace();
             }
-            try {
-                if (fbr != null)
-                    fbr.close();
-            } catch (IOException e) {
-                System.out.println("ERROR: Closing file");
-                e.printStackTrace();
+        }
+
+        System.out.println("Lock created");
+    }
+
+    private static void removeLock(String f) {
+        try {
+            File file = new File(collectdPath + f);
+            if (file.delete()) {
+                System.out.println(file.getName() + " lock is deleted!");
+            } else {
+                System.out.println(file.getName() + " delete operation is failed.");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static HashSet<String> getIPList() {
+
+        if (lockExists(daemonIPListLock)) {
+            System.out.println("IP Lock exists. Returning null");
+            return null;
+        }
+
+        System.out.println("Retrieving Daemon IP List");
+
+        String filename = collectdPath + daemonIPList;
+
+        HashSet<String> ipList = new HashSet<String>();
+        FileInputStream stream = null;
+        String strLine;
+        try {
+            stream = new FileInputStream(filename);
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+            while ((strLine = br1.readLine()) != null) {
+                ipList.add(strLine);
+            }
+
+            // Close the input stream
+            br1.close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         System.out.println("Returning Daemon IP List");
         return ipList;
     }
 
-    public static HashSet<String> getFailedIPList(){
+    public static HashSet<String> getFailedIPList() {
         HashSet<String> ipList = new HashSet<String>();
         FileInputStream stream = null;
         String strLine;
@@ -235,6 +236,76 @@ public class ObservabilityCollectdFileOperations {
         }
 
         return ipList;
+    }
+
+    public static HashMap<String, Object> getMissingDaemonConf() {
+        HashMap<String, Object> conf = new HashMap<String, Object>();
+
+        FileInputStream stream = null;
+        String strLine;
+        String[] temp;
+        int interval = -1;
+        try {
+            stream = new FileInputStream(collectdPath + collectdConf);
+            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+            while ((strLine = br1.readLine()) != null) {
+                strLine = strLine.trim().replace("\"", "");
+                if (strLine.startsWith("Interval") && interval < 0) {
+                    temp = strLine.split(" ");
+                    interval = Integer.parseInt(temp[1]);
+                    conf.put("Interval", interval);
+                }
+
+                // entering MIssing daemon plugin tag
+                if (strLine.startsWith("<Plugin MissingDaemon>")) {
+                    while ((strLine = br1.readLine()) != null) {
+                        strLine = strLine.trim().replace("\"", "");
+
+                        if (strLine.startsWith("</Plugin>")) {
+                            break;
+                        }
+
+                        if (strLine.startsWith("Threshold")) {
+                            temp = strLine.split(" ");
+                            conf.put("Threshold", Integer.valueOf(temp[1]));
+                        }
+
+                        if (strLine.startsWith("EmailInterval")) {
+                            temp = strLine.split(" ");
+                            conf.put("EmailInterval", Integer.valueOf(temp[1]));
+                        }
+                        //end email interval
+
+                        if (strLine.startsWith("<Email MissingDaemon>")) {
+                            List<String> recipients = new ArrayList<String>();
+                            while ((strLine = br1.readLine()) != null) {
+                                strLine = strLine.trim().replace("\"", "");
+
+                                if (strLine.startsWith("</Email>"))
+                                    break;
+
+                                if (strLine.startsWith("recpt")) {
+                                    temp = strLine.split(" ");
+                                    recipients.add(temp[1]);
+                                }
+                            }
+                            conf.put("EmailMissingDaemon", recipients);
+                        }
+                        //end email
+                    }
+                }
+            }
+
+            // Close the input stream
+            br1.close();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return conf;
     }
 
     public static void logMessageAggregation(String message) {
@@ -296,7 +367,6 @@ public class ObservabilityCollectdFileOperations {
         return lastModified;
     }
 
-
     /**
      * Gets the last modified time of collectd.conf in (long) timestamp
      *
@@ -311,6 +381,9 @@ public class ObservabilityCollectdFileOperations {
     public static void main(String[] args) {
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());
+
+        DaemonHeartbeatMain d = new DaemonHeartbeatMain();
+        d.updateConfiguration();
     }
 }
 
