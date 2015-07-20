@@ -21,10 +21,14 @@ public class ModelHandlerTest {
 	
 	@Test
 	public void testFileOperationHelpers() {
-		IModelHandlerServer.FileOperationHelper.getFileMD5(null);
-		IModelHandlerServer.FileOperationHelper.getFileMD5(dirName);
-		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
-		IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		String s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(null);
+		assertNull(s1);
+		s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(dirName);
+		assertNull(s1);
+		boolean b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		assertTrue(b1);
 		File f = new File(subFilePath);
 		try {
 			f.createNewFile();
@@ -33,8 +37,10 @@ public class ModelHandlerTest {
 			e.printStackTrace();
 		}
 		//deleteDirectoryContents
-		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
-		IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
+		assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
+		assertFalse(b1);
 	}
 	
 	@Test
