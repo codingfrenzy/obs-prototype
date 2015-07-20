@@ -1,47 +1,56 @@
-    <Node "graphing">
-        Host "localhost"
-        Port "2003"
-        Protocol "tcp"
-        LogSendErrors true
-        Prefix "collectd."
-        StoreRates true
-        AlwaysAppendDS false
-        EscapeCharacter "_"
-    </Node>
-</Plugin>
+Interval 30
 
-
-LoadPlugin aggregation
-<LoadPlugin aggregation>
-    Interval 30
-</LoadPlugin>
-
-
-
-#LoadPlugin ping
-#<Plugin "ping">
-#  Host "45.55.240.162"
-#  Host "128.2.204.246"
-#  Interval 30
-#  Timeout 5
-#</Plugin>
 
 <Aggregation>
-    #Host "localhost"
     Plugin "cpu"
     #PluginInstance "/[0]$/"
-    Type "cpu"
-    #TypeInstance "cpu-system"
+    #Type "cpu"
+    #TypeInstance "cpu-user"
     #SetPlugin "cpu"
     #SetPluginInstance "even-%{aggregation}"
     #GroupBy "Host"
     GroupBy "TypeInstance"
     CalculateNum true
     CalculateSum true
-
     CalculateAverage true
     CalculateMinimum true
-    CalculateMaximum false
+    CalculateMaximum true
     CalculateStddev true
   </Aggregation>
-test test
+  
+<Aggregation>
+    Plugin "cpu"
+    #PluginInstance "/[0]$/"
+    Type "cpu"
+    #TypeInstance "cpu-idle"
+    #SetPlugin "cpu"
+    #SetPluginInstance "even-%{aggregation}"
+    #GroupBy "Host"
+    GroupBy "TypeInstance"
+    CalculateNum true
+    CalculateSum true
+    CalculateAverage true
+    CalculateMinimum true
+    CalculateMaximum true
+    CalculateStddev true
+  </Aggregation>
+
+<Aggregation>
+    #Host "localhost"
+    Plugin "GenericJMX"
+    #PluginInstance "/[0]$/"
+    Type "memory"
+    #TypeInstance "memory-heap_memused"
+    #GroupBy "Host"
+    GroupBy "TypeInstance"
+
+    CalculateNum true
+    CalculateSum true
+    CalculateAverage true
+    CalculateMinimum true
+    CalculateMaximum true
+    CalculateStddev true
+</Aggregation>
+
+
+
