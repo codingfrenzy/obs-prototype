@@ -44,7 +44,7 @@ public class ModelHandlerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ModelHandler.initializeService("127.0.0.1", "12345");
+		//ModelHandler.initializeService("127.0.0.1", "12345");
 	}
 	
 	@Test
@@ -237,6 +237,7 @@ public class ModelHandlerTest {
 			System.out.println(si.toString());
 	}
 	
+	/*
 	@Test
 	public void testWithRealServer() {
 		try {
@@ -249,5 +250,5 @@ public class ModelHandlerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
