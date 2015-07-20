@@ -159,6 +159,7 @@ public interface IModelHandlerServer extends Remote {
                         }
                     }
                 }
+                ret = true;
             } catch (Exception e) {
                 e.printStackTrace();
                 ret = false;
