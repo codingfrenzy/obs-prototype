@@ -26,7 +26,7 @@ do
                 echo "ModelHandler is running"
         else
                 echo "ModelHandler down. Respawning."
-                java com.observability.monitoring.server. ModelHandler 52.6.202.212 > ModelHandler 2>1& $
+                java com.observability.monitoring.server.ModelHandler 52.6.202.212 > ModelHandler 2>1& $
         fi
 
         sleep 29
