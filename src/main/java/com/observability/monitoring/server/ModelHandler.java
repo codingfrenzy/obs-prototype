@@ -123,6 +123,30 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         //return (ret == null) ? null : (ret + ".zip");
         return (ret + ".zip");
     }
+
+    private String makeFileName(String target) {
+        if (target.endsWith(".zip")) {
+            target = target.substring(0, target.length() - 4);
+        }
+
+        final String finalFileName = target;
+        File dir = new File(getModelDirectory());
+
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.matches(finalFileName + "(_[0-9]*)*");
+            }
+        });
+
+        int count = files.length;
+        String dirName = target;
+
+        if (count >= 1)
+            dirName += "_" + count;
+
+        return dirName;
+    }
     
     /**
      * Get the path of the descriptor file
@@ -131,23 +155,13 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     private String getDescriptorFilePath() {
     	return getModelDirectory() + File.separatorChar + DESCRIPTORFILE;
     }
-    
-    
-    private String makeFileName() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        TimeZone tzInAmerica = TimeZone.getTimeZone("America/New_York");
-        sdf.setTimeZone(tzInAmerica);
-        return sdf.format(date) + "_model";
-    }
-
     /**
      * @see com.observability.monitoring.server.IModelHandlerServer
      */
     @Override
     public boolean beginFileUpload(String target) throws RemoteException {
 
-        target = makeFileName();
+        target = makeFileName(target);
         System.out.println(target);
 
         // check the file object
@@ -428,28 +442,28 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         System.out.println("Retrieving all models in this system");
         ArrayList<String> models = new ArrayList<String>();
         String modeDir = getModelDirectory();
-        File dir = new File(modeDir);
-        File[] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".zip");
-            }
-        });
 
-        for (File zip : files) {
-            int slash = zip.toString().lastIndexOf("/");
-            String fileName = zip.toString().substring(slash + 1);
-//            System.out.println(zip);
-//            System.out.println(fileName);
-            if (fileName.endsWith(".zip")) {
-                fileName = fileName.substring(0, fileName.length() - 4);
+        try {
+            File dir = new File(modeDir);
+            String[] directories = dir.list(new FilenameFilter() {
+                @Override
+                public boolean accept(File current, String name) {
+                    return new File(current, name).isDirectory();
+                }
+            });
+
+            for (int i = 0; i < directories.length; i++) {
+                models.add(directories[i]);
+
             }
-            models.add(fileName);
+
+            // sorting the models so that the newest comes first
+            Collections.sort(models);
+            return models;
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
         }
-
-        // sorting the models so that the newest comes first
-        Collections.sort(models, Collections.reverseOrder());
-        return models;
     }
 
     @Override
