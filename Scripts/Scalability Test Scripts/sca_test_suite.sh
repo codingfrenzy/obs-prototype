@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# This script is used on the load generator server to generate packets and send them to collected server. Make sure you create the directory sca_test_suite.out
+# This script is used on the load generator to generate packets and send them to collected server. Make sure you create the directory sca_test_suite.out
 
 # Laila Alhmoud
 # 7/15/2015
