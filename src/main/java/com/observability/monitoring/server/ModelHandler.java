@@ -30,6 +30,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import com.observability.monitoring.daemon.IDaemonManagerServer;
@@ -59,7 +60,14 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      * Auto generated serial version id
      */
     private static final long serialVersionUID = 510701247259432165L;
-
+    
+    private static final String DESCRIPTORFILE = "descriptors.zip";
+    
+    private static final int MAX_BLOCK_SIZE = 1024*512;
+    
+ // Local map to associate the block number with its siz
+    private static ConcurrentHashMap<Integer, Integer> blockSize = new ConcurrentHashMap<Integer, Integer>();
+    
     // File object for handling uploaded zip file
     private transient RandomAccessFile rafZip = null;
 
@@ -115,7 +123,16 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         //return (ret == null) ? null : (ret + ".zip");
         return (ret + ".zip");
     }
-
+    
+    /**
+     * Get the path of the descriptor file
+     * @return descriptor file path
+     */
+    private String getDescriptorFilePath() {
+    	return getModelDirectory() + File.separatorChar + DESCRIPTORFILE;
+    }
+    
+    
     private String makeFileName() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -561,5 +578,64 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         System.out.println("Starting Modeling Handler with IP: " + rmiIP + " & Port: " + rmiPort);
         initializeService(rmiIP, rmiPort);
     }
+    
+    
+    public byte[] getDescriptorFiles(int blockNumber) throws RemoteException, IOException{
+    	File descFile = new File(getDescriptorFilePath());
+    	FileInputStream fIn = null;
+    	try {		
+			fIn = new FileInputStream(descFile);
+			// skip blocksize bytes for the blocks before requested block
+			for (int i = 1; i < blockNumber; i++) {
+				long skipBytes = blockSize.get(i);
+				if(fIn.skip(skipBytes)!=skipBytes){
+					fIn.close();
+					throw new IOException("Error reading file\n");
+				};
+			}
+			byte[] bytes = new byte[blockSize.get(blockNumber)];
+			if(fIn.read(bytes)==-1){
+				fIn.close();
+				return new byte[0];
+			};
+			fIn.close();
+			return bytes;		
+		} catch (IOException e) {
+			if(fIn!=null){
+				fIn.close();				
+			}
+		}		
+    	return new byte[0];
+    }
+	
+	public int getDescFileNrOfBlocks() throws RemoteException {
+		File descFile = new File(getDescriptorFilePath());
+		int nrOfBlocks = 0;
+		long fileSize = descFile.length();
+		
+		if (fileSize > MAX_BLOCK_SIZE) {
+			while (fileSize > 0) {
+				nrOfBlocks++;
+				if (fileSize > MAX_BLOCK_SIZE) {
+					fileSize -= MAX_BLOCK_SIZE;
+					blockSize.put(nrOfBlocks, MAX_BLOCK_SIZE);
+				} else {
+					blockSize.put(nrOfBlocks, (int) fileSize);
+					fileSize = 0;
+				}
+			}
+		} else {
+			// if the file is of size 0, it has no blocks.
+			nrOfBlocks = fileSize == 0 ? 0 : 1;
+			blockSize.put(nrOfBlocks, (int) fileSize);
+		}
+		
+		return nrOfBlocks;
+
+	}
+	
+	public String getDescFileMd5() throws RemoteException {
+		return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
+	}
 
 }
