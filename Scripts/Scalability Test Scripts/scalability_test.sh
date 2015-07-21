@@ -2,7 +2,6 @@
 
 # This script is used on collected server to save metrics data. Make sure to create the directory: output
 
-
 # Laila Alhmoud
 # 7/7/2015
 
