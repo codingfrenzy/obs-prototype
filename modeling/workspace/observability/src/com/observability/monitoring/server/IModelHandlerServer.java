@@ -303,12 +303,24 @@ public interface IModelHandlerServer extends Remote {
      * Get the descriptor files (descriptor.zip) and send it to the model editor
      * @return byte[] containing the file data
      * @throws RemoteException connection error
-     * @throws IOException 
+     * @throws IOException error reading file
      */
     public byte[] getDescriptorFiles(int blockNumber) throws RemoteException, IOException;
 	
+    
+	/**
+	 * Get the number of blocks in which the file would be transferred
+	 * @return integer expressing the number of blocks in the file
+	 * @throws RemoteException connection error
+	 */
 	public int getDescFileNrOfBlocks() throws RemoteException;
 	
+	
+	/**
+	 * Get the MD5 hash of the descriptor file
+	 * @return String containing the MD5 hash
+	 * @throws RemoteException connection error
+	 */
 	public String getDescFileMd5() throws RemoteException;
     
 }

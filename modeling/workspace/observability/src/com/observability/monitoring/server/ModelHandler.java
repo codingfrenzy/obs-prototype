@@ -40,34 +40,44 @@ import com.observability.monitoring.server.IModelHandlerServer;
 
 
 /**
- * Deploy is the client program of the ModelHandler. It connects with the server
- * using RMI and transfers the generated configuration files to the server.
+ * The class contains the operations required to interact with the server.
+ * It fetches the descriptor files from the server and transfers the configuration
+ * files to the server.
  * 
  * @author vsaravag
  * <p>
  * History <br>
  * 1. Create			June 23 2015 <br>
- *
+ * 2. Add code to fetch descriptor files from server		July 21 2015 <br>
+ * 
  */
 public class ModelHandler {
 	
+	// name of the descriptor file 
 	private static final String DESCRIPTOR_FILE_NAME = "descriptors.zip";
+	
+	// max size in which the files would be transferred over the network.
 	private static final int MAX_BLOCK_SIZE = 1024*512;
 	
+	// server RMI instance
 	private static IModelHandlerServer svr = null;
+	
+	// ip where the Model Handler service is running
 	private static String ip = null;
+	
+	// port where the Model Handler service is running
 	private static String port = null;
 	
 	public static void main(String[] args){
-//		try {
-//			deployFile(args[0], args[1], args[2]);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.out.println(e.getMessage());
-//		}
+
 	}
 	
+	/**
+	 * Get the descriptor files from the central server and store them in the 
+	 * project directory.
+	 * @param dirPath the absolute path of the project root
+	 * @throws Exception generic exception to catch any error
+	 */
 	public static void getDescriptorFiles(Path dirPath) throws Exception{
 		
 		// get the ip and port where the model handler service is running.
@@ -83,17 +93,20 @@ public class ModelHandler {
 		connectRMI(ip, port);
 		// create descriptor directory path in the project
 		Path descDirPath = dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH);
+		
 		// create descriptor directory
 		if(!IModelHandlerServer.FileOperationHelper.createDirectory(descDirPath.toString())){
+			// Unable to create directory. Abort
 			throw new RuntimeException("Unable to create descriptors directory. Please check permissions");
 		};
+		
 		// create descriptor file
 		File descFile = descDirPath.resolve(DESCRIPTOR_FILE_NAME).toFile();
 		
 		// get the details of the descriptor file from the server
 		int nrOfBlocks = svr.getDescFileNrOfBlocks();
 
-		// get MD5 hash of the descriptor file
+		// get MD5 hash of the descriptor file from the server
 		String serverMd5 = svr.getDescFileMd5();
 
 		// Get the file from the server in blocks
@@ -106,8 +119,7 @@ public class ModelHandler {
 					fOut = new FileOutputStream(descFile, true);
 					fOut.write(bytes);
 					fOut.close();	
-				}
-				
+				}				
 			}
 		}
 		catch (IOException e){
@@ -116,15 +128,19 @@ public class ModelHandler {
 			}			
 			throw e;
 		}
+		
 		// get the MD5 of the received file and compare it with the MD5 received from server
 		String actualMd5 = IModelHandlerServer.FileOperationHelper.getFileMD5(descFile.toString());
 		if(!serverMd5.equals(actualMd5)){
+			// MD5 do not match. Abort
 			IModelHandlerServer.FileOperationHelper.deleteFile(descFile);			
 			throw new RuntimeException("Failed to get correct descriptor file from server. Please try again\n");
 		}
+		
 		// unzip the file and delete the zip.
 		int result = IModelHandlerServer.FileOperationHelper.unzipFile(descFile.toString(), descDirPath.toString());
 		if(result <=0){
+			// Error in unzipping. Abort
 			String message = "";
 			switch(result) {
 			case -21:
@@ -142,9 +158,16 @@ public class ModelHandler {
 			IModelHandlerServer.FileOperationHelper.deleteFile(descFile);
 			throw new RuntimeException("Descriptor files cannot be unzipped. " + message);
 		};
+		// If the code reaches here, success. Delete the zip
 		IModelHandlerServer.FileOperationHelper.deleteFile(descFile);
 	}
 	
+	/**
+	 * Connect to the Model Handler RMI Service
+	 * @param ip IP where the service is running
+	 * @param port port where the service is running
+	 * @throws Exception generic exception to catch any error
+	 */
 	private static void connectRMI(String ip, String port) throws Exception{
 		try {
 			svr = (IModelHandlerServer) Naming.lookup(String.format(
@@ -188,9 +211,11 @@ public class ModelHandler {
 					+ " Do you want to continue?";
 			int option = JOptionPane.showConfirmDialog(null, msg, "",JOptionPane.YES_NO_OPTION);
 			if(option == JOptionPane.YES_OPTION){
-				return new String[0]; //Do not transfer files to server
+				// Do not transfer files to server
+				return new String[0]; 
 			}
 			else {
+				// show the box again
 				return getServerDetails(JOptionPane.INFORMATION_MESSAGE, "");
 			}
 		}
@@ -213,6 +238,13 @@ public class ModelHandler {
 		}
 	}
 	
+	/**
+	 * Deploy the generated file to the server
+	 * @param target the absolute path of the file which is to be transferred
+	 * @param fileName the name of the file, without the extension.
+	 * @return integer containing the number of files deployed by the server
+	 * @throws Exception generic exception to catch any error.
+	 */
 	public static int deployFile(String target, String fileName) throws Exception{
 		if(ip == null || port == null){
 			// get the ip and port where the model handler service is running.
@@ -257,13 +289,14 @@ public class ModelHandler {
 					
 					fIn = new FileInputStream(target);
 					if(fIn.skip(skipBytes)!= skipBytes){
+						// bytes skipped actually are not equal to the bytes meant to be skipped. Abort
 						fIn.close();
 						throw new IOException("Error in reading zip");
 					}
 					
 					byte[] bytes = new byte[bufferSize];
 					if(fIn.read(bytes)!=-1){
-						// write file to the server
+						// No more bytes to read. Write file to the server
 						svr.uploadFileChunk(bytes);
 					}
 					fIn.close();
@@ -274,8 +307,10 @@ public class ModelHandler {
 				throw e;
 			}
 			
+			// End the upload process.
 			int uploadStatus = svr.endFileUpload(md5);
 			if(uploadStatus < 0){
+				// Failure in ending the process. Abort.
 				switch(uploadStatus){
 				case -1:
 					throw new RuntimeException("Error in zip file");

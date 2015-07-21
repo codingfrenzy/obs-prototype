@@ -253,6 +253,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
 							
 							try{
+								// get the descriptor files from the server in the project dir.
 								ModelHandler.getDescriptorFiles(dirPath);
 								SiriusServices.getInstance().initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {

@@ -27,7 +27,7 @@ import com.observability.monitoring.server.*;
  * @see org.eclipse.core.commands.AbstractHandler
  */
 public class GenerateFiles extends AbstractHandler {
-	
+
 	private static String ZIPEXTENSION = ".zip";
 	/**
 	 * The constructor.
@@ -42,12 +42,12 @@ public class GenerateFiles extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		TreeSelection selection = (TreeSelection) window.getSelectionService().getSelection();
-		
+
 		if(selection.isEmpty()){
 			MessageDialog.openError(window.getShell(), "Error", "Select the model file");
 			return null;
 		}						
-		
+
 		// Get the current selection
 		TreePath[] path = selection.getPaths();
 		// Get the selected file
@@ -61,44 +61,44 @@ public class GenerateFiles extends AbstractHandler {
 		String zipPath = projectPath + File.separatorChar + zipName + ZIPEXTENSION;
 		// Absolute path of the file
 		String modelPath = file.getLocation().toString();
-		
+
 		IWorkspaceRoot workspace = ResourcesPlugin.getWorkspace().getRoot();		
 		workspace.getFullPath().toString();
-		
+
 
 		URI modelURI = URI.createFileURI(modelPath);
-        File targetFolder = new File(projectPath);
-        List<String> arguments = new ArrayList<String>();
-        
+		File targetFolder = new File(projectPath);
+		List<String> arguments = new ArrayList<String>();
+
 		try {
 			Main generator = new Main(modelURI, targetFolder, arguments);
 			generator.setFileParameters(projectPath, zipPath);
 			generator.doGenerate(new BasicMonitor());
-			
+
 			MessageDialog.openInformation(
 					window.getShell(),
 					"Generate File",
 					("File conf.zip generated in project directory"));
-						
-				// Deploy the zip file on the server
-				int result = ModelHandler.deployFile(zipPath, zipName);
-				String message = "";
-				if(result == -1){
-					message += "File not transferred to server";
-				}
-				else if(result == -2){
-					message += "Error while uploading the file to server";
-				}
-				else if(result == 0){
-					message += "File successfully transferred to server";
-				}
-				MessageDialog.openInformation(
-						window.getShell(),
-						"Generate File",
-						message);	
-			
+
+			// Deploy the zip file on the server
+			int result = ModelHandler.deployFile(zipPath, zipName);
+			String message = "";
+			if(result == -1){
+				message += "File not transferred to server";
+			}
+			else if(result == -2){
+				message += "Error while uploading the file to server";
+			}
+			else if(result == 0){
+				message += "File successfully transferred to server";
+			}
+			MessageDialog.openInformation(
+					window.getShell(),
+					"Generate File",
+					message);	
+
 			return null;
-			
+
 		} catch (Exception e) {
 			// Display the error message.
 			MessageDialog.openError(window.getShell(), "Error", e.getMessage());
