@@ -17,7 +17,7 @@ do
                 echo "DaemonHeartbeatMain is running"
         else
                 echo "DaemonHeartbeatMain down. Respawning."
-                java com.observability.monitoring.server. DaemonHeartbeatMain > MissingDaemon 2>1& $
+		java -cp .:mail-1.4.7.jar com.observability.monitoring.server.DaemonHeartbeatMain > MissingDaemon 2>1& $
         fi
 
         check=`jps | grep ModelHandler`
@@ -26,7 +26,7 @@ do
                 echo "ModelHandler is running"
         else
                 echo "ModelHandler down. Respawning."
-                java com.observability.monitoring.server. ModelHandler 52.6.202.212 8101 > ModelHandler 2>1& $
+                java com.observability.monitoring.server. ModelHandler 52.6.202.212 > ModelHandler 2>1& $
         fi
 
         sleep 29
