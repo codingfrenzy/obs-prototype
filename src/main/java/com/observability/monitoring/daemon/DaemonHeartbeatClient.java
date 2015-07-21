@@ -296,6 +296,8 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
             // Close the input stream
             br1.close();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } catch (Exception e) {
