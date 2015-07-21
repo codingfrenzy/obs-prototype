@@ -32,4 +32,3 @@ echo $temp_erpacket | sed -e "s/^/$(date +%s) /" >> ~/output/output_erpacket.txt
 
 sleep 1
 done
-
