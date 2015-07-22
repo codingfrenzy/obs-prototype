@@ -54,7 +54,7 @@ LoadPlugin "postgresql"
 
 
 <Plugin "csv"> @MetricSystem
-  DataDir "/home/owls/collectd/csv" @Machine
+  DataDir "/home/ubuntu/collectd/csv" @Machine
   StoreRates true @Attribute
 </Plugin>
 
