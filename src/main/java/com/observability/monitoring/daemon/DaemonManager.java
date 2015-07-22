@@ -81,7 +81,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public DaemonHeartbeatClient dhc = null;
 
 	/**
-	 * Strong reference to the server son it will not be GCed.
+	 * Strong reference to the server so it will not be GCed.
 	 */
 	private static DaemonManager server = null;
 

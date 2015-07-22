@@ -28,7 +28,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -73,6 +72,11 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
     // File target name
     private String targetName = null;
+    
+    /**
+	 * Strong reference to the server so it will not be GCed.
+	 */
+    private static IModelHandlerServer imhs = null;
 
     private String daemonManagerDefaultPort = "8200";
 
@@ -556,7 +560,8 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      */
     public static void initializeService(String rmiIP, String rmiPort) {
         try {
-            IModelHandlerServer imhs = new ModelHandler();
+            //IModelHandlerServer imhs = new ModelHandler();
+        	imhs = new ModelHandler();
             UnicastRemoteObject.unexportObject(imhs, true);
             IModelHandlerServer stub = (IModelHandlerServer) UnicastRemoteObject.exportObject(imhs, 0);
 
