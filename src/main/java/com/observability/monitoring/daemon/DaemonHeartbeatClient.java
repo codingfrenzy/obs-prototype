@@ -266,7 +266,9 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
                             break;
                         }
 
-                        if (strLine.startsWith("Server")) {
+                        // 'Server' is for the daemons
+                        // 'Listen' is for the server
+                        if (strLine.startsWith("Server") || strLine.startsWith("Listen")) {
                             temp = strLine.split(" ");
                             collectdServerIP = temp[1];
                             break;
