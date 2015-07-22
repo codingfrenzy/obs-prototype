@@ -310,12 +310,20 @@ public class ObservabilityCollectdFileOperations {
         logMessage(collectdPath + aggregationLog, message);
     }
 
-    public static void logMessageMissingDaemonNotCollecting(String message) {
-        logMessage(collectdPath + MISSING_DAEMON_NOT_COLLECTING_LOG, message);
+    public static boolean logMessageMissingDaemonNotCollecting(String message) {
+        return logMessage(collectdPath + MISSING_DAEMON_NOT_COLLECTING_LOG, message);
     }
 
-    public static void logMessageMissingDaemonNotResponding(String message) {
-        logMessage(collectdPath + MISSING_DAEMON_NOT_RESPONDING_LOG, message);
+    public static String getMissingDaemonNotCollectingLogPath(){
+        return collectdPath + MISSING_DAEMON_NOT_COLLECTING_LOG + "-" + getTodayDate();
+    }
+
+    public static boolean logMessageMissingDaemonNotResponding(String message) {
+        return logMessage(collectdPath + MISSING_DAEMON_NOT_RESPONDING_LOG, message);
+    }
+
+    public static String getMissingDaemonNotRespondingLogPath(){
+        return collectdPath + MISSING_DAEMON_NOT_RESPONDING_LOG + "-" + getTodayDate();
     }
 
     public static void logMessageDBHandler(String message) {
@@ -326,7 +334,7 @@ public class ObservabilityCollectdFileOperations {
         logMessage(collectdPath + modelDataHandlerLog, message);
     }
 
-    private static void logMessage(String path, String message) {
+    private static boolean logMessage(String path, String message) {
         try {
             // append to file
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(path + "-" + getTodayDate(), true), "UTF-8");
@@ -334,12 +342,14 @@ public class ObservabilityCollectdFileOperations {
             fbw.write(message);
             fbw.newLine();
             fbw.close();
+            return true;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
