@@ -354,7 +354,7 @@ public class SiriusServices {
 				fillElements( machineParam, machine,associatedDbType);
 				break;
 			}
-			throw new RuntimeException("Unknown database type: " + dbType.getName());
+			//throw new RuntimeException("Unknown database type: " + dbType.getName());
 		}
 		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
 		

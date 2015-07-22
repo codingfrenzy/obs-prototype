@@ -82,8 +82,8 @@ public class ParserUtility {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()){ //there would be only one match in a line
-			String[] insideTag = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space. This would only give 2 elements
-			int i = 0;
+			result = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space. This would only give 2 elements
+			/*int i = 0;
 			regex = "\"(.*)\""; //The regex is to remove the quotes ("") around the string.
 			pattern = Pattern.compile(regex);
 			for (String s : insideTag) {
@@ -97,7 +97,13 @@ public class ParserUtility {
 				else
 					result[i] = s.trim();
 				i++;
-			}
+			}*/
+		}
+		if(result.length == 1){
+			String[] temp = new String[2];
+			temp[0] = result[0];
+			temp[1] = null;
+			result = temp;
 		}
 		return result;
 	}
@@ -124,8 +130,8 @@ public class ParserUtility {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()){ //there would be only one match in a line
-			String[] keyValue = matcher.group(1).trim().split("\\s+",2); //get the string and split at space
-			int i = 0;
+			result = matcher.group(1).trim().split("\\s+",2); //get the string and split at space
+			/*int i = 0;
 			regex = "\"(.*)\""; //The regex is to remove the quotes ("") around the string.
 			pattern = Pattern.compile(regex);
 			for (String s : keyValue) {
@@ -138,7 +144,13 @@ public class ParserUtility {
 				else
 					result[i] = s.trim();
 				i++;
-			}
+			}*/
+		}
+		if(result.length == 1){
+			String[] temp = new String[2];
+			temp[0] = result[0];
+			temp[1] = null;
+			result = temp;
 		}
 		return result;
 	}

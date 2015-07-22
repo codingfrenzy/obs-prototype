@@ -66,10 +66,10 @@ public class ModelHandler {
 	private static IModelHandlerServer svr = null;
 	
 	// ip where the Model Handler service is running
-	private static String ip = null;
+	static String ip = null;
 	
 	// port where the Model Handler service is running
-	private static String port = null;
+	static String port = null;
 
 	/**
 	 * Get the descriptor files from the central server and store them in the 
@@ -82,7 +82,7 @@ public class ModelHandler {
 			throw new NullPointerException("Invalid project directory path");
 		}
 		// get the ip and port where the model handler service is running.
-		String[] serverDetails = getServerDetails(JOptionPane.PLAIN_MESSAGE, "");
+		String[] serverDetails = ModelHandler.getServerDetails(JOptionPane.PLAIN_MESSAGE, "");
 		if(serverDetails.length == 0){
 			return;
 		}
@@ -200,7 +200,7 @@ public class ModelHandler {
 	 * 
 	 * @return A String array containing ip and port. Index 0 contains ip, index 1 contains port
 	 */
-	private static String[] getServerDetails(int messageType, String message){
+	 static String[] getServerDetails(int messageType, String message){
 		
 		String input = (String)JOptionPane.showInputDialog(null,
 				(message + "Enter the IP and port where the Model Handler service is running, in the format -> ip:port"),				

@@ -38,15 +38,15 @@ LoadPlugin java
 	[for (metric : Metric | aCluster.collectedMetrics)]
 		[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('DATABASE') = 0]
 			[let element : Element = metric.elements->at(1)]
-<MBean "[element.value/]">
+<MBean [element.value/]>
 				[for (kv : KeyValue | element.keyValues)]
-	[kv.key/] "[kv.value/]"
+	[kv.key/] [kv.value/]
 				[/for]
 				
 				[for (e : Element | element.elements)]
-	<[e.name/] "[e.value/]">
+	<[e.name/] [e.value/]>
 					[for (kv : KeyValue | e.keyValues)]
-		[kv.key/] "[kv.value/]"
+		[kv.key/] [kv.value/]
 					[/for]
 	</[e.name/]>
 				[/for]
@@ -54,7 +54,7 @@ LoadPlugin java
 				[for (e:Element | machine.elements)]
 					[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
 						[for (kv : KeyValue | e.keyValues)]
-	[kv.key/] "[kv.value/]"
+	[kv.key/] [kv.value/]
 						[/for]		
 					[/if]
 				[/for]
@@ -66,12 +66,12 @@ LoadPlugin java
 
     <Connection>
 	  		[for (keyValue : KeyValue | machine.keyValues)]
-	  [keyValue.key/] "[keyValue.value/]"
+	  [keyValue.key/] [keyValue.value/]
 	 	 	[/for]
 
 	  		[for (m : Metric | aCluster.collectedMetrics) ]
 	  			[if m.oclIsKindOf(BaseMetric) and m.type.strcmp('DATABASE')=0]
-	  Collect "[m.elements->at(1).value/]"		
+	  Collect [m.elements->at(1).value/]		
 	  			[/if]
 	  		[/for]	  	
     </Connection>

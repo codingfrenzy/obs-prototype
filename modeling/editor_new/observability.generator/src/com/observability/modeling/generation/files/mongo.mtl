@@ -42,7 +42,7 @@ LoadPlugin "network"
 	[if element.name.strcmp('Module') = 0]
     <Module mongodb>
 	  [for (keyValue : KeyValue | element.keyValues)]
-	  [keyValue.key/] "[keyValue.value/]"
+	  [keyValue.key/] [keyValue.value/]
 	  [/for]	  	
     </Module>
 	[/if]

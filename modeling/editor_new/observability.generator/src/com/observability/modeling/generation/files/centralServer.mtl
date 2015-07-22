@@ -76,18 +76,18 @@ LoadPlugin obsaggregation
 				[if (aMetric.oclIsKindOf(AggregatedMetric))]
 	<Aggregation>
 					[for (keyValue : KeyValue | aMetric.keyValues)]
-		[keyValue.key/] "[keyValue.value/]"
+		[keyValue.key/] [keyValue.value/]
 					[/for]
 		
 					[let element : Element = aMetric.elements->at(1)]
 						[for (kv : KeyValue | element.keyValues)]
-		[kv.key/] "[kv.value/]"
+		[kv.key/] [kv.value/]
 						[/for]
 				
 						[for (e : Element | element.elements)]
-		<[e.name/] "[e.value/]">
+		<[e.name/] [e.value/]>
 							[for (kv : KeyValue | e.keyValues)]
-			[kv.key/] "[kv.value/]"
+			[kv.key/] [kv.value/]
 							[/for]
 		</[e.name/]>
 						[/for]
@@ -114,15 +114,15 @@ LoadPlugin java
 
 	[for (feature:Feature | aModel.features)]
 		[let element:Element = feature.elements->at(1)]
-<[element.name/] "[element.value/]">
+<[element.name/] [element.value/]>
 			[for(keyValue : KeyValue | element.keyValues)]
-	[keyValue.key/] "[keyValue.value/]"
+	[keyValue.key/] [keyValue.value/]
 			[/for]
 			
 			[for (e : Element | element.elements)]
-	<[e.name/] "[e.value/]">
+	<[e.name/] [e.value/]>
 				[for (kv : KeyValue | e.keyValues)]
-		[kv.key/] "[kv.value/]"
+		[kv.key/] [kv.value/]
 				[/for]
 	</[e.name/]>
 			[/for]

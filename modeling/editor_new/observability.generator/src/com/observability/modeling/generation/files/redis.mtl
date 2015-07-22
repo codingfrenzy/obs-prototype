@@ -38,14 +38,14 @@ LoadPlugin "network"
 	
 	<Module redis_info>
 	  	[for (keyValue : KeyValue | machine.keyValues)]
-		[keyValue.key/] "[keyValue.value/]"
+		[keyValue.key/] [keyValue.value/]
 	 	[/for]
 	
 		[for (metric : Metric | aCluster.collectedMetrics)]
 			[if metric.oclIsKindOf(BaseMetric) and metric.type.strcmp('DATABASE') = 0]
 	
 				[for (keyValue : KeyValue | metric.keyValues)]
-		[keyValue.key/] "[keyValue.value/]"
+		[keyValue.key/] [keyValue.value/]
 	 			[/for]
 
 			[/if]

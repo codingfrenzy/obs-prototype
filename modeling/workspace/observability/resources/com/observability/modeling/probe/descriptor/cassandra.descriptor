@@ -6,7 +6,7 @@ LoadPlugin "df"
 LoadPlugin "cpu"
 LoadPlugin "interface"
 LoadPlugin "disk"
-LoadPlugin load
+LoadPlugin "load"
 LoadPlugin "logfile"
 LoadPlugin "csv" 
 
@@ -14,8 +14,6 @@ LoadPlugin "csv"
 	ReportByState true @Attribute
 	ReportByCpu true @Attribute
 	ValuesPercentage true @Attribute
-	<test>
-	</test>
 </Plugin>
 
 <Plugin "memory"> @MetricSystem
@@ -27,7 +25,7 @@ LoadPlugin "csv"
 	Device "/dev/hda1" @Machine
 	MountPoint "/home" @Machine
 	FSType "ext3" @Machine
-	IgnoreSelected false @Attribute
+	IgnoreSelected true @Attribute
 	ReportInodes false @Attribute
 	ReportReserved false @Attribute
 </Plugin>
@@ -41,18 +39,18 @@ LoadPlugin "csv"
 <Plugin "disk"> @MetricSystem
   Disk "sda" @Machine
   Disk "/^hd/" @Machine
-  IgnoreSelected false @Attribute
+  IgnoreSelected true @Attribute
 </Plugin>
 
 <Plugin "logfile">  @MetricSystem 
   LogLevel "info" @Machine
-  File "/home/owls/collectd/log/collectd.log" @Machine
+  File "/home/ubuntu/collectd/log/collectd.log" @Machine
   Timestamp true @Attribute
   PrintSeverity true @Attribute
 </Plugin>
 
 <Plugin "csv"> @MetricSystem
-  DataDir "/home/owls/collectd/csv" @Machine
+  DataDir "/home/ubuntu/collectd/csv" @Machine
   StoreRates true @Attribute
 </Plugin>
 
@@ -374,10 +372,10 @@ LoadPlugin java
 
 
 	<Aggregation> @MetricAggregated(memory)
-		Host "/128.+|45.+/" @Attribute
+		Host "/.+/" @Attribute
 		Plugin "GenericJMX" @Attribute
 		Type "memory" @Attribute
-		#TypeInstance "/^heap-mem.*/"
+		TypeInstance "/^heap-mem.*/"
 		GroupBy "TypeInstance" @Attribute
 
 		# Sets the name of the output folder
