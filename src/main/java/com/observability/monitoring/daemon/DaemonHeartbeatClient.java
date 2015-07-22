@@ -174,6 +174,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
                 File[] listOfFiles = folder.listFiles();
 
                 // go through all files in that metric folder to see the last updated time of the latest file.
+                if (listOfFiles != null)
                 for (int j = 0; j < listOfFiles.length; j++) {
                     if (listOfFiles[j].isFile()) {
                         // check last updated time. If less than threshold then collectd is running fine.
