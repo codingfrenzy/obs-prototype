@@ -11,7 +11,7 @@
  */]
 [template public generateCentralServer(aModel : Model)]
 
-[file ('collectd.conf', false, 'UTF-8')]
+[file (aModel.serverIP + '_collectd.conf', false, 'UTF-8')]
 Interval [aModel.interval/] 
 Hostname [aModel.serverIP/] 
 

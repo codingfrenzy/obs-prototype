@@ -21,6 +21,7 @@ Import-Package: com.observability.modeling.emf,
  com.observability.modeling.emf.extension,
  com.observability.modeling.generation,
  com.observability.modeling.generation.files,
- com.observability.modeling.generation.services
+ com.observability.modeling.generation.services,
+ com.observability.monitoring.server
 Export-Package: com.observability.modeling.design,
  com.observability.modeling.design.handlers

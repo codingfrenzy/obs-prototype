@@ -22,8 +22,6 @@
 package com.observability.monitoring.server;
 
 import java.io.*;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -55,9 +53,9 @@ public class ObservabilityCollectdFileOperations {
 
     public static void updateIPList(ArrayList<String> ipList) {
 
-        System.out.println("Updating Daemon IP List");
-
         putLock(daemonIPListLock);
+
+        System.out.println("Updating Daemon IP List");
 
         String filename = collectdPath + daemonIPList;
 
@@ -88,9 +86,9 @@ public class ObservabilityCollectdFileOperations {
             }
         }
 
-        removeLock(daemonIPListLock);
-
         System.out.println("Success: IP List file updated");
+
+        removeLock(daemonIPListLock);
     }
 
     public static void updateFailedPropogation(ArrayList<String> ipList) {
@@ -378,6 +376,10 @@ public class ObservabilityCollectdFileOperations {
         return lastModified;
     }
 
+    public static boolean checkAccess(){
+        File file = new File(collectdPath + collectdConf);
+        return file.canWrite();
+    }
     public static void main(String[] args) {
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());

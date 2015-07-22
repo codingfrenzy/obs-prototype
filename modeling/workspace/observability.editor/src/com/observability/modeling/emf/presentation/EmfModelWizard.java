@@ -54,9 +54,10 @@ import org.eclipse.ui.part.ISetSelectionTarget;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.Model;
-import com.observability.modeling.emf.extension.EclipseResourceDelegate;
 import com.observability.modeling.emf.extension.SiriusServices;
 import com.observability.modeling.emf.provider.ObservabilityEditPlugin;
+import com.observability.monitoring.server.ModelHandler;
+
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
@@ -248,10 +249,12 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 							 */
 							// get the absolute path of the model file
 							IPath filePath = modelFile.getLocation();
+							// get the absolute path of the project directory
 							java.nio.file.Path dirPath = filePath.toFile().toPath().getParent();
 							
 							try{
-								createDescriptorDir(dirPath);
+								// get the descriptor files from the server in the project dir.
+								ModelHandler.getDescriptorFiles(dirPath);
 								SiriusServices.getInstance().initializeModel((Model)rootObject, dirPath);
 							}catch (Exception e) {
 								MessageDialog.openError(workbench.getActiveWorkbenchWindow().getShell(), 
@@ -270,18 +273,6 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 						}
 					}
 
-					private void createDescriptorDir(java.nio.file.Path dirPath) {
-						try{
-							if(Files.notExists(dirPath, LinkOption.NOFOLLOW_LINKS))
-								Files.createDirectory(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));	
-						}
-						catch (Exception e){
-							throw new RuntimeException("Unable to create descriptors directory in the project. Please manually create"
-									+ "a \"descriptors\" directory in the root of the project and put the descriptor files in it "
-									+ "before attempting to create the model again.");
-						}
-						
-					}
 				};
 
 			getContainer().run(false, false, operation);

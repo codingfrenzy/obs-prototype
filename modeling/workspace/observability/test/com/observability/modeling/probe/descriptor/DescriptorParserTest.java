@@ -7,10 +7,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
