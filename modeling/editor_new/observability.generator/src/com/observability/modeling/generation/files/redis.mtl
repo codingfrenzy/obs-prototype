@@ -16,6 +16,7 @@
 
 	[file ( machine.IP + '_' + machine.Port + '_collectd.conf' , false, 'UTF-8')]
 Interval [frequency/]
+Hostname [machine.IP/]
 
 [machine.generateSystemMetrics(aCluster)/]
 
