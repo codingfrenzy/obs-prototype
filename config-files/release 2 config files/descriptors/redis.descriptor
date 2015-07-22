@@ -42,7 +42,7 @@ LoadPlugin load
 
 LoadPlugin "logfile" 
 <Plugin "logfile"> @MetricSystem
-  LogLevel "info" @
+  LogLevel "info" @Attribute
   Timestamp true @Attribute
   PrintSeverity true @Attribute
   File "/home/ubuntu/collectd/log/collectd.log" @Machine  

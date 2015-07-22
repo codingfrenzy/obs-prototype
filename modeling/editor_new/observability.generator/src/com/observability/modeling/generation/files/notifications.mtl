@@ -14,7 +14,6 @@
 	[for (noti : Notification | aCluster.associatedNotifications)]
 LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "[aMachine.IP/]">
     <Type "[noti.type/]">
 		[if noti.warningMin <> 0.0]
      WarningMin    [noti.warningMin/]
@@ -30,7 +29,7 @@ LoadPlugin "threshold"
 		[/if]
      Invert [noti.invert/]
 		[if noti.dataSource <> null]
-	 DataSource [noti.dataSource/]
+	 DataSource "[noti.dataSource/]"
 		[/if]
 	Persist [noti.persist/]
 	Percentage [noti.percentage/]
@@ -44,7 +43,6 @@ LoadPlugin "threshold"
 	 Interesting [noti.interesting/]
      Instance "[noti.instance/]"
     </Type>
-   </Host>
  </Plugin>
 	[/for]
 
