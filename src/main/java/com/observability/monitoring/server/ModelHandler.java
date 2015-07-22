@@ -670,6 +670,5 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     public String getDescFileMd5() throws RemoteException {
         return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
     }
->>>>>>> 52c7eda766ff95379d19bf52b0f6bdf9eeebd768
 
 }
