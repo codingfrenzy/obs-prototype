@@ -106,7 +106,7 @@ LoadPlugin "csv"
 	Plugin "redis_info" @Attribute
 	Type "bytes" @Attribute
 	TypeInstance "/.*/" @Attribute
-	GroupBy "TypeInstance"@Attribute
+	GroupBy "TypeInstance" @Attribute
 	CalculateNum true
 	CalculateSum true
 	CalculateAverage true
