@@ -275,10 +275,6 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			// 2. stop collect process
 			killProcess("collectd");
 
-			// Update heartbeat client
-//			if(server.dhc != null)
-//				server.dhc.readConf();
-
 			// 3. start collect process
 			//startProcess("collectd");
 			startProcess(collectdPath);

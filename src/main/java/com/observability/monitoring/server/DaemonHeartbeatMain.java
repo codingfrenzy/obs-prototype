@@ -338,8 +338,8 @@ public class DaemonHeartbeatMain implements Runnable {
 
         // get both file paths
         String[] filePaths = {
-                ObservabilityCollectdFileOperations.MISSING_DAEMON_NOT_RESPONDING_LOG,
-                ObservabilityCollectdFileOperations.MISSING_DAEMON_NOT_COLLECTING_LOG
+                ObservabilityCollectdFileOperations.getMissingDaemonNotRespondingLogPath(),
+                ObservabilityCollectdFileOperations.getMissingDaemonNotCollectingLogPath()
         };
 
         // make email bodies

@@ -123,7 +123,8 @@ public class ModelHandlerTest {
 			boolean b1 = modelhandler.beginFileUpload("1234");
 			
 			boolean b2 = modelhandler.beginFileUpload("5678");
-			assertTrue(b1 && b2);
+			assertTrue(b1);
+			assertTrue(b2);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,10 +154,11 @@ public class ModelHandlerTest {
 	public void testEndFileUpload() {
 		try {
 			int ret = modelhandler.endFileUpload(null);
-			assertTrue(ret < 0);
+			//boolean b1 = (ret < 0);
+			assertNotEquals(ret, 0);
 			
 			ret = modelhandler.endFileUpload("");
-			assertTrue(ret < 0);
+			assertNotEquals(ret, 0);
 			
 			boolean b1 = modelhandler.beginFileUpload("5678");
 			assertTrue(b1);
@@ -230,11 +232,8 @@ public class ModelHandlerTest {
 	
 	@Test
 	public void testDaemonManagerClient() {
-		IDaemonManagerServer si = DaemonManagerClient.getServerInstance("52.6.202.212", "8101");
-		if(si == null)
-			System.out.println("null pointer");
-		else
-			System.out.println(si.toString());
+		IDaemonManagerServer si = DaemonManagerClient.getServerInstance("52.6.202.212", "1234");
+		assertNull(si);
 	}
 	
 	/*
