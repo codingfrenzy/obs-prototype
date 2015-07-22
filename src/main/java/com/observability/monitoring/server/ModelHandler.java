@@ -74,6 +74,8 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     // File target name
     private String targetName = null;
 
+    private String daemonManagerDefaultPort = "8200";
+
     protected ModelHandler() throws RemoteException {
         super();
     }
@@ -365,10 +367,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         }
         System.out.println("--Success saving current model (" + targetName + ") to file.");
 
-        return deploySelectedFilesOnly(files);
+        return deploySelectedFilesOnly(files, true);
     }
 
-    private int deploySelectedFilesOnly(File[] files) {
+    private int deploySelectedFilesOnly(File[] files, boolean updateDaemonList) {
         System.out.println("---Start deploying configuration files of totally: " + files.length);
         // loop through file list
         int totalSent = 0;
@@ -384,6 +386,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             if (files[i] != null && files[i].isFile()) {
                 String fn = files[i].getName();
                 String[] items = pattern.split(fn);
+
+                if (items.length == 2)
+                    items[1] = daemonManagerDefaultPort;
+
                 ipList.add(items[0]);
 
                 System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
@@ -407,8 +413,12 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         }
 
         System.out.println("----------End deploying model, " + totalSent + " out of " + files.length + " were successful");
-        updateDashboard();
-        ObservabilityCollectdFileOperations.updateIPList(ipList);
+
+        if (updateDaemonList) {
+            updateDashboard();
+            ObservabilityCollectdFileOperations.updateIPList(ipList);
+        }
+
         ObservabilityCollectdFileOperations.updateFailedPropogation(failedIPList);
         ipList = null;
         return totalSent;
@@ -474,6 +484,13 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     }
 
     @Override
+    public HashSet<String> viewAllIP() throws RemoteException {
+        System.out.println("Retrieving all IPs");
+        HashSet<String> ips = ObservabilityCollectdFileOperations.getIPList();
+        return ips;
+    }
+
+    @Override
     public int resendFailedModels(String target) throws RemoteException {
         //updating targetName for rollback function
         targetName = target;
@@ -511,7 +528,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             }
         }
 
-        return deploySelectedFilesOnly(failedFiles);
+        return deploySelectedFilesOnly(failedFiles, false);
     }
 
     private void updateDashboard() {
