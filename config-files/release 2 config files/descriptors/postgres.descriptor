@@ -1,12 +1,21 @@
 Interval 30
-Hostname 45.55.197.112
+Hostname 54.84.111.144
 
 LoadPlugin "memory"
 LoadPlugin "df"
 LoadPlugin "cpu"
 LoadPlugin "interface"
 LoadPlugin "disk"
-LoadPlugin load
+LoadPlugin "load"
+LoadPlugin "network"
+LoadPlugin "logfile"
+LoadPlugin "csv"
+LoadPlugin "threshold"
+LoadPlugin "postgresql"
+
+<Plugin "network">
+  Listen "52.6.202.212" 
+</Plugin>
 
 <Plugin "cpu"> @MetricSystem
 	ReportByState true @Attribute
@@ -14,16 +23,11 @@ LoadPlugin load
 	ValuesPercentage true @Attribute
 </Plugin>
 
- <Plugin "memory"> @MetricSystem
-	ValuesAbsolute true @Attribute
-	ValuesPercentage false @Attribute
-</Plugin>
-
 <Plugin "df">  @MetricSystem
 	Device "/dev/hda1" @Machine
 	MountPoint "/home" @Machine
 	FSType "ext3" @Machine
-	IgnoreSelected false @Attribute
+	IgnoreSelected true @Attribute
 	ReportInodes false @Attribute
 	ReportReserved false @Attribute
 </Plugin>
@@ -40,22 +44,19 @@ LoadPlugin load
   IgnoreSelected false @Attribute
 </Plugin>
 
-LoadPlugin "logfile" 
+ 
 <Plugin "logfile"> @MetricSystem
-  File "/home/owls/collectd/log/collectd.log" @Machine
+  File "/home/ubuntu/collectd/log/collectd.log" @Machine
   LogLevel "info" @Attribute
   Timestamp true @Attribute
   PrintSeverity true @Attribute
 </Plugin>
 
-LoadPlugin "csv"
+
 <Plugin "csv"> @MetricSystem
   DataDir "/home/owls/collectd/csv" @Machine
   StoreRates true @Attribute
 </Plugin>
-
-LoadPlugin postgresql
-
 
 <Aggregation> @MetricAggregated(HeadRead)
 		#Host "unspecified" 
@@ -428,49 +429,49 @@ LoadPlugin postgresql
     CalculateMaximum true
     CalculateStddev true
   </Aggregation>
-
-
+  
+  
 <Plugin postgresql>
 # Queries Block
 	<Query disk_io> @MetricDB
 		Statement "SELECT coalesce(sum(heap_blks_read), 0) AS heap_read, coalesce(sum(heap_blks_hit), 0) AS heap_hit, coalesce(sum(idx_blks_read), 0) AS idx_read, coalesce(sum(idx_blks_hit), 0) AS idx_hit, coalesce(sum(toast_blks_read), 0) AS toast_read, coalesce(sum(toast_blks_hit), 0) AS toast_hit, coalesce(sum(tidx_blks_read), 0) AS tidx_read, coalesce(sum(tidx_blks_hit), 0) AS tidx_hit FROM pg_statio_user_tables;" @Attribute
 
-		<Result> @MetricDB(HeapRead)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "heap_read" @Attribute
 			ValuesFrom "heap_read" @Attribute
 		</Result> 
-		<Result> @MetricDB(HeapHit)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "heap_hit" @Attribute
 			ValuesFrom "heap_hit" @Attribute
 		</Result>
-		<Result> @MetricDB(IdxRead)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "idx_read" @Attribute
 			ValuesFrom "idx_read" @Attribute
 		</Result>
-		<Result> @MetricDB(IdxHit)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "idx_hit" @Attribute
 			ValuesFrom "idx_hit" @Attribute
 		</Result>
-		<Result> @MetricDB(ToastRead)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "toast_read" @Attribute
 			ValuesFrom "toast_read" @Attribute
 		</Result>
-		<Result> @MetricDB(ToastHit)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "toast_hit" @Attribute
 			ValuesFrom "toast_hit" @Attribute
 		</Result>
-		<Result> @MetricDB(TidxRead)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "tidx_read" @Attribute
 			ValuesFrom "tidx_read" @Attribute
 		</Result>
-		<Result> @MetricDB(TidxHit)
+		<Result> @MetricDB
 			Type "pg_blks" @Attribute
 			InstancePrefix "tidx_hit" @Attribute
 			ValuesFrom "tidx_hit" @Attribute
@@ -726,13 +727,10 @@ LoadPlugin postgresql
 		Query query_plans_by_table
 		Query table_states_by_table
 	</Database>
-
-
 </Plugin>
 
-LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "45.55.197.112"> 
+  <Host "54.84.111.144"> 
     <Type "cpu"> 
      WarningMin    0.2 
      WarningMax    0.8 
@@ -743,6 +741,4 @@ LoadPlugin "threshold"
     </Type>
    </Host>
  </Plugin>
-
-
-
+ 
