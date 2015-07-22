@@ -131,6 +131,10 @@ public class DaemonHeartbeatMain implements Runnable {
 //        listOfConfiguredDaemons.add("123.2.204.246");
         }
 
+        for (String configuredIp : listOfConfiguredDaemons) {
+            System.out.println(configuredIp);
+        }
+
     }
 
     public void updateConfiguration() {
@@ -142,7 +146,7 @@ public class DaemonHeartbeatMain implements Runnable {
         threshold = (int) conf.get("Threshold");
         System.out.println(threshold);
         recipients = (List) conf.get("EmailMissingDaemon");
-        for (String re : recipients){
+        for (String re : recipients) {
             System.out.println(re);
         }
     }
@@ -477,6 +481,12 @@ public class DaemonHeartbeatMain implements Runnable {
     }
 
     public static void main(String[] args) {
+
+        // check if sudo so that there ia access to write to log files.
+        if(!ObservabilityCollectdFileOperations.checkAccess()){
+            System.out.println("Please start with root access so that log files can be written.");
+            return;
+        }
 
         // initalize both hashmaps and the toggle
         HashMap<String, DaemonInfo> l1 = new HashMap<String, DaemonInfo>();

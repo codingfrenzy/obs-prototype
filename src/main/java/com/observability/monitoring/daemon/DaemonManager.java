@@ -23,6 +23,7 @@
 package com.observability.monitoring.daemon;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -59,18 +60,18 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * Auto generated serial version id
 	 */
 	private static final long serialVersionUID = 510701247259432164L;
-	
+
 	/**
-	 * Current string of the whole configuration file 
+	 * Current string of the whole configuration file
 	 */
 	private String confString = null;
-	
+
 	/**
-	 * Path to the configuration file 
+	 * Path to the configuration file
 	 */
 	private static String collectdPath = "/opt/collectd/sbin/collectd";
 	/**
-	 * Path to the configuration file 
+	 * Path to the configuration file
 	 */
 	private static String configPath = "/opt/collectd/etc/collectd.conf";
 
@@ -78,15 +79,15 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * DaemonHeartbeatClient object
 	 */
 	public DaemonHeartbeatClient dhc = null;
-	
+
 	/**
 	 * Strong reference to the server son it will not be GCed.
 	 */
 	private static DaemonManager server = null;
-	
+
 	/**
 	 * Default constructor
-	 * 
+	 *
 	 */
 	protected DaemonManager() throws RemoteException {
 		super();
@@ -95,28 +96,28 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	/**
 	 * Get the file path of configuration
 	 * @return the file path
-	 * 
+	 *
 	 */
 	public static String getConfigurationFilePath() {
 		return configPath;
 	}
-	
+
 	/**
 	 * Get the file path of configuration
 	 * @param config the new file path of configuration file
-	 * 
+	 *
 	 */
 	public static void setConfigurationFilePath(String config) {
 		configPath = config;
 	}
-	
+
 	/**
 	 * Kill process by the process name.<br>
 	 * This method runs the following commands as external process.<br>
 	 * pidof: get pid of collectd process;<br>
 	 * sudo kill: kill the process with sudo privilege;<br>
 	 * If there are multiple collectd processes, all of them will be killed.<br>
-	 * 
+	 *
 	 * @param process name of the process
 	 */
 	public static void killProcess(String process) {
@@ -162,7 +163,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	        e.printStackTrace();
 	    }
 	}
-	
+
 	/**
 	 * Start the process by name, this class file should be in the same folder as the target program.
 	 * @param process name of the process
@@ -184,7 +185,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	public boolean startConfigurationModification() throws RemoteException {
 		// open the configuration file
 		// the configuration file is required to be saved in the same directory of this program
-		
+
         try {
         	Path path = Paths.get(configPath);
         	confString = new String(Files.readAllBytes(path), StandardCharsets.US_ASCII);
@@ -207,18 +208,18 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 * 		Interval 60<br>
 	 * &lt;/LoadPlugin&gt;<br>
 	 * <p>
-	 * If the oldconfig is null, newconfig will be appended to the end of 
-	 * configuration file as a new section. 
+	 * If the oldconfig is null, newconfig will be appended to the end of
+	 * configuration file as a new section.
 	 * <p>
 	 * This function can be called multiple times to change multiple sections.
-	 * 
+	 *
 	 * @param oldconfig the old configuration value, for a section, it includes everything.
 	 * @param newconfig the new configuration value, for a section, it includes everything.
 	 * @return true/false
 	 * @throws RemoteException connection error
 	 */
 	public boolean changeConfiguration(String oldconfig, String newconfig) throws RemoteException {
-		
+
 		if(confString == null || newconfig == null)// String not available
 			return false;
 		// 1. locate the section
@@ -232,7 +233,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 				oldconfigexist = true;
 			}
 		}
-		
+
 		if(!oldconfigexist){//does not exist
 			// adding new configuration
 			// append to end of the string
@@ -240,7 +241,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			confString += newconfig;
 			confString += "\n";
 		}
-		
+
 		return true;
 	}
 
@@ -257,7 +258,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		confString = config;
 		return true;
 	}
-	
+
 	/**
 	 * Stop configuration modification process.
 	 * @return true/false client gets true to confirm the success of changing configuration
@@ -270,21 +271,23 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 				Path path = Paths.get(configPath);
 				Files.write(path, confString.getBytes(StandardCharsets.US_ASCII));
 			}
-			
+
 			// 2. stop collect process
 			killProcess("collectd");
+
 			// Update heartbeat client
-			if(server.dhc != null)
-				server.dhc.readConf();
+//			if(server.dhc != null)
+//				server.dhc.readConf();
+
 			// 3. start collect process
 			//startProcess("collectd");
 			startProcess(collectdPath);
-			
+
 		} catch(Exception e) {
             e.printStackTrace();
             return false;
 		}
-		
+
 		return true;
 	}
 
@@ -301,13 +304,13 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			IDaemonManagerServer idms = server;//new DaemonManager();
             UnicastRemoteObject.unexportObject(idms, true);
             IDaemonManagerServer stub = (IDaemonManagerServer) UnicastRemoteObject.exportObject(idms, 0);
-            
+
 			int port = Integer.parseInt(rmiPort);
 			//create the RMI registry if it doesn't exist.
 			Registry registry = LocateRegistry.createRegistry(port);
 			registry.rebind("DaemonManager", stub);
-			
-			server.dhc = new DaemonHeartbeatClient(rmiIP);
+
+			server.dhc = new DaemonHeartbeatClient(rmiIP, configPath);
 			server.dhc.start();
 		}
 		catch(RemoteException e) {
@@ -331,12 +334,20 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			System.out.println(e);
 		}*/
 	}
-	
+
 	/**
 	 * Main function
 	 * @param args arguments - arg1: binding IP, arg2: binding port
 	 */
 	public static void main(String[] args) {
+
+        // check if sudo so that there ia access to write to log files.
+        File file = new File(configPath);
+        if (!file.canWrite()){
+            System.out.println("Please start with root access so that collectd.conf can be modified remotely.");
+            return;
+        }
+
 		// Get IP & port from arguments
 		if(args.length  < 2){
 			System.out.println("DaemonManager - error - should be started with at least two parameters: IP + port.");
@@ -353,7 +364,7 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 		if(args.length >= 4){
 			configPath = args[3];
 		}
-		
+
 		String rmiIP = args[0];
 		String rmiPort = args[1];
 		// Set to use IP v4

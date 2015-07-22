@@ -296,6 +296,8 @@ public interface IModelHandlerServer extends Remote {
 
     public HashSet<String> viewFailedIP() throws RemoteException;;
 
+    public HashSet<String> viewAllIP() throws RemoteException;;
+
     public int resendFailedModels(String target) throws RemoteException;
     
     

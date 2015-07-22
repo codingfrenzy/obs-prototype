@@ -22,8 +22,6 @@
 package com.observability.monitoring.server;
 
 import java.io.*;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -378,6 +376,10 @@ public class ObservabilityCollectdFileOperations {
         return lastModified;
     }
 
+    public static boolean checkAccess(){
+        File file = new File(collectdPath + collectdConf);
+        return file.canWrite();
+    }
     public static void main(String[] args) {
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());

@@ -54,6 +54,8 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
     String collectdPath = "/opt/collectd/etc/collectd.conf";
 
+    long confLastModified = 0;
+
     /**
      * This daemon's IP. (IP of this machine)
      */
@@ -75,15 +77,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      */
     long systemEpoch;
 
-    /*
-     * Initialize collectd Server IP <br> Depending on where we are storing the
-     * configuration, it can be taken from there. For now its hard coded.
-     */
-    public void initCollectdServerIP() {
-        collectdServerIP = "52.6.202.212";
-    }
-
-    /*
+    /**
      * Initialize collectd Server port <br> Depending on where we are storing
      * the configuration, it can be taken from there. For now its hard coded.
      */
@@ -91,7 +85,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         collectdServerPort = 8102;
     }
 
-    /*
+    /**
      * Initialize current daemon IP. <br> Depending on where we are storing the
      * configuration, it can be taken from there. For now its hard coded.
      */
@@ -102,13 +96,13 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
     /**
      * Default constructor. Also initializes the server IP and port and the IP of the current machine.
      */
-    DaemonHeartbeatClient(String currentDaemonIP) {
-        initCollectdServerIP();
+    DaemonHeartbeatClient(String currentDaemonIP, String confPath) {
         initCollectdServerPort();
         initCurrentDaemonIP(currentDaemonIP);
+        collectdPath = confPath;
     }
 
-    /*
+    /**
      * Method to get the current date. Used for metric collection CSV file
      * name.<br>
      *
@@ -120,7 +114,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         return sdf.format(date);
     }
 
-    /*
+    /**
      * Method to get the file name of the metric CSV file.<br>
      *
      * @return String the full absolute path of the file including file name
@@ -272,9 +266,29 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
                             break;
                         }
 
-                        if (strLine.startsWith("Server")) {
+                        // 'Server' is for the daemons
+                        // 'Listen' is for the server
+                        if (strLine.startsWith("Server") || strLine.startsWith("Listen")) {
                             temp = strLine.split(" ");
                             collectdServerIP = temp[1];
+                            break;
+                        }
+
+                    }
+                }
+
+                if (strLine.startsWith("<Plugin csv>")) {
+                    while ((strLine = br1.readLine()) != null) {
+                        strLine = strLine.trim().replace("\"", "");
+
+                        if (strLine.startsWith("</Plugin>")) {
+                            break;
+                        }
+
+                        if (strLine.startsWith("DataDir")) {
+                            //  DataDir "/home/owls/collectd/csv"
+                            temp = strLine.split(" ");
+                            collectdMetricPath = temp[1];
                             break;
                         }
 
@@ -284,11 +298,29 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
             // Close the input stream
             br1.close();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         } catch (RuntimeException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        System.out.println("Daemon Heartbeat new configuraitons:");
+        System.out.println("Sampling Rate: " + samplingRate);
+        System.out.println("Server IP: " + collectdServerIP);
+        System.out.println("Metric Path: " + collectdMetricPath);
+    }
+
+    /**
+     * Gets the last modified time of collectd.conf in (long) timestamp
+     *
+     * @return long timestamp of last modified time
+     */
+    public long lastModifiedCollectdConf() {
+        File file = new File(collectdPath);
+        long lastModified = file.lastModified() / 1000;
+        return lastModified;
     }
 
     /**
@@ -296,7 +328,13 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * Needs optimization.
      */
     public void run() {
+
         while (true) {
+            if(confLastModified < lastModifiedCollectdConf()){
+                readConf();
+                confLastModified = lastModifiedCollectdConf();
+            }
+
             boolean metricLatestVerified = false;
             try {
                 // get the file name and verify the last measurement

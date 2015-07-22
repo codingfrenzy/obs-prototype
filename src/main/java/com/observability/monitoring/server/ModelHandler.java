@@ -60,21 +60,21 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      * Auto generated serial version id
      */
     private static final long serialVersionUID = 510701247259432165L;
-    
-    // the name with which the descriptors need to be stored on the server
+
     private static final String DESCRIPTORFILE = "descriptors.zip";
-    
-    // the block size in which the files would be sent over the network
-    private static final int MAX_BLOCK_SIZE = 1024*512;
-    
-    // Local map to associate the block number with its size
+
+    private static final int MAX_BLOCK_SIZE = 1024 * 512;
+
+    // Local map to associate the block number with its siz
     private static ConcurrentHashMap<Integer, Integer> blockSize = new ConcurrentHashMap<Integer, Integer>();
-    
+
     // File object for handling uploaded zip file
     private transient RandomAccessFile rafZip = null;
 
     // File target name
     private String targetName = null;
+
+    private String daemonManagerDefaultPort = "8200";
 
     protected ModelHandler() throws RemoteException {
         super();
@@ -125,22 +125,40 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         //return (ret == null) ? null : (ret + ".zip");
         return (ret + ".zip");
     }
-    
+
+    private String makeFileName(String target) {
+        if (target.endsWith(".zip")) {
+            target = target.substring(0, target.length() - 4);
+        }
+
+        String dirName = target;
+        final String finalFileName = target;
+        File dir = new File(getModelDirectory());
+
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.matches(finalFileName + "(_[0-9]*)*");
+            }
+        });
+
+        int count = 0;
+        if (files != null)
+            count = files.length;
+
+        if (count >= 1)
+            dirName += "_" + count;
+
+        return dirName;
+    }
+
     /**
      * Get the path of the descriptor file
+     *
      * @return descriptor file path
      */
     private String getDescriptorFilePath() {
-    	return getModelDirectory() + File.separatorChar + DESCRIPTORFILE;
-    }
-    
-    
-    private String makeFileName() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        TimeZone tzInAmerica = TimeZone.getTimeZone("America/New_York");
-        sdf.setTimeZone(tzInAmerica);
-        return sdf.format(date) + "_model";
+        return getModelDirectory() + File.separatorChar + DESCRIPTORFILE;
     }
 
     /**
@@ -149,7 +167,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     @Override
     public boolean beginFileUpload(String target) throws RemoteException {
 
-        target = makeFileName();
+        target = makeFileName(target);
         System.out.println(target);
 
         // check the file object
@@ -349,10 +367,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         }
         System.out.println("--Success saving current model (" + targetName + ") to file.");
 
-        return deploySelectedFilesOnly(files);
+        return deploySelectedFilesOnly(files, true);
     }
 
-    private int deploySelectedFilesOnly(File[] files) {
+    private int deploySelectedFilesOnly(File[] files, boolean updateDaemonList) {
         System.out.println("---Start deploying configuration files of totally: " + files.length);
         // loop through file list
         int totalSent = 0;
@@ -368,6 +386,10 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             if (files[i] != null && files[i].isFile()) {
                 String fn = files[i].getName();
                 String[] items = pattern.split(fn);
+
+                if (items.length == 2)
+                    items[1] = daemonManagerDefaultPort;
+
                 ipList.add(items[0]);
 
                 System.out.println("---Deploying " + (i + 1) + "/" + files.length + " - IP: " + items[0] + " Port: " + items[1]);
@@ -391,8 +413,12 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         }
 
         System.out.println("----------End deploying model, " + totalSent + " out of " + files.length + " were successful");
-        updateDashboard();
-        ObservabilityCollectdFileOperations.updateIPList(ipList);
+
+        if (updateDaemonList) {
+            updateDashboard();
+            ObservabilityCollectdFileOperations.updateIPList(ipList);
+        }
+
         ObservabilityCollectdFileOperations.updateFailedPropogation(failedIPList);
         ipList = null;
         return totalSent;
@@ -430,27 +456,23 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         System.out.println("Retrieving all models in this system");
         ArrayList<String> models = new ArrayList<String>();
         String modeDir = getModelDirectory();
+
         File dir = new File(modeDir);
-        File[] files = dir.listFiles(new FilenameFilter() {
+        String[] directories = dir.list(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".zip");
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
             }
         });
 
-        for (File zip : files) {
-            int slash = zip.toString().lastIndexOf("/");
-            String fileName = zip.toString().substring(slash + 1);
-//            System.out.println(zip);
-//            System.out.println(fileName);
-            if (fileName.endsWith(".zip")) {
-                fileName = fileName.substring(0, fileName.length() - 4);
+        if (directories != null)
+            for (int i = 0; i < directories.length; i++) {
+                models.add(directories[i]);
+
             }
-            models.add(fileName);
-        }
 
         // sorting the models so that the newest comes first
-        Collections.sort(models, Collections.reverseOrder());
+        Collections.sort(models);
         return models;
     }
 
@@ -458,6 +480,13 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     public HashSet<String> viewFailedIP() throws RemoteException {
         System.out.println("Retrieving failed daemon IPs");
         HashSet<String> ips = ObservabilityCollectdFileOperations.getFailedIPList();
+        return ips;
+    }
+
+    @Override
+    public HashSet<String> viewAllIP() throws RemoteException {
+        System.out.println("Retrieving all IPs");
+        HashSet<String> ips = ObservabilityCollectdFileOperations.getIPList();
         return ips;
     }
 
@@ -499,7 +528,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
             }
         }
 
-        return deploySelectedFilesOnly(failedFiles);
+        return deploySelectedFilesOnly(failedFiles, false);
     }
 
     private void updateDashboard() {
@@ -580,75 +609,67 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         System.out.println("Starting Modeling Handler with IP: " + rmiIP + " & Port: " + rmiPort);
         initializeService(rmiIP, rmiPort);
     }
-    
-    
-    /* (non-Javadoc)
-     * @see com.observability.monitoring.server.IModelHandlerServer#getDescriptorFiles(int)
-     */
-    public byte[] getDescriptorFiles(int blockNumber) throws RemoteException, IOException{
-    	File descFile = new File(getDescriptorFilePath());
-    	FileInputStream fIn = null;
-    	try {		
-			fIn = new FileInputStream(descFile);
-			// skip blocksize bytes for the blocks before requested block
-			for (int i = 1; i < blockNumber; i++) {
-				long skipBytes = blockSize.get(i);
-				if(fIn.skip(skipBytes)!=skipBytes){
-					fIn.close();
-					throw new IOException("Error reading file\n");
-				};
-			}
-			// initialize the byte[]
-			byte[] bytes = new byte[blockSize.get(blockNumber)];
-			if(fIn.read(bytes)==-1){
-				fIn.close();
-				return new byte[0];
-			};
-			fIn.close();
-			return bytes;		
-		} catch (IOException e) {
-			if(fIn!=null){
-				fIn.close();				
-			}
-		}		
-    	return new byte[0];
-    }
-	
-	/* (non-Javadoc)
-	 * @see com.observability.monitoring.server.IModelHandlerServer#getDescFileNrOfBlocks()
-	 */
-	public int getDescFileNrOfBlocks() throws RemoteException {
-		File descFile = new File(getDescriptorFilePath());
-		int nrOfBlocks = 0;
-		long fileSize = descFile.length();
-		
-		if (fileSize > MAX_BLOCK_SIZE) {
-			// calculate the number of blocks 
-			while (fileSize > 0) {
-				nrOfBlocks++;
-				if (fileSize > MAX_BLOCK_SIZE) {
-					fileSize -= MAX_BLOCK_SIZE;
-					blockSize.put(nrOfBlocks, MAX_BLOCK_SIZE);
-				} else {
-					blockSize.put(nrOfBlocks, (int) fileSize);
-					fileSize = 0;
-				}
-			}
-		} else {
-			// if the file is of size 0, it has no blocks.
-			nrOfBlocks = fileSize == 0 ? 0 : 1;
-			blockSize.put(nrOfBlocks, (int) fileSize);
-		}
-		
-		return nrOfBlocks;
 
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.observability.monitoring.server.IModelHandlerServer#getDescFileMd5()
-	 */
-	public String getDescFileMd5() throws RemoteException {
-		return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
-	}
+
+    public byte[] getDescriptorFiles(int blockNumber) throws RemoteException, IOException {
+        File descFile = new File(getDescriptorFilePath());
+        FileInputStream fIn = null;
+        try {
+            fIn = new FileInputStream(descFile);
+            // skip blocksize bytes for the blocks before requested block
+            for (int i = 1; i < blockNumber; i++) {
+                long skipBytes = blockSize.get(i);
+                if (fIn.skip(skipBytes) != skipBytes) {
+                    fIn.close();
+                    throw new IOException("Error reading file\n");
+                }
+                ;
+            }
+            byte[] bytes = new byte[blockSize.get(blockNumber)];
+            if (fIn.read(bytes) == -1) {
+                fIn.close();
+                return new byte[0];
+            }
+            ;
+            fIn.close();
+            return bytes;
+        } catch (IOException e) {
+            if (fIn != null) {
+                fIn.close();
+            }
+        }
+        return new byte[0];
+    }
+
+    public int getDescFileNrOfBlocks() throws RemoteException {
+        File descFile = new File(getDescriptorFilePath());
+        int nrOfBlocks = 0;
+        long fileSize = descFile.length();
+
+        if (fileSize > MAX_BLOCK_SIZE) {
+            while (fileSize > 0) {
+                nrOfBlocks++;
+                if (fileSize > MAX_BLOCK_SIZE) {
+                    fileSize -= MAX_BLOCK_SIZE;
+                    blockSize.put(nrOfBlocks, MAX_BLOCK_SIZE);
+                } else {
+                    blockSize.put(nrOfBlocks, (int) fileSize);
+                    fileSize = 0;
+                }
+            }
+        } else {
+            // if the file is of size 0, it has no blocks.
+            nrOfBlocks = fileSize == 0 ? 0 : 1;
+            blockSize.put(nrOfBlocks, (int) fileSize);
+        }
+
+        return nrOfBlocks;
+
+    }
+
+    public String getDescFileMd5() throws RemoteException {
+        return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
+    }
+>>>>>>> 52c7eda766ff95379d19bf52b0f6bdf9eeebd768
 
 }
