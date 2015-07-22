@@ -111,7 +111,7 @@ public class NotificationEMailTest {
 	public void testinitRecipients() {
 		NotificationEMail sm = new NotificationEMail();
 		List<String> rs = sm.initRecipients();
-		assertTrue(rs != null);
+		assertNotNull(rs);
 		System.out.println(sm.toString());
 	}
 	
@@ -123,7 +123,7 @@ public class NotificationEMailTest {
 		ips.add("1.2.3.4");
 		dateTime.add("FooBar");
 		String s1 = sm.makeNotRespondingEmailBody(ips, dateTime);
-		assertTrue(s1 != null);
+		assertNotNull(s1);
 		System.out.println(s1);
 	}
 	
@@ -135,7 +135,7 @@ public class NotificationEMailTest {
 		ips.add("1.2.3.4");
 		dateTime.add("FooBar");
 		String s1 = sm.makeNotCollectingEmailBody(ips, dateTime);
-		assertTrue(s1 != null);
+		assertNotNull(s1);
 		System.out.println(s1);
 	}
 }
