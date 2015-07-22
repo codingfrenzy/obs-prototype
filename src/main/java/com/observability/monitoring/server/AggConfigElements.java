@@ -307,7 +307,7 @@ public class AggConfigElements implements Serializable {
 	public void setCalMax(boolean calMax) {
 		this.calMax = calMax;
 	}
-
+ 
 	/**
 	 * Return the status of the standard deviation calculation
 	 */
