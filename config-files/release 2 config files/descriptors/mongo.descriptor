@@ -23,7 +23,7 @@ LoadPlugin load
 	Device "/dev/hda1" @Machine
 	MountPoint "/home" @Machine
 	FSType "ext3" @Machine
-	IgnoreSelected false @Attribute
+	IgnoreSelected true @Attribute
 	ReportInodes false @Attribute
 	ReportReserved false @Attribute
 </Plugin>
@@ -42,7 +42,7 @@ LoadPlugin load
 
 LoadPlugin "logfile" 
 <Plugin "logfile"> @MetricSystem
-  File "/home/owls/collectd/log/collectd.log" @Machine
+  File "/home/ubuntu/collectd/log/collectd.log" @Machine
   LogLevel "info" @Attribute
   Timestamp true @Attribute
   PrintSeverity true @Attribute
@@ -50,7 +50,7 @@ LoadPlugin "logfile"
 
 LoadPlugin "csv"
 <Plugin "csv"> @MetricSystem
-  DataDir "/home/owls/collectd/csv" @Machine
+  DataDir "/home/ubuntu/collectd/csv" @Machine
   StoreRates true @Attribute
 </Plugin>
 
@@ -59,7 +59,7 @@ LoadPlugin "csv"
 </LoadPlugin>
 
 <Plugin python>
-    ModulePath "/home/owls/collectd/mongopyplugin"
+    ModulePath "/home/ubuntu/collectd/mongopyplugin"
 
     Import "mongodb"
     <Module mongodb> @Machine
@@ -87,7 +87,7 @@ LoadPlugin "csv"
 
 LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "45.55.197.112"> 
+  <Host "52.5.118.73"> 
     <Type "cpu"> 
      WarningMin    0.2 
      WarningMax    0.8 
