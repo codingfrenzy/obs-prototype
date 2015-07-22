@@ -59,6 +59,9 @@ public class ModelHandler {
 	// max size in which the files would be transferred over the network.
 	private static final int MAX_BLOCK_SIZE = 1024*512;
 	
+	//Service name where the Model Handler is running
+	private static final String MODEL_HANDLER_SERVICE = "ModelHandler";
+	
 	// server RMI instance
 	private static IModelHandlerServer svr = null;
 	
@@ -67,11 +70,7 @@ public class ModelHandler {
 	
 	// port where the Model Handler service is running
 	private static String port = null;
-	
-	public static void main(String[] args){
 
-	}
-	
 	/**
 	 * Get the descriptor files from the central server and store them in the 
 	 * project directory.
@@ -79,7 +78,9 @@ public class ModelHandler {
 	 * @throws Exception generic exception to catch any error
 	 */
 	public static void getDescriptorFiles(Path dirPath) throws Exception{
-		
+		if(dirPath == null){
+			throw new NullPointerException("Invalid project directory path");
+		}
 		// get the ip and port where the model handler service is running.
 		String[] serverDetails = getServerDetails(JOptionPane.PLAIN_MESSAGE, "");
 		if(serverDetails.length == 0){
@@ -171,7 +172,7 @@ public class ModelHandler {
 	private static void connectRMI(String ip, String port) throws Exception{
 		try {
 			svr = (IModelHandlerServer) Naming.lookup(String.format(
-					"//%s:%s/ModelHandler", ip, port));
+					("//%s:%s/" + MODEL_HANDLER_SERVICE), ip, port));
 		} catch (RemoteException e) {
 			throw e;
 		} catch (NotBoundException e) {

@@ -61,11 +61,13 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      */
     private static final long serialVersionUID = 510701247259432165L;
     
+    // the name with which the descriptors need to be stored on the server
     private static final String DESCRIPTORFILE = "descriptors.zip";
     
+    // the block size in which the files would be sent over the network
     private static final int MAX_BLOCK_SIZE = 1024*512;
     
- // Local map to associate the block number with its siz
+    // Local map to associate the block number with its size
     private static ConcurrentHashMap<Integer, Integer> blockSize = new ConcurrentHashMap<Integer, Integer>();
     
     // File object for handling uploaded zip file
@@ -580,6 +582,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     }
     
     
+    /* (non-Javadoc)
+     * @see com.observability.monitoring.server.IModelHandlerServer#getDescriptorFiles(int)
+     */
     public byte[] getDescriptorFiles(int blockNumber) throws RemoteException, IOException{
     	File descFile = new File(getDescriptorFilePath());
     	FileInputStream fIn = null;
@@ -593,6 +598,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 					throw new IOException("Error reading file\n");
 				};
 			}
+			// initialize the byte[]
 			byte[] bytes = new byte[blockSize.get(blockNumber)];
 			if(fIn.read(bytes)==-1){
 				fIn.close();
@@ -608,12 +614,16 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     	return new byte[0];
     }
 	
+	/* (non-Javadoc)
+	 * @see com.observability.monitoring.server.IModelHandlerServer#getDescFileNrOfBlocks()
+	 */
 	public int getDescFileNrOfBlocks() throws RemoteException {
 		File descFile = new File(getDescriptorFilePath());
 		int nrOfBlocks = 0;
 		long fileSize = descFile.length();
 		
 		if (fileSize > MAX_BLOCK_SIZE) {
+			// calculate the number of blocks 
 			while (fileSize > 0) {
 				nrOfBlocks++;
 				if (fileSize > MAX_BLOCK_SIZE) {
@@ -634,6 +644,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.observability.monitoring.server.IModelHandlerServer#getDescFileMd5()
+	 */
 	public String getDescFileMd5() throws RemoteException {
 		return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
 	}
