@@ -54,6 +54,8 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
 
     String collectdPath = "/opt/collectd/etc/collectd.conf";
 
+    String hostName;
+
     long confLastModified = 0;
 
     /**
@@ -100,6 +102,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         initCollectdServerPort();
         initCurrentDaemonIP(currentDaemonIP);
         collectdPath = confPath;
+        hostName = currentDaemonIP;
     }
 
     /**
@@ -134,7 +137,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * @return int threshold
      */
     private int getThreshold() {
-        return samplingRate * 2;
+        return samplingRate * 3;
     }
 
     /**
@@ -145,47 +148,48 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
      * @return boolean Returns true if valid. False if not.
      * @throws IOException
      */
-    public boolean verifyLatestMetricMeasurement(String fileName) {
+    public boolean verifyLatestMetricMeasurement() {
         systemEpoch = System.currentTimeMillis() / 1000;
 
         // Read the metric file in csv folder
         boolean verification = false;
-        FileInputStream stream = null;
-        String strLine, temp = null;
-        try {
-            stream = new FileInputStream(fileName);
-            BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
-            // Read file line by line and save the last line.
-            while (true) {
-                if ((strLine = br1.readLine()) == null) {
-                    break;
+        String folderPath = collectdMetricPath + File.separator + hostName + File.separator;
+        File file = new File(folderPath);
+
+        // get all folders inside csv folder
+        String[] metricDirectories = file.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
+            }
+        });
+
+        // iterate thorugh the folders
+        if (metricDirectories != null)
+            for (int i = 0; i < metricDirectories.length; i++) {
+                // get each metric
+                String currentPath = folderPath + File.separator + metricDirectories[i];
+                File folder = new File(currentPath);
+                File[] listOfFiles = folder.listFiles();
+
+                // go through all files in that metric folder to see the last updated time of the latest file.
+                for (int j = 0; j < listOfFiles.length; j++) {
+                    if (listOfFiles[j].isFile()) {
+                        // check last updated time. If less than threshold then collectd is running fine.
+                        long metricLatestEpoch = listOfFiles[j].lastModified() / 1000;
+                        if (systemEpoch - metricLatestEpoch <= getThreshold()) {
+                            verification = true;
+                            break;
+                        }
+
+                    }
                 }
-                temp = strLine;
+
+                if (verification)
+                    break;
             }
 
-            // Close the input stream
-            br1.close();
-        } catch (RuntimeException e) {
-            System.out.println("Collectd metric file: RuntimeException occured");
-            //e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Collectd metric file not found.");
-//            e.printStackTrace();
-//            verification = false;
-        }
-
-        // extract timestamp and save
-        if (temp != null) {
-            temp = temp.substring(0, temp.indexOf('.'));
-            long metricLatestEpoch = Long.parseLong(temp);
-
-            // check if the measurement is older than threshold
-            int thresholod = getThreshold();
-            if ((systemEpoch - metricLatestEpoch) <= thresholod) {
-                verification = true;
-            }
-        }
         return verification;
     }
 
@@ -257,6 +261,11 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
                     samplingRate = Integer.parseInt(temp[1]);
                 }
 
+                if (strLine.startsWith("Hostname") && interval < 0) {
+                    temp = strLine.split(" ");
+                    hostName = temp[1];
+                }
+
                 // entering MIssing daemon plugin tag
                 if (strLine.startsWith("<Plugin network>")) {
                     while ((strLine = br1.readLine()) != null) {
@@ -307,6 +316,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         }
 
         System.out.println("Daemon Heartbeat new configuraitons:");
+        System.out.println("Hostname: " + hostName);
         System.out.println("Sampling Rate: " + samplingRate);
         System.out.println("Server IP: " + collectdServerIP);
         System.out.println("Metric Path: " + collectdMetricPath);
@@ -330,16 +340,14 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
     public void run() {
 
         while (true) {
-            if(confLastModified < lastModifiedCollectdConf()){
+            if (confLastModified < lastModifiedCollectdConf()) {
                 readConf();
                 confLastModified = lastModifiedCollectdConf();
             }
 
             boolean metricLatestVerified = false;
             try {
-                // get the file name and verify the last measurement
-                String fileName = getMetricFileName();
-                metricLatestVerified = verifyLatestMetricMeasurement(fileName);
+                metricLatestVerified = verifyLatestMetricMeasurement();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -347,7 +355,6 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
             // get the message to be sent and send it to server
             String message = getMessage(metricLatestVerified);
             sendToCollectdServer(message);
-            System.out.println(systemEpoch + " : " + metricLatestVerified);
 
             // pause thread for the collection interval
             try {
