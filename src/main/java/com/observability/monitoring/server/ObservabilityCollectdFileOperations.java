@@ -53,9 +53,9 @@ public class ObservabilityCollectdFileOperations {
 
     public static void updateIPList(ArrayList<String> ipList) {
 
-        System.out.println("Updating Daemon IP List");
-
         putLock(daemonIPListLock);
+
+        System.out.println("Updating Daemon IP List");
 
         String filename = collectdPath + daemonIPList;
 
@@ -86,9 +86,9 @@ public class ObservabilityCollectdFileOperations {
             }
         }
 
-        removeLock(daemonIPListLock);
-
         System.out.println("Success: IP List file updated");
+
+        removeLock(daemonIPListLock);
     }
 
     public static void updateFailedPropogation(ArrayList<String> ipList) {

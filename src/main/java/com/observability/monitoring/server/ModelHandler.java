@@ -85,7 +85,7 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
     private String dashboardURL = "http://45.55.197.112:8888/modelchange.db/modelchange/1";
 
     private String currentModelFilePath() {
-        return getModelDirectory() + "/" + "current_model";
+        return getModelDirectory() + File.separatorChar + "current_model";
     }
 
     private String getModelDirectory() {
