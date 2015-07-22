@@ -380,6 +380,233 @@ public class ObservabilityCollectdFileOperations {
         File file = new File(collectdPath + collectdConf);
         return file.canWrite();
     }
+    
+    //////////////////// Start: Reading Aggregation Configurations ////////////////////
+    /**
+	 * readConfigurationFile() reads aggregation configurations by:</br>
+	 * 1. Reading collectd.conf file, capture aggregation section, and saves 
+	 * it into an object of AggConfigElements. The object has the following keys and
+	 * values: </br>
+	 * 		- Fault Tolerance Time Window: the time period in seconds that
+	 * allows the nodes of the under monitoring system to send the metric data
+	 * to Observability, so the aggregator can have as much data possible to
+	 * perform the aggregation. If no value is provided or if it is not a valid
+	 * number, use the default value. </br>
+	 * 		- Aggregation interval: the time in seconds that Observability
+	 * aggregates the data and writes them to DB. If no value is provided
+	 * or if it is not a valid number, use the default value. </br>
+	 * 		- Metric to aggregate: captured from "plugin" key element of
+	 * collectd.conf file. </br> 
+	 * 		- Type of metric to aggregate: captured from "typeInstance" 
+	 * key element of collectd.conf file. </br> 
+	 * 		- Aggregation function to apply: captured from the status of 
+	 * the relative key elements of collectd.conf file </br>
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws NotBoundException
+	 */
+	public static ArrayList<AggConfigElements> readConfigurationFile() throws IOException {
+
+		int faultTolTimeWindow = 0; // Fault Tolerance Time Window. 
+		int interval = 0; // Aggregation interval. 
+		
+		Scanner scan = new Scanner(System.in,  "UTF-8");
+		System.out.println("Kindly enter the Fault Tolerance Time Window. Only Integer numbers are allowed. To exit, enter 0");
+		System.out.println("Note that the default value is set to 60 seconds: ");
+		
+		do {
+            System.out.println("Please enter a positive number: ");
+            while (!scan.hasNextInt()) {
+                String input = scan.next();
+                System.out.printf(input +"is not a valid number");
+    			System.out.println("Try again. Only Integer numbers are allowed.");
+            }
+            faultTolTimeWindow = scan.nextInt();
+        } while (faultTolTimeWindow < 0);
+		
+		scan.close();
+		
+		if (faultTolTimeWindow <= 0) {
+			faultTolTimeWindow = 60; //Default value is set to 60 seconds
+		}
+		
+		System.out.println("faultTolTimeWindow: " + faultTolTimeWindow); //Debug, remove later
+
+		interval = getIntervalConf(collectdPath+collectdConf); // Get interval value from
+												// collectd.conf file
+		// Interval validation
+		if (interval <= 0) {
+			interval = 30;	//Default value is set to 30 seconds
+		}
+
+		ArrayList<HashMap<String,String>> aggConfigurationsListArray = getAggConf(collectdPath+collectdConf);
+		
+		ArrayList<AggConfigElements> aggConfigurationElementsArray = new ArrayList<AggConfigElements>();
+		AggConfigElements aggConfigurationElements = null;
+		
+		for(int i=0; i<aggConfigurationsListArray.size();i++){
+			aggConfigurationElements = setConfigurations(
+					faultTolTimeWindow, interval, aggConfigurationsListArray.get(i)); // Save configurations to an object
+			aggConfigurationElementsArray.add(i, aggConfigurationElements);
+		}
+		return aggConfigurationElementsArray;
+	}
+
+	/**
+	 * Read the configuration file and get the interval value
+	 * 
+	 * @return integer of the interval value
+	 * @throws IOException
+	 */
+	protected static int getIntervalConf(String fileName) throws IOException, FileNotFoundException {
+		BufferedReader bufferReader = null;
+		boolean intervalFound = false;
+		boolean intervalCommentedOut = false;
+		
+		try{
+			bufferReader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(fileName), "UTF-8"));
+		} catch (IOException e) {
+			e.printStackTrace();	
+		}
+		if (bufferReader == null)
+			return 0;
+		
+		String line = "";
+		int interval = 0;
+		
+		do {
+			try {
+				line = bufferReader.readLine();
+				if(line == null)
+					break;
+				
+				line = line.trim();	//Trim any spaces at the beginning of the line
+				if (line.isEmpty() || line.trim().equals("")
+							|| line.trim().equals("\n"))
+					continue;	// Read the next line
+				else if (line.toLowerCase().startsWith("#interval")) { // TODO: no need for this clause, remove later
+					intervalCommentedOut = true;
+					}
+				else if (line.toLowerCase().startsWith("interval")) { 
+					String str[] = line.trim().split("\\s+");
+					if (str.length > 1) {
+						interval = Integer.parseInt(str[1]);	
+						intervalFound = true;
+						}
+					}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} while (line != null && !intervalFound && !intervalCommentedOut);
+		try {
+			bufferReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("interval: " + interval); // Debug, remove later
+		return interval;
+	}
+    
+	/**
+	 * Read the configuration file and get the aggregation configuration keys and values
+	 * Save them in an array of hashmap
+	 * 
+	 * @return array of hashmap. 
+	 * @throws IOException
+	 */
+	protected static ArrayList<HashMap<String,String>> getAggConf(String fileName) throws IOException {
+		
+		ArrayList<HashMap<String,String>> aggConfigArray = new ArrayList<HashMap<String,String>>();
+		
+		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(fileName), "UTF-8"));
+		String line = "";
+		do {
+			try {
+				HashMap<String,String> aggConfig = new HashMap<String,String>();
+				line = bufferReader.readLine();
+
+					if (line != null && line.trim().equalsIgnoreCase("<Aggregation>") && !line.trim().startsWith("#")) {	//go to aggregation configuration section
+						do {						
+
+							line = bufferReader.readLine();
+							if (line == null)
+								break;
+							line = line.trim();		//Trim any spaces at the beginning of the line
+							if (line.isEmpty() || line.trim().equals("") || line.trim().equals("\n") || line.trim().startsWith("#"))
+								continue;	// Read the next line
+							else {
+								String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array
+								if (str.length > 1) {
+									aggConfig.put(str[0].toLowerCase(), str[1].toLowerCase());	// Add this configuration element to the hashmap
+								}
+							}
+							
+						} while (!line.trim().equalsIgnoreCase("</Aggregation>") && (line != null) );
+						aggConfigArray.add(aggConfig);
+						line = bufferReader.readLine();
+					}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} while (line != null);
+		try {
+			if(bufferReader!=null)		// Close the BufferedReader
+				bufferReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+		return aggConfigArray;
+	}
+
+	/**
+	 * Set the configurations to AggConfigItems object
+	 * 
+	 * @param faultTolTimeWindow which is the fault tolerance time window of receiving metric data
+	 * @param interval of the aggregation
+	 * @param aggConfigurations
+	 * @return an object of class AggConfigElements
+	 */
+	protected static AggConfigElements setConfigurations(int faultTolTimeWindow, int interval,
+			HashMap<String, String> aggConfigurations) {
+		String host = null; 	
+		String plugin = null; 			// The collectd plugin on which data will be  aggregated. For example: plugin = cpu
+		String pluginInstance = null; 	
+		String type = null;
+		String typeInst = null; 		// The type of metric on which data will be aggregated. For example: cpu-system, spu-idle
+		String groupBy = null; 
+		
+		Boolean calNum = false;
+		Boolean calSum = false;
+		Boolean calAvg = false;
+		Boolean calMin = false;
+		Boolean calMax = false;
+		Boolean calStd = false;
+
+		for (int i = 0; i < aggConfigurations.size(); i++) {
+			host = aggConfigurations.get("host");
+			plugin = aggConfigurations.get("plugin");
+			pluginInstance = aggConfigurations.get("plugininstance");
+			type = aggConfigurations.get("type");
+			typeInst = aggConfigurations.get("typeinstance");
+			groupBy = aggConfigurations.get("groupby");
+			calNum = Boolean.parseBoolean(aggConfigurations.get("calculatenum"));
+			calSum = Boolean.parseBoolean(aggConfigurations.get("calculatesum"));
+			calAvg = Boolean.parseBoolean(aggConfigurations.get("calculateaverage"));
+			calMin = Boolean.parseBoolean(aggConfigurations.get("calculateminimum"));
+			calMax = Boolean.parseBoolean(aggConfigurations.get("calculatemaximum"));
+			calStd = Boolean.parseBoolean(aggConfigurations.get("calculatestddev"));
+		}
+		// Save the elements in the object
+		AggConfigElements aggConfigElements = new AggConfigElements(
+				faultTolTimeWindow, interval, host, plugin, pluginInstance, type, typeInst, groupBy, calNum, calSum,
+				calAvg, calMin, calMax, calStd);
+	return aggConfigElements;
+	}
+	
+    //////////////////// End: Reading Aggregation Configurations ////////////////////
     public static void main(String[] args) {
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
         System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());

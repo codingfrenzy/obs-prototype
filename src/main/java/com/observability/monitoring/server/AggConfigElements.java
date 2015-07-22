@@ -54,12 +54,15 @@ public class AggConfigElements implements Serializable {
 	private int interval; 			// The interval of the aggregation, which is the time in seconds on which Observability
 									// will apply aggregation functions (sum, max,..etc) on the specified metric measurements
 									// collected from the monitored nodes and save the result to the DB
+	private String host; 	
 	private String plugin; 			// The collectd plugin on which data will be  aggregated. For example: plugin = cpu
+	private String pluginInstance; 	
+	private String type;
 	private String typeInst; 		// The type of metric on which data will be aggregated. For example: cpu-system, spu-idle
-
-	/**
-	 * Functions of aggregation
-	 */
+	private String groupBy; 
+	
+	// Functions of aggregation
+	private boolean calNum; 
 	private boolean calSum; 		// The status of the sum calculation of all measurement for the specified metric
 	private boolean calAvg; 		// The status of the average calculation of all measurement for the specified metric
 	private boolean calMin; 		// The status of the minimum calculation of all measurement for the specified metric
@@ -88,6 +91,27 @@ public class AggConfigElements implements Serializable {
 	 * @param calStd
 	 *            is the status of the standard deviation calculation
 	 */
+	public AggConfigElements(int faultTolTimeWindow, int interval, String host, String plugin, String pluginInstance, 
+			String type, String typeInst, String groupBy,
+			boolean calNum, boolean calSum, boolean calAvg, boolean calMin,
+			boolean calMax, boolean calStd) {
+		super();
+		this.faultTolTimeWindow = faultTolTimeWindow;
+		this.interval = interval;
+		this.host = host;
+		this.plugin = plugin;
+		this.pluginInstance = pluginInstance;
+		this.type = type;
+		this.typeInst = typeInst;
+		this.groupBy = groupBy;
+		this.calNum = calNum;
+		this.calSum = calSum;
+		this.calAvg = calAvg;
+		this.calMin = calMin;
+		this.calMax = calMax;
+		this.calStd = calStd;
+	}
+	
 	public AggConfigElements(int faultTolTimeWindow, int interval, String plugin, String typeInst,
 			boolean calSum, boolean calAvg, boolean calMin,
 			boolean calMax, boolean calStd) {
@@ -101,7 +125,6 @@ public class AggConfigElements implements Serializable {
 		this.calMin = calMin;
 		this.calMax = calMax;
 		this.calStd = calStd;
-		
 	}
 
 	/**
@@ -132,19 +155,61 @@ public class AggConfigElements implements Serializable {
 	}
 
 	/**
-	 * Return the metric to aggregate
+	 * Return the host in which data will be aggregated
+	 */
+	public String getHost() {
+		return host;
+	}
+
+	/**
+	 * @param host which is the host in which data will be aggregated
+	 */
+	public void setHost(String host) {
+		this.host = host;
+	}
+	
+	/**
+	 * Return the collectd plugin used to collect metrics
 	 */
 	public String getPlugin() {
 		return plugin;
 	}
 
 	/**
-	 * @param plugin which is the metric
+	 * @param plugin which is the collectd plugin used to collect metrics
 	 */
 	public void setPlugin(String plugin) {
 		this.plugin = plugin;
 	}
+	
+	/**
+	 * Return the metric to aggregate
+	 */
+	public String getPluginInstance() {
+		return pluginInstance;
+	}
 
+	/**
+	 * @param plugin Instance which is the metric
+	 */
+	public void setPluginInstance(String pluginInstance) {
+		this.pluginInstance = pluginInstance;
+	}
+
+	/**
+	 * Return type  of metric to aggregate
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param typeInst which is the type of metric
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	/**
 	 * Return type of metric to aggregate
 	 */
@@ -159,7 +224,34 @@ public class AggConfigElements implements Serializable {
 		this.typeInst = typeInst;
 	}
 
+	/**
+	 * Return 
+	 */
+	public String getGroupBy() {
+		return groupBy;
+	}
 
+	/**
+	 * @param groupBy 
+	 */
+	public void setGroupBy(String groupBy) {
+		this.groupBy = groupBy;
+	}
+
+	/**
+	 * Return the status of the Num calculation
+	 */
+	public boolean isCalNum() {
+		return calNum;
+	}
+
+	/**
+	 * @param calNum which is the status of the num calculation
+	 */
+	public void setCalNum(boolean calNum) {
+		this.calNum = calNum;
+	} 
+	
 	/**
 	 * Return the status of the sum calculation
 	 */
