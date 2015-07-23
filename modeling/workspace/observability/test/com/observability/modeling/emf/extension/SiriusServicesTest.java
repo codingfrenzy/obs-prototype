@@ -197,7 +197,7 @@ public class SiriusServicesTest {
 		metric.setName("file");
 		
 		Element metricElement = factory.createElement();
-		metricElement.setName("Plugin_df");
+		metricElement.setName("Plugin_\"df\"");
 		metric.getElements().add(metricElement);
 		
 		cluster.getCollectedMetrics().add(metric);
@@ -247,7 +247,7 @@ public class SiriusServicesTest {
 		metric.setName("file");
 		
 		Element metricElement = factory.createElement();
-		metricElement.setName("Plugin_df");
+		metricElement.setName("Plugin_\"df\"");
 		metric.getElements().add(metricElement);
 		
 		cluster.getCollectedMetrics().add(metric);
@@ -344,7 +344,7 @@ public class SiriusServicesTest {
 		metric.setName("file");
 		
 		Element metricElement = factory.createElement();
-		metricElement.setName("Plugin_df");
+		metricElement.setName("Plugin_\"df\"");
 		metric.getElements().add(metricElement);
 		cluster.getCollectedMetrics().add(metric);
 
