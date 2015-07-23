@@ -411,10 +411,8 @@ public class DaemonHeartbeatMain implements Runnable {
 
             if (ips.size() == 0) {
                 continue;
-            }
-
+            } else {
             // Not responding email
-            if (emailBodies[i] != null) {
                 if (i == 0) {
                     emailBodies[i] = ne.makeNotRespondingEmailBody(ips, dates);
                     nr = ne.sendEMail(recipients, "Observability: Daemons not responding", emailBodies[i], false);
