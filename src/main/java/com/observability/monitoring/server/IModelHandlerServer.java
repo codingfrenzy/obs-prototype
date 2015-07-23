@@ -61,15 +61,19 @@ public interface IModelHandlerServer extends Remote {
         public static String getFileMD5(String filePath) {
             if (filePath == null)
                 return null;
-            // open filepath as a file
-            File f = new File(filePath);
-            if (f == null ||  // null
-                    f.isDirectory() ||    // it's a directory
-                    !f.exists() ||    // does not exist
-                    !f.canRead()            // cannot read
-                    ) {
-                System.err.println("GetFile MD5 - Not a valid file.");
-                return null;        // null for error
+            File f = null;
+            try {
+	            // open filepath as a file
+	            f = new File(filePath);
+	            if (f.isDirectory()     	// it's a directory
+	                || !f.exists()    			// does not exist
+	                //|| !f.canRead()       // cannot read
+	                    ) {
+	                System.err.println("GetFile MD5 - Not a valid file.");
+	                return null;        // null for error
+	            }
+            } catch(Exception ex){
+            	ex.printStackTrace();
             }
 
             // Get MD5 of filePath
@@ -148,19 +152,17 @@ public interface IModelHandlerServer extends Remote {
             boolean ret = false;
             try {
                 File[] files = directory.listFiles();
-                if (files != null) {
-                    for (int i = 0; i < files.length; i++) {
-                        if (files[i].isDirectory()) {
-                            // recursively delete all sub directories
-                            deleteDirectoryContents(files[i]);
-                        } else {
-                            // delete the files
-                            ret = files[i].delete();
-                        }
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        // recursively delete all sub directories
+                        deleteDirectoryContents(files[i]);
+                    } else {
+                        // delete the files
+                        ret = files[i].delete();
                     }
                 }
                 ret = true;
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
                 ret = false;
             }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -22,6 +23,7 @@ public class ModelHandlerTest {
 
 	private String dirName = "./dummy";
 	private String subFilePath = "./dummy/100";
+	private String subPathFilePath = "./dummy/file.txt";
 	
 	private static ModelHandler modelhandler = null;
 	/*
@@ -51,13 +53,17 @@ public class ModelHandlerTest {
 	public void testFileOperationHelpers() {
 		String s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(null);
 		assertNull(s1);
+		s1 = IModelHandlerServer.FileOperationHelper.getFileMD5("ThisCannotBeAValidPath");
+		assertNull(s1);
 		s1 = IModelHandlerServer.FileOperationHelper.getFileMD5(dirName);
 		assertNull(s1);
 		boolean b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
 		assertTrue(b1);
 		b1 = IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
 		assertTrue(b1);
-		File f = new File(subFilePath);
+		b1 = IModelHandlerServer.FileOperationHelper.createDirectory(subFilePath);
+		assertTrue(b1);
+		File f = new File(subPathFilePath);
 		try {
 			f.createNewFile();
 		} catch (IOException e) {
@@ -65,19 +71,29 @@ public class ModelHandlerTest {
 			e.printStackTrace();
 		}
 		//deleteDirectoryContents
+		b1 = IModelHandlerServer.FileOperationHelper.deleteFile(new File("123"));
+		assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.deleteFile(new File(subPathFilePath));
+		assertTrue(b1);
 		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File("123"));
 		assertTrue(b1);
-		//b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(subFilePath));
-		//assertTrue(b1);
+		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(subFilePath));
+		assertTrue(b1);
 		b1 = IModelHandlerServer.FileOperationHelper.deleteDirectoryContents(new File(dirName));
 		assertTrue(b1);
 	}
 	
+	
 	@Test
 	public void testFileOperationHelpers2() {
 		//IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
-		IModelHandlerServer.FileOperationHelper.unzipFile("foo", "bar");
-		
+		IModelHandlerServer.FileOperationHelper.unzipFile("foo", "./bar");
+	}
+	@Test
+	public void testFileOperationHelpers22() {
+		//IModelHandlerServer.FileOperationHelper.createDirectory(dirName);
+		URL url = this.getClass().getResource("/conf.zip");
+		IModelHandlerServer.FileOperationHelper.unzipFile(url.getFile(), "./bar");
 	}
 	
 	@Test
