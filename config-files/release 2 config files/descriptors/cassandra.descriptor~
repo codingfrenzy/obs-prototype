@@ -355,7 +355,7 @@ LoadPlugin java
   	   Type "memory" @Attribute
   	   InstancePrefix "heap-mem" @Attribute
   	   Table true @Attribute
-  	   Attribute "HeapMemoryUsage" @Attribute
+  	   Attribute "HeapMemoryUsage"
   	 </Value>
    </MBean>
 

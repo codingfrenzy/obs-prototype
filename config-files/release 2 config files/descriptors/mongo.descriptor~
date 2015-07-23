@@ -58,10 +58,10 @@ LoadPlugin "csv"
     Globals true 
 </LoadPlugin>
 
-<Plugin python>
-    ModulePath "/home/ubuntu/collectd/mongopyplugin" @Machine
+<Plugin python> @Machine
+    ModulePath "/home/ubuntu/collectd/mongopyplugin" @Attribute
 
-    Import "mongodb" @Machine
+    Import "mongodb" @Attribute
     <Module mongodb> @Machine
         Host "127.0.0.1" @Attribute
         Password "password" @Attribute

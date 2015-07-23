@@ -63,17 +63,17 @@ LoadPlugin postgresql
 	
   [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Database') = 0]
-    <Database [element.value/]>
+<Database [element.value/]>
 	  [for (keyValue : KeyValue | element.keyValues)]
-	  [keyValue.key/] "[keyValue.value/]"
+   [keyValue.key/] [keyValue.value/]
 	  [/for]
 	  [for (m : Metric | aCluster.collectedMetrics) ]
 	  	[if m.oclIsKindOf(BaseMetric) and m.type.strcmp('DATABASE')=0]
-	  		Query "[m.elements->at(1).value/]"		
+   Query "[m.elements->at(1).value/]"		
 		[/if]
 	
 	  [/for]	  	
-    </Database>
+</Database>
 	[/if]
   [/for]
     
