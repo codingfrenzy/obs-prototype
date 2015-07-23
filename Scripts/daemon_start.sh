@@ -7,7 +7,7 @@ vmip=$(curl -s https://api.ipify.org)
 # Get latest code and Start Daemon Manager
 cd /home/ubuntu/obsv-code/com/observability/monitoring/daemon/
 pkill -f DaemonManager
-rm *
+rm -f *
 wget -q https://github.com/observability/obs-prototype/raw/master/src/main/java/com/observability/monitoring/daemon/DaemonManager.java
 wget -q https://github.com/observability/obs-prototype/raw/master/src/main/java/com/observability/monitoring/daemon/DaemonHeartbeatClient.java
 wget -q https://github.com/observability/obs-prototype/raw/master/src/main/java/com/observability/monitoring/daemon/IDaemonManagerServer.java
@@ -31,7 +31,7 @@ fi
 fi
 fi
 
-rm /home/ubuntu/${db}_start.sh
+rm -f /home/ubuntu/${db}_start.sh
 wget -q https://github.com/observability/obs-prototype/raw/master/Scripts/${db}_start.sh
 sh /home/ubuntu/${db}_start.sh
 
