@@ -16,10 +16,24 @@ javac com/observability/monitoring/daemon/*.java
 java com/observability/monitoring/daemon/DaemonManager $vmip 8200 > DaemonManager 2>&1 &
 
 # Start the db
-sh /home/ubuntu/redis_start.sh
-sh /home/ubuntu/mongo_start.sh
-sh /home/ubuntu/cassandra_start.sh
-sh /home/ubuntu/postgre_start.sh
+cd /home/ubuntu/
+db=$1
+if [ $db = "redis" ]; then
+        echo "redis"
+else if [ $db = "cassandra" ]; then
+        echo "cassandra"  
+else if [ $db = "postgre" ]; then
+        echo "postgre"
+else if [ $db = "mongo" ]; then
+        echo "mongo"
+fi
+fi
+fi
+fi
+
+rm /home/ubuntu/${db}_start.sh
+wget -q https://github.com/observability/obs-prototype/raw/master/Scripts/${db}_start.sh
+sh /home/ubuntu/${db}_start.sh
 
 # Start collectd
 cd /home/ubuntu/
