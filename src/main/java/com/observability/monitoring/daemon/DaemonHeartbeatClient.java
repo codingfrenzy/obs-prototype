@@ -211,7 +211,7 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
             // send the message in the packet
             DatagramSocket datagramSocket = new DatagramSocket();
             datagramSocket.send(packet);
-            System.out.println("Message sent: " + message);
+            System.out.println("Message sent: " + message + " to " + collectdServerIP);
             datagramSocket.close();
 
         } catch (IOException e) {
