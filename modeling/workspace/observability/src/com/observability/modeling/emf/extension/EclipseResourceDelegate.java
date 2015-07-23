@@ -1,6 +1,23 @@
-/**
- * 
+//**************************************************************************************************//
+/* Observability Project
+ * Copyright 2015 Master of Software Engineering team: Laila Alhmound, Ying (Joel) Gao, Caglayan (Gem) Gemici, Rajat Kapoor, Prasanth Nair, Varun Saravagi
+ * Copyright 2015 Institute for Software Research | School of Computer Science | Carnegie Mellon University
+ * Copyright 2015 Software Engineering Institute
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
+//**************************************************************************************************//
 package com.observability.modeling.emf.extension;
 
 import java.io.File;
@@ -13,7 +30,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 
 /**
  * @author gemici
- *
+ * Encapsulates the eclipse IDE dependency so that we can
+ * mock it in unit test cases.
  */
 public class EclipseResourceDelegate {
 	
@@ -22,6 +40,10 @@ public class EclipseResourceDelegate {
 	 */
 	public static final String PROBE_DESCRIPTOR_DIR_PATH = "descriptors";
 	
+	/**
+	 * Cycles through all open projects and seeks for a descriptor dir.
+	 * @return the folder of the descriptors
+	 */
 	public File getDescriptorPath(){
 		IProject[] projects =	ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		File descriptorDir = null;
