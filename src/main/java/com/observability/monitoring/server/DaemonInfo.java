@@ -52,12 +52,4 @@ public class DaemonInfo {
         this.metricStatus = metricStatus;
     }
 
-    /**
-     * Helper method to display the values of the current object.
-     * @return
-     */
-    public String toString() {
-        return ip + " : " + epoch + " : " + metricStatus;
-    }
-
 }
