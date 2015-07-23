@@ -177,7 +177,10 @@ public class ModelVersioning {
         for (String ip : ipList) {
             op.append(ip + "\n");
         }
-        return op.toString();
+        if (op.length() == 0)
+            return "No failed IPs! Hurray!";
+        else
+            return op.toString();
     }
 
     public static String viewAllIPs() throws Exception {
