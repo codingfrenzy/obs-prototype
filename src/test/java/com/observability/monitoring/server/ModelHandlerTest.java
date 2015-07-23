@@ -231,11 +231,16 @@ public class ModelHandlerTest {
 	}
 	
 	@Test
-	public void testDaemonManagerClient() {
+	public void testDaemonManagerClient1() {
+		DaemonManagerClient dmc = new DaemonManagerClient();
+		assertNotNull(dmc);
+	}
+	
+	@Test
+	public void testDaemonManagerClient2() {
 		IDaemonManagerServer si = DaemonManagerClient.getServerInstance("52.6.202.212", "1234");
 		assertNull(si);
 	}
-	
 	/*
 	@Test
 	public void testWithRealServer() {

@@ -1,5 +1,3 @@
-com.observability.helloworld
-com.observability.modeling.probe.descriptor
-com.observability.modeling.probe.descriptor.entities
+com.observability.client
 com.observability.monitoring.daemon
 com.observability.monitoring.server

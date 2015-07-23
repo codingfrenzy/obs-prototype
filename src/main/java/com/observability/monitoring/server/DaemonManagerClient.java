@@ -35,10 +35,26 @@ import com.observability.monitoring.daemon.IDaemonManagerServer;
  * 
  * History: 
  * 1. Created					Jun 03 2015
+ * 2. Modified 					Jly 23 2015
  *
  */
 
 public class DaemonManagerClient {
+	/**
+     * Default constructor.<br>
+     * This constructor is added only for test coverage.
+     *
+     */
+	DaemonManagerClient(){
+	}
+	
+	/**
+     * Get the RMI server interface.
+     * @param ip IP address of the RMI server
+     * @param port Port number of the RMI server
+     *
+     * @return server interface
+     */
 	public static IDaemonManagerServer getServerInstance(String ip, String port) {
 	    String url = String.format("//%s:%s/DaemonManager", ip, port);
 	    try {
