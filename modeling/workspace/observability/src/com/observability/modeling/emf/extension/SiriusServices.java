@@ -55,8 +55,6 @@ import com.observability.modeling.probe.descriptor.entities.Scope;
  * changes the EMF model instance according to the information on the descriptors
  */
 
-
-
 public class SiriusServices {
 	
 	/*
@@ -70,7 +68,11 @@ public class SiriusServices {
 	 */
 	private EmfFactory factory = EmfFactory.eINSTANCE;
     
-	
+	/*
+	 * This data structure stores the external elements in the machine scope in a easy
+	 * accessible structure. We can do quick lookups instead of crawling through the 
+	 * data structures the parser gives.
+	 */
 	private Map<String, HashMap<String,Element>> externalElements = new HashMap<String,HashMap<String,Element>>();
 
 	/*
@@ -78,21 +80,34 @@ public class SiriusServices {
 	 * For now features are missing deamon and thresholds notifications
 	 */
 	private List<Feature> features = null;
-    /**
-     * Parse the descriptors and bring the info into entities at class loading
-     * This will search through all the projects in the current workspace for the descriptors dir.
-     */
-	
+   
+	/*
+	 *  Singleton instance. Needs to be volatile for the double checked singleton method to work.
+	 */
 	private static volatile SiriusServices instance = null;
 
+	/*
+	 * The eclipse IDE dependency encapsulated as a an object.
+	 */
 	private EclipseResourceDelegate eclipse = null;
 	  
-	private SiriusServices() {
-	      // Exists only to defeat instantiation.
-	}
 	
-	//see http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+	
+	/**
+	 *  Private constructor to ensure instantiation by method.
+	 */
+	private SiriusServices() {}
+	
+	/**
+	 *  Double checked locking singleton method
+	 * see http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+	 * @param eclipse This parameter is added to facilitate mocking of the eclipse IDE dependency on unit tests
+	 * @return the singleton instance of this service
+	 */
+	  
 	public static SiriusServices getInstance(EclipseResourceDelegate eclipse) {
+		if(eclipse == null)
+			throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_ECLIPSE_CANNOTBENULL );
 		if (instance != null) {
 			instance.eclipse = eclipse;
 		}else{
@@ -105,40 +120,43 @@ public class SiriusServices {
 			}
 		}
 		return instance;
-
-			
+		
 	}
 	
+	/**
+	 * Default singleton method.
+	 * @return singleton instance of this service
+	 */
 	public static SiriusServices getInstance() {
 		return getInstance(new EclipseResourceDelegate());
 	}
 	
-	
-	
+	 /**
+     * Parse the descriptors and bring the info into entities,
+     * This will search through all the projects in the current project for the descriptors dir.
+     */
 	public void parseDescriptors(){
 	
 		File descriptorDir = eclipse.getDescriptorPath();
 		if(descriptorDir != null)	{
 			File[] descriptorFiles = descriptorDir.listFiles(new DescriptorFilter());
 			if(descriptorFiles==null || descriptorFiles.length ==0){
-				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+				throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_NO_DESCRIPTOR_FILES);
 			}
 			parseDescriptors(descriptorDir.toPath());
 
 		}
 		else{
 			
-			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
+			throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_NO_DESCRIPTOR_DIR);
 		}
 			 
 			
     }
 	
 	 /**
-     * Parse the descriptors and bring the info into entities at class loading
-     * 
+     * Parse the descriptors and bring the info into entities.
      * @param descriptorsPath the path to the dir where the descriptor files are located inside the project
-     * TODO remove duplicate code.
      */
 	public void parseDescriptors(Path descriptorsPath){
 		if(Files.exists(descriptorsPath , LinkOption.NOFOLLOW_LINKS)){
@@ -159,7 +177,9 @@ public class SiriusServices {
 		fillExternalElements();
 	}
 	
-	
+	/**
+	 * Fills the external elements into the convenient hashmap structure for further lookup.
+	 */
 	private void fillExternalElements() {
 		for (com.observability.modeling.probe.descriptor.entities.DbType dbType : dbTypes) {
 			externalElements.put(dbType.getName(), new HashMap<String, Element>());
@@ -173,18 +193,26 @@ public class SiriusServices {
 					// Fill external elements
 					Element newElement = factory.createElement();
 
-					// copy name and value
-					newElement.setName(element.getName());
+					
+					//We are setting the id instead of name to 
+					// display a more descriptive text to the user.
+					// We should come up with a better design
+					// Also we are assuming a metric can have at most one Element as the child
+					// 
+					if(element.getId().contains(Messages.SiriusServices_NULL)){
+						newElement.setName(element.getName());
+					}else{
+						newElement.setName(element.getId());
+					}
 					newElement.setValue(element.getValue());
 
 					// fill sub elements and key values
 					fillElements(element, newElement);
-					// Add this to the temporary storage.
+					
+					// Add this to the convenient hashmap storage.
 					// These elements will be added to the machines inside a
-					// cluster
-					// only when a cluster is associated with a metric or a
-					// machine is
-					// added to an already associated cluster
+					// cluster only when a cluster is associated with a metric or a
+					// machine is added to an already associated cluster
 					externalElements.get(dbType.getName()).put(element.getId(), newElement);
 				}
 
@@ -194,10 +222,16 @@ public class SiriusServices {
 
 	}
 
-	
+	/**
+	 * Initialize the EMF model with dbTypes read from the descriptors and the metrics
+	 * inside the dbTypes
+	 *  
+	 * @param model Emf model instance to be populated
+	 * @param dirPath the location of the descriptor folder
+	 */
 	private void initializeDbTypes( Model model, Path dirPath) {
 		
-		//Get the parsers
+		//Parse the descriptors
 		parseDescriptors(dirPath.resolve(EclipseResourceDelegate.PROBE_DESCRIPTOR_DIR_PATH));
 		
 		//Create dbTypes for each descriptor file
@@ -218,14 +252,17 @@ public class SiriusServices {
 	 * from the descriptors. Also creates features.
 	 * 
 	 * @param model the root element to fill in the new entities
-	 * @param dirPath 
+	 * @param dirPath the location of the descriptor dir
 	 */
 	public void initializeModel (Model model, Path dirPath){
 		initializeDbTypes(model, dirPath);
 		initializeFeatures(model);
 	}
 	
-	
+	/**
+	 * Initialize the model with features read from the descriptors.
+	 * @param model EMF model instance to be populated
+	 */
 	private void initializeFeatures(Model model) {
 		for(Feature feature: features){
 			com.observability.modeling.emf.Feature semanticFeature = factory.createFeature();
@@ -240,6 +277,7 @@ public class SiriusServices {
 				semanticFeature.getElements().add(semanticElement);
 
 			}
+			//Copy the keys and values
 			for (com.observability.modeling.probe.descriptor.entities.KeyValue keyValue: feature.getKeyValues()){
 				KeyValue semanticKeyValue = factory.createKeyValue();
 				semanticKeyValue.setKey(keyValue.getName());
@@ -295,7 +333,7 @@ public class SiriusServices {
 				// We should come up with a better design
 				// Also we are assuming a metric can have at most one Element as the child
 				// 
-				if(element.getId().endsWith("null")){
+				if(element.getId().contains("null")){
 					semanticElement.setName(element.getName());
 				}else{
 					semanticElement.setName(element.getId());
@@ -312,7 +350,6 @@ public class SiriusServices {
 				semanticMetric.getKeyValues().add(semanticKeyValue);
 			}
 			newDbType.getAvailableMetrics().add(semanticMetric);
-			
 
 		}
 		
@@ -337,7 +374,7 @@ public class SiriusServices {
 		if(containerCluster instanceof DatabaseCluster)
 			 cluster = (DatabaseCluster) containerCluster;
 		else
-			throw new RuntimeException("Container that new machine will be added must be of type DatabaseCluster!");
+			throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_MUST_BE_DB_CLUSTER);
 		
 		//If the cluster is not associated with a dbType do nothing
 		DbType associatedDbType = cluster.getAssociatedDbType();
@@ -356,7 +393,7 @@ public class SiriusServices {
 			}
 			//throw new RuntimeException("Unknown database type: " + dbType.getName());
 		}
-		machine.setName("Machine " + (cluster.getMachines().size() + 1) + "");
+		machine.setName(Messages.SiriusServices_MACHINE + (cluster.getMachines().size() + 1) + ""); //$NON-NLS-2$
 		
 		//We need to fill external elements here
 		for(Metric collectedMetric:cluster.getCollectedMetrics()){
@@ -369,6 +406,12 @@ public class SiriusServices {
 		
 	}
 	
+	/**
+	 * Add corresponding external elements to the machine entity on the EMF instance
+	 * @param machine the instance to which the external elements will be added
+	 * @param collectedMetric the metric whose external element declarations will be added to the machine
+	 * @param associatedDbType the dbType which the machine's cluster is associated with
+	 */
 	private void addMetricSpecificParamsToMachine(NodeMachine machine, Metric collectedMetric,DbType associatedDbType) {
 		for (Element element : getMatchingElements(collectedMetric, associatedDbType)) {
 				machine.getElements().add(element);
@@ -376,10 +419,10 @@ public class SiriusServices {
 	}
 
 	/**
-	 * 
-	 * @param machineParam 
-	 * @param associatedDbType 
-	 * @param rootElement
+	 * Copy internal elements to the EMF machine instance from the descriptor machine entity.
+	 * @param machineParam the parser entity that holds internal elements regarding the machine
+	 * @param semanticMachine the EMF machine entity to which the internal element will be copied to
+	 * @param associatedDbType the DbType which the machine's cluster is associated with.
 	 */
 	private void fillElements(Machine machineParam, NodeMachine semanticMachine, DbType associatedDbType) {
 		List<ElementTag> elementTags = machineParam.getElements();
@@ -392,8 +435,17 @@ public class SiriusServices {
 			//External scope elements will be added when a cluster is associated with a metric
 			Element newElement = factory.createElement();
 				
-			//copy name and value
-			newElement.setName(element.getName());
+			//We are setting the id instead of name to 
+			// display a more descriptive text to the user.
+			// We should come up with a better design
+			// Also we are assuming a metric can have at most one Element as the child
+			// 
+			if(element.getId().contains("null")){
+				newElement.setName(element.getName());
+			}else{
+				newElement
+				.setName(element.getId());
+			}
 			newElement.setValue(element.getValue());
 							
 			//fill sub elements and key values
@@ -465,7 +517,12 @@ public class SiriusServices {
 		}
 		
 	}
-	
+	/**
+	 * Method that adds external elements from  metric to all machines inside a cluster
+	 * @param containerCluster the cluster which needs to be processed 
+	 * @param associatedMetric the metric which the external attributes are taken from.
+	 * @return true on successfull add. 
+	 */
 	public boolean addMetricSpecificParamsToMachinesInCluster(DatabaseCluster containerCluster , Metric associatedMetric){
 		if(dbTypes == null)
 			parseDescriptors();
@@ -477,8 +534,8 @@ public class SiriusServices {
 		if(associatedDbType == null)
 			return false;
 	
-		List<NodeMachine> machinesInClustes = cluster.getMachines();
-		for (NodeMachine nodeMachine : machinesInClustes) {
+		List<NodeMachine> machinesInCluster = cluster.getMachines();
+		for (NodeMachine nodeMachine : machinesInCluster) {
 			
 			//TODO speed optimization: check for the matchingElements only for the first machine
 			// 
@@ -490,7 +547,12 @@ public class SiriusServices {
 		return true;
 	}
 	
-	
+	/**
+	 * Lookup the external elements from that belong to the metric
+	 * @param metric The metric the external elements belong to
+	 * @param associatedDbType The dbType that provides the metric
+	 * @return list of external elements that belong to the metric
+	 */
 	private List<Element> getMatchingElements(Metric metric, DbType associatedDbType){
 		List<Element> elementsToAddToMachine = new ArrayList<Element>();
 		
@@ -498,8 +560,8 @@ public class SiriusServices {
 		if(metric.getElements().size()> 0){
 			//We assume the id is <key>_<value>
 			
-			String id = "";
-			if (metric.getElements().get(0).getName().indexOf("_") == -1)
+			String id = ""; //$NON-NLS-1$
+			if (metric.getElements().get(0).getName().indexOf(Messages.SiriusServices_ID_SEPERATOR) == -1)
 				id = metric.getElements().get(0).getName() + "_" + metric.getElements().get(0).getValue();
 			else
 				id = metric.getElements().get(0).getName();
@@ -511,11 +573,6 @@ public class SiriusServices {
 		}
 		return elementsToAddToMachine;
 	}
-	
-
-	
-	
-	
 
 }
 

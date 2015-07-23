@@ -1,0 +1,101 @@
+Interval 30 
+Hostname 45.55.197.112 
+
+LoadPlugin "memory"
+LoadPlugin "df"
+LoadPlugin "cpu"
+LoadPlugin "interface"
+LoadPlugin "disk"
+LoadPlugin load
+
+<Plugin "cpu"> @MetricSystem
+	ReportByState true @Attribute
+	ReportByCpu true @Attribute
+	ValuesPercentage true @Attribute
+</Plugin>
+
+<Plugin "memory"> @MetricSystem
+	ValuesAbsolute true @Attribute
+	ValuesPercentage false @Attribute
+</Plugin>
+
+<Plugin "df"> @MetricSystem
+	Device "/dev/hda1" @Machine
+	MountPoint "/home" @Machine
+	FSType "ext3" @Machine
+	IgnoreSelected true @Attribute
+	ReportInodes false @Attribute
+	ReportReserved false @Attribute
+</Plugin>
+
+<Plugin "interface"> @MetricSystem
+	Interface "lo" @Machine
+	Interface "sit0" @Machine
+	IgnoreSelected true @Attribute
+</Plugin>
+
+<Plugin "disk"> @MetricSystem
+  Disk "sda" @Machine
+  Disk "/^hd/" @Machine
+  IgnoreSelected false @Attribute
+</Plugin>
+
+LoadPlugin "logfile" 
+<Plugin "logfile"> @MetricSystem
+  File "/home/ubuntu/collectd/log/collectd.log" @Machine
+  LogLevel "info" @Attribute
+  Timestamp true @Attribute
+  PrintSeverity true @Attribute
+</Plugin>
+
+LoadPlugin "csv"
+<Plugin "csv"> @MetricSystem
+  DataDir "/home/ubuntu/collectd/csv" @Machine
+  StoreRates true @Attribute
+</Plugin>
+
+<LoadPlugin python>
+    Globals true 
+</LoadPlugin>
+
+<Plugin python> @Machine
+    ModulePath "/home/ubuntu/collectd/mongopyplugin" @Attribute
+
+    Import "mongodb" @Attribute
+    <Module mongodb> @Machine
+        Host "127.0.0.1" @Attribute
+        Password "password" @Attribute
+        Database "admin" "test" @Attribute
+    </Module>
+</Plugin>
+
+
+<Aggregation> @MetricAggregated(Memory)
+	Plugin "mongo" @Attribute
+	Type "memory" @Attribute
+	TypeInstance "/.*/" @Attribute
+	GroupBy "TypeInstance" @Attribute
+
+	CalculateNum true 
+	CalculateSum true 
+	CalculateAverage true 
+	CalculateMinimum true 
+	CalculateMaximum true 
+	CalculateStddev true 
+</Aggregation>
+
+
+LoadPlugin "threshold"
+<Plugin "threshold">
+  <Host "52.5.118.73"> 
+    <Type "cpu"> 
+     WarningMin    0.2 
+     WarningMax    0.8 
+     FailureMin    0.1 
+     FailureMax    0.9 
+     Invert false 
+     Instance "system"
+    </Type>
+   </Host>
+ </Plugin>
+

@@ -15,6 +15,8 @@
 Interval [aModel.interval/] 
 Hostname [aModel.serverIP/] 
 
+LoadPlugin "load"
+
 LoadPlugin "cpu"
 <Plugin "cpu">
 	ReportByState true 
@@ -32,14 +34,14 @@ LoadPlugin "memory"
 LoadPlugin "logfile" 
 <Plugin "logfile">
   LogLevel "info" 
-  File "/home/owls/collectd/log/collectd.log"  
+  File "/home/ubuntu/collectd/log/collectd.log"  
   Timestamp true 
   PrintSeverity true 
 </Plugin>
 
 LoadPlugin "csv"
 <Plugin "csv">
-  DataDir "/home/owls/collectd/csv"  
+  DataDir "/home/ubuntu/collectd/csv"  
   StoreRates true 
 </Plugin>
 
@@ -126,7 +128,7 @@ LoadPlugin java
 				[/for]
 	</[e.name/]>
 			[/for]
-</[element.name/]
+</[element.name/]>
 		[/let]
 	[/for]
 

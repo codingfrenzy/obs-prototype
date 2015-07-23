@@ -18,7 +18,6 @@ Interval [frequency/]
 Hostname [machine.IP/]
 
 [machine.generateSystemMetrics(aCluster)/]
-
 	
 LoadPlugin "network"
 <Plugin "network">
@@ -34,9 +33,9 @@ LoadPlugin "network"
 
 
 <Plugin python>
-    ModulePath "/opt/collectd/lib/collectd"
-
-    Import "mongodb"
+  [for (keyValue : KeyValue | machine.keyValues)]
+  [keyValue.key/] [keyValue.value/]
+  [/for]
 
   [for (element : Element | machine.elements)]
 	[if element.name.strcmp('Module') = 0]
