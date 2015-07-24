@@ -110,12 +110,6 @@ public class DaemonHeartbeatMain implements Runnable {
     }
 
     /**
-     * Default constructor. Should be used with caution as it severely limits functionality
-     */
-    DaemonHeartbeatMain() {
-    }
-
-    /**
      * Initialize list of daemons that is supposed to send the heartbeats.
      * Currently hard coded.
      */

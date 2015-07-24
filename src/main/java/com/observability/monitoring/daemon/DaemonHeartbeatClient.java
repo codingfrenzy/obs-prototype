@@ -104,31 +104,31 @@ public class DaemonHeartbeatClient extends Thread implements Serializable {
         collectdPath = confPath;
         hostName = currentDaemonIP;
     }
-
-    /**
-     * Method to get the current date. Used for metric collection CSV file
-     * name.<br>
-     *
-     * @return String current date in format yyyy-MM-dd
-     */
-    public String getTodayDate() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
-    }
-
-    /**
-     * Method to get the file name of the metric CSV file.<br>
-     *
-     * @return String the full absolute path of the file including file name
-     */
-    public String getMetricFileName() {
-        String date = "-" + getTodayDate();
-        String metricNameAbsolutePath = collectdMetricPath + currentDaemonIP + "/cpu-0/" + metricName + date;
-        // metricPath =
-        // "/home/owls/collectd_data_20150604/csv/observabilityCassandra1/cpu-0/cpu-idle-2015-06-02";
-        return metricNameAbsolutePath;
-    }
+//
+//    /**
+//     * Method to get the current date. Used for metric collection CSV file
+//     * name.<br>
+//     *
+//     * @return String current date in format yyyy-MM-dd
+//     */
+//    public String getTodayDate() {
+//        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        return sdf.format(date);
+//    }
+//
+//    /**
+//     * Method to get the file name of the metric CSV file.<br>
+//     *
+//     * @return String the full absolute path of the file including file name
+//     */
+//    public String getMetricFileName() {
+//        String date = "-" + getTodayDate();
+//        String metricNameAbsolutePath = collectdMetricPath + currentDaemonIP + "/cpu-0/" + metricName + date;
+//        // metricPath =
+//        // "/home/owls/collectd_data_20150604/csv/observabilityCassandra1/cpu-0/cpu-idle-2015-06-02";
+//        return metricNameAbsolutePath;
+//    }
 
     /**
      * Method to calculate the maximum confidence time-window. The measurement
