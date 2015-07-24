@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.junit
 Bundle-ActivationPolicy: lazy
-Import-Package: com.observability.monitoring.server,
+Import-Package: com.observability.modeling.common,
+ com.observability.monitoring.server,
  org.eclipse.core.resources,
  org.eclipse.jface.dialogs,
  org.eclipse.swt.widgets,
