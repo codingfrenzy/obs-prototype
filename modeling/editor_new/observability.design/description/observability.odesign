@@ -18,24 +18,24 @@
           </style>
         </nodeMappings>
         <edgeMappings name="clusterToMetric" deletionDescription="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='metricEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='baseMetric'] //@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']/@subNodeMappings[name='aggregatedMatric']" targetFinderExpression="feature:collectedMetrics">
-          <style lineStyle="dash" sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          <style lineStyle="dash" sizeComputationExpression="2" routingStyle="tree" foldingStyle="TARGET" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_green']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
         <edgeMappings name="clusterToDbType" deletionDescription="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='dbTypeEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
-          <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          <style sizeComputationExpression="2" routingStyle="tree" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
           </style>
         </edgeMappings>
         <edgeMappings name="clusterToNotification" deletionDescription="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='notificationEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@nodeMappings[name='notification']" targetFinderExpression="feature:associatedNotifications">
-          <style sizeComputationExpression="2">
-            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+          <style sizeComputationExpression="2" routingStyle="tree" endsCentering="Both">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_orange']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             </centerLabelStyleDescription>
@@ -49,7 +49,7 @@
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
             </style>
           </subNodeMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1" widthComputationExpression="15" heightComputationExpression="25">
+          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1" widthComputationExpression="15" heightComputationExpression="15">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
@@ -58,21 +58,22 @@
         </containerMappings>
         <containerMappings name="dbType" semanticCandidatesExpression="feature:availableDbTypes" domainClass="emf.DbType">
           <subNodeMappings name="baseMetric" semanticCandidatesExpression="feature:availableMetrics" domainClass="emf.BaseMetric">
-            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="5" verticalDiameterComputationExpression="5">
+            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" horizontalDiameterComputationExpression="5" verticalDiameterComputationExpression="5">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_chocolate']"/>
             </style>
           </subNodeMappings>
           <subNodeMappings name="aggregatedMatric" semanticCandidatesExpression="feature:availableMetrics" domainClass="emf.AggregatedMetric">
-            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" resizeKind="NSEW" horizontalDiameterComputationExpression="5" verticalDiameterComputationExpression="5">
+            <style xsi:type="style:EllipseNodeDescription" tooltipExpression="feature:name" horizontalDiameterComputationExpression="5" verticalDiameterComputationExpression="5">
               <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
               <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
             </style>
           </subNodeMappings>
-          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1">
+          <style xsi:type="style:FlatContainerStyleDescription" arcWidth="1" arcHeight="1" labelAlignment="LEFT">
             <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelFormat>bold</labelFormat>
             <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
             <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='white']"/>
             <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_purple']"/>

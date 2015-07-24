@@ -375,7 +375,7 @@ LoadPlugin java
 		Host "/.+/" @Attribute
 		Plugin "GenericJMX" @Attribute
 		Type "memory" @Attribute
-		TypeInstance "/^heap-mem.*/"
+		TypeInstance "/^heap-mem.*/" @Attribute
 		GroupBy "TypeInstance" @Attribute
 
 		# Sets the name of the output folder
