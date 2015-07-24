@@ -82,7 +82,6 @@ public class DaemonHeartbeatListener implements Runnable {
                 datagramSocket.receive(packet);
                 buffer = packet.getData();
                 String messageFromDaemon = new String(buffer, "UTF-8");
-                System.out.println(messageFromDaemon);
 
                 saveDaemonInfo(messageFromDaemon);
 
@@ -105,13 +104,16 @@ public class DaemonHeartbeatListener implements Runnable {
      */
     private void saveDaemonInfo(String messageFromDaemon) {
         String[] daemonInfo = messageFromDaemon.split("_");
+        DaemonInfo d = new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].contains("2")));
+        System.out.println(d.toString());
         if (daemonHeartbeatCollectionToggle.get()) {
-            listOfDaemonHeartbeatReceived1.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].contains("2"))));
+            listOfDaemonHeartbeatReceived1.put(daemonInfo[0], d);
 //            System.out.println("Using SH1");
         } else {
-            listOfDaemonHeartbeatReceived2.put(daemonInfo[0], new DaemonInfo(daemonInfo[0], daemonInfo[1], (daemonInfo[2].contains("2"))));
+            listOfDaemonHeartbeatReceived2.put(daemonInfo[0], d);
 //            System.out.println("Using SH2");
         }
+
     }
 
     /**
