@@ -140,7 +140,7 @@ static int get_boundet_random (int min, int max) /* {{{ */
   return (min + ((int) (((double) range) * ((double) random ()) / (((double) RAND_MAX) + 1.0))));
 } /* }}} int get_boundet_random */
 
-static lcc_value_list_t *create_value_list (int vl_no) /* {{{ */
+static lcc_value_list_t *create_value_list (int host, int plg , int val) /* {{{ */
 {
   lcc_value_list_t *vl;
   int host_num;
@@ -173,7 +173,7 @@ static lcc_value_list_t *create_value_list (int vl_no) /* {{{ */
   vl->values_len = 1;
 
   //host_num = get_boundet_random (0, conf_num_hosts);
-  host_num = (vl_no % conf_num_hosts);
+  host_num = host;
 
   vl->interval = conf_interval;
   vl->time = 1.0 + time (NULL)
@@ -193,11 +193,10 @@ static lcc_value_list_t *create_value_list (int vl_no) /* {{{ */
       "%shost%04i", conf_host_prefix, host_num);
   //fprintf (stdout, "Host prefix %s, Host %s", conf_host_prefix, vl->identifier.host);
   
-  int plugin_no =  (vl_no % conf_num_plugins);
   //snprintf (vl->identifier.plugin, sizeof (vl->identifier.plugin),
   //    "plugin%03i", get_boundet_random (0, conf_num_plugins));
   snprintf (vl->identifier.plugin, sizeof (vl->identifier.plugin),
-      "plugin%03i", plugin_no);
+      "plugin%03i", plg);
 
   strncpy (vl->identifier.type,
       (vl->values_types[0] == LCC_TYPE_GAUGE) ? "gauge" : "derive",
@@ -205,11 +204,10 @@ static lcc_value_list_t *create_value_list (int vl_no) /* {{{ */
   // Modified by Joel Gao Jly 24th 2015
   //snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
   //    "ti%li", random ());
-  //int metric_no = (vl_no % 30);
-  //snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
-  //    "ti%i", metric_no);
   snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
-      "ti");
+      "ti%i", val);
+  //snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
+  //    "ti");
 
   return (vl);
 } /* }}} int create_value_list */
@@ -246,8 +244,8 @@ static int send_value (lcc_value_list_t *vl) /* {{{ */
   int status;
 
   // Modified by Joel Gao Jly 24 2015
-  cdtime_t vltime = vl->time;
-  vl->time = cdtime();
+  //cdtime_t vltime = vl->time;
+  //vl->time = cdtime();
   if (vl->values_types[0] == LCC_TYPE_GAUGE)
     vl->values[0].gauge = 100.0 * ((gauge_t) random ()) / (((gauge_t) RAND_MAX) + 1.0);
   else
@@ -256,7 +254,7 @@ static int send_value (lcc_value_list_t *vl) /* {{{ */
   status = lcc_network_values_send (net, vl);
   if (status != 0)
     fprintf (stderr, "lcc_network_values_send failed with status %i.\n", status);
-  vl->time = vltime;
+  //vl->time = vltime;
   vl->time += vl->interval;
 
   return (0);
@@ -369,7 +367,7 @@ static int read_options (int argc, char **argv) /* {{{ */
 
 int main (int argc, char **argv) /* {{{ */
 {
-  int i;
+  //int i;
   time_t last_time;
   int values_sent = 0;
 
@@ -415,6 +413,29 @@ int main (int argc, char **argv) /* {{{ */
 
   fprintf (stdout, "Creating %i values ... ", conf_num_values);
   fflush (stdout);
+  // Modified by Joel Gao Jly 24 2015
+  int vlPerPlugin = conf_num_values / conf_num_hosts / conf_num_plugins;
+  int h, p, v;
+  for(h = 0 ; h < conf_num_hosts ; h++)
+  {
+    for(p = 0 ; p < conf_num_plugins ; p++)
+    {
+      for(v = 0 ; v < vlPerPlugin ; v++)
+      {
+        lcc_value_list_t *vl;
+
+        vl = create_value_list (h, p, v);
+        if (vl == NULL)
+        {
+          fprintf (stderr, "create_value_list failed.\n");
+          exit (EXIT_FAILURE);
+        }
+
+        c_heap_insert (values_heap, vl);
+      }
+    }
+  }
+  /*
   for (i = 0; i < conf_num_values; i++)
   {
     lcc_value_list_t *vl;
@@ -428,6 +449,8 @@ int main (int argc, char **argv) /* {{{ */
 
     c_heap_insert (values_heap, vl);
   }
+  */
+  
   fprintf (stdout, "done\n");
 
   last_time = 0;
