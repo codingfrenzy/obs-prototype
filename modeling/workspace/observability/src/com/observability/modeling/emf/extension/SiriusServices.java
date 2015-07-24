@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
+import com.observability.modeling.common.Messages;
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
@@ -163,7 +164,7 @@ public class SiriusServices {
 			// if descriptors exist, get the parsed descriptors
 			File[] descriptorFiles = descriptorsPath.toFile().listFiles();
 			if(descriptorFiles==null || descriptorFiles.length ==0){
-				throw new RuntimeException("No descriptor files found. Please add the descriptor files and do the operation again.");
+				throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_NO_DESCRIPTOR_FILES);
 			}
 			DescriptorParserImpl parser = new DescriptorParserImpl(descriptorsPath);
 			parser.parseDescriptors();
@@ -171,7 +172,7 @@ public class SiriusServices {
 			features = parser.getFeatures();
 		}
 		else {				
-			throw new RuntimeException("Cannot find descriptor directory \"<project_dir>/descriptors\"");
+			throw new RuntimeException(Messages.SiriusServices_MSG_ERROR_NO_DESCRIPTOR_DIR);
 		}
 		
 		fillExternalElements();

@@ -110,13 +110,16 @@
             <initialOperation>
               <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:source">
                 <subModelOperations xsi:type="tool_1:Switch">
+                  <cases conditionExpression="[source.oclAsType(DatabaseCluster).associatedDbType = null/]">
+                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:eclipseCantConnectMetricWithoutDbTypeError()"/>
+                  </cases>
                   <cases conditionExpression="[target.oclAsType(Metric).eContainer().oclAsType(DbType) = source.oclAsType(DatabaseCluster).associatedDbType/]">
                     <subModelOperations xsi:type="tool_1:If" conditionExpression="[self.addMetricSpecificParamsToMachinesInCluster(source,target)/]">
                       <subModelOperations xsi:type="tool_1:SetValue" featureName="collectedMetrics" valueExpression="[self.oclAsType(DatabaseCluster).collectedMetrics->including(target)/]"/>
                     </subModelOperations>
                   </cases>
                   <default>
-                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:eclipseCantConnectMetricError()"/>
+                    <subModelOperations xsi:type="tool_1:ChangeContext" browseExpression="service:eclipseCantConnectMetricToOtherDatabaseError()"/>
                   </default>
                 </subModelOperations>
               </firstModelOperations>

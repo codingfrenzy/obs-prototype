@@ -24,16 +24,23 @@ package com.observability.modeling.probe.descriptor.entities;
 import java.util.ArrayList;
 
 /**
- * This class defines the semantic structure of a Metric.<br>
- * The metric identifier (tag) and metric name would go in
- * name and the value parameter respectively.
+ * This class defines the semantic structure of a Database Metric.<br>
  * @author vsaravag
  *
  */
 public class DbMetric extends Parameter {
 	
+	/**
+	 * The type of the Metric. Would be DATABASE.
+	 */
 	private MetricType type;
 
+	/**
+	 * Constructor. Sets the name and type attributes.
+	 * Database metrics do not have any value.
+	 * @param name the name of the metric
+	 * @param type type of metric
+	 */
 	public DbMetric(String name, MetricType type){
 		if(name!=null){
 			this.name = name;
@@ -43,6 +50,9 @@ public class DbMetric extends Parameter {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();

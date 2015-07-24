@@ -32,12 +32,18 @@ import java.util.ArrayList;
  */
 public class Machine extends Parameter {
 	
+	/**
+	 * Constructor.
+	 */
 	public Machine(){
 		this.elements = new ArrayList<ElementTag>();
 		this.keyValues = new ArrayList<KeyValue>();
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();

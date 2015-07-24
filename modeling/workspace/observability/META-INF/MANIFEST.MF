@@ -7,7 +7,8 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: com.observability.modeling.emf,
+Export-Package: com.observability.modeling.common,
+ com.observability.modeling.emf,
  com.observability.modeling.emf.extension,
  com.observability.modeling.emf.impl,
  com.observability.modeling.emf.util,
@@ -18,13 +19,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.junit
 Bundle-ActivationPolicy: lazy
-<<<<<<< Updated upstream
-Import-Package: org.eclipse.core.resources,
+Import-Package: com.observability.monitoring.server,
+ org.eclipse.core.resources,
  org.eclipse.jface.dialogs,
  org.eclipse.swt.widgets,
  org.eclipse.ui
-=======
-Import-Package: com.observability.monitoring.server,
- org.eclipse.core.resources
->>>>>>> Stashed changes
 

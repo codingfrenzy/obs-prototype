@@ -49,7 +49,7 @@ LoadPlugin postgresql
 				[/for]
 
 				[for (e:Element | machine.elements)]
-					[if e.name.strcmp(element.name) = 0 and e.value.strcmp(element.value)=0]
+					[if e.name.strcmp(element.name) = 0]
 						[for (kv : KeyValue | e.keyValues)]
 	[kv.key/] [kv.value/]
 						[/for]		
@@ -62,7 +62,7 @@ LoadPlugin postgresql
 
 	
   [for (element : Element | machine.elements)]
-	[if element.name.strcmp('Database') = 0]
+	[if element.name.startsWith('Database')]
 <Database [element.value/]>
 	  [for (keyValue : KeyValue | element.keyValues)]
    [keyValue.key/] [keyValue.value/]

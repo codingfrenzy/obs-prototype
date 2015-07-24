@@ -38,7 +38,7 @@ LoadPlugin "network"
   [/for]
 
   [for (element : Element | machine.elements)]
-	[if element.name.strcmp('Module') = 0]
+	[if element.name.startsWith('Module')]
     <Module mongodb>
 	  [for (keyValue : KeyValue | element.keyValues)]
 	  [keyValue.key/] [keyValue.value/]

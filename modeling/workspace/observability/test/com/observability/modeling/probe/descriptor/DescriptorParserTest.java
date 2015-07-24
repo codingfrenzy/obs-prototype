@@ -139,5 +139,5 @@ public class DescriptorParserTest {
 		}
 		assertTrue(e instanceof FileNotFoundException);
 	}
-	
+
 }

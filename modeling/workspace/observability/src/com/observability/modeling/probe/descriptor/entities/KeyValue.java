@@ -28,7 +28,14 @@ package com.observability.modeling.probe.descriptor.entities;
  */
 public class KeyValue {
 	
+	/**
+	 * name of the key value. The first element in the keyValue 'foo bar'
+	 */
 	private String name;
+	/**
+	 * value of the key value. The second element in the keyValue 'foo bar'.
+	 * Can be null
+	 */
 	private String value;
 	
 	/**
@@ -67,11 +74,20 @@ public class KeyValue {
 		this.value = value;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "-> KeyValue (" + name + ", " + value + ")\n";
 	}
 	
+	/**
+	 * Convert the class to String
+	 * @param level the level at which the keyValue exists.
+	 * Prints level number of '->' in front of the string.
+	 * @return String representation of the class.
+	 */
 	public String toString(int level){
 		StringBuffer buf = new StringBuffer();
 		//add as many arrows as the level

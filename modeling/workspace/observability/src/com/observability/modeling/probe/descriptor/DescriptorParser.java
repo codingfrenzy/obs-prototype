@@ -27,6 +27,7 @@ import java.util.List;
 import com.observability.modeling.probe.descriptor.entities.DbType;
 import com.observability.modeling.probe.descriptor.entities.ElementTag;
 import com.observability.modeling.probe.descriptor.entities.Feature;
+import com.observability.modeling.probe.descriptor.entities.KeyValue;
 
 /**
  * Parses the descriptors in a given directory and converts them to a manageable
@@ -42,8 +43,8 @@ import com.observability.modeling.probe.descriptor.entities.Feature;
  * found at {@link https://github.com/observability/obs-prototype/wiki/Descriptor-File-Format}
  * 
  * @see {@link DbType}
- * @see {@link Parameter}, @see {@link ElementTag} Intermediate entities are used to ensure decoupling
- *      with EMF generated entities.
+ * @see {@link Parameter}, @see {@link ElementTag}, @see {@link KeyValue}
+ * Intermediate entities are used to ensure decoupling with EMF generated entities.
  *      
  * @author Caglayan "Gem" Gemici, Varun Saravagi
  *
@@ -51,25 +52,28 @@ import com.observability.modeling.probe.descriptor.entities.Feature;
 public interface DescriptorParser {
 
 	/**
-	 * This method parses all descriptor in a given dir.
-	 * 
-	 * @return list of plugin definitions found.
+	 * This method parses all descriptor in a given directory.
 	 */
 	public void parseDescriptors();
 
 	/**
 	 * Parses the content of the descriptor file (essentially de-serialize)
 	 * 
-	 * @param descriptorContent
-	 *            The contents of the descriptor file
-	 * @return root plugin entity that holds all the information about the
-	 *         content in a hierarchical format.
-	 * @throws FileNotFoundException 
+	 * @param file the descriptor file to parse
+	 * @param dbType instance of the database to which the file belongs
+	 * @param isFeatureFile true: if the file describes central server, false otherwise
+	 * @throws FileNotFoundException given file is not found
 	 */
 	public void parseFile(File file, DbType dbType, boolean isFeatureFile) throws FileNotFoundException;
 	
+	/**
+	 * @return the list containing parsed descriptor files
+	 */
 	public List<DbType> getPlugins();
 	
+	/**
+	 * @return the list containing the features for the central file.
+	 */
 	public List<Feature> getFeatures();
 
 }
