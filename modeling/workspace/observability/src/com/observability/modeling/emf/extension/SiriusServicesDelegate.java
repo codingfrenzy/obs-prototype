@@ -67,5 +67,20 @@ public class SiriusServicesDelegate {
 		services.eclipseShowError("Error", "Cannot associate with metric. Cluster needs to be associated with a database type first!");
 
 	}
+	
+	/**
+	 * Show a native jface dialog indicating the reason for a metric association failure
+	 * @param object not uses. we need to have this to conform to a sirius service
+	 */
+	public void eclipseCantConnectMetricToOtherDatabaseError(EObject objects){
+		services.eclipseShowError("Error", "Cannot associate with metric from another database. Please select a metric from the respective database type!");
+	}
 
+	/**
+	 * Show a native jface dialog indicating the reason for a metric association failure
+	 * @param object not uses. we need to have this to conform to a sirius service
+	 */
+	public void eclipseCantConnectMetricWithoutDbTypeError(EObject objects){
+		services.eclipseShowError("Error", "Cannot associate with metric. Cluster needs to be associated with a database type first!");
+	}
 }
