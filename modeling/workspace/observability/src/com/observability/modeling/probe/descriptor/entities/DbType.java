@@ -25,20 +25,36 @@ import java.util.ArrayList;
 
 
 /**
+ * This class defines the semantic structure of a database type.
  * @author vsaravag
- *
- *
- *
- *
  */
 public class DbType {
 	
+	/**
+	 * name of the database
+	 */
 	private String name;
+	/**
+	 * Machine related attributes in the database
+	 */
 	private Machine machine;
+	/**
+	 * System metrics {@link SystemMetric} related attributes
+	 */
 	private ArrayList<SystemMetric> systemMetrics;
+	/**
+	 * Database metrics {@link DbMetric} related attributes
+	 */
 	private ArrayList<DbMetric> dbMetrics;
+	/**
+	 * Aggregated Metric {@link AggregatedMetric} related attributes
+	 */
 	private ArrayList<AggregatedMetric> aggregatedMetrics;
 	
+	/** 
+	 * Constructor
+	 * @param name the name to be given to the database
+	 */
 	public DbType(String name){
 		this.name = name;
 		machine = new Machine();
@@ -105,6 +121,9 @@ public class DbType {
 	
 	
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString(){
 		String string = "";

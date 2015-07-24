@@ -28,18 +28,32 @@ import java.util.ArrayList;
  * parameters for any type of annotation.<br>
  * Any new annotation would need to extend this class. <br>
  * Currently, the following annotations are supported<br>
- * <li>@Metric</li>
+ * <li>@MetricSystem</li>
+ * <li>@MetricDB</li>
+ * <li>@MetricAggregated</li>
  * <li>@Machine</li>
- * <li>@Collect</li>
+ * <li>@Feature</li>
  * 
  * @author vsaravag
  *
  */
 public abstract class Parameter {
 	
+	/**
+	 * Name of the parameter
+	 */
 	protected String name;
+	/**
+	 * Value, if any, assigned to the parameter
+	 */
 	protected String value;
+	/**
+	 * Elements inside the parameter
+	 */
 	protected ArrayList<ElementTag> elements;
+	/**
+	 * Key Values inside the parameter
+	 */
 	protected ArrayList<KeyValue> keyValues;
 	/**
 	 * @return the name
@@ -73,6 +87,10 @@ public abstract class Parameter {
 	}
 
 	
+	/**
+	 * Add the key value to the parameter
+	 * @param keyValue the keyValue to be added.
+	 */
 	public void addKeyValue(KeyValue keyValue){
 		if(keyValue != null){
 			this.keyValues.add(keyValue);

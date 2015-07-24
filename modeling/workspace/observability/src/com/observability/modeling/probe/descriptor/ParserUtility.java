@@ -38,6 +38,11 @@ public class ParserUtility {
 		
 	}
 	
+	/**
+	 * Checks the given string for annotation.
+	 * @param line the string to check for annotation
+	 * @return true if the string is annotated, false otherwise
+	 */
 	public static boolean isAnnotated(String line){
 		if(line == null){
 			return false;
@@ -46,6 +51,12 @@ public class ParserUtility {
 		return line.matches(regex);
 	}
 	
+	/**
+	 * Checks if the given String is an element start.
+	 * A string is an element start if it starts with <. 
+	 * @param line the string to check for element start.
+	 * @return true if the string starts an element, false otherwise.
+	 */
 	public static boolean isElementStart(String line){
 		if(line == null){
 			return false;
@@ -53,7 +64,13 @@ public class ParserUtility {
 		String regex = "^<[^/].*"; // the line should start with < and not </
 		return line.matches(regex);
 	}
-	
+
+	/**
+	 * Checks if the given String is an element end.
+	 * A string is an element end if it ends with >. 
+	 * @param line the string to check for element end.
+	 * @return true if the string ends an element, false otherwise.
+	 */
 	public static boolean isElementEnd(String line){
 		if(line == null){
 			return false;
@@ -82,22 +99,8 @@ public class ParserUtility {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()){ //there would be only one match in a line
-			result = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space. This would only give 2 elements
-			/*int i = 0;
-			regex = "\"(.*)\""; //The regex is to remove the quotes ("") around the string.
-			pattern = Pattern.compile(regex);
-			for (String s : insideTag) {
-				// i = 0 -> name of the element
-				// i = 1 -> value of the element
-				matcher = pattern.matcher(s);
-				if(matcher.find()){
-					//remove the quotes ("") from around the string
-					result[i] = matcher.group(1).trim();
-				}
-				else
-					result[i] = s.trim();
-				i++;
-			}*/
+			result = matcher.group(2).trim().split("\\s+", 2); //get the string and split at space. 
+															   //This would only give 2 elements
 		}
 		if(result.length == 1){
 			String[] temp = new String[2];
@@ -131,20 +134,6 @@ public class ParserUtility {
 		Matcher matcher = pattern.matcher(line);
 		if(matcher.find()){ //there would be only one match in a line
 			result = matcher.group(1).trim().split("\\s+",2); //get the string and split at space
-			/*int i = 0;
-			regex = "\"(.*)\""; //The regex is to remove the quotes ("") around the string.
-			pattern = Pattern.compile(regex);
-			for (String s : keyValue) {
-				// i = 0 -> name of the key
-				// i = 1 -> value of the value
-				matcher = pattern.matcher(s);
-				if(matcher.find()){
-					result[i] = matcher.group(1).trim();
-				}
-				else
-					result[i] = s.trim();
-				i++;
-			}*/
 		}
 		if(result.length == 1){
 			String[] temp = new String[2];
@@ -194,6 +183,11 @@ public class ParserUtility {
 		return null;
 	}
 	
+	/**
+	 * Get the annotation from the annotated string
+	 * @param annotatedString the string from which the annotation is to be extracted
+	 * @return the annotation, if any else null.
+	 */
 	public static String getAnnotationFromAnnotated(String annotatedString){
 		if(annotatedString == null){
 			return null;

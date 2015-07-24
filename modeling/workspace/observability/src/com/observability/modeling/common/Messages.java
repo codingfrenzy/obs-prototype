@@ -18,7 +18,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 //**************************************************************************************************//
-package com.observability.modeling.emf.extension;
+package com.observability.modeling.common;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -27,7 +27,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class Messages extends NLS {
 	
-	private static final String BUNDLE_NAME = "com.observability.modeling.emf.extension.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "com.observability.modeling.common"; //$NON-NLS-1$
 	public static String SiriusServices_ID_SEPERATOR;
 	public static String SiriusServices_MACHINE;
 	public static String SiriusServices_MSG_ERROR_ECLIPSE_CANNOTBENULL;
@@ -35,7 +35,24 @@ public class Messages extends NLS {
 	public static String SiriusServices_MSG_ERROR_NO_DESCRIPTOR_DIR;
 	public static String SiriusServices_MSG_ERROR_NO_DESCRIPTOR_FILES;
 	public static String SiriusServices_NULL;
-
+	
+	public static String ModelHandler_CONSTANTS_DESCRIPTOR_FILE_NAME;
+	public static String ModelHandler_CONSTANTS_MODEL_HANDLER_RMI_SERVICE_NAME;
+	public static String ModelHandler_MSG_ERROR_INVALID_DIRECTORY;
+	public static String ModelHandler_MSG_ERROR_NO_PERMISSIONS;
+	public static String ModelHandler_MSG_ERROR_GET_DESCRIPTOR;
+	public static String ModelHandler_MSG_ERROR_DESCRIPTOR_UNZIP;
+	public static String ModelHandler_MSG_ERROR_CONNECTION;
+	public static String ModelHandler_MSG_ERROR_NOT_BOUND;
+	public static String ModelHandler_MSG_ERROR_WRONG_URL;
+	public static String ModelHandler_MSG_ERROR_UPLOAD;
+	public static String ModelHandler_MSG_ERROR_UPLOAD_NOT_STARTED;
+	
+	public static String Ui_MSG_INFO_ENTER_IP_PORT;
+	public static String Ui_CONSTANT_SERVER_WINDOW_TITLE;
+	public static String Ui_MSG_INFO_SERVER_CANCEL;
+	public static String Ui_MSG_ERROR_WRONG_INPUT;
+	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}

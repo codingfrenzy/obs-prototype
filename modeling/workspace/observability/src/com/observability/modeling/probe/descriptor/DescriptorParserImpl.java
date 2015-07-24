@@ -41,31 +41,30 @@ import com.observability.modeling.probe.descriptor.entities.SystemMetric;
 
 
 /**
- * {@inheritDoc}
- */
-
-/**
  * This class implements the functionality to parse the 
  * probe descriptor files.
  * 
  * @author vsaravag (Varun Saravagi) , gemici
  * 
- *
  */
 public class DescriptorParserImpl implements DescriptorParser {
 
 	/**
-	 * Tags that correspond to the tags of a collectd.conf plugin description. @see
-	 * "cassandra.descriptor"
-	 * */
-
+	 * Central server descriptor file name
+	 */
 	private static final String FEATUREFILENAME = "central";
+	
+	/**
+	 * Element id separating character. 
+	 */
 	private static final String ELEMENT_ID_SEPARATOR = "_";
 	
 	/**
 	 * Anotations that represent on which entity in the semantic model the
 	 * parsed elements need to be appended. For the metamodel @see
-	 * "modeling/workspace/observability_new/model/observability_new.aird"
+	 * "modeling/workspace/observability_new/model/observability_new.aird".
+	 * For descriptor file description, @see 
+	 * https://github.com/observability/obs-prototype/wiki/Descriptor-File-Format
 	 */
 
 	private static final String MACHINE = "@Machine";
@@ -75,12 +74,20 @@ public class DescriptorParserImpl implements DescriptorParser {
 	private static final String ATTRIBUTE = "@Attribute";
 	
 	/**
-	 * The path where the descriptor files are stored
+	 * The directory path where the descriptor files are stored
 	 */
 	private Path descriptorDirectory;
 	
+	/**
+	 * List to store parsed descriptors (treat them as plugins)
+	 */
 	private List<DbType> plugins = new ArrayList<DbType>();
+	
+	/**
+	 * List to store the features to be given on the central server
+	 */
 	private List<Feature> features = new ArrayList<Feature>();
+	
 	/**
 	 * Constructor
 	 * 
@@ -91,15 +98,22 @@ public class DescriptorParserImpl implements DescriptorParser {
 		this.descriptorDirectory = descriptorDirPath;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.observability.modeling.probe.descriptor.DescriptorParser#getPlugins()
+	 */
 	public List<DbType> getPlugins(){
 		return plugins;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.observability.modeling.probe.descriptor.DescriptorParser#getFeatures()
+	 */
 	public List<Feature> getFeatures(){
 		return features;
 	}
-	/**
-	 * {@inheritDoc}
+
+	/* (non-Javadoc)
+	 * @see com.observability.modeling.probe.descriptor.DescriptorParser#parseDescriptors()
 	 */
 	public void parseDescriptors() {
 
@@ -131,13 +145,8 @@ public class DescriptorParserImpl implements DescriptorParser {
 
 	}
 
-	
-	/**
-	 * This method parses the input file descriptor.<br>
-	 * The file should be in the defined template.
-	 * @param file the file to be parsed
-	 * @param dbType the parsed contents of the file as an instance
-	 * 	of {@link DbType} class.
+	/* (non-Javadoc)
+	 * @see com.observability.modeling.probe.descriptor.DescriptorParser#parseFile(java.io.File, com.observability.modeling.probe.descriptor.entities.DbType, boolean)
 	 */
 	public void parseFile(File file, DbType dbType, boolean isFeatureFile) throws FileNotFoundException{
 		
@@ -303,6 +312,15 @@ public class DescriptorParserImpl implements DescriptorParser {
 	 * @param element the element to be added
 	 * @param dbType instance of the DB to which the element is to be added
 	 */
+	
+	/**
+	 * This method adds the given element to the DbType instance.<br>
+	 * The element is added as per the annotation which is currently active
+	 * @param annotation the annotation describing the entity to which the key value is to be added
+	 * @param element the element to add. Instance of {@link ElementTag}
+	 * @param dbType instance of the database {@link DbType}.
+	 * @param name name with which the annotation related entity instance is to be created.
+	 */
 	private void addElementToDb(String annotation, ElementTag element,
 			DbType dbType, String name) {
 		
@@ -327,6 +345,13 @@ public class DescriptorParserImpl implements DescriptorParser {
 		
 	}
 	
+	/**
+	 * Add key value pair to the db instance
+	 * @param annotation the annotation describing the entity to which the key value is to be added
+	 * @param keyValue the keyValue to add
+	 * @param dbType instance of the database {@link DbType}.
+	 * @param name name with which the annotation related entity instance is to be created.
+	 */
 	private void addKeyValueToDb(String annotation, KeyValue keyValue, DbType dbType, String name){
 		if(annotation.equals(MACHINE)){
 			dbType.getMachine().addKeyValue(keyValue);
@@ -338,13 +363,20 @@ public class DescriptorParserImpl implements DescriptorParser {
 		}
 	}
 	
+	/**
+	 * Add the key-value pair to the feature instance 
+	 * @param feature instance of the {@link Feature} to which the key-value is to be added
+	 * @param keyValue the keyValue to add
+	 */
 	private void addKeyValueToFeature(Feature feature, KeyValue keyValue){
 		feature.getKeyValues().add(keyValue);
 	}
 	
+
 	/**
-	 * This method adds the given element to the Feature instance.<br>
-	 * @param element the element to be added
+	 * Add the element to the feature
+	 * @param feature instance of the {@link Feature} to which the key-value is to be added
+	 * @param element the element to add
 	 */
 	private void addElementToFeature(Feature feature, ElementTag element) {
 

@@ -32,13 +32,39 @@ import java.util.ArrayList;
  */
 public class ElementTag {
 	
+	/**
+	 * name of the element. The first element in (<foo bar>)
+	 */
 	private String name;
+	/**
+	 * value of the element. The second element in (<foo bar>).
+	 * Can be null.
+	 */
 	private String value;
+	/**
+	 * the id of the element. Combination of name and value separated by _
+	 */
 	private String id;
+	/**
+	 * the scope of the element. @see {@link Scope}
+	 */
 	private Scope scope;
+	/**
+	 * KeyValues inside the element
+	 */
 	private ArrayList<KeyValue> keyValues;
+	/**
+	 * sub-elements inside the element
+	 */
 	private ArrayList<ElementTag> elements;
 	
+	/**
+	 * Constructor
+	 * @param name the name of the element
+	 * @param value value of the element
+	 * @param id id of the element 
+	 * @param scope scope of the element. {@link Scope}
+	 */
 	public ElementTag(String name, String value, String id, Scope scope){
 		this.name = name;
 		this.value = value;
@@ -137,6 +163,10 @@ public class ElementTag {
 	}
 	
 	
+	/**
+	 * Add the element to the Element
+	 * @param element the element to be added
+	 */
 	public void addElement(ElementTag element){
 		if(element!=null){
 			elements.add(element);
@@ -149,6 +179,12 @@ public class ElementTag {
 		
 	}
 	
+	
+	/**
+	 * converts the class to string and prints level number of -> before it.
+	 * @param level the level at which the element exists
+	 * @return String representation of the class.
+	 */
 	private String toString(int level){
 		StringBuffer buf = new StringBuffer();
 		//add as many arrows as the level

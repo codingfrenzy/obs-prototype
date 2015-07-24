@@ -24,15 +24,18 @@ package com.observability.modeling.probe.descriptor.entities;
 import java.util.ArrayList;
 
 /**
- * This class defines the semantic structure of a Metric.<br>
- * The metric identifier (tag) and metric name would go in
- * name and the value parameter respectively.
+ * This class defines the semantic structure of an Aggregated Metric.<br>
  * @author vsaravag
  *
  */
 public class AggregatedMetric extends Parameter {
 	
 	
+	/**
+	 * Constructor. Sets name and value.
+	 * @param name
+	 * @param value
+	 */
 	public AggregatedMetric(String name, String value){
 		if(name!=null){
 			this.name = name;
@@ -42,6 +45,9 @@ public class AggregatedMetric extends Parameter {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
