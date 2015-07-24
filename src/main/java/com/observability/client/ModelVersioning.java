@@ -152,10 +152,6 @@ public class ModelVersioning {
     }
 
     public static ArrayList<String> viewAllModels() throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         return svr.viewAllModels();
     }
 
@@ -185,29 +181,10 @@ public class ModelVersioning {
     }
 
     public static void rollbackModel(String modelName) throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         System.out.println("Rolling back model to: " + modelName);
         int uploadStatus = svr.deployModel(modelName);
         if (uploadStatus < 0) {
-            switch (uploadStatus) {
-                case -1:
-                    throw new RuntimeException("Error in zip file");
-                case -2:
-                    throw new RuntimeException("There has been an error in MD5 verification");
-                case -3:
-                    throw new RuntimeException("There has been an error on server");
-                case -21:
-                    throw new RuntimeException("The zip format is not supported");
-                case -22:
-                    throw new RuntimeException("The zip file is not valid");
-                case -23:
-                    throw new RuntimeException("The zip file cannot be read due to security reasons");
-                case -24:
-                    throw new RuntimeException("Target directory cannot be created");
-            }
+            throw new RuntimeException("Some error happened in server (Observability Error code: " + uploadStatus + ")");
         } else {
             System.out.println("Model deploy attempt completed.");
         }
@@ -218,22 +195,7 @@ public class ModelVersioning {
         System.out.println("Re-deploying model " + currentModel + " to failed IPs.");
         int uploadStatus = svr.resendFailedModels(currentModel);
         if (uploadStatus < 0) {
-            switch (uploadStatus) {
-                case -1:
-                    throw new RuntimeException("Error in zip file");
-                case -2:
-                    throw new RuntimeException("There has been an error in MD5 verification");
-                case -3:
-                    throw new RuntimeException("There has been an error on server");
-                case -21:
-                    throw new RuntimeException("The zip format is not supported");
-                case -22:
-                    throw new RuntimeException("The zip file is not valid");
-                case -23:
-                    throw new RuntimeException("The zip file cannot be read due to security reasons");
-                case -24:
-                    throw new RuntimeException("Target directory cannot be created");
-            }
+            throw new RuntimeException("Some error happened in server (Observability Error code: " + uploadStatus + ")");
         } else {
             System.out.println("Model deploy attempt completed.");
         }
