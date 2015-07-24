@@ -67,4 +67,5 @@ public class SiriusServicesDelegate {
 		services.eclipseShowError("Error", "Cannot associate with metric. Cluster needs to be associated with a database type first!");
 
 	}
+
 }

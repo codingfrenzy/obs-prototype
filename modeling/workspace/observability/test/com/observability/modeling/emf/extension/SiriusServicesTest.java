@@ -159,6 +159,7 @@ public class SiriusServicesTest {
 		
 		SiriusServices services = SiriusServices.getInstance(mockEclipseLocal);
 		services.parseDescriptors();
+		services.parseDescriptors(targetPath);
 	}
 	
 	/**
@@ -223,6 +224,33 @@ public class SiriusServicesTest {
 		
 		Element metricElement = factory.createElement();
 		metricElement.setName("Plugin");
+		metric.getElements().add(metricElement);
+		
+		cluster.getCollectedMetrics().add(metric);
+		
+		services.initializeMachine((EObject)cluster);
+		assertTrue(cluster.getMachines().size() == 1);
+		assertTrue(cluster.getMachines().get(0).getKeyValues().size() == 2);
+		assertTrue(cluster.getMachines().get(0).getElements().size() == 0);
+		
+	}
+	
+
+	
+	@Test
+	public void testInitializeMachineNullMetricID() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+				
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		com.observability.modeling.emf.DbType dbType = factory.createDbType();
+		dbType.setName("cassandra");
+		cluster.setAssociatedDbType(dbType);
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_\"null\"");
 		metric.getElements().add(metricElement);
 		
 		cluster.getCollectedMetrics().add(metric);
@@ -356,6 +384,30 @@ public class SiriusServicesTest {
 		
 	}
 	
+	/**
+	 * Test method for {@link com.observability.modeling.emf.extension.CustomServices#addMetricSpecificParamsToMachinesInCluster(com.observability.modeling.emf.DatabaseCluster, com.observability.modeling.emf.Metric)}.
+	 */
+	@Test 
+	public void testAddMetricSpecificParamsToMachinesInClusterHavingNoDbType() {
+		SiriusServices services = SiriusServices.getInstance(mockEclipse);
+		DatabaseCluster cluster = factory.createDatabaseCluster();
+		
+		
+		BaseMetric metric = factory.createBaseMetric();
+		metric.setName("file");
+		
+		Element metricElement = factory.createElement();
+		metricElement.setName("Plugin_\"df\"");
+		metric.getElements().add(metricElement);
+		cluster.getCollectedMetrics().add(metric);
+
+		NodeMachine machine = factory.createNodeMachine();
+		machine.setName("machine 1");
+		cluster.getMachines().add(machine);
+		assertFalse(services.addMetricSpecificParamsToMachinesInCluster(cluster, metric));
+		
+	}
+	
 	@Test (expected=RuntimeException.class)
 	public void testEclipsePluginGivesNullPath() {
 		EclipseResourceDelegate mockEclipseLocal = mock(EclipseResourceDelegate.class);
@@ -363,6 +415,28 @@ public class SiriusServicesTest {
 		
 		SiriusServices services = SiriusServices.getInstance(mockEclipseLocal);
 		services.parseDescriptors();
+		
+	}
+	
+	@Test (expected=RuntimeException.class)
+	public void testEclipseNullPlugin() {
+		
+		
+		SiriusServices services = SiriusServices.getInstance(null);
+		services.parseDescriptors();
+		
+	}
+	
+	@Test 
+	public void testShowError() {
+		
+		EclipseResourceDelegate mockEclipseLocal = mock(EclipseResourceDelegate.class);
+		
+		doNothing().when(mockEclipseLocal).eclipseShowError("title", "message");
+		
+		
+		SiriusServices services = SiriusServices.getInstance(mockEclipseLocal);
+		services.eclipseShowError("title", "message");
 		
 	}
 	
