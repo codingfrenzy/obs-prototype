@@ -17,7 +17,7 @@ LoadPlugin [element.value/]
 				[/for]
 
 				[for (e:Element | aNodeMachine.elements)]
-					[if element.name.strcmp(e.name.concat('_').concat(e.value)) = 0]
+					[if element.name.strcmp(e.name) = 0]
 						[for (kv : KeyValue | e.keyValues)]
 	[kv.key/] [kv.value/]
 						[/for]		

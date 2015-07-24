@@ -136,7 +136,6 @@ LoadPlugin java
 #Cpu and memory metrics should be hardcoded
 LoadPlugin "threshold"
 <Plugin "threshold">
-  <Host "45.55.197.112">
     <Type "cpu"> 
      WarningMin    0.2 
      WarningMax    0.8 
@@ -145,11 +144,9 @@ LoadPlugin "threshold"
      Invert false 
      Instance "system" 
     </Type>
-   </Host>
  </Plugin>
  
  <Plugin "threshold">
-  <Host "45.55.197.112">
     <Type "memory"> 
      WarningMin    0.2 
      WarningMax    0.8 
@@ -158,7 +155,6 @@ LoadPlugin "threshold"
      Invert false 
      Instance "?" 
     </Type>
-   </Host>
  </Plugin>
 	
 [/file]
