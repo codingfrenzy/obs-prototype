@@ -160,18 +160,10 @@ public class ModelVersioning {
     }
 
     public static String viewCurrentModel() throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         return svr.viewCurrentModel();
     }
 
     public static String viewFailedIPs() throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         HashSet<String> ipList = svr.viewFailedIP();
         StringBuilder op = new StringBuilder();
         for (String ip : ipList) {
@@ -184,10 +176,6 @@ public class ModelVersioning {
     }
 
     public static String viewAllIPs() throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         HashSet<String> ipList = svr.viewAllIP();
         StringBuilder op = new StringBuilder();
         for (String ip : ipList) {
@@ -226,10 +214,6 @@ public class ModelVersioning {
     }
 
     public static void resendFailedDaemons() throws Exception {
-        if (svr == null) {
-            connectRMI(rmiIP, rmiPort);
-        }
-
         String currentModel = svr.viewCurrentModel();
         System.out.println("Re-deploying model " + currentModel + " to failed IPs.");
         int uploadStatus = svr.resendFailedModels(currentModel);
