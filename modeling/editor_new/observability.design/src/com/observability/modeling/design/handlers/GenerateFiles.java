@@ -81,7 +81,8 @@ public class GenerateFiles extends AbstractHandler {
 					("File conf.zip generated in project directory"));
 
 			// Deploy the zip file on the server
-			int result = ModelHandler.deployFile(zipPath, zipName);
+			ModelHandler mh = ModelHandler.getInstance();
+			int result = mh.deployFile(zipPath, zipName);
 			String message = "";
 			if(result == -1){
 				message += "File not transferred to server";

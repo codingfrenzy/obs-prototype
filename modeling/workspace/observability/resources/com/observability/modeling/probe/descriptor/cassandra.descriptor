@@ -43,7 +43,7 @@ LoadPlugin "csv"
 </Plugin>
 
 <Plugin "logfile">  @MetricSystem 
-  LogLevel "info" @Machine
+  LogLevel "info" @Attribute
   File "/home/ubuntu/collectd/log/collectd.log" @Machine
   Timestamp true @Attribute
   PrintSeverity true @Attribute
@@ -355,7 +355,7 @@ LoadPlugin java
   	   Type "memory" @Attribute
   	   InstancePrefix "heap-mem" @Attribute
   	   Table true @Attribute
-  	   Attribute "HeapMemoryUsage"
+  	   Attribute "HeapMemoryUsage" @Attribute
   	 </Value>
    </MBean>
 

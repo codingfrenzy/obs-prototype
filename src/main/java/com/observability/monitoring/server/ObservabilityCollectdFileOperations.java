@@ -417,19 +417,18 @@ public class ObservabilityCollectdFileOperations {
 	 * @throws NotBoundException
 	 */
 	public static ArrayList<AggConfigElements> readConfigurationFile() throws IOException {
-
 		int faultTolTimeWindow = 0; // Fault Tolerance Time Window. 
 		int interval = 0; // Aggregation interval. 
 		
 		Scanner scan = new Scanner(System.in,  "UTF-8");
-		System.out.println("Kindly enter the Fault Tolerance Time Window. Only Integer numbers are allowed. To exit, enter 0");
+		System.out.println("Kindly enter the Fault Tolerance Time Window. Only Integer numbers are allowed. To exit, enter 0.");
 		System.out.println("Note that the default value is set to 60 seconds: ");
 		
 		do {
             System.out.println("Please enter a positive number: ");
             while (!scan.hasNextInt()) {
                 String input = scan.next();
-                System.out.printf(input +"is not a valid number");
+                System.out.println(input +"is an invalid number. ");
     			System.out.println("Try again. Only Integer numbers are allowed.");
             }
             faultTolTimeWindow = scan.nextInt();
@@ -472,7 +471,12 @@ public class ObservabilityCollectdFileOperations {
 	protected static int getIntervalConf(String fileName) throws IOException, FileNotFoundException {
 		BufferedReader bufferReader = null;
 		boolean intervalFound = false;
-		boolean intervalCommentedOut = false;
+		
+		File file = new File(fileName);
+		if(!file.exists() || file.isDirectory()) { 
+			System.err.println("Collectd doesn't exist. Interval default value is considered.");
+			return 0;
+		}
 		
 		try{
 			bufferReader = new BufferedReader(new InputStreamReader(
@@ -480,8 +484,10 @@ public class ObservabilityCollectdFileOperations {
 		} catch (IOException e) {
 			e.printStackTrace();	
 		}
-		if (bufferReader == null)
+		if (bufferReader == null){
+			System.err.println("File can't be read. Interval default value is considered.");
 			return 0;
+		}
 		
 		String line = "";
 		int interval = 0;
@@ -493,23 +499,25 @@ public class ObservabilityCollectdFileOperations {
 					break;
 				
 				line = line.trim();	//Trim any spaces at the beginning of the line
-				if (line.isEmpty() || line.trim().equals("")
-							|| line.trim().equals("\n"))
+				if (line.isEmpty() || line.trim().equals("") || line.trim().equals("\n"))
 					continue;	// Read the next line
-				else if (line.toLowerCase().startsWith("#interval")) { // TODO: no need for this clause, remove later
-					intervalCommentedOut = true;
+				
+				else if (line.toLowerCase().contains("interval")){
+					if (line.startsWith("#")) {
+						continue;
 					}
-				else if (line.toLowerCase().startsWith("interval")) { 
-					String str[] = line.trim().split("\\s+");
-					if (str.length > 1) {
-						interval = Integer.parseInt(str[1]);	
-						intervalFound = true;
+					else { 
+						String str[] = line.trim().split("\\s+");
+						if (str.length > 1) {
+							interval = Integer.parseInt(str[1]);	
+							intervalFound = true;
 						}
 					}
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} while (line != null && !intervalFound && !intervalCommentedOut);
+		} while (line != null && !intervalFound);
 		try {
 			bufferReader.close();
 		} catch (IOException e) {
@@ -530,6 +538,12 @@ public class ObservabilityCollectdFileOperations {
 		
 		ArrayList<HashMap<String,String>> aggConfigArray = new ArrayList<HashMap<String,String>>();
 		
+		File file = new File(fileName);
+		if(!file.exists() || file.isDirectory()) { 
+			System.err.println("Collectd doesn't exist. Aggregation can't be accomplished.");
+			return null;
+		}
+		
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(fileName), "UTF-8"));
 		String line = "";
@@ -540,7 +554,6 @@ public class ObservabilityCollectdFileOperations {
 
 					if (line != null && line.trim().equalsIgnoreCase("<Aggregation>") && !line.trim().startsWith("#")) {	//go to aggregation configuration section
 						do {						
-
 							line = bufferReader.readLine();
 							if (line == null)
 								break;
@@ -549,11 +562,10 @@ public class ObservabilityCollectdFileOperations {
 								continue;	// Read the next line
 							else {
 								String str[] = line.trim().split("\\s+");	//split both key and value to save them in an array
-								if (str.length > 1) {
+								if (str.length > 1) { 
 									aggConfig.put(str[0].toLowerCase(), str[1].toLowerCase());	// Add this configuration element to the hashmap
 								}
 							}
-							
 						} while (!line.trim().equalsIgnoreCase("</Aggregation>") && (line != null) );
 						aggConfigArray.add(aggConfig);
 						line = bufferReader.readLine();
@@ -594,7 +606,7 @@ public class ObservabilityCollectdFileOperations {
 		Boolean calMin = false;
 		Boolean calMax = false;
 		Boolean calStd = false;
-
+ 
 		for (int i = 0; i < aggConfigurations.size(); i++) {
 			host = aggConfigurations.get("host");
 			plugin = aggConfigurations.get("plugin");
@@ -609,11 +621,16 @@ public class ObservabilityCollectdFileOperations {
 			calMax = Boolean.parseBoolean(aggConfigurations.get("calculatemaximum"));
 			calStd = Boolean.parseBoolean(aggConfigurations.get("calculatestddev"));
 		}
-		// Save the elements in the object
-		AggConfigElements aggConfigElements = new AggConfigElements(
-				faultTolTimeWindow, interval, host, plugin, pluginInstance, type, typeInst, groupBy, calNum, calSum,
-				calAvg, calMin, calMax, calStd);
-	return aggConfigElements;
+		if ((calNum == false && calSum == false && calAvg == false && calMin == false && calMax == false && calStd == false) || plugin == null){
+			return null;
+		}
+		else {
+			// Save the elements in the object
+			AggConfigElements aggConfigElements = new AggConfigElements(
+					faultTolTimeWindow, interval, host, plugin, pluginInstance, type, typeInst, groupBy, calNum, calSum,
+					calAvg, calMin, calMax, calStd);
+			return aggConfigElements;
+		}
 	}
 	
     //////////////////// End: Reading Aggregation Configurations ////////////////////

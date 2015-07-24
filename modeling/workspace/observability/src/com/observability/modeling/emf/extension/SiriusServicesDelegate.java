@@ -50,4 +50,22 @@ public class SiriusServicesDelegate {
 	public boolean addMetricSpecificParamsToMachinesInCluster(DatabaseCluster containerCluster , Metric associatedMetric){
 		return services.addMetricSpecificParamsToMachinesInCluster(containerCluster, associatedMetric);
 	}
+	/**
+	 * Show a native jface dialog indicating the reason for a machine add failure
+	 * @param object not uses. we need to have this to conform to a sirius service
+	 */
+	public void eclipseCantAddMachineShowError(EObject objects){
+		services.eclipseShowError("Error", "Cannot add machine. Cluster needs to be associated with a database type first!");
+
+	}
+	
+	/**
+	 * Show a native jface dialog indicating the reason for a metric association failure
+	 * @param object not uses. we need to have this to conform to a sirius service
+	 */
+	public void eclipseCantConnectMetricError(EObject objects){
+		services.eclipseShowError("Error", "Cannot associate with metric. Cluster needs to be associated with a database type first!");
+
+	}
+
 }

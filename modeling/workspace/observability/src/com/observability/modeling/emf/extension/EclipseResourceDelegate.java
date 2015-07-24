@@ -26,6 +26,9 @@ import java.nio.file.LinkOption;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -58,6 +61,11 @@ public class EclipseResourceDelegate {
 		if(descriptorDirFound)
 			return descriptorDir;
 		return null;
+	}
+	
+	public void  eclipseShowError(String title, String message){
+		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+		MessageDialog.openError(shell, title, message);
 	}
 
 }

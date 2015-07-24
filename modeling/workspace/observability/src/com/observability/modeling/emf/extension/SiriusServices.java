@@ -378,8 +378,9 @@ public class SiriusServices {
 		
 		//If the cluster is not associated with a dbType do nothing
 		DbType associatedDbType = cluster.getAssociatedDbType();
-		if(associatedDbType == null)
+		if(associatedDbType == null){
 			return false;
+		}
 		
 		NodeMachine machine = factory.createNodeMachine();
 		
@@ -572,6 +573,16 @@ public class SiriusServices {
 			}
 		}
 		return elementsToAddToMachine;
+	}
+
+	/**
+	 * Show a native jface dialog indicating the reason for a machine add failure
+	 * @param title The caption of the popup
+	 * @param message The message
+	 */
+	public void eclipseShowError(String title, String message) {
+		eclipse.eclipseShowError(title, message);
+		
 	}
 
 }
