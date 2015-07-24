@@ -49,6 +49,8 @@
 
 #include "utils_heap.h"
 
+#include "utils_time.h"
+
 #include "libcollectdclient/collectd/client.h"
 #include "libcollectdclient/collectd/network.h"
 #include "libcollectdclient/collectd/network_buffer.h"
@@ -138,7 +140,7 @@ static int get_boundet_random (int min, int max) /* {{{ */
   return (min + ((int) (((double) range) * ((double) random ()) / (((double) RAND_MAX) + 1.0))));
 } /* }}} int get_boundet_random */
 
-static lcc_value_list_t *create_value_list (void) /* {{{ */
+static lcc_value_list_t *create_value_list (int vl_no) /* {{{ */
 {
   lcc_value_list_t *vl;
   int host_num;
@@ -170,30 +172,44 @@ static lcc_value_list_t *create_value_list (void) /* {{{ */
 
   vl->values_len = 1;
 
-  host_num = get_boundet_random (0, conf_num_hosts);
+  //host_num = get_boundet_random (0, conf_num_hosts);
+  host_num = (vl_no % conf_num_hosts);
 
   vl->interval = conf_interval;
   vl->time = 1.0 + time (NULL)
     + (host_num % (1 + (int) vl->interval));
 
+/*
   if (get_boundet_random (0, 2) == 0)
     vl->values_types[0] = LCC_TYPE_GAUGE;
   else
     vl->values_types[0] = LCC_TYPE_DERIVE;
+*/
+  vl->values_types[0] = LCC_TYPE_GAUGE;
 
   //snprintf (vl->identifier.host, sizeof (vl->identifier.host),
   //    "host%04i", host_num);
   snprintf (vl->identifier.host, sizeof (vl->identifier.host),
       "%shost%04i", conf_host_prefix, host_num);
-  fprintf (stdout, "Host prefix %s, Host %s", conf_host_prefix, vl->identifier.host);
+  //fprintf (stdout, "Host prefix %s, Host %s", conf_host_prefix, vl->identifier.host);
   
+  int plugin_no =  (vl_no % conf_num_plugins);
+  //snprintf (vl->identifier.plugin, sizeof (vl->identifier.plugin),
+  //    "plugin%03i", get_boundet_random (0, conf_num_plugins));
   snprintf (vl->identifier.plugin, sizeof (vl->identifier.plugin),
-      "plugin%03i", get_boundet_random (0, conf_num_plugins));
+      "plugin%03i", plugin_no);
+
   strncpy (vl->identifier.type,
       (vl->values_types[0] == LCC_TYPE_GAUGE) ? "gauge" : "derive",
       sizeof (vl->identifier.type));
+  // Modified by Joel Gao Jly 24th 2015
+  //snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
+  //    "ti%li", random ());
+  //int metric_no = (vl_no % 30);
+  //snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
+  //    "ti%i", metric_no);
   snprintf (vl->identifier.type_instance, sizeof (vl->identifier.type_instance),
-      "ti%li", random ());
+      "ti");
 
   return (vl);
 } /* }}} int create_value_list */
@@ -208,10 +224,30 @@ static void destroy_value_list (lcc_value_list_t *vl) /* {{{ */
   free (vl);
 } /* }}} void destroy_value_list */
 
+cdtime_t cdtime (void) /* {{{ */
+{
+  int status;
+  struct timespec ts = { 0, 0 };
+
+  status = clock_gettime (CLOCK_REALTIME, &ts);
+  if (status != 0)
+  {
+    //char errbuf[1024];
+    //ERROR ("cdtime: clock_gettime failed: %s",
+     //   sstrerror (errno, errbuf, sizeof (errbuf)));
+    return (0);
+  }
+
+  return (TIMESPEC_TO_CDTIME_T (&ts));
+} /* }}} cdtime_t cdtime */
+
 static int send_value (lcc_value_list_t *vl) /* {{{ */
 {
   int status;
 
+  // Modified by Joel Gao Jly 24 2015
+  cdtime_t vltime = vl->time;
+  vl->time = cdtime();
   if (vl->values_types[0] == LCC_TYPE_GAUGE)
     vl->values[0].gauge = 100.0 * ((gauge_t) random ()) / (((gauge_t) RAND_MAX) + 1.0);
   else
@@ -220,7 +256,7 @@ static int send_value (lcc_value_list_t *vl) /* {{{ */
   status = lcc_network_values_send (net, vl);
   if (status != 0)
     fprintf (stderr, "lcc_network_values_send failed with status %i.\n", status);
-
+  vl->time = vltime;
   vl->time += vl->interval;
 
   return (0);
@@ -383,7 +419,7 @@ int main (int argc, char **argv) /* {{{ */
   {
     lcc_value_list_t *vl;
 
-    vl = create_value_list ();
+    vl = create_value_list (i);
     if (vl == NULL)
     {
       fprintf (stderr, "create_value_list failed.\n");
