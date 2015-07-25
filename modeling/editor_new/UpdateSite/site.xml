@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/Observability_1.0.0.201507171650.jar" id="Observability" version="1.0.0.201507171650" os="linux,win32" ws="win32"/>
+   <feature url="features/Observability_1.0.0.201507251830.jar" id="Observability" version="1.0.0.201507251830"/>
 </site>

@@ -20,11 +20,15 @@
 //**************************************************************************************************//
 package com.observability.modeling.common;
 
-/*
- * Auto generated messages class.
+
+/**
+ * Messages for the Modeling component
+ * @author vsaravag, cgemici
+ *
  */
 public class Messages  {
-	
+
+	// Messages for the SiriusServices component
 	public static final String SiriusServices_ID_SEPERATOR="_";
 	public static final String SiriusServices_MACHINE="Machine ";
 	public static final String SiriusServices_MSG_ERROR_ECLIPSE_CANNOTBENULL="Argument cannot be null: EclipseResourceDelegate";
@@ -32,6 +36,8 @@ public class Messages  {
 	public static final String SiriusServices_MSG_ERROR_NO_DESCRIPTOR_DIR="Cannot find descriptor directory <project_dir>/descriptors";
 	public static final String SiriusServices_MSG_ERROR_NO_DESCRIPTOR_FILES="No descriptor files found. Please add the descriptor files and do the operation again.";
 	public static final String SiriusServices_NULL="null";
+
+	// Messages for the Model Handler component
 	public static final String ModelHandler_MSG_ERROR_INVALID_DIRECTORY="Invalid project directory path.";
 	public static final String ModelHandler_MSG_ERROR_NO_PERMISSIONS="Unable to create descriptors directory. Please check permissions.";
 	public static final String ModelHandler_MSG_ERROR_GET_DESCRIPTOR="Failed to get correct descriptor file from server. Please try again.";
@@ -43,10 +49,23 @@ public class Messages  {
 	public static final String ModelHandler_MSG_ERROR_UPLOAD_NOT_STARTED="File upload could not be started";
 	public static final String ModelHandler_CONSTANTS_DESCRIPTOR_FILE_NAME="descriptors.zip";
 	public static final String ModelHandler_CONSTANTS_MODEL_HANDLER_RMI_SERVICE_NAME="ModelHandler";
+
+	// Messages for the UI component
 	public static final String Ui_MSG_INFO_ENTER_IP_PORT="Enter the IP and port where the Model Handler service is running, in the format -> ip:port";
 	public static final String Ui_CONSTANT_SERVER_WINDOW_TITLE="Server Details";
-	public static final String Ui_MSG_INFO_SERVER_CANCEL="Model creation cannot continue unless the descriptor files are obtained. Do you want to continue?";
+	public static final String Ui_MSG_INFO_SERVER_CANCEL="Model creation cannot continue unless the descriptor files are obtained. Continue?";
 	public static final String Ui_MSG_ERROR_WRONG_INPUT="Input is not in correct format.";
 
+	//Messages for the Design (odesign) component
+	public static final String Design_ZIP_WINDOW_TITLE="Generate File";
+	public static final String Design_ZIP_ERROR="Error";
+	public static final String Design_ZIP_ERROR_SELECT="Select the model file";
+	public static final String Design_ZIP_ERROR_FILE_NOT_TRANSFER="File not transferred to server";
+	public static final String Design_ZIP_ERROR_UPLOAD="Error while uploading the file to server";
+	public static final String Design_ZIP_SUCCESS_UPLOAD="File successfully transferred to server";
+	public static final String Design_ZIP_SUCCESS_GENERATED="Configuration files have been zipped successfully and stored in <project> root";
+
+
 	private Messages() {}
+
 }

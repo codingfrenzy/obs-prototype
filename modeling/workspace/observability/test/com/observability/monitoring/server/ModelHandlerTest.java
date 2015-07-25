@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,6 +54,12 @@ public class ModelHandlerTest {
 	public void setUp() throws Exception {
 	}
 	
+	@Test
+	public void testGetServerDetails(){
+		UI ui = new UI();
+		ui.getServerDetails(IMessageProvider.NONE, "");
+		
+	}
 	@Test
 	/**
 	 * Test method for {@link com.observability.monitoring.server.ModelHandler#connectRMI(java.nio.file.Path)}.

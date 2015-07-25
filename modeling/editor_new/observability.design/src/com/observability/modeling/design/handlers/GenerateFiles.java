@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
+import com.observability.modeling.common.Messages;
 import com.observability.modeling.generation.files.Main;
 import com.observability.monitoring.server.*;
 
@@ -44,7 +45,7 @@ public class GenerateFiles extends AbstractHandler {
 		TreeSelection selection = (TreeSelection) window.getSelectionService().getSelection();
 
 		if(selection.isEmpty()){
-			MessageDialog.openError(window.getShell(), "Error", "Select the model file");
+			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, Messages.Design_ZIP_ERROR_SELECT);
 			return null;
 		}						
 
@@ -77,32 +78,32 @@ public class GenerateFiles extends AbstractHandler {
 
 			MessageDialog.openInformation(
 					window.getShell(),
-					"Generate File",
-					("File conf.zip generated in project directory"));
+					Messages.Design_ZIP_WINDOW_TITLE,
+					(Messages.Design_ZIP_SUCCESS_GENERATED));
 
 			// Deploy the zip file on the server
 			ModelHandler mh = ModelHandler.getInstance();
 			int result = mh.deployFile(zipPath, zipName);
 			String message = "";
 			if(result == -1){
-				message += "File not transferred to server";
+				message += Messages.Design_ZIP_ERROR_FILE_NOT_TRANSFER;
 			}
 			else if(result == -2){
-				message += "Error while uploading the file to server";
+				message += Messages.Design_ZIP_ERROR_UPLOAD;
 			}
 			else if(result == 0){
-				message += "File successfully transferred to server";
+				message += Messages.Design_ZIP_SUCCESS_UPLOAD;
 			}
 			MessageDialog.openInformation(
 					window.getShell(),
-					"Generate File",
+					Messages.Design_ZIP_WINDOW_TITLE,
 					message);	
 
 			return null;
 
 		} catch (Exception e) {
 			// Display the error message.
-			MessageDialog.openError(window.getShell(), "Error", e.getMessage());
+			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, e.getMessage());
 			return null;
 		}
 	}

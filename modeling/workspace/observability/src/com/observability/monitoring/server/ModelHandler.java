@@ -33,6 +33,8 @@ import java.rmi.RemoteException;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.jface.dialogs.IMessageProvider;
+
 import com.observability.modeling.emf.extension.EclipseResourceDelegate;
 import com.observability.modeling.common.*;
 /**
@@ -127,7 +129,7 @@ public class ModelHandler {
 			throw new NullPointerException(Messages.ModelHandler_MSG_ERROR_INVALID_DIRECTORY);
 		}
 		// get the ip and port where the model handler service is running.
-		String[] ipPort = uiInstance.getServerDetails(JOptionPane.PLAIN_MESSAGE, "");
+		String[] ipPort = uiInstance.getServerDetails(IMessageProvider.NONE, "");
 		if(ipPort.length == 0){
 			return;
 		}
@@ -227,7 +229,7 @@ public class ModelHandler {
 	public int deployFile(String target, String fileName) throws Exception{
 		if(ip == null || port == null){
 			// get the ip and port where the model handler service is running.
-			String[] ipPort = uiInstance.getServerDetails(JOptionPane.PLAIN_MESSAGE, "");
+			String[] ipPort = uiInstance.getServerDetails(IMessageProvider.NONE, "");
 			if(ipPort.length == 0){
 				return -1;
 			}
