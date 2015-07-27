@@ -5,6 +5,8 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
@@ -80,7 +82,8 @@ public class NotificationTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createNotification());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("Notification");
+		setFixture((Notification)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -131,7 +134,7 @@ public class NotificationTest extends TestCase {
 		n.eSet(EmfPackage.NOTIFICATION__HITS, 5);
 		n.eSet(EmfPackage.NOTIFICATION__HYSTERESIS, 5);
 		n.eSet(EmfPackage.NOTIFICATION__INSTANCE, "instance");
-		n.eSet(EmfPackage.NOTIFICATION__INTERESTING, true);
+		n.eSet(EmfPackage.NOTIFICATION__INTERESTING, false);
 		n.eSet(EmfPackage.NOTIFICATION__INVERT, true);
 		n.eSet(EmfPackage.NOTIFICATION__PERCENTAGE, true);
 		n.eSet(EmfPackage.NOTIFICATION__PERSIST, true);
@@ -155,7 +158,7 @@ public class NotificationTest extends TestCase {
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__HITS));
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__HYSTERESIS));
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__INSTANCE));
-		assertFalse(n.eIsSet(EmfPackage.NOTIFICATION__INTERESTING));
+		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__INTERESTING));
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__INVERT));
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__PERCENTAGE));
 		assertTrue(n.eIsSet(EmfPackage.NOTIFICATION__PERSIST));
@@ -171,7 +174,7 @@ public class NotificationTest extends TestCase {
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__HITS, true, true), 5);
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__HYSTERESIS, true, true), 5);
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__INSTANCE, true, true), "instance");
-		assertEquals(n.eGet(EmfPackage.NOTIFICATION__INTERESTING, true, true), true);
+		assertEquals(n.eGet(EmfPackage.NOTIFICATION__INTERESTING, true, true), false);
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__INVERT, true, true), true);
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__PERCENTAGE, true, true), true);
 		assertEquals(n.eGet(EmfPackage.NOTIFICATION__PERSIST, true, true), true);

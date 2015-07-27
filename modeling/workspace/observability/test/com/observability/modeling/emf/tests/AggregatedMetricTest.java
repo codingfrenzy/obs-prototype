@@ -5,11 +5,15 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.AggregatedMetric;
+import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.KeyValue;
+import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.impl.AggregatedMetricImpl;
 
 /**
@@ -58,7 +62,8 @@ public class AggregatedMetricTest extends MetricTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createAggregatedMetric());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("AggregatedMetric");
+		setFixture((Metric)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -195,6 +200,8 @@ public class AggregatedMetricTest extends MetricTest {
 		assertNull(am.eGet(EmfPackage.AGGREGATED_METRIC__TYPE, true, true));
 		assertEquals(((Collection<? extends Element>)am.eGet(EmfPackage.AGGREGATED_METRIC__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)am.eGet(EmfPackage.AGGREGATED_METRIC__KEY_VALUES, true, true)).size(), 0);
+		assertFalse(am.eIsSet(EmfPackage.AGGREGATED_METRIC__KEY_VALUES));
+		assertFalse(am.eIsSet(EmfPackage.AGGREGATED_METRIC__ELEMENTS));
 		
 		assertEquals(am.eGet(EmfPackage.AGGREGATED_METRIC__CALCULATE_AVG,true,true), false);
 		assertEquals(am.eGet(EmfPackage.AGGREGATED_METRIC__CALCULATE_MAX,true,true), false);

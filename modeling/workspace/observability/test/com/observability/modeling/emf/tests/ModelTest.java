@@ -13,6 +13,8 @@ import com.observability.modeling.emf.impl.ModelImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
@@ -84,7 +86,8 @@ public class ModelTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createModel());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("Model");
+		setFixture((Model)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -202,7 +205,11 @@ public class ModelTest extends TestCase {
 		assertEquals(((Collection<? extends KeyValue>)m.eGet(EmfPackage.MODEL__CLUSTERS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)m.eGet(EmfPackage.MODEL__FEATURES, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)m.eGet(EmfPackage.MODEL__NOTIFICATIONS, true, true)).size(), 0);
-		
+		assertFalse(m.eIsSet(EmfPackage.MODEL__AVAILABLE_DB_TYPES));
+		assertFalse(m.eIsSet(EmfPackage.MODEL__CLUSTERS));
+		assertFalse(m.eIsSet(EmfPackage.MODEL__FEATURES));
+		assertFalse(m.eIsSet(EmfPackage.MODEL__NOTIFICATIONS));
+				
 		System.out.println(m.toString());
 	}
 

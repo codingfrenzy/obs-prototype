@@ -5,6 +5,8 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.DatabaseCluster;
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
@@ -84,7 +86,8 @@ public class DatabaseClusterTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createDatabaseCluster());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("DatabaseCluster");
+		setFixture((DatabaseCluster)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -191,7 +194,9 @@ public class DatabaseClusterTest extends TestCase {
 		assertEquals(((Collection<? extends KeyValue>)dc.eGet(EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)dc.eGet(EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)dc.eGet(EmfPackage.DATABASE_CLUSTER__MACHINES, true, true)).size(), 0);
-		
+		assertFalse(dc.eIsSet(EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS));
+		assertFalse(dc.eIsSet(EmfPackage.DATABASE_CLUSTER__MACHINES));
+		assertFalse(dc.eIsSet(EmfPackage.DATABASE_CLUSTER__COLLECTED_METRICS));
 		System.out.println(dc.toString());
 		
 	}

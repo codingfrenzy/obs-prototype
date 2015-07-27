@@ -5,11 +5,14 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.BaseMetric;
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.KeyValue;
+import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.impl.BaseMetricImpl;
 import com.observability.modeling.emf.impl.ElementImpl;
 
@@ -61,7 +64,8 @@ public class BaseMetricTest extends MetricTest {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createBaseMetric());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("BaseMetric");
+		setFixture((Metric)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -158,7 +162,8 @@ public class BaseMetricTest extends MetricTest {
 		assertNull(bm.eGet(EmfPackage.BASE_METRIC__TYPE, true, true));
 		assertEquals(((Collection<? extends Element>)bm.eGet(EmfPackage.BASE_METRIC__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)bm.eGet(EmfPackage.BASE_METRIC__KEY_VALUES, true, true)).size(), 0);
-		
+		assertFalse(bm.eIsSet(EmfPackage.BASE_METRIC__KEY_VALUES));
+		assertFalse(bm.eIsSet(EmfPackage.BASE_METRIC__ELEMENTS));
 		System.out.println(bm.toString());
 
 	}

@@ -2,8 +2,10 @@
  */
 package com.observability.modeling.emf.tests;
 
+import org.eclipse.emf.ecore.EClass;
 import org.hamcrest.core.IsInstanceOf;
 
+import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.KeyValue;
@@ -76,7 +78,8 @@ public class KeyValueTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createKeyValue());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("KeyValue");
+		setFixture((KeyValue)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**

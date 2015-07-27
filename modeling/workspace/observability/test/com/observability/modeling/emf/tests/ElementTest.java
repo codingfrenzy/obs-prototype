@@ -5,10 +5,13 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
 import com.observability.modeling.emf.KeyValue;
+import com.observability.modeling.emf.Metric;
 import com.observability.modeling.emf.impl.ElementImpl;
 import junit.framework.TestCase;
 
@@ -77,7 +80,8 @@ public class ElementTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createElement());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("Element");
+		setFixture((Element)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -165,7 +169,8 @@ public class ElementTest extends TestCase {
 		assertNull(el.eGet(EmfPackage.ELEMENT__VALUE, true, true));
 		assertEquals(((Collection<? extends Element>)el.eGet(EmfPackage.ELEMENT__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)el.eGet(EmfPackage.ELEMENT__KEY_VALUES, true, true)).size(), 0);
-		
+		assertFalse(el.eIsSet(EmfPackage.ELEMENT__KEY_VALUES));
+		assertFalse(el.eIsSet(EmfPackage.ELEMENT__ELEMENTS));		
 		System.out.println(el.toString());
 	}	
 

@@ -5,6 +5,8 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
@@ -80,7 +82,8 @@ public class NodeMachineTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createNodeMachine());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("NodeMachine");
+		setFixture((NodeMachine)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -176,7 +179,8 @@ public class NodeMachineTest extends TestCase {
 		assertEquals(nm.eGet(EmfPackage.NODE_MACHINE__PORT, true, true),0);
 		assertEquals(((Collection<? extends Element>)nm.eGet(EmfPackage.NODE_MACHINE__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)nm.eGet(EmfPackage.NODE_MACHINE__KEY_VALUES, true, true)).size(), 0);
-		
+		assertFalse(nm.eIsSet(EmfPackage.NODE_MACHINE__KEY_VALUES));
+		assertFalse(nm.eIsSet(EmfPackage.NODE_MACHINE__ELEMENTS));		
 		System.out.println(nm.toString());
 		
 		

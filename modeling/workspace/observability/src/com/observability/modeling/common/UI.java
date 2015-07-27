@@ -44,11 +44,12 @@ import org.eclipse.ui.PlatformUI;
 public class UI {
 	
 	private static final String SERVER_DETAILS_TITLE = Messages.Ui_CONSTANT_SERVER_WINDOW_TITLE;
-	private static Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	private Shell shell = null;
 	private InputDialog ipPortInputDialog = null;
 	
 	public UI(){
 		ipPortInputDialog = new InputDialog(shell);
+		shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
 	
 	/**

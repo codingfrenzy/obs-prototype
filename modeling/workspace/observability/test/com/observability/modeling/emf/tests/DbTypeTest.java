@@ -5,6 +5,8 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.DbType;
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
@@ -81,7 +83,8 @@ public class DbTypeTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createDbType());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("DbType");
+		setFixture((DbType)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -172,7 +175,8 @@ public class DbTypeTest extends TestCase {
 		assertEquals(db.eGet(EmfPackage.DB_TYPE__COLLECTION_FREQUENCY, true, true), 0);
 		assertEquals(((Collection<? extends Element>)db.eGet(EmfPackage.DB_TYPE__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)db.eGet(EmfPackage.DB_TYPE__AVAILABLE_METRICS, true, true)).size(), 0);
-		
+		assertFalse(db.eIsSet(EmfPackage.DB_TYPE__AVAILABLE_METRICS));
+		assertFalse(db.eIsSet(EmfPackage.DB_TYPE__ELEMENTS));
 		System.out.println(db.toString());
 	}
 

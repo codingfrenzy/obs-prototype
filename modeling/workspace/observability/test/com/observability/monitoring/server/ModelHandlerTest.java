@@ -55,12 +55,6 @@ public class ModelHandlerTest {
 	}
 	
 	@Test
-	public void testGetServerDetails(){
-		UI ui = new UI();
-		ui.getServerDetails(IMessageProvider.NONE, "");
-		
-	}
-	@Test
 	/**
 	 * Test method for {@link com.observability.monitoring.server.ModelHandler#connectRMI(java.nio.file.Path)}.
 	 */

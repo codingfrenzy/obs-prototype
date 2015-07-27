@@ -5,6 +5,8 @@ package com.observability.modeling.emf.tests;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.eclipse.emf.ecore.EClass;
+
 import com.observability.modeling.emf.Element;
 import com.observability.modeling.emf.EmfFactory;
 import com.observability.modeling.emf.EmfPackage;
@@ -80,7 +82,8 @@ public class FeatureTest extends TestCase {
 	 */
 	@Override
 	protected void setUp() throws Exception {
-		setFixture(EmfFactory.eINSTANCE.createFeature());
+		EClass eClass = (EClass)EmfPackage.eINSTANCE.getEClassifier("Feature");
+		setFixture((Feature)EmfFactory.eINSTANCE.create(eClass));
 	}
 
 	/**
@@ -163,6 +166,8 @@ public class FeatureTest extends TestCase {
 		assertNull(f.eGet(EmfPackage.FEATURE__NAME, true, true));
 		assertEquals(((Collection<? extends Element>)f.eGet(EmfPackage.FEATURE__ELEMENTS, true, true)).size(), 0);
 		assertEquals(((Collection<? extends KeyValue>)f.eGet(EmfPackage.FEATURE__KEY_VALUES, true, true)).size(), 0);
+		assertFalse(f.eIsSet(EmfPackage.FEATURE__KEY_VALUES));
+		assertFalse(f.eIsSet(EmfPackage.FEATURE__ELEMENTS));
 		
 		System.out.println(f.toString());
 	}
