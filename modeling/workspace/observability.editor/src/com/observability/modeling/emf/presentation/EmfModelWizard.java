@@ -193,7 +193,7 @@ public class EmfModelWizard extends Wizard implements INewWizard {
 		 * Select "Model" entity as the root class. If EMF metamodel changes
 		 * this might need to change.
 		 */
-		EClass eClass = (EClass)emfPackage.getEClassifier("AggregatedMetric");
+		EClass eClass = (EClass)emfPackage.getEClassifier("Model");
 		EObject rootObject = emfFactory.create(eClass);
 		return rootObject;
 	}
