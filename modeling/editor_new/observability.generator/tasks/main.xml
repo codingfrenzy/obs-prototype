@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="main" name="observability.generator">
     <property name="ECLIPSE_HOME" value="../../../../../../Documents/ObeoDesigner-Community"/>
-    <property name="ECLIPSE_WORKSPACE" value="../../../../editor_new"/>
+    <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
     <path id="observability.generator.libraryclasspath">

@@ -11,12 +11,16 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: com.observability.modeling.emf.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
- observability.edit;visibility:=reexport,
+ observability;bundle-version="0.1.0",
+ observability.edit;bundle-version="1.0.0",
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.core.commands;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport
-Import-Package: org.eclipse.emf.common.ui,
+Import-Package: com.observability.modeling.common,
+ com.observability.modeling.emf.extension,
+ com.observability.monitoring.server,
+ org.eclipse.emf.common.ui,
  org.eclipse.emf.common.ui.action,
  org.eclipse.emf.common.ui.dialogs,
  org.eclipse.emf.common.ui.editor,

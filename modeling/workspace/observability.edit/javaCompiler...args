@@ -16,7 +16,7 @@
 #ADAPTER#ACCESS#Documents/ObeoDesigner-Community/plugins/org.eclipse.osgi.services_3.5.0.v20150519-2006.jar[?**/*]
 #ADAPTER#ACCESS#Documents/ObeoDesigner-Community/plugins/javax.servlet_3.1.0.v201410161800.jar[?**/*]
 #ADAPTER#ACCESS#observability/bin[+com/observability/modeling/common/*:+com/observability/modeling/emf/*:+com/observability/modeling/emf/extension/*:+com/observability/modeling/emf/impl/*:+com/observability/modeling/emf/util/*:+com/observability/modeling/probe/descriptor/*:+com/observability/modeling/probe/descriptor/entities/*:+com/observability/monitoring/server/*:?**/*]
-#ADAPTER#ACCESS#observability_0.1.0.201507251830/bin[+com/observability/modeling/common/*:+com/observability/modeling/emf/*:+com/observability/modeling/emf/extension/*:+com/observability/modeling/emf/impl/*:+com/observability/modeling/emf/util/*:+com/observability/modeling/probe/descriptor/*:+com/observability/modeling/probe/descriptor/entities/*:+com/observability/monitoring/server/*:?**/*]
+#ADAPTER#ACCESS#observability_0.1.0.201507281249/bin[+com/observability/modeling/common/*:+com/observability/modeling/emf/*:+com/observability/modeling/emf/extension/*:+com/observability/modeling/emf/impl/*:+com/observability/modeling/emf/util/*:+com/observability/modeling/probe/descriptor/*:+com/observability/modeling/probe/descriptor/entities/*:+com/observability/monitoring/server/*:?**/*]
 #ADAPTER#ACCESS#Documents/ObeoDesigner-Community/plugins/org.eclipse.core.resources_3.10.0.v20150423-0755.jar[?**/*]
 #ADAPTER#ACCESS#Documents/ObeoDesigner-Community/plugins/org.eclipse.ant.core_3.4.0.v20150428-1928.jar[?**/*]
 #ADAPTER#ACCESS#Documents/ObeoDesigner-Community/plugins/org.eclipse.core.variables_3.2.800.v20130819-1716.jar[?**/*]
