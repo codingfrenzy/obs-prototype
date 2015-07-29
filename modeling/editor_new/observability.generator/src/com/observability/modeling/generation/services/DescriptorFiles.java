@@ -67,21 +67,21 @@ public class DescriptorFiles {
 	public static void setParameters(String confDir, String zipPath) {
 		// Get the absolute path and normalize.  
 		// It gives the path of the project and not the class
-		String projectPath = DescriptorFiles.class.getProtectionDomain()
-				.getCodeSource().getLocation().getPath();
-		Path p = Paths.get(projectPath).normalize();
-		
-		// Get the relative path of the class
-		URL classUrl = DescriptorFiles.class
-				.getResource("DescriptorFiles.class");
-		Path classPath = Paths.get(classUrl.getPath());
-		classPath = classPath.getParent().getParent();
-		
-		// Make the path for the template files directory
-		String templateFiles = p.toString() + File.separatorChar + "src"
-				+ classPath.toString() + File.separatorChar + "files";
-
-		FILES = templateFiles;
+//		String projectPath = DescriptorFiles.class.getProtectionDomain()
+//				.getCodeSource().getLocation().getPath();
+//		Path p = Paths.get(projectPath).normalize();
+//		
+//		// Get the relative path of the class
+//		URL classUrl = DescriptorFiles.class
+//				.getResource("DescriptorFiles.class");
+//		Path classPath = Paths.get(classUrl.getPath());
+//		classPath = classPath.getParent().getParent();
+//		
+//		// Make the path for the template files directory
+//		String templateFiles = p.toString() + File.separatorChar + "src"
+//				+ classPath.toString() + File.separatorChar + "files";
+//
+//		FILES = templateFiles;
 		CONF_DIR = confDir;
 		ZIPPATH = zipPath;
 	}
