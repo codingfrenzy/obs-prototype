@@ -185,6 +185,7 @@ static lcc_value_list_t *create_value_list (int host, int plg , int val) /* {{{ 
   else
     vl->values_types[0] = LCC_TYPE_DERIVE;
 */
+  // Just use gauge, derive is seldom used
   vl->values_types[0] = LCC_TYPE_GAUGE;
 
   //snprintf (vl->identifier.host, sizeof (vl->identifier.host),
@@ -212,6 +213,7 @@ static lcc_value_list_t *create_value_list (int host, int plg , int val) /* {{{ 
   return (vl);
 } /* }}} int create_value_list */
 
+// Free the memory of value list
 static void destroy_value_list (lcc_value_list_t *vl) /* {{{ */
 {
   if (vl == NULL)
@@ -351,6 +353,7 @@ static int read_options (int argc, char **argv) /* {{{ */
         break;
 
       case 'X'://Added by Joel Gao Jly 21 2015
+        // Host name prefix
         conf_host_prefix = optarg;
         break;
 
