@@ -25,7 +25,7 @@ LoadPlugin "postgresql"
 <Plugin "cpu"> @MetricSystem
 	ReportByState true @Attribute
 	ReportByCpu true @Attribute
-	ValuesPercentage true @Attribute
+	ValuesPercentage false @Attribute
 </Plugin>
 
 <Plugin "df">  @MetricSystem
