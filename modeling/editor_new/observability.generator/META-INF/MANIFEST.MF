@@ -23,6 +23,7 @@ Export-Package: com.observability.modeling.generation,
  com.observability.modeling.generation.files,
  com.observability.modeling.generation.services
 Bundle-ClassPath: src/org/eclipse/acceleo/module/sample/files/,
- .
+ .,
+ src/com/observability/modeling/generation/services/
 Import-Package: com.observability.modeling.emf
 

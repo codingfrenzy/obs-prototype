@@ -104,8 +104,8 @@ public class GenerateFiles extends AbstractHandler {
 
 		} catch (Exception e) {
 			// Display the error message.
-			MessageDialog.openError(window.getShell(), "", Main.MODULE_FILE_NAME);
-			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, Arrays.toString(e.getStackTrace()));
+			
+			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, e.getMessage());
 			return null;
 		}
 	}
