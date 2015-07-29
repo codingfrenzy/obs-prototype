@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getMachines <em>Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedDbType <em>Associated Db Type</em>}</li>
@@ -21,7 +22,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  *   <li>{@link com.observability.modeling.emf.DatabaseCluster#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
- * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getDatabaseCluster()
  * @model

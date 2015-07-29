@@ -12,14 +12,15 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getIP <em>IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getPort <em>Port</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.NodeMachine#getKeyValues <em>Key Values</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.NodeMachine#getWarning <em>Warning</em>}</li>
  * </ul>
- * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getNodeMachine()
  * @model
@@ -135,5 +136,31 @@ public interface NodeMachine extends EObject {
 	 * @generated
 	 */
 	EList<KeyValue> getKeyValues();
+
+	/**
+	 * Returns the value of the '<em><b>Warning</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Warning</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Warning</em>' attribute.
+	 * @see #setWarning(String)
+	 * @see com.observability.modeling.emf.EmfPackage#getNodeMachine_Warning()
+	 * @model
+	 * @generated
+	 */
+	String getWarning();
+
+	/**
+	 * Sets the value of the '{@link com.observability.modeling.emf.NodeMachine#getWarning <em>Warning</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Warning</em>' attribute.
+	 * @see #getWarning()
+	 * @generated
+	 */
+	void setWarning(String value);
 
 } // NodeMachine

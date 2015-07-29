@@ -396,7 +396,7 @@ public class SiriusServices {
 			//throw new RuntimeException("Unknown database type: " + dbType.getName());
 		}
 		machine.setName(Messages.SiriusServices_MACHINE + (cluster.getMachines().size() + 1) + ""); //$NON-NLS-2$
-		
+		machine.setWarning("Please go to the Tree View to modify additional attributes.");
 		//We need to fill external elements here
 		for(Metric collectedMetric:cluster.getCollectedMetrics()){
 			addMetricSpecificParamsToMachine(machine,collectedMetric,associatedDbType);

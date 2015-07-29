@@ -28,6 +28,7 @@ import com.observability.modeling.emf.extension.SiriusServices;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getMachines <em>Machines</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedDbType <em>Associated Db Type</em>}</li>
@@ -36,7 +37,6 @@ import com.observability.modeling.emf.extension.SiriusServices;
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getAssociatedNotifications <em>Associated Notifications</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.DatabaseClusterImpl#getCollectedMetrics <em>Collected Metrics</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -178,7 +178,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 		if (associatedDbType != null && associatedDbType.eIsProxy()) {
 			InternalEObject oldAssociatedDbType = (InternalEObject)associatedDbType;
 			associatedDbType = (DbType)eResolveProxy(oldAssociatedDbType);
-			if (associatedDbType != (DbType) oldAssociatedDbType) {
+			if (associatedDbType != oldAssociatedDbType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE, oldAssociatedDbType, associatedDbType));
 			}
@@ -382,7 +382,7 @@ public class DatabaseClusterImpl extends MinimalEObjectImpl.Container implements
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_DB_TYPE:
 				return associatedDbType != null;
 			case EmfPackage.DATABASE_CLUSTER__NAME:
-				return name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.DATABASE_CLUSTER__NO_OF_MACHINES:
 				return noOfMachines != NO_OF_MACHINES_EDEFAULT;
 			case EmfPackage.DATABASE_CLUSTER__ASSOCIATED_NOTIFICATIONS:

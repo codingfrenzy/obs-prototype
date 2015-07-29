@@ -29,12 +29,12 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.FeatureImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.FeatureImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.FeatureImpl#getKeyValues <em>Key Values</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -231,7 +231,7 @@ public class FeatureImpl extends MinimalEObjectImpl.Container implements Feature
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.FEATURE__NAME:
-				return name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.FEATURE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.FEATURE__KEY_VALUES:

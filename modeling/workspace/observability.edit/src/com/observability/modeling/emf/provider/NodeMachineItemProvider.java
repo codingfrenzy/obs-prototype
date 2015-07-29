@@ -66,6 +66,7 @@ public class NodeMachineItemProvider
 			addIPPropertyDescriptor(object);
 			addPortPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
+			addWarningPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -128,6 +129,28 @@ public class NodeMachineItemProvider
 				 getString("_UI_NodeMachine_name_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_NodeMachine_name_feature", "_UI_NodeMachine_type"),
 				 EmfPackage.Literals.NODE_MACHINE__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Warning feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addWarningPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeMachine_warning_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeMachine_warning_feature", "_UI_NodeMachine_type"),
+				 EmfPackage.Literals.NODE_MACHINE__WARNING,
 				 true,
 				 false,
 				 false,
@@ -208,6 +231,7 @@ public class NodeMachineItemProvider
 			case EmfPackage.NODE_MACHINE__IP:
 			case EmfPackage.NODE_MACHINE__PORT:
 			case EmfPackage.NODE_MACHINE__NAME:
+			case EmfPackage.NODE_MACHINE__WARNING:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case EmfPackage.NODE_MACHINE__ELEMENTS:

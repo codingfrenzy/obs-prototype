@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getInterval <em>Interval</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getClusters <em>Clusters</em>}</li>
@@ -39,7 +40,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getNotifications <em>Notifications</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ModelImpl#getFeatures <em>Features</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -406,9 +406,9 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case EmfPackage.MODEL__AVAILABLE_DB_TYPES:
 				return availableDbTypes != null && !availableDbTypes.isEmpty();
 			case EmfPackage.MODEL__SERVER_IP:
-				return serverIP != null ? true : false;
+				return SERVER_IP_EDEFAULT == null ? serverIP != null : !SERVER_IP_EDEFAULT.equals(serverIP);
 			case EmfPackage.MODEL__NAME:
-				return name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.MODEL__NOTIFICATIONS:
 				return notifications != null && !notifications.isEmpty();
 			case EmfPackage.MODEL__FEATURES:

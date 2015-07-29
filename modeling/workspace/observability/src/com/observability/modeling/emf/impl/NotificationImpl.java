@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getType <em>Type</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getFailureMax <em>Failure Max</em>}</li>
@@ -32,7 +33,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#isInteresting <em>Interesting</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NotificationImpl#getInstance <em>Instance</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -787,7 +787,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.NOTIFICATION__TYPE:
-				return type != null ? true : false;
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 			case EmfPackage.NOTIFICATION__FAILURE_MAX:
 				return failureMax != FAILURE_MAX_EDEFAULT;
 			case EmfPackage.NOTIFICATION__FAILURE_MIN:
@@ -797,7 +797,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 			case EmfPackage.NOTIFICATION__WARNING_MIN:
 				return warningMin != WARNING_MIN_EDEFAULT;
 			case EmfPackage.NOTIFICATION__DATA_SOURCE:
-				return dataSource != null ? true : false;
+				return DATA_SOURCE_EDEFAULT == null ? dataSource != null : !DATA_SOURCE_EDEFAULT.equals(dataSource);
 			case EmfPackage.NOTIFICATION__INVERT:
 				return invert != INVERT_EDEFAULT;
 			case EmfPackage.NOTIFICATION__PERSIST:
@@ -813,7 +813,7 @@ public class NotificationImpl extends MinimalEObjectImpl.Container implements No
 			case EmfPackage.NOTIFICATION__INTERESTING:
 				return interesting != INTERESTING_EDEFAULT;
 			case EmfPackage.NOTIFICATION__INSTANCE:
-				return instance != null ? true : false;
+				return INSTANCE_EDEFAULT == null ? instance != null : !INSTANCE_EDEFAULT.equals(instance);
 		}
 		return super.eIsSet(featureID);
 	}

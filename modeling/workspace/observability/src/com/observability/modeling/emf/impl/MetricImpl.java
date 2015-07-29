@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getDescription <em>Description</em>}</li>
@@ -30,7 +31,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.MetricImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -325,15 +325,15 @@ public abstract class MetricImpl extends MinimalEObjectImpl.Container implements
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.METRIC__NAME:
-				return name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.METRIC__DESCRIPTION:
-				return description != null ? true : false;
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case EmfPackage.METRIC__KEY_VALUES:
 				return keyValues != null && !keyValues.isEmpty();
 			case EmfPackage.METRIC__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.METRIC__TYPE:
-				return type != null ? true : false;
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 		}
 		return super.eIsSet(featureID);
 	}

@@ -18,11 +18,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.KeyValueImpl#getKey <em>Key</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.KeyValueImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -189,9 +189,9 @@ public class KeyValueImpl extends MinimalEObjectImpl.Container implements KeyVal
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.KEY_VALUE__KEY:
-				return key != null ? true : false;
+				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 			case EmfPackage.KEY_VALUE__VALUE:
-				return value != null ? true : false;
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
 	}

@@ -26,14 +26,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getIP <em>IP</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getPort <em>Port</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getKeyValues <em>Key Values</em>}</li>
+ *   <li>{@link com.observability.modeling.emf.impl.NodeMachineImpl#getWarning <em>Warning</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -117,6 +118,26 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * @ordered
 	 */
 	protected EList<KeyValue> keyValues;
+
+	/**
+	 * The default value of the '{@link #getWarning() <em>Warning</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWarning()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String WARNING_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getWarning() <em>Warning</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWarning()
+	 * @generated
+	 * @ordered
+	 */
+	protected String warning = WARNING_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -229,6 +250,27 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getWarning() {
+		return warning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWarning(String newWarning) {
+		String oldWarning = warning;
+		warning = newWarning;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EmfPackage.NODE_MACHINE__WARNING, oldWarning, warning));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -258,6 +300,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				return getElements();
 			case EmfPackage.NODE_MACHINE__KEY_VALUES:
 				return getKeyValues();
+			case EmfPackage.NODE_MACHINE__WARNING:
+				return getWarning();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -288,6 +332,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 				getKeyValues().clear();
 				getKeyValues().addAll((Collection<? extends KeyValue>)newValue);
 				return;
+			case EmfPackage.NODE_MACHINE__WARNING:
+				setWarning((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -315,6 +362,9 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 			case EmfPackage.NODE_MACHINE__KEY_VALUES:
 				getKeyValues().clear();
 				return;
+			case EmfPackage.NODE_MACHINE__WARNING:
+				setWarning(WARNING_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -328,15 +378,17 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case EmfPackage.NODE_MACHINE__IP:
-				return ip != null ? true : false;
+				return IP_EDEFAULT == null ? ip != null : !IP_EDEFAULT.equals(ip);
 			case EmfPackage.NODE_MACHINE__PORT:
 				return port != PORT_EDEFAULT;
 			case EmfPackage.NODE_MACHINE__NAME:
-				return  name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.NODE_MACHINE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 			case EmfPackage.NODE_MACHINE__KEY_VALUES:
 				return keyValues != null && !keyValues.isEmpty();
+			case EmfPackage.NODE_MACHINE__WARNING:
+				return WARNING_EDEFAULT == null ? warning != null : !WARNING_EDEFAULT.equals(warning);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -357,6 +409,8 @@ public class NodeMachineImpl extends MinimalEObjectImpl.Container implements Nod
 		result.append(port);
 		result.append(", name: ");
 		result.append(name);
+		result.append(", warning: ");
+		result.append(warning);
 		result.append(')');
 		return result.toString();
 	}

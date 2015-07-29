@@ -405,6 +405,15 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getNodeMachine_Warning() {
+		return (EAttribute)nodeMachineEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getModel() {
 		return modelEClass;
 	}
@@ -827,6 +836,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		createEAttribute(nodeMachineEClass, NODE_MACHINE__NAME);
 		createEReference(nodeMachineEClass, NODE_MACHINE__ELEMENTS);
 		createEReference(nodeMachineEClass, NODE_MACHINE__KEY_VALUES);
+		createEAttribute(nodeMachineEClass, NODE_MACHINE__WARNING);
 
 		modelEClass = createEClass(MODEL);
 		createEAttribute(modelEClass, MODEL__INTERVAL);
@@ -938,6 +948,7 @@ public class EmfPackageImpl extends EPackageImpl implements EmfPackage {
 		initEAttribute(getNodeMachine_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNodeMachine_Elements(), this.getElement(), null, "elements", null, 0, -1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNodeMachine_KeyValues(), this.getKeyValue(), null, "keyValues", null, 0, -1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeMachine_Warning(), ecorePackage.getEString(), "warning", null, 0, 1, NodeMachine.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getModel_Interval(), ecorePackage.getEInt(), "interval", "30", 0, 1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

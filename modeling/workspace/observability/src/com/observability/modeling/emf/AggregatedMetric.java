@@ -10,6 +10,7 @@ package com.observability.modeling.emf;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.AggregatedMetric#isCalculateSum <em>Calculate Sum</em>}</li>
  *   <li>{@link com.observability.modeling.emf.AggregatedMetric#isCalculateNum <em>Calculate Num</em>}</li>
@@ -18,7 +19,6 @@ package com.observability.modeling.emf;
  *   <li>{@link com.observability.modeling.emf.AggregatedMetric#isCalculateMax <em>Calculate Max</em>}</li>
  *   <li>{@link com.observability.modeling.emf.AggregatedMetric#isCalculateStddev <em>Calculate Stddev</em>}</li>
  * </ul>
- * </p>
  *
  * @see com.observability.modeling.emf.EmfPackage#getAggregatedMetric()
  * @model

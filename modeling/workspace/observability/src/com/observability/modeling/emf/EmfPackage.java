@@ -368,13 +368,22 @@ public interface EmfPackage extends EPackage {
 	int NODE_MACHINE__KEY_VALUES = 4;
 
 	/**
+	 * The feature id for the '<em><b>Warning</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_MACHINE__WARNING = 5;
+
+	/**
 	 * The number of structural features of the '<em>Node Machine</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_MACHINE_FEATURE_COUNT = 5;
+	int NODE_MACHINE_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Node Machine</em>' class.
@@ -1242,6 +1251,17 @@ public interface EmfPackage extends EPackage {
 	EReference getNodeMachine_KeyValues();
 
 	/**
+	 * Returns the meta object for the attribute '{@link com.observability.modeling.emf.NodeMachine#getWarning <em>Warning</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Warning</em>'.
+	 * @see com.observability.modeling.emf.NodeMachine#getWarning()
+	 * @see #getNodeMachine()
+	 * @generated
+	 */
+	EAttribute getNodeMachine_Warning();
+
+	/**
 	 * Returns the meta object for class '{@link com.observability.modeling.emf.Model <em>Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1926,6 +1946,14 @@ public interface EmfPackage extends EPackage {
 		 * @generated
 		 */
 		EReference NODE_MACHINE__KEY_VALUES = eINSTANCE.getNodeMachine_KeyValues();
+
+		/**
+		 * The meta object literal for the '<em><b>Warning</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NODE_MACHINE__WARNING = eINSTANCE.getNodeMachine_Warning();
 
 		/**
 		 * The meta object literal for the '{@link com.observability.modeling.emf.impl.ModelImpl <em>Model</em>}' class.

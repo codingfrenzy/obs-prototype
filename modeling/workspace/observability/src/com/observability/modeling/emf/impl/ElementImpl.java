@@ -28,13 +28,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getKeyValues <em>Key Values</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getName <em>Name</em>}</li>
  *   <li>{@link com.observability.modeling.emf.impl.ElementImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -284,9 +284,9 @@ public class ElementImpl extends MinimalEObjectImpl.Container implements Element
 			case EmfPackage.ELEMENT__KEY_VALUES:
 				return keyValues != null && !keyValues.isEmpty();
 			case EmfPackage.ELEMENT__NAME:
-				return name != null ? true : false;
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case EmfPackage.ELEMENT__VALUE:
-				return value != null ? true : false;
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
 	}
