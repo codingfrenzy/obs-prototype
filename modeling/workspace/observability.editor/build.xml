@@ -7,7 +7,7 @@
 	<property name="basearch" value="${arch}"/>
 	<property name="basenl" value="${nl}"/>
 	<property name="bundleId" value="observability.editor"/>
-	<property name="bundleVersion" value="1.0.0.201507281249"/>
+	<property name="bundleVersion" value="1.0.0.201507281803"/>
 	<property name="p2.publishonerror" value="false"/>
 
 	<!-- Compiler settings. -->
@@ -50,7 +50,7 @@
 			<isset property="buildTempFolder"/>
 		</condition>
 		<property name="pluginTemp" value="${basedir}"/>
-		<condition property="build.result.folder" value="${pluginTemp}/observability.editor_1.0.0.201507281249"		>
+		<condition property="build.result.folder" value="${pluginTemp}/observability.editor_1.0.0.201507281803"		>
 			<isset property="buildTempFolder"/>
 		</condition>
 		<property name="build.result.folder" value="${basedir}"/>
@@ -80,7 +80,7 @@
 		<antcall target="gather.bin.parts">
 			<param name="destination.temp.folder" value="${temp.folder}/"/>
 		</antcall>
-		<jar destfile="${plugin.destination}/observability.editor_1.0.0.201507281249.jar" basedir="${temp.folder}/observability.editor_1.0.0.201507281249" filesetmanifest="merge"/>
+		<jar destfile="${plugin.destination}/observability.editor_1.0.0.201507281803.jar" basedir="${temp.folder}/observability.editor_1.0.0.201507281803" filesetmanifest="merge"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 
@@ -103,7 +103,7 @@
 		<mkdir dir="${build.result.folder}/@dot"/>
 		<path id="@dot.classpath">
 			<pathelement path="../observability/bin"/>
-			<pathelement path="${build.result.folder}/../observability_0.1.0.201507281249/bin"/>
+			<pathelement path="${build.result.folder}/../observability_0.1.0.201507281803/bin"/>
 			<pathelement path="../../../../../Documents/ObeoDesigner-Community/plugins/org.eclipse.core.resources_3.10.0.v20150423-0755.jar"/>
 			<pathelement path="../../../../../Documents/ObeoDesigner-Community/plugins/org.eclipse.ant.core_3.4.0.v20150428-1928.jar"/>
 			<pathelement path="../../../../../Documents/ObeoDesigner-Community/plugins/org.eclipse.core.variables_3.2.800.v20130819-1716.jar"/>
@@ -197,9 +197,9 @@
 			<pathelement path="../../../../../Documents/ObeoDesigner-Community/plugins/org.eclipse.emf.edit.ui_2.11.0.v20150601-0402.jar"/>
 			<pathelement path="../../../../../Documents/ObeoDesigner-Community/plugins/org.eclipse.emf.edit_2.11.0.v20150601-0402.jar"/>
 			<pathelement path="../observability.edit/bin"/>
-			<pathelement path="${build.result.folder}/../observability.edit_1.0.0.201507281249/bin"/>
+			<pathelement path="${build.result.folder}/../observability.edit_1.0.0.201507281803/bin"/>
 			<pathelement path="bin"/>
-			<pathelement path="${build.result.folder}/../observability.editor_1.0.0.201507281249/bin"/>
+			<pathelement path="${build.result.folder}/../observability.editor_1.0.0.201507281803/bin"/>
 		</path>
 		<!-- compile the source code -->
 		<javac destdir="${build.result.folder}/@dot" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" bootclasspath="${bundleBootClasspath}" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>
@@ -245,12 +245,12 @@
 	</target>
 
 	<target name="checkCompilationResults" if="compilation.error.occured">
-		<echo file="${compilation.problem.marker}" message="observability.editor_1.0.0.201507281249${line.separator}compilation.error.occured=${compilation.error.occured}"/>
-		<eclipse.logCompileError bundle="observability.editor_1.0.0.201507281249" log="${compilation.prereq.log}">
+		<echo file="${compilation.problem.marker}" message="observability.editor_1.0.0.201507281803${line.separator}compilation.error.occured=${compilation.error.occured}"/>
+		<eclipse.logCompileError bundle="observability.editor_1.0.0.201507281803" log="${compilation.prereq.log}">
 			<include name="/home/vsaravag/git/obs-prototype/modeling/workspace/observability.edit/compilation.problem"/>
-			<include name="${pluginTemp}/observability.edit_1.0.0.201507281249/compilation.problem"/>
+			<include name="${pluginTemp}/observability.edit_1.0.0.201507281803/compilation.problem"/>
 			<include name="/home/vsaravag/git/obs-prototype/modeling/workspace/observability/compilation.problem"/>
-			<include name="${pluginTemp}/observability_0.1.0.201507281249/compilation.problem"/>
+			<include name="${pluginTemp}/observability_0.1.0.201507281803/compilation.problem"/>
 		</eclipse.logCompileError>
 	</target>
 
@@ -260,7 +260,7 @@
 	</target>
 
 	<target name="publish.bin.parts" depends="init" if="p2.publish.parts" unless="compilation.problem.marker.exists">
-		<mkdir dir="${build.result.folder}/observability.editor_1.0.0.201507281249"/>
+		<mkdir dir="${build.result.folder}/observability.editor_1.0.0.201507281803"/>
 		<copy todir="${build.result.folder}" failonerror="true" overwrite="true">
 			<fileset dir="${basedir}">
 				<include name="META-INF/MANIFEST.MF"/>
@@ -268,7 +268,7 @@
 				<include name="fragment.xml"/>
 			</fileset>
 		</copy>
-		<eclipse.versionReplacer path="${build.result.folder}" version="1.0.0.201507281249"/>
+		<eclipse.versionReplacer path="${build.result.folder}" version="1.0.0.201507281803"/>
 		<antcall target="apitools.generation">
 			<param name="target.folder" value="${build.result.folder}"/>
 			<param name="projectLocation" value="${basedir}"/>
@@ -285,13 +285,13 @@
 	</target>
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281249"/>
-		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281249" failonerror="true" overwrite="false">
+		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281803"/>
+		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281803" failonerror="true" overwrite="false">
 			<fileset dir="${build.result.folder}/@dot">
 				<include name="**"/>
 			</fileset>
 		</copy>
-		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281249" failonerror="true" overwrite="true">
+		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281803" failonerror="true" overwrite="true">
 			<fileset dir="${basedir}">
 				<include name="icons/"/>
 				<include name="META-INF/"/>
@@ -299,9 +299,9 @@
 				<include name="plugin.properties"/>
 			</fileset>
 		</copy>
-		<eclipse.versionReplacer path="${destination.temp.folder}/observability.editor_1.0.0.201507281249" version="1.0.0.201507281249"/>
+		<eclipse.versionReplacer path="${destination.temp.folder}/observability.editor_1.0.0.201507281803" version="1.0.0.201507281803"/>
 		<antcall target="apitools.generation">
-			<param name="target.folder" value="${destination.temp.folder}/observability.editor_1.0.0.201507281249"/>
+			<param name="target.folder" value="${destination.temp.folder}/observability.editor_1.0.0.201507281803"/>
 			<param name="projectLocation" value="${basedir}"/>
 			<param name="binary.folders" value="${build.result.folder}/@dot:/home/vsaravag/git/obs-prototype/modeling/workspace/observability.editor/bin"/>
 			<param name="projectName" value="${bundleId}_${bundleVersion}"/>
@@ -312,10 +312,10 @@
 	</target>
 
 	<target name="gather.sources" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281249"/>
-		<copy file="${build.result.folder}/src.zip" todir="${destination.temp.folder}/observability.editor_1.0.0.201507281249" failonerror="false" overwrite="false"/>
+		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281803"/>
+		<copy file="${build.result.folder}/src.zip" todir="${destination.temp.folder}/observability.editor_1.0.0.201507281803" failonerror="false" overwrite="false"/>
 		<antcall target="copy.src.includes">
-			<param name="source.destination.folder" value="${destination.temp.folder}/observability.editor_1.0.0.201507281249"/>
+			<param name="source.destination.folder" value="${destination.temp.folder}/observability.editor_1.0.0.201507281803"/>
 		</antcall>
 	</target>
 
@@ -332,8 +332,8 @@
 	</target>
 
 	<target name="gather.logs" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281249"/>
-		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281249" failonerror="false" overwrite="false">
+		<mkdir dir="${destination.temp.folder}/observability.editor_1.0.0.201507281803"/>
+		<copy todir="${destination.temp.folder}/observability.editor_1.0.0.201507281803" failonerror="false" overwrite="false">
 			<fileset dir="${build.result.folder}">
 				<include name="@dot${logExtension}"/>
 			</fileset>
@@ -343,8 +343,8 @@
 	<target name="clean" depends="init" description="Clean the plug-in: observability.editor of all the zips, jars and logs created.">
 		<delete dir="${build.result.folder}/@dot"/>
 		<delete file="${build.result.folder}/src.zip"/>
-		<delete file="${plugin.destination}/observability.editor_1.0.0.201507281249.jar"/>
-		<delete file="${plugin.destination}/observability.editor_1.0.0.201507281249.zip"/>
+		<delete file="${plugin.destination}/observability.editor_1.0.0.201507281803.jar"/>
+		<delete file="${plugin.destination}/observability.editor_1.0.0.201507281803.zip"/>
 		<delete dir="${temp.folder}"/>
 		<delete file="${compilation.problem.marker}" quiet="true"/>
 	</target>
@@ -370,7 +370,7 @@
 				<include name="**/*.bin${logExtension}"/>
 			</fileset>
 		</delete>
-		<zip destfile="${plugin.destination}/observability.editor_1.0.0.201507281249.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<zip destfile="${plugin.destination}/observability.editor_1.0.0.201507281803.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
 		<delete dir="${temp.folder}"/>
 	</target>
 

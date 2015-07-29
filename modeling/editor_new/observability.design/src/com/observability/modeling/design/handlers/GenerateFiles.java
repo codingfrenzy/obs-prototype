@@ -2,6 +2,7 @@ package com.observability.modeling.design.handlers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -103,7 +104,8 @@ public class GenerateFiles extends AbstractHandler {
 
 		} catch (Exception e) {
 			// Display the error message.
-			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, e.getMessage());
+			MessageDialog.openError(window.getShell(), "", Main.MODULE_FILE_NAME);
+			MessageDialog.openError(window.getShell(), Messages.Design_ZIP_ERROR, Arrays.toString(e.getStackTrace()));
 			return null;
 		}
 	}

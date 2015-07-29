@@ -115,11 +115,12 @@ public class DescriptorFiles {
 	 * @return true if the template file for the dbName exists, false otherwise
 	 */
 	public static boolean hasFile(String dbName) {
-		getAllFiles();
+		return true;
+		/*getAllFiles();
 		if (fileNames.contains(dbName.toLowerCase())) {
 			return true;
 		}
-		return false;
+		return false;*/
 	}
 
 	/**
