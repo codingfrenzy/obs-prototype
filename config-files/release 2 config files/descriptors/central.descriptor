@@ -5,7 +5,7 @@ LoadPlugin "cpu"
 <Plugin "cpu">
 	ReportByState true 
 	ReportByCpu true 
-	ValuesPercentage true 
+	ValuesPercentage false 
 </Plugin>
 
 LoadPlugin "memory"
