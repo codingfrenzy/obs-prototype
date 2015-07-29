@@ -26,7 +26,7 @@
           </style>
         </edgeMappings>
         <edgeMappings name="clusterToDbType" deletionDescription="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@toolSections.0/@ownedTools[name='dbTypeEdgeDeletion']" sourceMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbCluster']" targetMapping="//@ownedViewpoints[name='ModelerView']/@ownedRepresentations[name='Diagram']/@defaultLayer/@containerMappings[name='dbType']" targetFinderExpression="feature:associatedDbType">
-          <style sizeComputationExpression="2" routingStyle="tree" endsCentering="Both">
+          <style sizeComputationExpression="2" endsCentering="Both">
             <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
             <centerLabelStyleDescription>
               <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
