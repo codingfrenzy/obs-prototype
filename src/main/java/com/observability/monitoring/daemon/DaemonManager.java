@@ -337,13 +337,6 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 	 */
 	public static void main(String[] args) {
 
-        // check if sudo so that there ia access to write to log files.
-        File file = new File(configPath);
-        if (!file.canWrite()){
-            System.out.println("Please start with root access so that collectd.conf can be modified remotely.");
-            return;
-        }
-
 		// Get IP & port from arguments
 		if(args.length  < 2){
 			System.out.println("DaemonManager - error - should be started with at least two parameters: IP + port.");
@@ -361,6 +354,13 @@ public class DaemonManager extends UnicastRemoteObject implements IDaemonManager
 			configPath = args[3];
 		}
 
+		// check if sudo so that there ia access to write to log files.
+        File file = new File(configPath);
+        if (!file.canWrite()){
+            System.out.println("Please start with root access so that collectd.conf can be modified remotely.");
+            return;
+        }
+        
 		String rmiIP = args[0];
 		String rmiPort = args[1];
 		// Set to use IP v4
