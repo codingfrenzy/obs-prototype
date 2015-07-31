@@ -74,19 +74,19 @@ LoadPlugin aggregation
 #The plugin that reacts to all notifications coming from remote nodes
 #and the central server itself.
 
-LoadPlugin "java"
-<Plugin "java"> @Feature(Threshold Notification)
-    JVMARG "-Djava.class.path=/opt/collectd/java-dep/collectd-api.jar:/opt/collectd/java-dep/generic-jmx.jar:/opt/collectd/java-dep/thresholdnotification.jar" @Attribute
-   LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin" @Attribute
-  	<Plugin "ThresholdNotificationPlugin"> @Feature
-	recpt1 "emial1@abc.com" @Attribute
-	recpt2 "emial2@abc.com" @Attribute
-	recpt3 "emial3@abc.com" @Attribute
-	httpip 45.55.197.112 @Attribute
-	httpport 8080 @Attribute
-	</Plugin>
-</Plugin>
+LoadPlugin java
+<Plugin "java">
+       JVMARG "-Djava.class.path=/opt/collectd/java-dep/collectd-api.jar:/opt/collectd/java-dep/generic-jmx.jar:/home/ubuntu/collectd/thresholdnotification.jar:/opt/collectd/java-dep/mail-1.4.7.jar" @Attribute
+       LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin" @Attribute
 
+       <Plugin "ThresholdNotificationPlugin"> @Feature
+               recpt1 "email1@abc.com" @Attribute
+               recpt2 "email2@abc.com" @Attribute
+               recpt3 "email3@abc.com" @Attribute
+               httpip "http://45.55.197.112:8888/threshold.db/thresholds/" @Attribute
+               httpport "8888" @Attribute
+       </Plugin>
+</Plugin>
 
 #the plugin that sends notifications about the central server
 #Cpu and memory metrics should be hardcoded
