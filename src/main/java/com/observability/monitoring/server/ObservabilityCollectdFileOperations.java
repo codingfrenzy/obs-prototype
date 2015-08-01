@@ -246,12 +246,13 @@ public class ObservabilityCollectdFileOperations {
         try {
             stream = new FileInputStream(collectdPath + collectdConf);
             BufferedReader br1 = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-
             while ((strLine = br1.readLine()) != null) {
                 strLine = strLine.trim().replace("\"", "");
+
                 if (strLine.startsWith("Interval") && interval < 0) {
                     temp = strLine.split(" ");
-                    interval = Integer.parseInt(temp[1]);
+                   // interval = Integer.parseInt(temp[1]);
+                    System.out.println("----------------------------"+interval);
                     conf.put("Interval", interval);
                 }
 
@@ -334,7 +335,7 @@ public class ObservabilityCollectdFileOperations {
         logMessage(collectdPath + modelDataHandlerLog, message);
     }
 
-    private static boolean logMessage(String path, String message) {
+    public static boolean logMessage(String path, String message) {
         try {
             // append to file
             OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(path + "-" + getTodayDate(), true), "UTF-8");
@@ -342,6 +343,7 @@ public class ObservabilityCollectdFileOperations {
             fbw.write(message);
             fbw.newLine();
             fbw.close();
+            System.out.println("Test.............................");
             return true;
 
         } catch (FileNotFoundException e) {
@@ -482,7 +484,9 @@ public class ObservabilityCollectdFileOperations {
 			bufferReader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(fileName), "UTF-8"));
 		} catch (IOException e) {
-			e.printStackTrace();	
+			logMessageAggregation(e.toString());
+
+			
 		}
 		if (bufferReader == null){
 			System.err.println("File can't be read. Interval default value is considered.");
@@ -515,13 +519,13 @@ public class ObservabilityCollectdFileOperations {
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logMessageAggregation(e.toString());
 			}
 		} while (line != null && !intervalFound);
 		try {
 			bufferReader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logMessageAggregation(e.toString());
 		}
 		System.out.println("interval: " + interval); // Debug, remove later
 		return interval;
@@ -540,7 +544,7 @@ public class ObservabilityCollectdFileOperations {
 		
 		File file = new File(fileName);
 		if(!file.exists() || file.isDirectory()) { 
-			System.err.println("Collectd doesn't exist. Aggregation can't be accomplished.");
+			System.err.println("Collectd.conf doesn't exist. Aggregation can't be accomplished.");
 			return null;
 		}
 		
@@ -571,14 +575,14 @@ public class ObservabilityCollectdFileOperations {
 						line = bufferReader.readLine();
 					}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logMessageAggregation(e.toString());
 			}
 		} while (line != null);
 		try {
 			if(bufferReader!=null)		// Close the BufferedReader
 				bufferReader.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logMessageAggregation(e.toString());
 		}	
 		return aggConfigArray;
 	}
@@ -636,8 +640,7 @@ public class ObservabilityCollectdFileOperations {
     //////////////////// End: Reading Aggregation Configurations ////////////////////
 	 
     public static void main(String[] args) {
-        System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
-        System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());
-
+        //System.out.println(ObservabilityCollectdFileOperations.lastModifiedCollectdConf());
+        //System.out.println(ObservabilityCollectdFileOperations.lastModifiedDaemonIP());
     }
 }
