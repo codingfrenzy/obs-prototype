@@ -5,8 +5,12 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +23,8 @@ public class ObservabilityCollectdFileOperationsTest {
 	String wrongCollectdPath = "opt/";
 	String collectdConfMissingValues = "etc/sampleCollectd.conf";
 	String wrongFile = "xyz";
+	
+    String aggregationLog = "log/aggregation";
 
 	int faultTolTimeWindow = 10;
 	int interval = 10;
@@ -77,13 +83,35 @@ public class ObservabilityCollectdFileOperationsTest {
 
 	}
 
-	/*
+	
 	@Test
 	public void testUpdateIPList() {
 		ArrayList<String> ipList = new ArrayList<String>();
 		for(int i = 1 ; i < 6 ; i++)
 			ipList.add("1.1.1." + i);
 		ObservabilityCollectdFileOperations.updateIPList(ipList);
+	}
+	
+	@Test
+	public void testUpdateIPListAssert() {
+		ArrayList<String> ipList = new ArrayList<String>();
+		for(int i = 1 ; i < 4 ; i++)
+			ipList.add("1.1.1." + i);
+		ObservabilityCollectdFileOperations.updateIPList(ipList);
+		ArrayList<String> list = new ArrayList<String>();
+		  list.add("1.1.1.1");
+		  list.add("1.1.1.2"); 
+		  list.add("1.1.1.3");
+		  StringWriter stringWriter = new StringWriter();
+		  PrintWriter out = new PrintWriter(stringWriter);
+		  try {
+		    for (int i = 0; i < list.size(); i++) {
+		      out.println(list.get(i).toString());
+		    }
+		  } finally {
+		    out.close();
+		  }
+		  assertEquals("1.1.1.1\n1.1.1.2\n1.1.1.3\n", stringWriter.toString()); 
 	}
 
 	@Test
@@ -96,9 +124,7 @@ public class ObservabilityCollectdFileOperationsTest {
 
 	@Test
 	public void testGetIPList() {
-		//HashSet<String> ipl = ObservabilityCollectdFileOperations.getIPList();
-		//if(ipl != null)
-		//	System.out.println(ipl.toString());
+		assertNotNull(ObservabilityCollectdFileOperations.getIPList());
 	}
 
 	@Test
@@ -107,6 +133,35 @@ public class ObservabilityCollectdFileOperationsTest {
 		System.out.println(ipl.toString());
 	}
 
+	@Test
+	public void testLogMessageAssertTrue(){
+		assertTrue(ObservabilityCollectdFileOperations.logMessage(collectdPath + aggregationLog, "Testing"));
+	}
+	
+	
+	
+	@Test
+	public void testGetMissingDaemonConf(){
+		String collectdPath = "/opt/collectd/";
+		String collectdConf = "etc/collectd.conf";
+		assertNotNull(ObservabilityCollectdFileOperations.getMissingDaemonConf());
+	}
+	
+	@Test
+	public void testCheckAccess(){
+		assertTrue(ObservabilityCollectdFileOperations.checkAccess());
+	}
+	
+	@Test
+	public void testGetMissingDaemonNotCollectingLogPath(){
+		assertNotNull(ObservabilityCollectdFileOperations.getMissingDaemonNotCollectingLogPath());
+	}
+	
+	@Test
+	public void testGetMissingDaemonNotRespondingLogPath(){
+		assertNotNull(ObservabilityCollectdFileOperations.getMissingDaemonNotRespondingLogPath());
+	}
+	
 	@Test
 	public void testLogMessageAggregation() {
 		ObservabilityCollectdFileOperations.logMessageAggregation("test Aggregation");
@@ -149,7 +204,12 @@ public class ObservabilityCollectdFileOperationsTest {
 		long lm = ObservabilityCollectdFileOperations.lastModifiedDaemonIP();
 		System.out.println("Last modified daemon ip time: " + lm);
 	}
-*/
+
+	@Test
+	public void testLogMessage(){
+		assertFalse(ObservabilityCollectdFileOperations.logMessage("/Desktop/", "Testing"));
+	}
+	
 	
 	/////////////////////////////////////////////////////////////////////////
 	@Test
