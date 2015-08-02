@@ -3,6 +3,7 @@ package com.observability.monitoring.server;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -135,7 +136,19 @@ public class ObservabilityCollectdFileOperationsTest {
 
 	@Test
 	public void testLogMessageAssertTrue(){
-		assertTrue(ObservabilityCollectdFileOperations.logMessage(collectdPath + aggregationLog, "Testing"));
+		try {
+			 
+		      File file = new File(collectdPath + aggregationLog+"-" + ObservabilityCollectdFileOperations.getTodayDate());
+	 
+		      if (file.createNewFile()){
+		  		assertTrue(ObservabilityCollectdFileOperations.logMessage(collectdPath + aggregationLog, "Testing"));
+		      }else{
+		  		assertFalse(ObservabilityCollectdFileOperations.logMessage(collectdPath + aggregationLog, "Testing"));
+		      }
+	 
+	    	} catch (IOException e) {
+		      e.printStackTrace();
+		}
 	}
 	
 	
