@@ -151,8 +151,7 @@ public class ObservabilityCollectdFileOperationsTest {
 		}
 	}
 	
-	
-	
+
 	@Test
 	public void testGetMissingDaemonConf(){
 		String collectdPath = "/opt/collectd/";
@@ -365,9 +364,7 @@ public class ObservabilityCollectdFileOperationsTest {
 		in.close();
 	}
 	
-	
-	
-	/////////////////////////////////////////////////////////////////////////
+
 
 	
 	@Test
