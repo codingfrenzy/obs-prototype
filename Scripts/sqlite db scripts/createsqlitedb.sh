@@ -4,9 +4,8 @@ sudo mkdir sqlite-thresholddb
 cd sqlite-thresholddb
 sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/Scripts/sqlite%20db%20scripts/threshdbscript
 sudo sqlite3 threshold.db < threshdbscript
-
+sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/Scripts/sqlite%20db%20scripts/modchngdbscript
 sudo sqlite3 modelchange.db < modchngdbscript
-
 sudo wget https://github.com/observability/obs-prototype/raw/master/changed-framework-files/restful-sqlite.tar.gz
 sudo tar -xvf restful-sqlite.tar.gz
 sudo rm restful-sqlite.tar.gz
