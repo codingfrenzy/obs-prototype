@@ -4,7 +4,7 @@ define([
         'jquery',
         'config',
     ],
-function (angular) {
+function (angular, lodash, _, config) {
 
     "use strict";
 
@@ -19,7 +19,7 @@ function (angular) {
             $scope.popupClosedAt = getCookie("closedAt");
 
         (function retrieveItems() {
-            $http.get("http://localhost:8888/modelchange.db/modelchange/1")
+            $http.get("http://"+ config.serverIp + ":8888/modelchange.db/modelchange/1")
                 .success(function (response) {
                     if((response.timestamp > $scope.popupClosedAt || $scope.popupClosedAt == 0) && response.changed == "true") {
                         $scope.modelchange = "true";

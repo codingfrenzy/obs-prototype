@@ -4,7 +4,7 @@ define([
         'jquery',
         'config',
     ],
-function (angular) {
+function (angular, lodash, _, config) {
 
     "use strict";
 
@@ -13,7 +13,7 @@ notfapp.controller('thresholdCtrl', function($scope,$http,$timeout) {
     $scope.thIntrvl = 30000;
     $scope.interval = 30;
     (function retrieveThresholds() {
-        $http.get("http://localhost:8888/threshold.db/thresholds/")
+        $http.get("http://" + config.serverIp + ":8888/threshold.db/thresholds/")
             .success(function (response) {
                 $scope.thresholds = response;
                 $timeout(retrieveThresholds, $scope.thIntrvl);
@@ -28,7 +28,7 @@ notfapp.controller('thresholdCtrl', function($scope,$http,$timeout) {
 
     $scope.removeRow = function(id){
 
-        $http.delete("http://localhost:8888/threshold.db/thresholds/"+id)
+        $http.delete("http://" + config.serverIp + ":8888/threshold.db/thresholds/"+id)
             .success(function (response) {
                 var index = -1;
                 var threshArr = eval( $scope.thresholds );
@@ -49,7 +49,7 @@ notfapp.controller('thresholdCtrl', function($scope,$http,$timeout) {
         var threshArr = eval( $scope.thresholds );
 
         for( var i = 0; i < threshArr.length; i++ ) {
-            $http.delete("http://localhost:8888/threshold.db/thresholds/"+threshArr[i].id)
+            $http.delete("http://" + config.serverIp +":8888/threshold.db/thresholds/"+threshArr[i].id)
                 .success(function (response) {
                     $scope.thresholds.shift();
                 });
