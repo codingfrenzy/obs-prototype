@@ -1,5 +1,4 @@
-# Run this script by: sh grafana-auto-install.sh
-# Do not use : sudo sh grafana-auto-install.sh as that will fail GO commands
+sudo chown -R `whoami`:`groups ubuntu | awk '{print $3}'` grafana-auto-install.sh
 cd
 sudo apt-get update
 sudo apt-get install graphite-web graphite-carbon
@@ -14,12 +13,13 @@ sudo rm storage-schemas.conf
 sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/config-files/graphite-config/storage-schemas.conf
 sudo graphite-manage syncdb
 
-# keep user as root and enter password as graphite
+# enter user and password for graphite
 
 sudo chown -R _graphite:_graphite /var/lib/graphite/
 sudo chmod 777 -R /var/lib/graphite/whisper/
 sudo perl -pi -e 's/CARBON_CACHE_ENABLED=false/CARBON_CACHE_ENABLED=true/g' /etc/default/graphite-carbon
 sudo perl -pi -e 's/ENABLE_LOGROTATION = False/ENABLE_LOGROTATION = True/g' /etc/carbon/carbon.conf
+sudo sed -i "s|MAX_CREATES_PER_MINUTE = 50|MAX_CREATES_PER_MINUTE = 800000|" /etc/carbon/carbon.conf
 
 sudo apt-get install apache2 libapache2-mod-wsgi
 sudo a2dissite 000-default
