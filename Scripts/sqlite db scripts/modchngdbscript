@@ -1,0 +1,9 @@
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Table: thresholds
+DROP TABLE IF EXISTS modelchange;
+CREATE TABLE modelchange (id INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, changed BOOLEAN, timestamp TEXT);
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;

@@ -29,33 +29,19 @@ sudo a2ensite apache2-graphite
 # GRAFANA installation:
 
 cd
-wget https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
+sudo wget https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
 sudo tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
 sudo mkdir go
 sudo chmod 777 go/
 sudo echo "export PATH=$PATH:/usr/local/go/bin" >> $HOME/.bashrc
 sudo echo "export GOPATH=$HOME/go" >> $HOME/.bashrc
 . $HOME/.bashrc
-sudo apt-get install git
-echo This will take some time..
-/usr/local/go/bin/go get github.com/grafana/grafana
-cd $GOPATH/src/github.com/grafana/grafana
-/usr/local/go/bin/go run build.go setup
-$GOPATH/bin/godep restore
-/usr/local/go/bin/go build .
-cd
-wget http://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz
-tar -xvf node-v0.12.0.tar.gz
-cd node-v0.12.0/
-./configure 
-make
-sudo make install
-. $HOME/.bashrc
-cd $GOPATH/src/github.com/grafana/grafana
-sudo rm -rf node_modules
-sudo npm install
-sudo npm install -g grunt-cli
-sudo grunt
+cd go/
+sudo wget https://github.com/observability/obs-prototype/raw/master/changed-framework-files/grafana/grafana-part-00 https://github.com/observability/obs-prototype/raw/master/changed-framework-files/grafana/grafana-part-01 https://github.com/observability/obs-prototype/raw/master/changed-framework-files/grafana/grafana-part-02 https://github.com/observability/obs-prototype/raw/master/changed-framework-files/grafana/grafana-part-03
+cat grafana-part-0* > grafana.tar.gz
+sudo rm grafana-part-0*
+sudo tar -xvf grafana.tar.gz
+sudo rm grafana.tar.gz
 cd
 echo 'sudo service apache2 start;sudo service carbon-cache start;cd $GOPATH/src/github.com/grafana/grafana/;./grafana &' > start_grafana.sh
 echo 'sudo service apache2 stop;sudo service carbon-cache stop;sudo pkill -f grafana' > stop_grafana.sh

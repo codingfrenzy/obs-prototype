@@ -4,6 +4,9 @@ sudo mkdir sqlite-thresholddb
 cd sqlite-thresholddb
 sudo wget https://raw.githubusercontent.com/observability/obs-prototype/master/Scripts/sqlite%20db%20scripts/threshdbscript
 sudo sqlite3 threshold.db < threshdbscript
+
+sudo sqlite3 modelchange.db < modchngdbscript
+
 sudo wget https://github.com/observability/obs-prototype/raw/master/changed-framework-files/restful-sqlite.tar.gz
 sudo tar -xvf restful-sqlite.tar.gz
 sudo rm restful-sqlite.tar.gz
@@ -17,3 +20,5 @@ sudo pip install tornado
 export currPath=`pwd`
 cd
 echo "sudo python $currPath/web.py &" > start_thresholdWS.sh
+. start_thresholdWS.sh
+curl -X POST --data "changed=true&timestamp=`date +"%s"`" http://localhost:8888/modelchange.db/modelchange/
