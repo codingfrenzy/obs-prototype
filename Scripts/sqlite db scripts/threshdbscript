@@ -1,0 +1,9 @@
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Table: thresholds
+DROP TABLE IF EXISTS thresholds;
+CREATE TABLE thresholds (id INTEGER PRIMARY KEY ASC AUTOINCREMENT UNIQUE NOT NULL, timestamp TEXT, metricpath TEXT, type TEXT, host TEXT, plugin TEXT, pluginInstance TEXT, message TEXT);
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;
