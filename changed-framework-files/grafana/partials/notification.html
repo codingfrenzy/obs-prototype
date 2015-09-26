@@ -1,0 +1,88 @@
+<div body-class class="dashboard" ng-class="{'dashboard-fullscreen': dashboardViewState.fullscreen}">
+
+	<div ng-include src="topNavPartial">
+	</div>
+
+	<div dash-editor-view></div>
+	<div dash-search-view></div>
+
+	<div ng-if="submenuEnabled" ng-include="'app/partials/submenu.html'">
+  </div>
+
+	<div class="clearfix"></div>
+
+	<div class="main-view-container">
+	
+	<div class="page-container ng-scope" ng-controller="thresholdCtrl">
+	<div class="page">
+		<h2>Notifications</h2>
+
+
+		<table class="grafana-options-table ng-scope">
+		<tbody>
+		<td>
+			<td>Refresh interval:</td>
+			<td><input class="form-control" ng-model="interval" ng-change="changeThreshInterval(interval)" type="text" style="margin:10px;"></td>
+			<td>Search:</td>
+			<td><input class="form-control" ng-model="searchKeyword" type="text" style="margin:10px;"></td>
+			<td><input type="button" value="Remove All" class="btn btn-primary" ng-click="removeAllThresholds()"/></td>
+		</tr>
+		</tbody>
+		</table>
+		<table class="grafana-options-table ng-scope">
+			<tbody><tr>
+				<td><strong>Timestamp</strong></td>
+				<td><strong>Metric Path</strong></td>
+				<td><strong>Severity</strong></td>
+				<td><strong>Host</strong></td>
+				<td><strong>Plugin</strong></td>
+				<td><strong>Type</strong></td>
+				<td><strong>Message</strong></td>
+				<td><strong>Action</strong></td>
+			</tr>
+
+			<tr class="ng-scope" ng-repeat="threshold in thresholds  | filter: searchKeyword ">
+				<td class="ng-binding">
+					{{threshold.timestamp}}
+				</td>
+				<td class="ng-binding">
+					{{threshold.metricpath}}
+				</td>
+				<td class="ng-binding" ng-style="setStyle(threshold.type)">
+					{{threshold.type}}
+				</td>
+				<td class="ng-binding">
+					{{threshold.host}}
+				</td>
+				<td class="ng-binding">
+					{{threshold.plugin}}
+				</td>
+				<td class="ng-binding">
+					{{threshold.pluginInstance}}
+				</td>
+				<td class="ng-binding">
+					{{threshold.message}}
+				</td>
+				<td class="ng-binding">
+					<input type="button" value="Remove" class="btn btn-primary" ng-click="removeRow(threshold.id)"/>
+				</td>
+				
+			</tr>
+		</tbody></table>
+
+
+		</div>
+	</div>
+
+
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div ng-include="app/partials/console.html" ng-if="consoleEnabled">
+	</div>
+
+</div>
