@@ -45,3 +45,4 @@ sudo rm grafana.tar.gz
 cd
 echo 'sudo service apache2 start;sudo service carbon-cache start;cd $GOPATH/src/github.com/grafana/grafana/;./grafana &' > start_grafana.sh
 echo 'sudo service apache2 stop;sudo service carbon-cache stop;sudo pkill -f grafana' > stop_grafana.sh
+ln -s $GOPATH/src/github.com/grafana/grafana/public/app/components/settings.js $HOME/grafana-config.js
