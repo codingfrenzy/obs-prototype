@@ -1,3 +1,4 @@
+sudo apt-get update
 sudo apt-get install sqlite3
 cd
 sudo mkdir sqlite-thresholddb
@@ -20,4 +21,5 @@ export currPath=`pwd`
 cd
 echo "sudo python $currPath/web.py &" > start_thresholdWS.sh
 . start_thresholdWS.sh
+sleep 4
 curl -X POST --data "changed=true&timestamp=`date +"%s"`" http://localhost:8888/modelchange.db/modelchange/
