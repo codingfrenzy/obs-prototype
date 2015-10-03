@@ -76,8 +76,8 @@ LoadPlugin aggregation
 
 LoadPlugin java
 <Plugin "java">
-       JVMARG "-Djava.class.path=/opt/collectd/java-dep/collectd-api.jar:/opt/collectd/java-dep/generic-jmx.jar:/home/ubuntu/collectd/thresholdnotification.jar:/opt/collectd/java-dep/mail-1.4.7.jar" @Attribute
-       LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin" @Attribute
+       JVMARG "-Djava.class.path=/opt/collectd/java-dep/collectd-api.jar:/opt/collectd/java-dep/generic-jmx.jar:/home/ubuntu/collectd/thresholdnotification.jar:/opt/collectd/java-dep/mail-1.4.7.jar"
+       LoadPlugin "com.observability.monitoring.server.ThresholdNotificationPlugin"
 
        <Plugin "ThresholdNotificationPlugin"> @Feature
                recpt1 "email1@abc.com" @Attribute
