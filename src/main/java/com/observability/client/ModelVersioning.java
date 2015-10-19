@@ -53,6 +53,14 @@ public class ModelVersioning {
     //maximum size of a block for file transfer
     private static int MAX_BLOCK_SIZE = 1024 * 512;
 
+    /**
+     * This main method starts the Versioning program. This user will be provided with a number of options
+     * related to configuration propagation. <br/>
+     * One important point to note: The changes done using this program will only affect the main server and all
+     * the connect daemons. It will NOT modify the configurations in the Model Editor. <br/>
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         String rmiIP = "52.6.202.212";
         String rmiPort = "8101";
