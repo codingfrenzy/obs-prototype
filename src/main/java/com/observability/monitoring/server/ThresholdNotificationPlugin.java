@@ -100,10 +100,6 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 		Collectd.registerConfig   ("ThresholdNotificationPlugin", this);
 		// init
 	    Collectd.registerInit     ("ThresholdNotificationPlugin", this);
-	    // read
-	    //Collectd.registerRead     ("ThresholdNotificationPlugin", this);
-	    // write
-	    //Collectd.registerWrite    ("ThresholdNotificationPlugin", this);
 	    // notification
 	    Collectd.registerNotification("ThresholdNotificationPlugin", this);
 	    // shutdown
@@ -222,22 +218,7 @@ public class ThresholdNotificationPlugin implements CollectdConfigInterface,
 			// start process with sudo (required by collectd)
 			//String commandString = "curl -X POST --data \"" + encodedParameter + "\" " + urlDashboardNotification;
 			String commandString = "curl -X POST --data " + encodedParameter + " " + urlDashboardNotification;
-			//Collectd.logInfo(commandString);
-			//Process p;			// initialize a process class
-			//BufferedReader outReader = null;
 			Runtime.getRuntime().exec(commandString);
-			//p.waitFor();		// wait for it to finish execution
-		    //if (p.exitValue() != 0){		// if there is an error
-		    //	p.getErrorStream()
-		    // fetch the result:
-			/*
-		    outReader = new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF-8"));
-		    String serr = "";
-		    while((serr = outReader.readLine()) != null){
-		    	Collectd.logInfo("Error executing curl:" + serr);
-		    }
-		    //String output = outReader.readLine();
-		    */
 		    
 		} catch (Exception e) {
 	        e.printStackTrace();

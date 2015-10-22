@@ -60,17 +60,29 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
      */
     private static final long serialVersionUID = 510701247259432165L;
 
+    /**
+     * Default descriptor file path
+     */
     private static final String DESCRIPTORFILE = "descriptors.zip";
 
+    /**
+     * Max block size for transfer
+     */
     private static final int MAX_BLOCK_SIZE = 1024 * 512;
-
-    // Local map to associate the block number with its siz
+    
+    /**
+     * Local map to associate the block number with its size
+     */
     private static ConcurrentHashMap<Integer, Integer> blockSize = new ConcurrentHashMap<Integer, Integer>();
 
-    // File object for handling uploaded zip file
+    /**
+     * File object for handling uploaded zip file
+     */
     private transient RandomAccessFile rafZip = null;
 
-    // File target name
+    /**
+     * File target name
+     */
     private String targetName = null;
     
     /**
@@ -78,6 +90,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
 	 */
     private static IModelHandlerServer imhs = null;
 
+    /**
+     * Default daemon manager port
+     */
     private String daemonManagerDefaultPort = "8200";
 
     protected ModelHandler() throws RemoteException {
@@ -374,6 +389,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         return deploySelectedFilesOnly(files, true);
     }
 
+    /**
+     * Deploy only the selected files
+     */
     private int deploySelectedFilesOnly(File[] files, boolean updateDaemonList) {
         System.out.println("---Start deploying configuration files of totally: " + files.length);
         // loop through file list
@@ -671,7 +689,9 @@ public class ModelHandler extends UnicastRemoteObject implements IModelHandlerSe
         return nrOfBlocks;
 
     }
-
+    /**
+     * Get the MD5 of descriptor file
+     */
     public String getDescFileMd5() throws RemoteException {
         return IModelHandlerServer.FileOperationHelper.getFileMD5(getDescriptorFilePath());
     }
