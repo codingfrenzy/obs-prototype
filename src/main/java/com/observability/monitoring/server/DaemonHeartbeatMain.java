@@ -134,12 +134,13 @@ public class DaemonHeartbeatMain implements Runnable {
     public void updateConfiguration() {
         HashMap<String, Object> conf = ObservabilityCollectdFileOperations.getMissingDaemonConf();
         samplingRate = (int) conf.get("Interval");
-        System.out.println(samplingRate);
+        System.out.println("Interval: " + samplingRate);
         emailInterval = (int) conf.get("EmailInterval");
-        System.out.println(emailInterval);
+        System.out.println("EmailInterval: " + emailInterval);
         threshold = (int) conf.get("Threshold");
-        System.out.println(threshold);
+        System.out.println("Threshold: " + threshold);
         recipients = (List) conf.get("EmailMissingDaemon");
+        System.out.println("Email Recipients:");
         for (String re : recipients) {
             System.out.println(re);
         }

@@ -236,6 +236,10 @@ public class ObservabilityCollectdFileOperations {
         return ipList;
     }
 
+    /**
+     * Method to retrieve the configurations needed for Missing Daemon Analysis
+     * @return configurations read from collectd.conf
+     */
     public static HashMap<String, Object> getMissingDaemonConf() {
         HashMap<String, Object> conf = new HashMap<String, Object>();
 
@@ -251,8 +255,9 @@ public class ObservabilityCollectdFileOperations {
 
                 if (strLine.startsWith("Interval") && interval < 0) {
                     temp = strLine.split(" ");
-                   // interval = Integer.parseInt(temp[1]);
-                    System.out.println("----------------------------"+interval);
+                    interval = Integer.parseInt(temp[1]);
+//                    System.out.println("----------------------------: "+interval);
+//                    System.out.println("----------------------------: "+ collectdPath + collectdConf);
                     conf.put("Interval", interval);
                 }
 
